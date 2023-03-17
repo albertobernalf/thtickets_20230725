@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://tech-blog.rocks/posts/formularios-en-django/ -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Desarrollador de backend, evangelizador de Emacs y la CLI. Programador Freelance México Mauricio Téllez ">
+<meta name="description" content="Introducción Django tiene un sistema de formularios bastante completo el cual nos permite crear, actualizar y borrar información de una manera muy simple, pero desafortunadamente no muy intuitiva, al menos cuando no se conocen las bases sobre las cuales se construyó este sistema. Para complicar las cosas, se encuentra mucha información en internet pero no siempre es la correcta, o muestran soluciones usando funciones en lugar de las vistas basadas en clases, y cuando un ejemplo funciona no se explica con claridad el por qué funciona.">
+<meta name="keywords" content=", django, cbv, forms">
+<meta name="robots" content="noodp">
+<meta name="theme-color" content="">
+<link rel="canonical" href="https://tech-blog.rocks/posts/formularios-en-django/">
+
+
+    <title>
+        
+            Implementación de Formularios en Django :: Tech Blog Rocks  — Código, tecnología y otros bits.
+        
+    </title>
+
+
+
+<link href="./Implementación de Formularios en Django __ Tech Blog Rocks — Código, tecnología y otros bits._files/flag-icon.min.css" rel="stylesheet" type="text/css">
+
+
+
+<link rel="stylesheet" href="./Implementación de Formularios en Django __ Tech Blog Rocks — Código, tecnología y otros bits._files/main.dede02da9537a98158079c023e83573e18127834838ef08172acce888341a797.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="./Implementación de Formularios en Django __ Tech Blog Rocks — Código, tecnología y otros bits._files/tables.css">
+    
+
+
+
+
+
+
+<meta itemprop="name" content="Implementación de Formularios en Django">
+<meta itemprop="description" content="Introducción Django tiene un sistema de formularios bastante completo el cual nos permite crear, actualizar y borrar información de una manera muy simple, pero desafortunadamente no muy intuitiva, al menos cuando no se conocen las bases sobre las cuales se construyó este sistema. Para complicar las cosas, se encuentra mucha información en internet pero no siempre es la correcta, o muestran soluciones usando funciones en lugar de las vistas basadas en clases, y cuando un ejemplo funciona no se explica con claridad el por qué funciona.">
+
+
+<meta itemprop="datePublished" content="2020-12-22T10:58:44-05:00">
+<meta itemprop="dateModified" content="2020-12-22T10:58:44-05:00">
+<meta itemprop="wordCount" content="2253">
+
+
+
+<meta itemprop="keywords" content="django,cbv,forms,">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Implementación de Formularios en Django">
+<meta name="twitter:description" content="Introducción Django tiene un sistema de formularios bastante completo el cual nos permite crear, actualizar y borrar información de una manera muy simple, pero desafortunadamente no muy intuitiva, al menos cuando no se conocen las bases sobre las cuales se construyó este sistema. Para complicar las cosas, se encuentra mucha información en internet pero no siempre es la correcta, o muestran soluciones usando funciones en lugar de las vistas basadas en clases, y cuando un ejemplo funciona no se explica con claridad el por qué funciona.">
+
+
+
+    <meta property="og:title" content="Implementación de Formularios en Django">
+<meta property="og:description" content="Introducción Django tiene un sistema de formularios bastante completo el cual nos permite crear, actualizar y borrar información de una manera muy simple, pero desafortunadamente no muy intuitiva, al menos cuando no se conocen las bases sobre las cuales se construyó este sistema. Para complicar las cosas, se encuentra mucha información en internet pero no siempre es la correcta, o muestran soluciones usando funciones en lugar de las vistas basadas en clases, y cuando un ejemplo funciona no se explica con claridad el por qué funciona.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://tech-blog.rocks/posts/formularios-en-django/">
+<meta property="article:published_time" content="2020-12-22T10:58:44-05:00">
+<meta property="article:modified_time" content="2020-12-22T10:58:44-05:00"><meta property="og:site_name" content="Tech Blog Rocks">
+
+
+
+
+
+
+    <meta property="article:published_time" content="2020-12-22 10:58:44 -0500 -0500">
+
+
+
+
+
+
+
+
+    <style>.osSwitch{position:relative;display:inline-block;width:34px;height:15.3px}.osSwitch input{opacity:0;width:0;height:0}.osSlider{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:34px;background-color:#93a0b5;transition:0.4s}.osSlider:before{position:absolute;content:'';height:13px;width:13px;left:2px;bottom:1px;border-radius:50%;background-color:white;transition:0.4s}input:checked+.sliderGreen{background-color:#04d289}input:checked+.sliderRed{background-color:#ff3b30}input:not(:checked)+.defaultGreen{background-color:#04d289}input:checked+.osSlider:before{transform:translateX(17px)}
+</style><style>
+    @font-face {
+      font-family: 'SegoeUI_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui.woff);
+    }
+
+    @font-face {
+      font-family: 'SegoeUI_bold_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui-bold.woff);
+    }
+</style></head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://tech-blog.rocks/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">&gt;</span>
+            <span class="logo__text">echo 'Tech Blog Rocks' &amp;&amp; cd / </span>
+            <span class="logo__cursor" style="
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://tech-blog.rocks/posts">Blog</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"></path>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+<script async="" src="./Implementación de Formularios en Django __ Tech Blog Rocks — Código, tecnología y otros bits._files/analytics.js.descarga"></script><script async="" src="./Implementación de Formularios en Django __ Tech Blog Rocks — Código, tecnología y otros bits._files/analytics.js.descarga"></script><script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-168102507-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>11 minutos
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://tech-blog.rocks/posts/formularios-en-django/">Implementación de Formularios en Django</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<h1 id="introducción">Introducción</h1>
+
+<p>Django tiene un sistema de formularios bastante completo el cual nos
+permite crear, actualizar y borrar información de una manera muy
+simple, pero desafortunadamente no muy intuitiva, al menos cuando no
+se conocen las bases sobre las cuales se construyó este sistema. Para
+complicar las cosas, se encuentra mucha información en internet pero
+no siempre es la correcta, o muestran soluciones usando <em>funciones</em> en
+lugar de las <em>vistas basadas en clases</em>, y cuando un ejemplo funciona
+no se explica con claridad el por qué funciona. En este post trataré
+de explicar como funcionan los formularios.</p>
+
+<h1 id="validación-de-los-datos">Validación de los datos</h1>
+
+<p>Antes de explicar como mostrar y procesar los formularios, es
+necesario entender el mecanismo que usa Django para validar la
+información capturada por el usuario. Cuando creamos un modelo
+indicamos el tipo de dato de cada campo, y algunos datos extras como
+la longitud y si se permite campos en blanco. Esta es la información
+que se usa para validar cada campo. Si tenemos un campo entero y en el
+formulario escribimos una cadena de texto, entonces no pasará la
+validación. Si nuestro campo es de texto pero excede el número máximo
+de caracteres, también se considera inválido. Veamos un modelo de
+ejemplo:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">class</span> <span class="token class-name">Agenda</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    nombre_evento <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">)</span>
+    fecha <span class="token operator">=</span> models<span class="token punctuation">.</span>DateField<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    hora <span class="token operator">=</span> models<span class="token punctuation">.</span>TimeField<span class="token punctuation">(</span>blank<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    duracion_minutos <span class="token operator">=</span> models<span class="token punctuation">.</span>PositiveIntegerField<span class="token punctuation">(</span>blank<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    notas <span class="token operator">=</span> models<span class="token punctuation">.</span>TextField<span class="token punctuation">(</span>blank<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></code></pre></div>
+<p>Con este sencillo ejemplo, tenemos las siguientes validaciones:</p>
+
+<ul>
+<li><strong>nombre_evento</strong>: es un campo requerido y su longitud máxima es de
+64 caracteres.</li>
+<li><strong>fecha</strong>: otro campo requerido.</li>
+<li><strong>hora</strong>: un campo <em>opcional</em>, ya que tanto <code>blank</code> y <code>null</code> son
+<code>True</code>. En nuestra agenda, si un evento no tiene hora aplica para
+todo el día.</li>
+<li><strong>duracion_minutos</strong>: otro campo opcional, de tipo entero sin signo.</li>
+<li><strong>notas</strong>: otro campo opcional.</li>
+</ul>
+
+<blockquote>
+<p><strong>Nota</strong>: es importante conocer las diferencias entre <code>blank</code> y
+<code>null</code>. Cuando <code>blank=True</code> indica que es posible dejar este campo
+en blanco en el formulario, por lo que no se generará un error si el
+campo del formulario no contiene información, pero esta validación
+solo aplica a nivel formulario y no a nivel base de datos. Por otro
+lado, <code>null=True</code> indica que este campo no es obligatorio en la base
+de datos. Generalmente se usan conjuntamente ya que se complementan.</p>
+</blockquote>
+
+<h1 id="creación-de-vistas">Creación de vistas</h1>
+
+<p>Django nos proporciona 4 vistas basadas en clase (<strong>CBV</strong>) que nos
+simplifican el trabajo con los formularios, cada una con una
+funcionalidad específica dependiendo de nuestro requerimiento. Estas
+clases se encuentran en el módulo <code>django.views.generic</code>, por lo que
+si queremos usar la vista <code>FormView</code> la importaremos como:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> FormView</code></pre></div>
+<h2 id="formview">FormView</h2>
+
+<h3 id="descripción">Descripción</h3>
+
+<p>Esta es la clase más sencilla de de las cuatro, y su función es:</p>
+
+<ol>
+<li>Mostrar el formulario en base a los datos de un modelo.</li>
+<li>Validar que los datos introducidos sean correctos.</li>
+<li>En caso de error se mostrará el formulario con las datos capturados
+indicando que campos <strong>no</strong> pasaron la validación.</li>
+<li>En caso de éxito se redirigirá a una <em>URL</em> que especifiquemos.</li>
+</ol>
+
+<blockquote>
+<p>Nota: Esta vista no graba el formulario, solo implementa el
+comportamiento de validación de los datos, puede ser usada para
+comportamientos más complejos, como se verá más adelante.</p>
+</blockquote>
+
+<p>Como ya he comentado en el post <a href="https://tech-blog.rocks/posts/sistema-de-permisos-en-django/" target="_blank">Sistema de Permisos en Django</a>, las CBV nos simplifica
+mucho el trabajo, y en el caso de los formularios no es la
+excepción. Veamos como implementar un formulario en su forma más
+básica.</p>
+
+<h3 id="implementación">Implementación</h3>
+
+<p>Tomando como base el modelo de la agenda, en nuestro archivo
+<code>views.py</code> pondremos lo siguiente:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> FormView
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaForm</span><span class="token punctuation">(</span>FormView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda
+    fields <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'nombre_evento'</span><span class="token punctuation">,</span> <span class="token string">'fecha'</span><span class="token punctuation">,</span> <span class="token string">'hora'</span><span class="token punctuation">,</span> <span class="token string">'duracion_minutos'</span><span class="token punctuation">,</span> <span class="token string">'notas'</span><span class="token punctuation">]</span></code></pre></div>
+<p>Esto es todo lo que nuestra vista requiere. No hay que definir los
+métodos <code>get()</code> o <code>post()</code>, ya que <code>FormView</code> se encarga de gestionar
+ambas peticiones por nosotros. Ahora veamos el código de nuestra
+plantilla, el código va en <code>agenda_form.html</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-html"><code class="+django language-html" data-lang="html+django"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">&gt;</span></span>Agregar evento<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">&gt;</span></span>Agregar evento a la agenda<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+      {% csrf_token %} {{ form.as_p }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Agregar<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span></code></pre></div>
+<p>El código Html puede ser tan elaborado o simple como deseemos, los
+únicos requisitos es que contenga la etiqueta <code>&lt;form method="post"&gt;</code> y
+la variable <code>{{ form.as_p }}</code>, esta variable es en la que <code>Django</code>
+pone todos los widgets (cajas de texto, select, radio botones, etc.)
+que nuestro modelo requiere. En este punto es necesario hacer dos
+aclaraciones:</p>
+
+<blockquote>
+<p>Nuestra vista está determinando el nombre de la plantilla por
+convención. Como nuestro modelo se llama <code>Agenda</code>, espera que la
+plantilla se llame <code>agenda_form.html</code>, si queremos usar una platilla
+con nombre diferente, usaremos la variable <code>template_name</code>.</p>
+</blockquote>
+
+<p>En la vista usamos la variable <code>fields</code> para indicar los campos del
+modelo que queremos mostrar en el formulario, esto es útil por que hay
+campos <em>automáticos</em> (como la fecha de creación y modificación) que no
+los captura el usuario. Si solo queremos mostrar <code>nombre_evento</code> y
+<code>fecha</code> y además queremos usar una plantilla con nombre diferente,
+nuestra vista cambia a:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> FormView
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaCreate</span><span class="token punctuation">(</span>CreateView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda
+    fields <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'nombre_evento'</span><span class="token punctuation">,</span> <span class="token string">'fecha'</span><span class="token punctuation">]</span>
+    template_name <span class="token operator">=</span> <span class="token string">'agenda/agenda_sin_duracion.html'</span></code></pre></div>
+<h2 id="createview">CreateView</h2>
+
+<h3 id="descripción-1">Descripción</h3>
+
+<p>Como ya comenté, <code>FormView</code> no graba datos, pero <code>CreateView</code> sí nos
+permite crear nuevos registros en la base de datos. Su función es:</p>
+
+<ol>
+<li>Mostrar el formulario en base a los datos de un modelo.</li>
+<li>Validar que los datos introducidos sean correctos.</li>
+<li>Si los datos son válidos, se graba en la base de datos.</li>
+<li>En caso de error se mostrará el formulario con las datos capturados
+indicando que campos no pasaron la validación.</li>
+<li>En caso de éxito se redirigirá a una <em>URL</em> que especifiquemos.</li>
+</ol>
+
+<p>Como se puede observar, el comportamiento es muy similar a <code>FormView</code>,
+con la única diferencia de grabar los datos si estos pasan las
+validaciones.</p>
+
+<blockquote>
+<p><strong>Nota</strong>: En este punto se genera la validación a nivel base de
+datos para asegurar la integridad referencial y los índices únicos,
+por dar un ejemplo. Si queremos insertar un registro duplicado
+<code>Django</code> marcará el campo duplicado como no válido.</p>
+</blockquote>
+
+<h3 id="implementación-1">Implementación</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> CreateView
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaCreate</span><span class="token punctuation">(</span>CreateView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda
+    fields <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'nombre_evento'</span><span class="token punctuation">,</span> <span class="token string">'fecha'</span><span class="token punctuation">,</span> <span class="token string">'hora'</span><span class="token punctuation">,</span> <span class="token string">'duracion_minutos'</span><span class="token punctuation">,</span> <span class="token string">'notas'</span><span class="token punctuation">]</span></code></pre></div>
+<p>El código parece idéntico al que usamos con <code>FormView</code>, y casi lo es,
+la única diferencia es que estamos usado <code>CreateView</code> en lugar de
+<code>FormView</code>, Django se encarga de hacer todo el trabajo por
+nosotros. La plantilla Html no sufre ningún cambio, así que la omitiré
+en esta sección.</p>
+
+<h2 id="updateview">UpdateView</h2>
+
+<h3 id="descripción-2">Descripción</h3>
+
+<p>Como podemos imaginar, esta clase nos permite modificar un registro
+que ya fue creado con anterioridad. Su función es:</p>
+
+<ol>
+<li>Mostrar el formulario en base a los datos de un modelo, llenando
+los campos con la información del registro en la base de datos.</li>
+<li>Validar que los datos introducidos sean correctos.</li>
+<li>Si los datos son válidos, se <strong>actualiza</strong> la información en la
+base de datos.</li>
+<li>En caso de error se mostrará el formulario con las datos capturados
+indicando que campos no pasaron la validación.</li>
+<li>En caso de éxito se redirigirá a una <em>URL</em> que especifiquemos.</li>
+</ol>
+
+<p>Las funciones son muy parecidas a las de <code>CreateView</code>, excepto por que
+el formulario ya contiene datos, y en lugar de crear un registro nuevo
+actualiza uno existente.</p>
+
+<h3 id="implementación-2">Implementación</h3>
+
+<p>La implementación es muy parecida a las clases que ya vimos:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> UpdateView
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaUpdate</span><span class="token punctuation">(</span>UpdateView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda
+    fields <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'nombre_evento'</span><span class="token punctuation">,</span> <span class="token string">'fecha'</span><span class="token punctuation">,</span> <span class="token string">'hora'</span><span class="token punctuation">,</span> <span class="token string">'duracion_minutos'</span><span class="token punctuation">,</span> <span class="token string">'notas'</span><span class="token punctuation">]</span></code></pre></div>
+<p>Si la implementación es la misma que con <code>CreateView</code> ¿Cómo determina
+Django que registro es el que se tiene que modificar? <code>UpadateView</code>
+hereda del <em>mixin</em> <code>django.views.generic.detail.SingleObjectMixin</code>, el
+cual implementa el método <code>get_object()</code>. La función de este método es
+regresar <strong>un objeto único</strong> que se mostrará en el formulario. La
+forma de determinar el objeto único depende de varios factores.</p>
+
+<h4 id="queryset">queryset</h4>
+
+<p>Primero busca la variable de clase <code>queryset</code>, y si está definida,
+utiliza ese <em>queryset</em> para obtener el registro:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> UpdateView
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaUpdate</span><span class="token punctuation">(</span>UpdateView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda
+    fields <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'nombre_evento'</span><span class="token punctuation">,</span> <span class="token string">'fecha'</span><span class="token punctuation">,</span> <span class="token string">'hora'</span><span class="token punctuation">,</span> <span class="token string">'duracion_minutos'</span><span class="token punctuation">,</span> <span class="token string">'notas'</span><span class="token punctuation">]</span>
+    queryset <span class="token operator">=</span> Agenda<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>pk<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span></code></pre></div>
+<p>Esta es la opción más limitada, ya que no podemos usar un parámetro
+dinámico para obtener el registro. Esta variable generalmente se usa
+para obtener todos los registros con <code>Agenda.objects.all()</code>, o como se
+puso en el ejemplo, un valor fijo, pero que no sirve de mucho en
+nuestro caso.</p>
+
+<h4 id="get-queryset">get_queryset()</h4>
+
+<p>Si no existe la variable <code>queryset</code>, entonces se busca al método
+<code>get_queryset()</code>, y usa el <em>queryset</em> regresado:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> UpdateView
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaUpdate</span><span class="token punctuation">(</span>UpdateView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda
+    fields <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'nombre_evento'</span><span class="token punctuation">,</span> <span class="token string">'fecha'</span><span class="token punctuation">,</span> <span class="token string">'hora'</span><span class="token punctuation">,</span> <span class="token string">'duracion_minutos'</span><span class="token punctuation">,</span> <span class="token string">'notas'</span><span class="token punctuation">]</span>
+
+    <span class="token keyword">def</span> <span class="token function">get_queryset</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> Agenda<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>pk<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span></code></pre></div>
+<p>Aquí ya tenemos más flexibilidad, ya que al ser una función podemos
+hacer varias consultas y construir un queryset dinámico. Aunque con
+esta función podemos obtener el registro que queremos, para nuestro
+caso de uso es suficiente con lo explicado en el siguiente punto. El
+método <code>get_queryset()</code> es más usado en la vista <code>ListView</code>, donde los
+datos a usar generalmente involucran más de un modelo.</p>
+
+<h4 id="por-parámetros-de-la-vista">Por parámetros de la vista</h4>
+
+<p>Si tampoco está definido el método <code>get_queryset()</code> entonces busca los argumentos
+<code>pk_url_kwarg</code> y <code>slug_url_kwarg</code> en los parámetros de la vista en ese orden, y
+si solo existe el primero usa el campo <code>pk</code> para buscar el registro; si solo se
+encuentra el <code>slug_url_kwarg</code>, entonces se usará el campo del modelo <code>slug</code>; y
+si se encuentran ambos argumentos, se usará un <code>and</code> lógico con los dos valores.
+A continuación veremos como es que Django construye el queryset en base a los
+parámetros obtenidos:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="Python"><span class="token comment"># Si solo está definido pk_url_kwarg</span>
+Agenda<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>pk<span class="token operator">=</span>pk_url_kwarg<span class="token punctuation">)</span>
+
+<span class="token comment"># Si solo está definido slug_url_kwarg</span>
+Agenda<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>slug<span class="token operator">=</span>slug_url_kwarg<span class="token punctuation">)</span>
+
+<span class="token comment"># Si ambos están definidos</span>
+Agenda<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>pk<span class="token operator">=</span>pk_url_kwarg<span class="token punctuation">,</span> slug<span class="token operator">=</span>sulg_url_kwarg<span class="token punctuation">)</span></code></pre></div>
+<p>Hay que recalcar que toda esta lógica la realiza Django por nosotros,
+nuestra única tarea es crear los endpoints necesarios en <code>urls.py</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path
+<span class="token keyword">from</span> <span class="token punctuation">.</span>views <span class="token keyword">import</span> AgendaUpdate
+
+
+urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token comment"># Solo definimos pk</span>
+    path<span class="token punctuation">(</span>'agenda<span class="token operator">/</span>update<span class="token operator">/</span><span class="token operator">&lt;</span><span class="token builtin">int</span><span class="token punctuation">:</span>pk<span class="token operator">&gt;</span><span class="token operator">/</span><span class="token punctuation">,</span>
+         AgendaUpdate<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+         name<span class="token operator">=</span><span class="token string">'agenda_update'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token comment"># Solo definimos slug</span>
+    path<span class="token punctuation">(</span>'agenda<span class="token operator">/</span>update<span class="token operator">/</span><span class="token operator">&lt;</span>slug<span class="token punctuation">:</span>slug<span class="token operator">&gt;</span><span class="token operator">/</span>"<span class="token punctuation">,</span>
+         AgendaUpdate<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+         name<span class="token operator">=</span><span class="token string">'agenda_update'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token comment"># Definimos pk y slug</span>
+    path<span class="token punctuation">(</span>'agenda<span class="token operator">/</span>update<span class="token operator">/</span><span class="token operator">&lt;</span><span class="token builtin">int</span><span class="token punctuation">:</span>pk<span class="token operator">&gt;</span><span class="token operator">/</span><span class="token operator">&lt;</span>slug<span class="token punctuation">:</span>slug<span class="token operator">&gt;</span><span class="token operator">/</span><span class="token punctuation">,</span>
+         AgendaUpdate<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+         name<span class="token operator">=</span><span class="token string">'agenda_update'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span></code></pre></div>
+<blockquote>
+<p><strong>Nota</strong>: aunque estamos nombrando a nuestro parámetros <code>pk</code> y
+<code>slug</code>, los argumentos que se pasarán a la vista son <code>pk_url_kwarg</code>
+y <code>slug_url_kwarg</code>.</p>
+</blockquote>
+
+<p>Como vimos al inicio inicio de esta sección, cuando usamos los
+argumentos de la vista el código se reduce al mínimo, repito la misma
+vista como referencia:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> UpdateView
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaUpdate</span><span class="token punctuation">(</span>UpdateView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda
+    fields <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'nombre_evento'</span><span class="token punctuation">,</span> <span class="token string">'fecha'</span><span class="token punctuation">,</span> <span class="token string">'hora'</span><span class="token punctuation">,</span> <span class="token string">'duracion_minutos'</span><span class="token punctuation">,</span> <span class="token string">'notas'</span><span class="token punctuation">]</span></code></pre></div>
+<p>Ahora podemos prescindir de la variable <code>queryset</code> y del método
+<code>get_queryset()</code> solo usando los <em>endpoints</em> correctos.</p>
+
+<h2 id="deleteview">DeleteView</h2>
+
+<h3 id="descripción-3">Descripción</h3>
+
+<p>Cuando necesitamos borrar un registro necesitamos usar a la <em>CBV</em> <code>DeleteView</code>.
+Su función es:</p>
+
+<ol>
+<li>Si el método es de tipo <code>GET</code>, mostrar una página de confirmación de la
+eliminación del registro.</li>
+<li>Si el método es de tipo <code>POST</code> borrar el registro y redireccionarnos a una
+página de éxito.</li>
+</ol>
+
+<h3 id="implementación-3">Implementación</h3>
+
+<p>Aunque el funcionamiento de esta clase es algo diferente a las que hemos visto,
+su implementación es bastante similar:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> reverse_lazy
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> DeleteView
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaDelete</span><span class="token punctuation">(</span>DeleteView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda
+    success_url <span class="token operator">=</span> reverse_lazy<span class="token punctuation">(</span><span class="token string">'agenda-list'</span><span class="token punctuation">)</span></code></pre></div>
+<p>Aunque en la descripción hicimos mención de los métodos <code>GET</code> y <code>POST</code> no es
+necesario definirlos en nuestra vista, ya que <code>DeleteView</code> los implementa por
+nosotros. Solo tenemos que indicar el modelo (en este caso <code>Agenda</code>) que usará
+la vista y la url a la que se redireccionará en caso de éxito (<code>agenda_list</code>).</p>
+
+<blockquote>
+<p><strong>Nota</strong>: Es necesario usar la función <code>reverse_lazy()</code> por que en este punto
+aun no se tiene acceso a otras vistas.</p>
+</blockquote>
+
+<p>Al igual que <code>UpdateView</code>, esta vista hereda del <em>mixin</em>
+<code>django.views.generic.detail.SingleObjectMixin</code>, por lo que aplican las mismas
+reglas para determinar el registro a borrar. La mayoría de las veces usaremos
+<a href="https://tech-blog.rocks/posts/formularios-en-django/#por-par%C3%A1metros-de-la-vista">parámetros de la vista</a>. Para esto definiremos un
+nuevo path en <code>urls.py</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>contrib <span class="token keyword">import</span> admin
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path
+<span class="token keyword">from</span> encuesta<span class="token punctuation">.</span>views <span class="token keyword">import</span> AgendaCreate<span class="token punctuation">,</span> AgendaEdit<span class="token punctuation">,</span> AgendaDelete
+
+urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
+    path<span class="token punctuation">(</span><span class="token string">"admin/"</span><span class="token punctuation">,</span> admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>urls<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    path<span class="token punctuation">(</span><span class="token string">"encuesta/agenda/"</span><span class="token punctuation">,</span> AgendaCreate<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">"agenda_create"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    path<span class="token punctuation">(</span>
+        <span class="token string">"encuesta/agenda/update/&lt;int:pk&gt;/"</span><span class="token punctuation">,</span> AgendaEdit<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">"agenda_update"</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    path<span class="token punctuation">(</span>
+        <span class="token string">"encuesta/agenda/delete/&lt;int:pk&gt;/"</span><span class="token punctuation">,</span> AgendaDelete<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">"agenda_delete"</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token comment"># Aquí es donde se redirecciona cuando se borra un registro:</span>
+    path<span class="token punctuation">(</span><span class="token string">"encuesta/agendas/"</span><span class="token punctuation">,</span> AgendaView<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">"agenda_list"</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span></code></pre></div>
+<p>Ahora que ya tenemos identificado al registro a borrar, hay que crear la
+plantilla de confirmación:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-html"><code class=" language-html" data-lang="html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  {% csrf_token %}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>¿Estás seguro de borrar el registro "{{ object }}"?<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Confirmar<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">&gt;</span></span></code></pre></div>
+<p>Hay cuatro puntos importantes de esta plantilla:</p>
+
+<ol>
+<li>El formulario debe de apuntar a la misma <em>URL</em>.</li>
+<li>El método del formulario tiene que ser <code>POST</code>.</li>
+<li>La variable <code>object</code> es una representación del registro a borrar (ver la nota
+al final de esta lista)</li>
+<li>El nombre de la plantilla tiene que ser <code>modelo_confirm_delete.html</code> (en
+nuestro caso es <code>agenda_confirm_delete.html</code>). Si queremos usar un nombre
+diferente tenemos que usar la variable <code>template_name</code> cuando declaramos la
+clase.</li>
+</ol>
+
+<blockquote>
+<p><strong>Nota</strong>: En nuestra plantilla tenemos <code>{{ object }}</code>, por lo que será
+reemplazado por el valor regresado en <code>Agenda.__str__()</code>. Pero también podemos
+usar cualquier campo del modelo, por ejemplo: <code>{{ object.nombre_evento }}</code>.</p>
+</blockquote>
+
+<p>Por último, falta definir la vista que mostrará un listado de todos los eventos
+cuando se borre un registro:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views<span class="token punctuation">.</span>generic <span class="token keyword">import</span> CreateView<span class="token punctuation">,</span> DeleteView<span class="token punctuation">,</span> FormView<span class="token punctuation">,</span> UpdateView<span class="token punctuation">,</span> ListView
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> reverse_lazy
+<span class="token keyword">from</span> <span class="token punctuation">.</span>models <span class="token keyword">import</span> Agenda
+
+
+<span class="token keyword">class</span> <span class="token class-name">AgendaView</span><span class="token punctuation">(</span>ListView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    model <span class="token operator">=</span> Agenda</code></pre></div>
+<p>Como podemos ver, estamos usando la <em>CBV</em> <code>ListView</code>, la cual en su forma más
+básica nos regresa una lista con todos los registros del modelo que
+especifiquemos (básicamente invoca a <code>Agenda.objects.all()</code>). Ahora solo hay que
+especificar una plantilla que muestre esta lista, y el nombre de la plantilla
+tiene que ser <code>agenda_list.html</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4" class=" language-python"><code class=" language-python" data-lang="python"><span class="token operator">&lt;</span>h1<span class="token operator">&gt;</span>Eventos<span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>ul<span class="token operator">&gt;</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> <span class="token keyword">for</span> evento <span class="token keyword">in</span> object_list <span class="token operator">%</span><span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span>li<span class="token operator">&gt;</span><span class="token punctuation">{</span><span class="token punctuation">{</span> evento<span class="token punctuation">.</span>fecha<span class="token operator">|</span>date <span class="token punctuation">}</span><span class="token punctuation">}</span> <span class="token operator">-</span> <span class="token punctuation">{</span><span class="token punctuation">{</span> evento<span class="token punctuation">.</span>nombre_evento <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>li<span class="token operator">&gt;</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> empty <span class="token operator">%</span><span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span>li<span class="token operator">&gt;</span>No articles yet<span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token operator">/</span>li<span class="token operator">&gt;</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> endfor <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>ul<span class="token operator">&gt;</span></code></pre></div>
+<h2 id="conclusión">Conclusión</h2>
+
+<p>Como hemos visto, las <em>CBV</em> nos simplifican mucho el trabajo a la hora de
+trabajar con formularios, solo necesitamos conocer las convenciones y los
+métodos requeridos por cada una de ellas. En otros <em>posts</em> veremos como crear
+nuestras propias validaciones, y como personalizar los widgets de los
+formularios.</p>
+
+            </div>
+        </article>
+
+        <hr>
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://tech-blog.rocks/tags/django">django</a></span><span class="tag"><a href="https://tech-blog.rocks/tags/cbv">cbv</a></span><span class="tag"><a href="https://tech-blog.rocks/tags/forms">forms</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2253 Palabras</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-12-22 15:58 -2000</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h">Leer otros posts</span>
+                    <hr>
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://tech-blog.rocks/posts/primeros-pasos-con-el-orm-de-django/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Primeros pasos con el ORM de Django</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://tech-blog.rocks/posts/restframework-sistema-de-permisos/">
+                                <span class="button__text">Django Restframework Sistema De Permisos</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+<iframe id="comments-app-Hn6RXNYh-1" src="./Implementación de Formularios en Django __ Tech Blog Rocks — Código, tecnología y otros bits._files/view.html" width="100%" height="0" frameborder="0" scrolling="no" style="overflow: hidden; border: none; height: 187px;"></iframe><script async="" src="./Implementación de Formularios en Django __ Tech Blog Rocks — Código, tecnología y otros bits._files/widget.js.descarga" data-comments-app-website="Hn6RXNYh" data-limit="5"></script>
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>© 2021</span>
+            
+                <span><a href="https://tech-blog.rocks/">Mauricio Téllez</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://tech-blog.rocks/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io/">Hugo</a></span>
+            <span>Made with ❤ by <a href="https://github.com/rhazdon">Djordje Atlialp</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="./Implementación de Formularios en Django __ Tech Blog Rocks — Código, tecnología y otros bits._files/bundle.min.5c2f64632321fe361557377f6c5eb763531be2d7d69d897575d624ede040820dc17decf1350779061fd11db3ad89467cbddb1.descarga" integrity="sha512-XC9kYyMh/jYVVzd/bF63Y1Mb4tfWnYl1ddYk7eBAgg3BfezxNQd5Bh/RHbOtiUZ8vdsSoH0XFYFmd2HG9c5Uew=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-168102507-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    
+
+</body></html>

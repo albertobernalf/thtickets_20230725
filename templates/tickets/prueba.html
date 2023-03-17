@@ -1,0 +1,25 @@
+{% extends "Tickets/cabeza.html" %}
+{% load static %}
+ {% block title %}Tickets {% endblock %}
+
+{% block content %}
+
+AQUIP DATATABLE
+
+{% endblock %}
+{% block final %}
+ <div class="row">
+    <div class="col-lg-5"></div>
+    <div class="col-lg-3">
+
+        <figure class="figure">
+            <img src="{% static '/img/MEDICALFINAL.JPG' %}" class="figure-img img-fluid rounded"
+                 style="height:30px;"
+                 alt="...">
+            <figcaption class="figure-caption text-right">CLINICA MEDICAL
+            </figcaption>
+        </figure>
+    </div>
+    <div class="col-lg-4"></div>
+</div>
+{% endblock %}

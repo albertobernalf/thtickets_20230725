@@ -1,0 +1,27 @@
+Tareas: thtickets
+
+1. Recuerda 1 mes comenzo en MArzo - 03
+2. Como es la autenticacion, con la cedula ?
+3. Que menus deben existir
+4. Que reportes
+5. que consultas
+6. crear un menu diferente al de ComprasTable
+7. cuales son los tipos de turno
+8. Archivo empleados
+
+
+Proceso.
+A. Un usuario crea un ticket.
+B. Un coordinador consulta y procesa el ticket (Respuesta)
+C. Consultas de tickets, gestion
+D. Reportes de gection tickets
+E. Cabecear malla de turnos
+F. Rutinas : Creacion tiocke usuarios, respuetsa ticket coordinador, rta ticket talento humano, rta ticket dueñp
+F. Crear resumen de cuanto esta cubierto cuianfo nop
+
+
+
+
+
+
+
