@@ -1,0 +1,1117 @@
+﻿(function () {
+    var headerModule = function ($) {
+        var isAuxNavMoved;
+        var userNameText;
+        var userNameWidth;
+        var userNameLength;
+        var ellipsisWidth;
+        var ellipsisEnabled;
+        var lastWindowWidth;
+        var isRTL;
+        var minGap;
+        var $siteLogo;
+        var $userName;
+        var $auxNav;
+        var $signInLinks;
+        var $topRight;
+        var $bottomRight;
+        var $bottomLeft;
+        var $drawer;
+        var $searchBox;
+        var $buttomRow;
+        var $expandTop;
+        var $expandTopLeft;
+        var $expandTopRight;
+        var $viewCreateProfileLink;
+        var $scarabLink;
+        var $mask;
+        var openMenu = true;
+
+        var showMenu = function (show) {
+            $('div#drawer>div.toc').toggleClass('open');
+            if (show) {
+                $mask.show();
+                $mask.height($(document).height());
+            } else {
+                $mask.hide();
+            }
+            openMenu = !show;
+        }
+
+        $(document).ready(function () {
+            var touchScroll = false;
+            var windowWidth = 0;
+            var bodyScrollTop = 0;
+            initVars();
+            addLocale();
+            bindDropdownEventHandlers();
+
+            $('#ux-header').append('<div id="overlayMaskHeader"/>');
+            $(document.body.appendChild($('<div id="overlayMask"/>')[0]));
+            $mask = $('#overlayMaskHeader, #overlayMask');
+            $mask.on("touchstart", function () {
+                bodyScrollTop = $('body')[0].srollTop;
+            });
+            $mask.on("touchmove", function () {
+                // ignore tiny scroll events.
+                if (Math.abs(bodyScrollTop - $('body')[0].srollTop) >= 10)
+                    touchScroll = true;
+            });
+
+            $mask.click(function () {
+                if (!touchScroll)
+                    showMenu(false);
+                touchScroll = false;
+            });
+
+            //click event for grip to open drawer in mobile view
+            $('#ux-header #grip').click(function () {
+                $drawer.show();
+                showMenu(openMenu);
+            });
+
+            $('#ux-header .top').click(function (event) {
+                if (event.target !== $('#ux-header .top')[0] &&
+                    event.target !== $('#ux-header .profileName')[0] &&
+                    event.target !== $('#ux-header .profileImage')[0]) {
+                    return;
+                }
+
+                if ($('#ux-header header .expandTop:visible').length > 0) {
+                    $expandTop.fadeOut(200);
+                } else {
+                    $expandTop.fadeIn(200)
+                }
+            });
+
+            $(document).click(function (e) {
+                if (e.target.id === "HeaderSearchButton") {
+                    return;
+                }
+                clearSearchText();
+                closeSearchBox();
+            });
+
+            $('#searchTextContainer').click(function (e) {
+                e.stopPropagation();
+                return false;
+            });
+
+            $('#FakeHeaderSearchButton').click(function (e) {
+                if ($('#HeaderSearchForm').hasClass("opened")) {
+                    $('#HeaderSearchButton').click();
+                }
+                else {
+                    $("#HeaderSearchForm").addClass("opened");
+                    $("#searchTextContainer").stop(true);
+                    var width = 0;
+                    if (isTabletOrMobile()) {
+                        width = Math.min(255, $('#ux-header').width() - 90);
+                    } else {
+                        width = 255;
+                    }
+
+                    $("#searchTextContainer").css("display", "inline-block");
+                    $("#searchTextContainer").animate({ width: width + "px" }, 200, function () {
+                        // jQuery 1.8.2 $.fn.focus issue:
+                        // When another element is focussed as part of keyboard handling on an 
+                        // element (say A), the order of focus and blur varies vs. pure javascript 
+                        // event order. This is a Regression from v1.6.4.
+                        // http://output.jsbin.com/welcome/45914/
+                        var textBox = $("#HeaderSearchTextBox");
+                        textBox = textBox.length > 0 ? textBox[0] : null;
+                        $("#HeaderSearchTextBox").focus();
+                        if (!!textBox && textBox != document.activeElement) {
+                            textBox.focus();
+                        }
+                    });
+                }
+                e.stopPropagation();
+                return false;
+            });
+
+            $('#searchCloseIconDiv').click(function (e) {
+                clearSearchText();
+                return false;
+            });
+
+            $('#searchCloseIconDiv').on("keydown", function (e) {
+                if (e.keyCode === 13 || e.keyCode === 32) {
+                    clearSearchText();
+                    return false;
+                }
+            });
+
+            $('#HeaderSearchTextBox').on("input propertychange keyup", function () {
+                updateCloseIconStyle();
+            });
+            //window resize event
+            $(window).resize(function () {
+                if (windowWidth != $(window).width()){
+                    resize();
+                    windowWidth = $(window).width();
+                }
+            });
+
+            //set variables on page load.
+            resize();
+            windowWidth = $(window).width();
+        });
+
+        function initVars() {
+            isAuxNavMoved = false;
+            userNameWidth = 0;
+            ellipsisEnabled = false;
+            lastWindowWidth = $(window).width();
+            isRTL = $('#ux-header').hasClass('rtl');
+            minGap = 40;
+            $siteLogo = $('#ux-header header div.topRow div.top div.left');
+            $auxNav = $('#ux-header div.auxNav');
+            $signInLinks = $('#ux-header #signIn');
+            $topRight = $('#ux-header header .top .right');
+            $bottomRight = $('#ux-header header .bottom .right');
+            $bottomLeft = $('#ux-header header .bottom .left');
+            $drawer = $('#ux-header #drawer');
+            $searchBox = $('#ux-header #Fragment_SearchBox');
+            $buttomRow = $('#ux-header header .buttomRow');
+            $expandTop = $('#ux-header header .expandTop');
+            $expandTopLeft = $('#ux-header header .expandTop .left');
+            $expandTopRight = $('#ux-header header .expandTop .right');
+            $viewCreateProfileLink = $('#ux-header header .createViewProfileLink');
+            $scarabLink = $('#ux-header header .scarabLink');
+        }
+
+        function closeSearchBox() {
+            $("#HeaderSearchForm").removeClass("clearable");
+            $("#searchTextContainer").css("display", "none");
+            $("#searchTextContainer").animate({ width: "0" }, 200, function () {
+                $("#HeaderSearchForm").removeClass("opened");
+            });
+
+        }
+
+        function clearSearchText() {
+            $('#HeaderSearchTextBox').val('');
+            $('#HeaderSearchTextBox').focus();
+            updateCloseIconStyle();
+        }
+
+        function getSearchText() {
+            return $.trim($('#HeaderSearchTextBox').val());
+        }
+
+        function updateCloseIconStyle() {
+            if (getSearchText()) {
+                $("#HeaderSearchForm").addClass("clearable");
+            } else {
+                $("#HeaderSearchForm").removeClass("clearable");
+            }
+        }
+        
+        function clearHeight($object) {
+            $object.css('height', '');
+        }
+
+        function bindDropdownEventHandlers() {
+            // L1
+            $('#ux-header .navL1 > li.toggle > a').each(function () {
+                $(this).click(function (e) {
+                    addActiveClassForL1($(this));
+                    e.stopPropagation();
+                });
+            });
+
+            // L2 w/ L3
+            $('#ux-header .navL2 > li.toggle > a').each(function () {
+                // Mobile View
+                $(this).bind('click', function (e) {
+                    addActiveClassForL2($(this));
+                    e.stopPropagation();
+                });
+
+                // Tablet/Desktop View
+                $(this).bind('focus mouseover', function (e) {
+                    if (!isAuxNavMoved) {
+                        addActiveClassForL2($(this), true);
+                        e.stopPropagation();
+                    }
+                });
+            });
+
+            // L2 w/o L3
+            $('#ux-header .navL2 > li:not(.toggle) > a').each(function () {
+                $(this).bind('focus mouseover', function (e) {
+                    if (!isAuxNavMoved) {
+                        closeAllL3(true);
+                        e.stopPropagation();
+                    }
+                });
+            });
+
+            // accessibility fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/448402/
+            $("#ux-header .navL2").each(function () {
+                $(this).find("a:last").keydown(function (e) {
+                    if ((e.which === 38) || (e.shiftKey && e.which === 9)) {
+                        $(this).prev("a").focus();
+                        if (e.preventDefault) {
+                            e.preventDefault();
+                        }
+                    }
+                    if ((!e.shiftKey && e.which === 9) || e.which === 37 || e.which === 39) {
+                        $(this).parents("ul.navL2").find("a:first").focus();
+                        if (e.preventDefault) {
+                            e.preventDefault();
+                        }
+                    }
+                });
+            });
+
+            // Click outside ToC
+            $("html, body").bind('click',
+                function () {
+                    if (!isAuxNavMoved) {
+                        closeNavMenu();
+                    }
+                }
+            );
+
+            $(document).on('keyup', function (event) {
+                switch (event.keyCode) {
+                    // Escape key
+                    case 27:
+                        closeNavMenu();
+                        break;
+                }
+            });
+
+            $('#ux-header').on('keydown', function (event) {
+                switch (event.keyCode) {
+                    // Left arrow key
+                    case 37:
+                        selectLeft(event);
+                        break;
+                    // Up arrow key
+                    case 38:
+                        selectUp(event);
+                        break;
+                    // Right arrow key
+                    case 39:
+                        selectRight(event);
+                        break;
+                    // Down arrow key
+                    case 40:
+                        selectDown(event);
+                        break;
+                }
+            });
+        }
+
+        function selectLeft(event) {
+            var aLink, liElement, ulElement;
+            aLink = $(document.activeElement);
+
+            if (aLink.context && aLink.context.id !== 'HeaderSearchTextBox') {
+                event.preventDefault();
+                liElement = aLink.parent();
+                ulElement = liElement.parent();
+
+                if (ulElement.hasClass('navL1')) {
+                    liElement.prev().length && switchFocus(liElement, liElement.prev());
+                }
+                else if (!ulElement.hasClass('navL2')) {
+                    ulElement.prev('a').focus();
+                    liElement.removeClass('active').addClass('inactive');
+                    updateNavMenuAriaAttributes(ulElement.prev('a'), 'true');
+                    updateNavMenuAriaAttributes(aLink, 'false');
+                }
+            }
+        }
+
+        function selectRight(event) {
+            var aLink, liElement, ulElement;
+            aLink = $(document.activeElement);
+
+            if (aLink.context && aLink.context.id !== 'HeaderSearchTextBox') {
+                event.preventDefault();
+                liElement = aLink.parent();
+                ulElement = liElement.parent();
+                if (ulElement.closest('div').hasClass('megaBladeToc')) {
+                    moveToNavL3FirstItem();
+                }
+                else if (ulElement.hasClass('navL1')) {
+                    liElement.next().length && switchFocus(liElement, liElement.next());
+                }
+                else {
+                    moveToNavL3FirstItem();
+                }
+            }
+        }
+
+        function selectUp(event) {
+            var aLink, liElement, ulElement, prevLiElementSibling;
+            event.preventDefault();
+            aLink = $(document.activeElement);
+            liElement = aLink.parent();
+            prevLiElementSibling = liElement.prev();
+            if (prevLiElementSibling.length) {
+                ulElement = liElement.parent();
+                if (ulElement.hasClass('navL2')) {
+                    closeAllL3();
+                }
+                switchFocus(liElement, prevLiElementSibling);
+            }
+        }
+
+        function selectDown(event) {
+            var aLink, liElement, nextLiElement, subAlink;
+            event.preventDefault();
+            aLink = $(document.activeElement);
+            liElement = aLink.parent();
+            if (liElement.parent().hasClass('navL1')) {
+                nextLiElement = liElement.find('ul>li');
+                if (nextLiElement.length) {
+                    if (isL2Closed(liElement)) {
+                        aLink.click();
+                    }
+                    subAlink = nextLiElement.first().find('a').first();
+                    subAlink.length && subAlink.focus();
+                    nextLiElement.first().removeClass('inactive').addClass('active');
+                }
+                updateNavMenuAriaAttributes(aLink, 'true');
+                subAlink && subAlink.length && updateNavMenuAriaAttributes(subAlink, 'true');
+            }
+            else if (liElement.parent().hasClass('navL2')) {
+                nextLiElement = liElement.next();
+                if (nextLiElement.length) {
+                    subAlink = nextLiElement.find('a').first();
+                    subAlink.focus();
+                    nextLiElement.removeClass('inactive').addClass('active');
+                    updateNavMenuAriaAttributes(subAlink, 'true');
+                }
+            }
+            else {
+                nextLiElement = liElement.next();
+                if (nextLiElement.length) {
+                    switchFocus(liElement, nextLiElement);
+                }
+            }
+        }
+
+        function moveToNavL3FirstItem() {
+            var aLink, navL3UlElement = $("ul.navL3[style*='display: block;']");
+            navL3UlElement && navL3UlElement.length && (aLink = navL3UlElement.find('li>a').first(), aLink.focus(), aLink.parent().removeClass('inactive').addClass('active'));
+            updateNavMenuAriaAttributes(aLink, 'true');
+        }
+
+        function isL2Closed(l1LiElement) {
+            return l1LiElement.find('ul').first().attr('style').indexOf('display: none') !== -1;
+        }
+
+        // switch focus from first element to second element
+        function switchFocus(firstElement, secondElement) {
+            firstElement.removeClass('active').addClass('inactive');
+
+            var firstAlink = firstElement.find('a').first();
+            var secondAlink = secondElement.find('a').first();
+
+            secondAlink.length && secondAlink.focus();
+            if (!firstElement.is(":last-child") || !firstElement.is(firstElement.parents(".navL2").find("li:last"))) {
+                secondElement.removeClass("inactive").addClass("active");
+            }
+            firstAlink.length && updateNavMenuAriaAttributes(firstAlink, 'false');
+            updateNavMenuAriaAttributes(secondAlink, 'true');
+        }
+
+        function closeNavMenu() {
+            closeAllL3();
+            closeAllL2();
+        }
+
+        function addActiveClassForL1($this) {
+            var l2Closed = isL2Closed($this.parent());
+            closeNavMenu();
+            clearHeight($this.next());
+            if (l2Closed) {
+                if (!isAuxNavMoved) {
+                    $this.parent().removeClass('inactive').addClass('active');
+                    $this.next().animate({ height: "toggle" }, 66, 'swing');
+                } else {
+                    $this.next().animate({ height : "toggle" }, 200, 'swing', function() {
+                        $(this).parent().removeClass('inactive').addClass('active');
+                    });
+                }
+                updateNavMenuAriaAttributes($this,'true');
+            }
+        }
+
+        function tuneHeight($object1, $object2) {
+            clearHeight($object1);
+            clearHeight($object2);
+            var minHeight = Math.max($object1.height(), $object2.height());
+            $object1.css('height', minHeight);
+            $object2.css('height', minHeight);
+        }
+
+        function addActiveClassForL2($this, isHover) {
+            var selfActive = $this.parent().hasClass('active');
+            var visibleL3 = closeAllL3(!isHover);
+            if (!isAuxNavMoved) {
+                $this.parent().removeClass('inactive').addClass('active');
+                if (!visibleL3) {
+                    $this.next().animate({ width: "toggle" }, 200, 'swing');
+                } else {
+                    $this.next().css('display', 'block');
+                }
+                tuneHeight($this.next(), $this.parent().parent());
+            } else {
+                clearHeight($this.next());
+                $this.next().animate({ height: "toggle" }, 200, 'swing', function () {
+                    $(this).parent().removeClass('inactive').addClass('active');
+                });
+            }
+
+            updateNavMenuAriaAttributes($this, 'true');
+            if (selfActive) {
+                if (isAuxNavMoved) {
+                    clearHeight($this.next());
+                    closeAllL3();
+                }
+                return;
+            }
+        }
+
+        function closeAllL2() {
+            var $l2 = $('#ux-header .navL1 > li.active');
+            var subSelector = '.navL2';
+            if (!isAuxNavMoved) {
+                $l2.removeClass('active').addClass('inactive');
+                $('#ux-header ' + subSelector).css("display", "none");
+            } else {
+                $l2.find(subSelector).animate({ height: "toggle" }, 200, 'swing', function () {
+                    $(this).parent().removeClass('active').addClass('inactive');
+                });
+            }
+            updateNavMenuAriaAttributes($l2.children('a'), 'false');
+        }
+        
+        function closeAllL3(toggleAnimationEnabled) {
+            var $l3 = $('#ux-header .navL2 > li.active');
+            var subSelector = '.navL3';
+            var $l3Menu = $l3.find(subSelector);
+            var visibleL3 = $l3.length;
+            if (!isAuxNavMoved) {
+                $l3.removeClass('active').addClass('inactive');
+                if (!toggleAnimationEnabled) {
+                    $('#ux-header ' + subSelector).css("display", "none");
+                } else {
+                    $l3Menu.animate({ width: "toggle" }, 200, 'swing', function() {
+                        clearHeight($l3.parent());
+                        clearHeight($l3Menu);
+                    });
+                }
+            } else {
+                $l3Menu.animate({ height: "toggle" }, 200, 'swing', function () {
+                    $(this).parent().removeClass('active').addClass('inactive');
+                });
+            }
+            updateNavMenuAriaAttributes($l3.children('a'), 'false');
+            return $('#ux-header .navL2 > li.active').length;
+        }
+
+        function updateNavMenuAriaAttributes(aLink, expectedValue) {
+            if (!aLink)
+            {
+                return;
+            }
+            var nextLevelNavUl = aLink.next('ul');
+            if (nextLevelNavUl.length) {
+                nextLevelNavUl.attr('style').indexOf('display: none') !== -1 ? updateAttribute(aLink, 'aria-expanded', 'false') : updateAttribute(aLink, 'aria-expanded', 'true');
+            }
+            else {
+                updateTitleAttribute(aLink,expectedValue);
+            }
+        }
+
+        function updateTitleAttribute(element, selectFlag) {
+            var title = element.attr('title');
+            if (title) {
+                var existSelect = title.indexOf('selected');    
+                if (selectFlag === 'true' && existSelect === -1) {
+                    element.attr('title', title.trim() + ' selected');
+                }
+                else if (!(selectFlag === 'true') && existSelect !== -1) {
+                    element.attr('title', title.replace('selected', ''));
+                }
+            }
+        }
+
+        function updateAttribute(element, attr, expectedValue) {
+            element && element.length && element.each(function () {
+                $(this).attr(attr, expectedValue);
+            }); 
+        }
+
+        function addLocale() {
+            //get cannonical link tag
+            var $canonical = $('link[rel="canonical"]');
+            var locale = '';
+            var metaName = 'WT.seg_1';
+            var $localeMeta = $('meta[name="' + metaName + '"]');
+            if (!$localeMeta || $localeMeta.length == 0) {
+                //create meta tag with default content and insert in head.
+                $localeMeta = $('<meta>').attr('name', metaName).attr('content', 'en-us');
+            }
+
+            $('head').prepend($localeMeta);
+
+            //if cannonical exists
+            if ($canonical && $canonical.length > 0) {
+                //split cannonical url on '/'
+                locale = $canonical.attr('href').split('/');
+                //locale should be the 4th element in the url after split.
+                //check to make sure there are at least 4 elements.
+                if (locale.length > 3) {
+                    locale = locale[3];
+                    //if locale is not an empty string, set it as the content of the meta tag.
+                    if (locale != '')
+                        $localeMeta.attr('content', locale);
+                }
+            }
+        }
+
+        function changeToEllipsis(leftPos, rightPos) {
+            if (rightPos - leftPos <= minGap) {
+                $userName.text($userName.text()[0] + $userName.text()[1] + $userName.text()[2] + "...");
+                ellipsisEnabled = true;
+                ellipsisWidth = $userName.width();
+            }
+        }
+
+        function changeBackToUserName(leftPos, rightPos) {
+            if (rightPos - leftPos > userNameWidth - ellipsisWidth + minGap) {
+                $userName.text(userNameText);
+                ellipsisEnabled = false;
+            }
+        }
+
+        function changeUserName() {
+            var currentWindowWidth = $(window).width();
+            if (!isRTL) {
+                if (!ellipsisEnabled && lastWindowWidth >= currentWindowWidth) {
+                    changeToEllipsis($siteLogo.offset().left + $siteLogo.width(), $topRight.offset().left + Number($signInLinks.css("margin-left").replace(/px/ig, "")));
+                } else {
+                    if (ellipsisEnabled) {
+                        changeBackToUserName($siteLogo.offset().left + $siteLogo.width(), $topRight.offset().left + Number($signInLinks.css("margin-left").replace(/px/ig, "")));
+                    }
+                }
+            } else {
+                if (!ellipsisEnabled && lastWindowWidth >= currentWindowWidth) {
+                    changeToEllipsis($topRight.offset().left + $topRight.width() - Number($signInLinks.css("margin-right").replace(/px/ig, "")), $siteLogo.offset().left);
+                } else {
+                    if (ellipsisEnabled) {
+                        changeBackToUserName($topRight.offset().left + $topRight.width() - Number($signInLinks.css("margin-right").replace(/px/ig, "")), $siteLogo.offset().left);
+                    }
+                }
+            }
+            lastWindowWidth = currentWindowWidth;
+        }
+
+        function setUserNameAndWidth() {
+            if (userNameWidth == 0 && !ellipsisEnabled) {
+                userNameText = $userName.text();
+                userNameLength = $userName.text().length;
+                userNameWidth = $userName.width();
+            }
+        }
+
+        function ellipsisFeature() {
+            $userName = $('#ux-header #signIn > span.profileName');
+            if ($userName.length > 0) {
+                if ($userName.text() == '') {
+                    setTimeout(ellipsisFeature, 500);
+                } else {
+                    setUserNameAndWidth();
+                    if (userNameLength > 3) {
+                        changeUserName();
+                    }
+                }
+            }
+        }
+
+        function userNameTransformation() {
+            if (isAuxNavMoved) {
+                ellipsisFeature();
+            } else {
+                $userName = $('#ux-header #signIn > a.createProfileLink');
+                if ($userName.length > 0) {
+                    if (ellipsisEnabled) {
+                        $userName.text(userNameText);
+                        ellipsisEnabled = false;
+                    } else {
+                        setUserNameAndWidth();
+                    }
+                }
+            }
+        }
+
+        function closeExpandTop()
+        {
+            $expandTop.hide();
+        }
+
+        function resize() {
+            if (!openMenu) {
+                showMenu(false);
+            }
+
+            $('#ux-header #SearchFlyoutContainer').hide();
+            closeSearchBox();
+
+            if (isAuxNavMoved != auxNavShouldMove()) {
+                // Close all menus and hide the drawer before switching to mobile view
+                if (!isAuxNavMoved) {
+                    closeAllL3();
+                    closeAllL2();
+                    closeExpandTop();
+                    $drawer.css('display', 'none');
+                    expandTopEnabled = true;
+                    $('header').addClass('mobile');
+                }
+                else {
+                    $drawer.css('display', 'inline-block');
+                    expandTopEnabled = false;
+                    $('header').removeClass('mobile');
+                }
+
+                moveAuxNav(isAuxNavMoved);
+            }
+
+            // MSFT Logo
+            $('#msft-logo').removeClass('msft-logo');
+            $('#msft-logo').parent().removeClass('clip70x15');
+            $('#msft-logo').removeClass('tablet-msft-logo');
+            $('#msft-logo').parent().removeClass('clip88x19');
+            $('#msft-logo').removeClass('mobile-msft-logo');
+            $('#msft-logo').parent().removeClass('clip112x24');
+            // Search finder
+            $('#search-finder').removeClass('search-finder');
+            $('#search-finder').parent().removeClass('clip16x20');
+            $('#search-finder').removeClass('mobile-search-finder');
+            $('#search-finder').parent().removeClass('clip30x36');
+            // Search close icon
+            $('#searchCloseIcon').removeClass('search-clear-x');
+            $('#searchCloseIcon').parent().removeClass('clip16x20');
+            $('#searchCloseIcon').removeClass('mobile-search-clear-x');
+            $('#searchCloseIcon').parent().removeClass('clip30x36');
+
+
+            var deviceType;
+            if (auxNavShouldMove()) {
+                // Tablet
+                $('#msft-logo').addClass('tablet-msft-logo');
+                $('#msft-logo').parent().addClass('clip88x19');
+                $('#search-finder').addClass('search-finder');
+                $('#search-finder').parent().addClass('clip16x20');
+                $('#searchCloseIcon').addClass('search-clear-x');
+                $('#searchCloseIcon').parent().addClass('clip16x20');
+
+                $('#grip').removeClass('mobile-menu-icon');
+                $('#grip').addClass('menu-icon');
+                $('#signIn').attr('tabindex', '0');
+
+                deviceType = 'tablet';
+            } else {
+                $('#msft-logo').addClass('msft-logo');
+                $('#msft-logo').parent().addClass('clip70x15');
+                $('#search-finder').addClass('search-finder');
+                $('#search-finder').parent().addClass('clip16x20');
+                $('#searchCloseIcon').addClass('search-clear-x');
+                $('#searchCloseIcon').parent().addClass('clip16x20');
+
+                deviceType = 'desktop';
+            }
+
+            $('#ux-header').attr('data-device-type', deviceType);
+
+            // Close all menus if resizing while header is in tablet/desktop arrangement
+            if (!isAuxNavMoved) {
+                closeAllL3();
+                closeAllL2();
+                closeExpandTop();
+            }
+
+            userNameTransformation();
+        }
+
+        function moveAuxNav(restoreOriginalPosition) {
+            if (restoreOriginalPosition) {
+                $auxNav.appendTo($topRight);
+                $viewCreateProfileLink.appendTo($signInLinks);
+                $scarabLink.appendTo($signInLinks);
+                $drawer.appendTo($bottomLeft);
+            } else {
+                $auxNav.appendTo($expandTopLeft);
+                $viewCreateProfileLink.appendTo($expandTopRight);
+                $scarabLink.appendTo($expandTopRight);
+                $drawer.appendTo($buttomRow);
+            }
+
+            isAuxNavMoved = !restoreOriginalPosition;
+        }
+
+        // The grip is visible when the viewport width is reduced below 960px
+        function auxNavShouldMove() {
+            return $('#ux-header #grip:visible').length > 0;
+        }
+
+        function isTabletOrMobile() {
+            return $('#ux-header header span#isMobile:visible').length > 0;
+        }
+    };
+
+    if (typeof define === "function" && window.mtpsAmd) {
+        define("header", ["jquery"], function ($) {
+            return headerModule($);
+        });
+    } else {
+        headerModule($);
+    }
+}());
+// SIG // Begin signature block
+// SIG // MIIrSwYJKoZIhvcNAQcCoIIrPDCCKzgCAQExDzANBglg
+// SIG // hkgBZQMEAgEFADB3BgorBgEEAYI3AgEEoGkwZzAyBgor
+// SIG // BgEEAYI3AgEeMCQCAQEEEBDgyQbOONQRoqMAEEvTUJAC
+// SIG // AQACAQACAQACAQACAQAwMTANBglghkgBZQMEAgEFAAQg
+// SIG // kSMzKUYl4WD2Ryd931AEvwxdIgN0nsqRNYdkVDe3uD6g
+// SIG // ghFuMIIIfjCCB2agAwIBAgITNgAAAahTK9ZQq6y5UwAC
+// SIG // AAABqDANBgkqhkiG9w0BAQsFADBBMRMwEQYKCZImiZPy
+// SIG // LGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRUw
+// SIG // EwYDVQQDEwxBTUUgQ1MgQ0EgMDEwHhcNMjIwNjEwMTgy
+// SIG // NzAzWhcNMjMwNjEwMTgyNzAzWjAkMSIwIAYDVQQDExlN
+// SIG // aWNyb3NvZnQgQXp1cmUgQ29kZSBTaWduMIIBIjANBgkq
+// SIG // hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnEdeHxP889b7
+// SIG // mrwL0Z0koWl4LoJ+zeHJ7UDmhaQAxyRIIw9tXSK910U/
+// SIG // pTle2lfbvL9vZR1U8zyRwy6WaVNT/rh+wOm9AKqrsbaB
+// SIG // qlCsTRliD/TIgibyDuKIf/aV+Aok1yvoWVg2eNn/06XE
+// SIG // bXA/k554/MzRFwxHJNnO9dGc8hke+UZxb94AZB6JWfXQ
+// SIG // 3xzYYQtPQmVsTI2iQ/aDYkkS+nIgs/IjbConhB93V4oc
+// SIG // 4rL8r9C5D29kDOZRQ2Y2/1eqXV5wb7QSdahpxk3457cf
+// SIG // caTGsmz6nPQq7DqO9RqDO5dYD22V5bGQkf5wMhC0jlQq
+// SIG // 1qFAhbD3nkXka5eErruzcwIDAQABo4IFijCCBYYwKQYJ
+// SIG // KwYBBAGCNxUKBBwwGjAMBgorBgEEAYI3WwEBMAoGCCsG
+// SIG // AQUFBwMDMD0GCSsGAQQBgjcVBwQwMC4GJisGAQQBgjcV
+// SIG // CIaQ4w2E1bR4hPGLPoWb3RbOnRKBYIPdzWaGlIwyAgFk
+// SIG // AgEMMIICdgYIKwYBBQUHAQEEggJoMIICZDBiBggrBgEF
+// SIG // BQcwAoZWaHR0cDovL2NybC5taWNyb3NvZnQuY29tL3Br
+// SIG // aWluZnJhL0NlcnRzL0JZMlBLSUNTQ0EwMS5BTUUuR0JM
+// SIG // X0FNRSUyMENTJTIwQ0ElMjAwMSgyKS5jcnQwUgYIKwYB
+// SIG // BQUHMAKGRmh0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JZ
+// SIG // MlBLSUNTQ0EwMS5BTUUuR0JMX0FNRSUyMENTJTIwQ0El
+// SIG // MjAwMSgyKS5jcnQwUgYIKwYBBQUHMAKGRmh0dHA6Ly9j
+// SIG // cmwyLmFtZS5nYmwvYWlhL0JZMlBLSUNTQ0EwMS5BTUUu
+// SIG // R0JMX0FNRSUyMENTJTIwQ0ElMjAwMSgyKS5jcnQwUgYI
+// SIG // KwYBBQUHMAKGRmh0dHA6Ly9jcmwzLmFtZS5nYmwvYWlh
+// SIG // L0JZMlBLSUNTQ0EwMS5BTUUuR0JMX0FNRSUyMENTJTIw
+// SIG // Q0ElMjAwMSgyKS5jcnQwUgYIKwYBBQUHMAKGRmh0dHA6
+// SIG // Ly9jcmw0LmFtZS5nYmwvYWlhL0JZMlBLSUNTQ0EwMS5B
+// SIG // TUUuR0JMX0FNRSUyMENTJTIwQ0ElMjAwMSgyKS5jcnQw
+// SIG // ga0GCCsGAQUFBzAChoGgbGRhcDovLy9DTj1BTUUlMjBD
+// SIG // UyUyMENBJTIwMDEsQ049QUlBLENOPVB1YmxpYyUyMEtl
+// SIG // eSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZp
+// SIG // Z3VyYXRpb24sREM9QU1FLERDPUdCTD9jQUNlcnRpZmlj
+// SIG // YXRlP2Jhc2U/b2JqZWN0Q2xhc3M9Y2VydGlmaWNhdGlv
+// SIG // bkF1dGhvcml0eTAdBgNVHQ4EFgQUUchb+1j7hxhVLQdr
+// SIG // TBwsRVxqi/IwDgYDVR0PAQH/BAQDAgeAMEUGA1UdEQQ+
+// SIG // MDykOjA4MR4wHAYDVQQLExVNaWNyb3NvZnQgQ29ycG9y
+// SIG // YXRpb24xFjAUBgNVBAUTDTIzNjE2Nys0NzA4NjAwggHm
+// SIG // BgNVHR8EggHdMIIB2TCCAdWgggHRoIIBzYY/aHR0cDov
+// SIG // L2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9B
+// SIG // TUUlMjBDUyUyMENBJTIwMDEoMikuY3JshjFodHRwOi8v
+// SIG // Y3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBDUyUyMENBJTIw
+// SIG // MDEoMikuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2Ny
+// SIG // bC9BTUUlMjBDUyUyMENBJTIwMDEoMikuY3JshjFodHRw
+// SIG // Oi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBDUyUyMENB
+// SIG // JTIwMDEoMikuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2Js
+// SIG // L2NybC9BTUUlMjBDUyUyMENBJTIwMDEoMikuY3JshoG9
+// SIG // bGRhcDovLy9DTj1BTUUlMjBDUyUyMENBJTIwMDEoMiks
+// SIG // Q049QlkyUEtJQ1NDQTAxLENOPUNEUCxDTj1QdWJsaWMl
+// SIG // MjBLZXklMjBTZXJ2aWNlcyxDTj1TZXJ2aWNlcyxDTj1D
+// SIG // b25maWd1cmF0aW9uLERDPUFNRSxEQz1HQkw/Y2VydGlm
+// SIG // aWNhdGVSZXZvY2F0aW9uTGlzdD9iYXNlP29iamVjdENs
+// SIG // YXNzPWNSTERpc3RyaWJ1dGlvblBvaW50MB8GA1UdIwQY
+// SIG // MBaAFJZRhOBrb3v+2Aarw/KF5imuavnUMB8GA1UdJQQY
+// SIG // MBYGCisGAQQBgjdbAQEGCCsGAQUFBwMDMA0GCSqGSIb3
+// SIG // DQEBCwUAA4IBAQAOoFAbE6qv+1RAKHjMn56sREYNiKvh
+// SIG // i11baGKOgpeVXuKztX5x9fQ2/DpXdUOkVe0w6cVoute2
+// SIG // 4WQACXKU+8ANjEMqaJq5DqsR52Q86V6LvjUQwMSfNgnj
+// SIG // nb+mktUX1s8gNAQ2NUWsqG+Q0cmKbEGNFjnbsFvCKgDH
+// SIG // OFHVJaYb5tNCU0nkWkMn1aA0y78u2wLvaQhSSx3I2A8O
+// SIG // WLXWXahlAhV8ZEF04UatM/QwA5DubCgiUwK/TCXfRohY
+// SIG // IouOD4h4MQ533o0sC3kVzvhSXdk2DXmgyBqzHrP+tJPQ
+// SIG // A8IK5AJweyeJrKpdN39ZxV961rru4GXgQMfZ4L6+5v09
+// SIG // zP/7MIII6DCCBtCgAwIBAgITHwAAAFHqj/accwyoOwAA
+// SIG // AAAAUTANBgkqhkiG9w0BAQsFADA8MRMwEQYKCZImiZPy
+// SIG // LGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRAw
+// SIG // DgYDVQQDEwdhbWVyb290MB4XDTIxMDUyMTE4NDQxNFoX
+// SIG // DTI2MDUyMTE4NTQxNFowQTETMBEGCgmSJomT8ixkARkW
+// SIG // A0dCTDETMBEGCgmSJomT8ixkARkWA0FNRTEVMBMGA1UE
+// SIG // AxMMQU1FIENTIENBIDAxMIIBIjANBgkqhkiG9w0BAQEF
+// SIG // AAOCAQ8AMIIBCgKCAQEAyZpSCX0Bno1W1yqXMhT6BUlJ
+// SIG // ZWpa4p3xFeiTHO4vm2Q6C/azR5xwxnyYHrkSGDtS2P9X
+// SIG // +KDE64V20mmEQkubxnPNeOVnE2RvdPGxgwlq+BhS3ONd
+// SIG // VsQPj79q7XgHM9HhzB9+qk0PC9KN1zm9p/seyiRS6JF1
+// SIG // dbOqRf1pUl7FAVxmgiCFgV8hHIb/rDPXig7FDi3S0yEx
+// SIG // 2CUDVpIq8jEhG8anUFE1WYxM+ni0S5KHwwKPKV4qyGDo
+// SIG // DO+9AmDoma3Chyu5WDlW5cdtqXTWsGPE3umtnX6Amlld
+// SIG // UFLms4OVR4guKf+n5LIBCC6bTiocfXPomqYjYTKx7AGM
+// SIG // faVLaaXmhQIDAQABo4IE3DCCBNgwEgYJKwYBBAGCNxUB
+// SIG // BAUCAwIAAjAjBgkrBgEEAYI3FQIEFgQUEmgkQiFHy9Rr
+// SIG // vjHPIKTACyN/P0cwHQYDVR0OBBYEFJZRhOBrb3v+2Aar
+// SIG // w/KF5imuavnUMIIBBAYDVR0lBIH8MIH5BgcrBgEFAgMF
+// SIG // BggrBgEFBQcDAQYIKwYBBQUHAwIGCisGAQQBgjcUAgEG
+// SIG // CSsGAQQBgjcVBgYKKwYBBAGCNwoDDAYJKwYBBAGCNxUG
+// SIG // BggrBgEFBQcDCQYIKwYBBQUIAgIGCisGAQQBgjdAAQEG
+// SIG // CysGAQQBgjcKAwQBBgorBgEEAYI3CgMEBgkrBgEEAYI3
+// SIG // FQUGCisGAQQBgjcUAgIGCisGAQQBgjcUAgMGCCsGAQUF
+// SIG // BwMDBgorBgEEAYI3WwEBBgorBgEEAYI3WwIBBgorBgEE
+// SIG // AYI3WwMBBgorBgEEAYI3WwUBBgorBgEEAYI3WwQBBgor
+// SIG // BgEEAYI3WwQCMBkGCSsGAQQBgjcUAgQMHgoAUwB1AGIA
+// SIG // QwBBMAsGA1UdDwQEAwIBhjASBgNVHRMBAf8ECDAGAQH/
+// SIG // AgEAMB8GA1UdIwQYMBaAFCleUV5krjS566ycDaeMdQHR
+// SIG // CQsoMIIBaAYDVR0fBIIBXzCCAVswggFXoIIBU6CCAU+G
+// SIG // MWh0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2lpbmZy
+// SIG // YS9jcmwvYW1lcm9vdC5jcmyGI2h0dHA6Ly9jcmwyLmFt
+// SIG // ZS5nYmwvY3JsL2FtZXJvb3QuY3JshiNodHRwOi8vY3Js
+// SIG // My5hbWUuZ2JsL2NybC9hbWVyb290LmNybIYjaHR0cDov
+// SIG // L2NybDEuYW1lLmdibC9jcmwvYW1lcm9vdC5jcmyGgaps
+// SIG // ZGFwOi8vL0NOPWFtZXJvb3QsQ049QU1FUm9vdCxDTj1D
+// SIG // RFAsQ049UHVibGljJTIwS2V5JTIwU2VydmljZXMsQ049
+// SIG // U2VydmljZXMsQ049Q29uZmlndXJhdGlvbixEQz1BTUUs
+// SIG // REM9R0JMP2NlcnRpZmljYXRlUmV2b2NhdGlvbkxpc3Q/
+// SIG // YmFzZT9vYmplY3RDbGFzcz1jUkxEaXN0cmlidXRpb25Q
+// SIG // b2ludDCCAasGCCsGAQUFBwEBBIIBnTCCAZkwRwYIKwYB
+// SIG // BQUHMAKGO2h0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9w
+// SIG // a2lpbmZyYS9jZXJ0cy9BTUVSb290X2FtZXJvb3QuY3J0
+// SIG // MDcGCCsGAQUFBzAChitodHRwOi8vY3JsMi5hbWUuZ2Js
+// SIG // L2FpYS9BTUVSb290X2FtZXJvb3QuY3J0MDcGCCsGAQUF
+// SIG // BzAChitodHRwOi8vY3JsMy5hbWUuZ2JsL2FpYS9BTUVS
+// SIG // b290X2FtZXJvb3QuY3J0MDcGCCsGAQUFBzAChitodHRw
+// SIG // Oi8vY3JsMS5hbWUuZ2JsL2FpYS9BTUVSb290X2FtZXJv
+// SIG // b3QuY3J0MIGiBggrBgEFBQcwAoaBlWxkYXA6Ly8vQ049
+// SIG // YW1lcm9vdCxDTj1BSUEsQ049UHVibGljJTIwS2V5JTIw
+// SIG // U2VydmljZXMsQ049U2VydmljZXMsQ049Q29uZmlndXJh
+// SIG // dGlvbixEQz1BTUUsREM9R0JMP2NBQ2VydGlmaWNhdGU/
+// SIG // YmFzZT9vYmplY3RDbGFzcz1jZXJ0aWZpY2F0aW9uQXV0
+// SIG // aG9yaXR5MA0GCSqGSIb3DQEBCwUAA4ICAQBQECO3Tw/o
+// SIG // 317Rrd7yadqcswPx1LvIYymkaTN6KcmuRt6HKa0Xe73U
+// SIG // x2/AQ30TfgA9GBJngweRykKBusRzyOU17iIubJvy3gA2
+// SIG // 1dwtqtB0DsoEv1U/ptVu2v++doTCJ/i+GbssVXkgaX8H
+// SIG // +6EOGEmT4evp4GbwR4HwWlc+Dvf8HH8PdUA2Z04CvcwI
+// SIG // fckSipbNm84jxJ8XjmTFTWscldL9edj2NsY6iGnyJFIy
+// SIG // ur2PS7VRYyV3p1VAJp91gj1jRQtWEyCB8P5g9nE3z8u0
+// SIG // ANaU/hjwEQCrdGyravWgnf2JtG+bT26YAokbc8m+32zU
+// SIG // tXRO+NK3tAjhOu2FdsG3qNrF4sc7y37R/C+7Pcb/cFfh
+// SIG // ttqsirepZii4xStcjMODYuXzGm3IJs0b0owHG6oKd7ZO
+// SIG // GvHpmmh9K8/DLriD/sq8bURD10qi/wuW8zM7IpLg1vcR
+// SIG // 9dIK2mc0pj44pc6UX0XbttP/VEJgu3lT2eI9VjWtaKjx
+// SIG // 38xE9woSMyekPRtzTwgfuysF9DkJisr+yA4po/FPxpbB
+// SIG // w9c/hBf32DH/GFxteS2pmjgKIbMP8sDukmEq3lVvuWNJ
+// SIG // sybrZwQvQpvaM49fv+JKpLK5YWYEfwksYRR9wU8Hh/ID
+// SIG // 9hRCEkbUoQ2W7mMpsp2Nbp/kcn4ivfolUy3Q9Yf0scsQ
+// SIG // 6WTLYpm+AoCUJTGCGTUwghkxAgEBMFgwQTETMBEGCgmS
+// SIG // JomT8ixkARkWA0dCTDETMBEGCgmSJomT8ixkARkWA0FN
+// SIG // RTEVMBMGA1UEAxMMQU1FIENTIENBIDAxAhM2AAABqFMr
+// SIG // 1lCrrLlTAAIAAAGoMA0GCWCGSAFlAwQCAQUAoIGuMBkG
+// SIG // CSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQB
+// SIG // gjcCAQsxDjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJ
+// SIG // BDEiBCDPEcWmLcqxZAp4+U7J0Wwrlyw5K7jT4RwDJJEh
+// SIG // ptM9/zBCBgorBgEEAYI3AgEMMTQwMqAUgBIATQBpAGMA
+// SIG // cgBvAHMAbwBmAHShGoAYaHR0cDovL3d3dy5taWNyb3Nv
+// SIG // ZnQuY29tMA0GCSqGSIb3DQEBAQUABIIBAEBHLHUBH5lm
+// SIG // KATjLvw6OqU6Cj4L1Uajnjh3HwvobJJpIZbn8UueNiIr
+// SIG // VObHiEH9oYjh7Q5oVJm/7YYzKMkGRPSWlqdGC0OyjZnt
+// SIG // AlIdPkhyIKRZPYqP1g5TaigOmdntkZdZP/moI6VBKsow
+// SIG // kEiIr5a5sodbo3QAi2i6EzQVJEe+F4hgDFsMuiJx2Wdc
+// SIG // T+whHz7RHJUgyaSeeGXWU2H5ZKaFGWYYcAZfSVMA/kQL
+// SIG // Nq1SA29kfpSVDdSLRUyw9UgOFL5XCluOGBOfyrkvsg2N
+// SIG // mn1Wqn0EbndFwZ+zV+YIH0Uhn3F0y2ELT9sk9IzY77KA
+// SIG // G8gEC/NtpyB8oZhKPLxy6lOhghb9MIIW+QYKKwYBBAGC
+// SIG // NwMDATGCFukwghblBgkqhkiG9w0BBwKgghbWMIIW0gIB
+// SIG // AzEPMA0GCWCGSAFlAwQCAQUAMIIBUQYLKoZIhvcNAQkQ
+// SIG // AQSgggFABIIBPDCCATgCAQEGCisGAQQBhFkKAwEwMTAN
+// SIG // BglghkgBZQMEAgEFAAQgL3lCEnIT604WZomTc//y+o8D
+// SIG // X/PXJEdvasmEAP6Z1Y4CBmPuIGx1WhgTMjAyMzAzMDcw
+// SIG // NTQ0MDUuODI3WjAEgAIB9KCB0KSBzTCByjELMAkGA1UE
+// SIG // BhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNV
+// SIG // BAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBD
+// SIG // b3Jwb3JhdGlvbjElMCMGA1UECxMcTWljcm9zb2Z0IEFt
+// SIG // ZXJpY2EgT3BlcmF0aW9uczEmMCQGA1UECxMdVGhhbGVz
+// SIG // IFRTUyBFU046M0JCRC1FMzM4LUU5QTExJTAjBgNVBAMT
+// SIG // HE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2WgghFU
+// SIG // MIIHDDCCBPSgAwIBAgITMwAAAcYwzS7W06HA9AABAAAB
+// SIG // xjANBgkqhkiG9w0BAQsFADB8MQswCQYDVQQGEwJVUzET
+// SIG // MBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVk
+// SIG // bW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0
+// SIG // aW9uMSYwJAYDVQQDEx1NaWNyb3NvZnQgVGltZS1TdGFt
+// SIG // cCBQQ0EgMjAxMDAeFw0yMjExMDQxOTAxMzRaFw0yNDAy
+// SIG // MDIxOTAxMzRaMIHKMQswCQYDVQQGEwJVUzETMBEGA1UE
+// SIG // CBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEe
+// SIG // MBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSUw
+// SIG // IwYDVQQLExxNaWNyb3NvZnQgQW1lcmljYSBPcGVyYXRp
+// SIG // b25zMSYwJAYDVQQLEx1UaGFsZXMgVFNTIEVTTjozQkJE
+// SIG // LUUzMzgtRTlBMTElMCMGA1UEAxMcTWljcm9zb2Z0IFRp
+// SIG // bWUtU3RhbXAgU2VydmljZTCCAiIwDQYJKoZIhvcNAQEB
+// SIG // BQADggIPADCCAgoCggIBAO+9Ijq+r+B5NZt0mY/tQUf4
+// SIG // rqH7/n+nlW+x3NtWMcwM66OBupClxeO2ALBIK1lk9aIL
+// SIG // 6dCK6BZvAnUWU3/w5UNH2zTTvaQgNNSidN8x/NgpZpPc
+// SIG // 3va9YzydWSWjJ7GZgMu1aWPZjal/XYT751tf2cW24h7+
+// SIG // 6sMIMPVNkk+Zn3KT7rbCP0K/4CwumkyN1AmM4lT2f0H2
+// SIG // oPDUISpKR2Ttyq+a/N3Mu48+Dlj8uTNlorVr+WySeawU
+// SIG // 1udfEDxMxcM6vHvD+9tglimSRYzfHrQYLCtOYB3h2jfZ
+// SIG // JpaWCSS/OL/SYml+zRSZDkYQKRBWYlCGmaC8SbeKXAQ8
+// SIG // 3/lg/VAI0SgqwLHif3JM0Lzp/eV+DreGrJzrjYXAnXEF
+// SIG // nK2aMpBZhGqGJK7A+5/+JxRR8CQylGgWGWS8D4+7sePE
+// SIG // tWHvnDHHDMXUUo7qBuK6iaqRHeoM389t/b9+i/i7TpUI
+// SIG // Xy+XJ3JYTUlnZisNUx8npB/ekTbTqSBO3PvU57L9WhPY
+// SIG // aYXoyzicX7F05MsNBSHYpXNAj+881LKmghhdphV0cC+I
+// SIG // 319Ucle0BihHjqbxmakCix1WWyw99s7VvC37/fcUNuHf
+// SIG // 0yMTvS0Xrh7J8KLZ/vAbAq87vv9uLznAPV3KXe5CHluM
+// SIG // 5lMYRbL+Cgn4qjKbWYYTAANEqg7o9t3I9dLJl0Ti1J4V
+// SIG // AgMBAAGjggE2MIIBMjAdBgNVHQ4EFgQUcV/5R4koRAqd
+// SIG // Z9pTGuhtbi7zYJQwHwYDVR0jBBgwFoAUn6cVXQBeYl2D
+// SIG // 9OXSZacbUzUZ6XIwXwYDVR0fBFgwVjBUoFKgUIZOaHR0
+// SIG // cDovL3d3dy5taWNyb3NvZnQuY29tL3BraW9wcy9jcmwv
+// SIG // TWljcm9zb2Z0JTIwVGltZS1TdGFtcCUyMFBDQSUyMDIw
+// SIG // MTAoMSkuY3JsMGwGCCsGAQUFBwEBBGAwXjBcBggrBgEF
+// SIG // BQcwAoZQaHR0cDovL3d3dy5taWNyb3NvZnQuY29tL3Br
+// SIG // aW9wcy9jZXJ0cy9NaWNyb3NvZnQlMjBUaW1lLVN0YW1w
+// SIG // JTIwUENBJTIwMjAxMCgxKS5jcnQwDAYDVR0TAQH/BAIw
+// SIG // ADATBgNVHSUEDDAKBggrBgEFBQcDCDANBgkqhkiG9w0B
+// SIG // AQsFAAOCAgEAC8xe9uI17oA1OPOjzAWEewnOmh69pyQ5
+// SIG // xrJ5KsGWJo0YtvKr+ktS8u+9s8JuQyNfPc4AEPfcYRI1
+// SIG // urmJK1+VK7VbuyVED+mwQQSffHNvBQCDyCt35EDQr9q8
+// SIG // UY30DCUnXMLCXkyuy3dPTrgOYWOD1ggYCaX2O9S3Gl89
+// SIG // xUfADTxV+s3CmG4GDma3oLaQ7m9+DdEIUe8HPxXJlfoO
+// SIG // CNyHUwKDA9v1iOWbHyk8wVJ/1NwKVITcGzpeWEgvn/Ut
+// SIG // S0rW2S8D8zEvnyz1yVEnu0kr7KX0rK/1RHtKEIZmkfub
+// SIG // 3KvuzC8POtVgVYWKSe0weWAUuTkTvV3SG3KWwRcHBz5m
+// SIG // /ImakiKlvSaYBu+vuTUFCz1c2e+c+VtkeWYskJLYh6TM
+// SIG // I19jjtvWfPp08NrTrFQnMMx/S6BC3nb9z43KW8Dsi47Z
+// SIG // tU+Fx2Hd6m3fQ16AYzWJEo3Yt+6TaefLvqyE5bSyjo40
+// SIG // AicI9RaZ7gWPNuQeQtLgvzWBEhCrE4nBI4Uv+LowVy3D
+// SIG // Rg4VQZdrxxOqmP2FuJMtb3Mqb1K7BvNYKb9vvP4oTsIO
+// SIG // MEyzu16opHiIlN2VgFAKDqU5deLXnUKsWx0w73iWEdzl
+// SIG // NMigdscH/OxFggG9AiYpoQ5skGihL0ldHy1vYlciNMGH
+// SIG // BuFdmlTek62eJq/n32qg0A/Rfh6T4T9KZQMwggdxMIIF
+// SIG // WaADAgECAhMzAAAAFcXna54Cm0mZAAAAAAAVMA0GCSqG
+// SIG // SIb3DQEBCwUAMIGIMQswCQYDVQQGEwJVUzETMBEGA1UE
+// SIG // CBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEe
+// SIG // MBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMTIw
+// SIG // MAYDVQQDEylNaWNyb3NvZnQgUm9vdCBDZXJ0aWZpY2F0
+// SIG // ZSBBdXRob3JpdHkgMjAxMDAeFw0yMTA5MzAxODIyMjVa
+// SIG // Fw0zMDA5MzAxODMyMjVaMHwxCzAJBgNVBAYTAlVTMRMw
+// SIG // EQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRt
+// SIG // b25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRp
+// SIG // b24xJjAkBgNVBAMTHU1pY3Jvc29mdCBUaW1lLVN0YW1w
+// SIG // IFBDQSAyMDEwMIICIjANBgkqhkiG9w0BAQEFAAOCAg8A
+// SIG // MIICCgKCAgEA5OGmTOe0ciELeaLL1yR5vQ7VgtP97pwH
+// SIG // B9KpbE51yMo1V/YBf2xK4OK9uT4XYDP/XE/HZveVU3Fa
+// SIG // 4n5KWv64NmeFRiMMtY0Tz3cywBAY6GB9alKDRLemjkZr
+// SIG // BxTzxXb1hlDcwUTIcVxRMTegCjhuje3XD9gmU3w5YQJ6
+// SIG // xKr9cmmvHaus9ja+NSZk2pg7uhp7M62AW36MEBydUv62
+// SIG // 6GIl3GoPz130/o5Tz9bshVZN7928jaTjkY+yOSxRnOlw
+// SIG // aQ3KNi1wjjHINSi947SHJMPgyY9+tVSP3PoFVZhtaDua
+// SIG // Rr3tpK56KTesy+uDRedGbsoy1cCGMFxPLOJiss254o2I
+// SIG // 5JasAUq7vnGpF1tnYN74kpEeHT39IM9zfUGaRnXNxF80
+// SIG // 3RKJ1v2lIH1+/NmeRd+2ci/bfV+AutuqfjbsNkz2K26o
+// SIG // ElHovwUDo9Fzpk03dJQcNIIP8BDyt0cY7afomXw/TNuv
+// SIG // XsLz1dhzPUNOwTM5TI4CvEJoLhDqhFFG4tG9ahhaYQFz
+// SIG // ymeiXtcodgLiMxhy16cg8ML6EgrXY28MyTZki1ugpoMh
+// SIG // XV8wdJGUlNi5UPkLiWHzNgY1GIRH29wb0f2y1BzFa/Zc
+// SIG // UlFdEtsluq9QBXpsxREdcu+N+VLEhReTwDwV2xo3xwgV
+// SIG // GD94q0W29R6HXtqPnhZyacaue7e3PmriLq0CAwEAAaOC
+// SIG // Ad0wggHZMBIGCSsGAQQBgjcVAQQFAgMBAAEwIwYJKwYB
+// SIG // BAGCNxUCBBYEFCqnUv5kxJq+gpE8RjUpzxD/LwTuMB0G
+// SIG // A1UdDgQWBBSfpxVdAF5iXYP05dJlpxtTNRnpcjBcBgNV
+// SIG // HSAEVTBTMFEGDCsGAQQBgjdMg30BATBBMD8GCCsGAQUF
+// SIG // BwIBFjNodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20vcGtp
+// SIG // b3BzL0RvY3MvUmVwb3NpdG9yeS5odG0wEwYDVR0lBAww
+// SIG // CgYIKwYBBQUHAwgwGQYJKwYBBAGCNxQCBAweCgBTAHUA
+// SIG // YgBDAEEwCwYDVR0PBAQDAgGGMA8GA1UdEwEB/wQFMAMB
+// SIG // Af8wHwYDVR0jBBgwFoAU1fZWy4/oolxiaNE9lJBb186a
+// SIG // GMQwVgYDVR0fBE8wTTBLoEmgR4ZFaHR0cDovL2NybC5t
+// SIG // aWNyb3NvZnQuY29tL3BraS9jcmwvcHJvZHVjdHMvTWlj
+// SIG // Um9vQ2VyQXV0XzIwMTAtMDYtMjMuY3JsMFoGCCsGAQUF
+// SIG // BwEBBE4wTDBKBggrBgEFBQcwAoY+aHR0cDovL3d3dy5t
+// SIG // aWNyb3NvZnQuY29tL3BraS9jZXJ0cy9NaWNSb29DZXJB
+// SIG // dXRfMjAxMC0wNi0yMy5jcnQwDQYJKoZIhvcNAQELBQAD
+// SIG // ggIBAJ1VffwqreEsH2cBMSRb4Z5yS/ypb+pcFLY+Tkdk
+// SIG // eLEGk5c9MTO1OdfCcTY/2mRsfNB1OW27DzHkwo/7bNGh
+// SIG // lBgi7ulmZzpTTd2YurYeeNg2LpypglYAA7AFvonoaeC6
+// SIG // Ce5732pvvinLbtg/SHUB2RjebYIM9W0jVOR4U3UkV7nd
+// SIG // n/OOPcbzaN9l9qRWqveVtihVJ9AkvUCgvxm2EhIRXT0n
+// SIG // 4ECWOKz3+SmJw7wXsFSFQrP8DJ6LGYnn8AtqgcKBGUIZ
+// SIG // UnWKNsIdw2FzLixre24/LAl4FOmRsqlb30mjdAy87JGA
+// SIG // 0j3mSj5mO0+7hvoyGtmW9I/2kQH2zsZ0/fZMcm8Qq3Uw
+// SIG // xTSwethQ/gpY3UA8x1RtnWN0SCyxTkctwRQEcb9k+SS+
+// SIG // c23Kjgm9swFXSVRk2XPXfx5bRAGOWhmRaw2fpCjcZxko
+// SIG // JLo4S5pu+yFUa2pFEUep8beuyOiJXk+d0tBMdrVXVAmx
+// SIG // aQFEfnyhYWxz/gq77EFmPWn9y8FBSX5+k77L+DvktxW/
+// SIG // tM4+pTFRhLy/AsGConsXHRWJjXD+57XQKBqJC4822rpM
+// SIG // +Zv/Cuk0+CQ1ZyvgDbjmjJnW4SLq8CdCPSWU5nR0W2rR
+// SIG // nj7tfqAxM328y+l7vzhwRNGQ8cirOoo6CGJ/2XBjU02N
+// SIG // 7oJtpQUQwXEGahC0HVUzWLOhcGbyoYICyzCCAjQCAQEw
+// SIG // gfihgdCkgc0wgcoxCzAJBgNVBAYTAlVTMRMwEQYDVQQI
+// SIG // EwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4w
+// SIG // HAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xJTAj
+// SIG // BgNVBAsTHE1pY3Jvc29mdCBBbWVyaWNhIE9wZXJhdGlv
+// SIG // bnMxJjAkBgNVBAsTHVRoYWxlcyBUU1MgRVNOOjNCQkQt
+// SIG // RTMzOC1FOUExMSUwIwYDVQQDExxNaWNyb3NvZnQgVGlt
+// SIG // ZS1TdGFtcCBTZXJ2aWNloiMKAQEwBwYFKw4DAhoDFQAt
+// SIG // NcrmJiFb7KJEmnCZlnvDLtkBbaCBgzCBgKR+MHwxCzAJ
+// SIG // BgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAw
+// SIG // DgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3Nv
+// SIG // ZnQgQ29ycG9yYXRpb24xJjAkBgNVBAMTHU1pY3Jvc29m
+// SIG // dCBUaW1lLVN0YW1wIFBDQSAyMDEwMA0GCSqGSIb3DQEB
+// SIG // BQUAAgUA57EBaDAiGA8yMDIzMDMwNzA4MTg0OFoYDzIw
+// SIG // MjMwMzA4MDgxODQ4WjB0MDoGCisGAQQBhFkKBAExLDAq
+// SIG // MAoCBQDnsQFoAgEAMAcCAQACAgclMAcCAQACAhJHMAoC
+// SIG // BQDnslLoAgEAMDYGCisGAQQBhFkKBAIxKDAmMAwGCisG
+// SIG // AQQBhFkKAwKgCjAIAgEAAgMHoSChCjAIAgEAAgMBhqAw
+// SIG // DQYJKoZIhvcNAQEFBQADgYEAHSjISoAkp8H9DILf7OKK
+// SIG // xV0ACeCryOf+WAd37q8858fjKhLfMnewZcIBInm4gQl+
+// SIG // TWDD5/lrhG7hW2zHnph9PPezUyk8CazSLiMNqNR4eXSs
+// SIG // wAZpQRBhXGvHhs17EFMX69PReZOhWJ3hqjBa8FkYBwqD
+// SIG // VeCQGXPbYtHWaK0JOLAxggQNMIIECQIBATCBkzB8MQsw
+// SIG // CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQ
+// SIG // MA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9z
+// SIG // b2Z0IENvcnBvcmF0aW9uMSYwJAYDVQQDEx1NaWNyb3Nv
+// SIG // ZnQgVGltZS1TdGFtcCBQQ0EgMjAxMAITMwAAAcYwzS7W
+// SIG // 06HA9AABAAABxjANBglghkgBZQMEAgEFAKCCAUowGgYJ
+// SIG // KoZIhvcNAQkDMQ0GCyqGSIb3DQEJEAEEMC8GCSqGSIb3
+// SIG // DQEJBDEiBCARtydIqYjgpIdtBoejAWJCQNLp23gw8Hp1
+// SIG // 5It14tnKbTCB+gYLKoZIhvcNAQkQAi8xgeowgecwgeQw
+// SIG // gb0EIFYxE1xVyb2YKcYmapPwcA1gOT8cOoXoVC6ZBa/a
+// SIG // 468tMIGYMIGApH4wfDELMAkGA1UEBhMCVVMxEzARBgNV
+// SIG // BAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQx
+// SIG // HjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEm
+// SIG // MCQGA1UEAxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAgUENB
+// SIG // IDIwMTACEzMAAAHGMM0u1tOhwPQAAQAAAcYwIgQge7gU
+// SIG // JF9lbBCOcINJS/MHHblRwj+Ym+rhVxx04ksEamYwDQYJ
+// SIG // KoZIhvcNAQELBQAEggIA1u7xF/SVRwzflcQkBv0EC8wI
+// SIG // XuHgL1XQt1+INNFkWhtNT3WBVDm+vzsWYh1nb1MNSGot
+// SIG // HwYrkJ5Og7coeOfmfRjo5Nz/FtuIHuk2qb7GA7MQlDLe
+// SIG // 4J7pHw9ns30vaVzx5tkmPrSETLqnkiTpxc0eMQKk4ZB7
+// SIG // 5sVL/Qfur3mfzkcwmcNS2d/4/Dpv56e1UldkNK2BHGA3
+// SIG // iiZMKfIOVwqa6PyHHphpBO1Bojv3v59QFGdNWOfxVqvZ
+// SIG // oIudhJ8hMuasswVq0iO7dhYpwNILHxFqGiF3KDE6wBS6
+// SIG // D1bQia8JFWJY1nORrwYuT27Fs2JR3NKTSNcs9ViGxF7+
+// SIG // aDnAcNpj5v1/si1I3OCDWR/9KZFkIWfK8e3nBKNAvABU
+// SIG // yhPJOaQ8jLIzd4AtjYgjoanIejbkKvKGPt9VPhqKh4Oi
+// SIG // 8nKXdlnnwyp87Ue21IcXdGhBlb1MY5o+ZXppQTCzRkgC
+// SIG // f5QMIBW+jofeJMj0xoJ+Fqcg0oPl0QTFQd2QWR8IDElF
+// SIG // Js900eHj8e6UvfyIES3egHMZPvv4HMCEbSvj4AIG+Oqp
+// SIG // vZq6HQvotJHRoYwc0pT/h5vswhk+H4/X3n9Vh6Q7V2tj
+// SIG // 4pHpIAGUNEsuVKw94EEzYz4wKLZTFcivrUARACw7jwzl
+// SIG // sFSUEebJFyBwz42FWhY9SA/kou2V8iORu9yKRoJ/YAU=
+// SIG // End signature block

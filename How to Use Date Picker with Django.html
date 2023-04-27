@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<!-- saved from url=(0097)https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="ir-site-verification-token" value="-233745807">
+<title>How to Use Date Picker with Django</title>
+<meta name="description" content="In this tutorial we are going to explore three date/datetime pickers options that you can easily use in a Django project. We are going to explore how to do i...">
+<link href="./How to Use Date Picker with Django_files/css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="./How to Use Date Picker with Django_files/main.css">
+<link rel="stylesheet" href="./How to Use Date Picker with Django_files/font-awesome.min.css">
+<link rel="canonical" href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html">
+<link rel="alternate" type="application/rss+xml" title="Simple is Better Than Complex" href="https://simpleisbetterthancomplex.com/feed.xml">
+<link rel="icon" type="image/png" href="https://simpleisbetterthancomplex.com/favicon.png">
+<link rel="mask-icon" href="https://simpleisbetterthancomplex.com/safari-pinned-tab.svg" color="#5bbad5">
+<script src="./How to Use Date Picker with Django_files/f.txt"></script><script src="./How to Use Date Picker with Django_files/f(1).txt" id="google_shimpl"></script><script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script><script async="" src="./How to Use Date Picker with Django_files/analytics.js.descarga"></script><script src="./How to Use Date Picker with Django_files/jquery.min.js.descarga"></script>
+<script src="./How to Use Date Picker with Django_files/site.js.descarga"></script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-42049022-10', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script>
+    $(function () {
+      $("#ad").on("click", "#carbonads .carbon-wrap a", function () {
+        var page_id = '/tutorial/2019/01/03/how-to-use-date-picker-with-django.html';
+        ga('send', 'event', 'carbonads', 'click', page_id, {
+          'transport': 'beacon'
+        });
+      });
+    });
+  </script>
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1689711451348257');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" alt="PageView"
+  src="https://www.facebook.com/tr?id=1689711451348257&ev=PageView&noscript=1"
+  /></noscript>
+  <script data-ad-client="ca-pub-5430683801108011" async="" src="./How to Use Date Picker with Django_files/f(2).txt" data-checked-head="true"></script>
+
+
+  <meta property="og:title" content="How to Use Date Picker with Django">
+<meta property="og:url" content="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html">
+<meta property="og:image" content="https://simpleisbetterthancomplex.com/media/2019/01/thumbnail-datepicker.jpg">
+<meta property="og:description" content="In this tutorial we are going to explore three date/datetime pickers options that you can easily use in a Django project. We are going to explore how to do i...">
+<meta property="og:site_name" content="Simple is Better Than Complex">
+<meta property="og:locale" content="en_US">
+
+  <meta property="article:published_time" content="2019-01-03T18:35:00+02:00">
+  <meta property="article:author" content="https://facebook.com/vitorfs">
+
+<meta property="fb:admins" content="100000024295617">
+<meta property="fb:app_id" content="1645747765697865">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="vitorfs">
+<meta name="twitter:creator" content="vitorfs">
+<meta name="twitter:title" content="How to Use Date Picker with Django">
+<meta name="twitter:description" content="In this tutorial we are going to explore three date/datetime pickers options that you can easily use in a Django project. We are going to explore how to do it manually first, then how to set up a c...">
+<meta name="twitter:image" content="https://simpleisbetterthancomplex.com/media/2019/01/thumbnail-datepicker.jpg">
+<meta name="p:domain_verify" content="e262845cb18e4c68b0cff535a0eaea5d">
+  <meta property="og:type" content="article">
+  
+    <meta property="article:tag" content="django">
+  
+    <meta property="article:tag" content="date">
+  
+    <meta property="article:tag" content="datepicker">
+  
+    <meta property="article:tag" content="datetimepicker">
+  
+    <meta property="article:tag" content="bs4">
+  
+    <meta property="article:tag" content="bootstrap4">
+  
+  <style type="text/css">
+    @media (min-width: 750px) {
+      body {
+        /*padding-top:50px!important;*/
+      }
+    }
+  </style>
+  <script src="./How to Use Date Picker with Django_files/monetization.js.descarga"></script>
+<script src="./How to Use Date Picker with Django_files/embed.js.descarga" data-timestamp="1682026896316"></script><script id="_carbonads_projs" type="text/javascript" src="./How to Use Date Picker with Django_files/CKYIEKQM.json"></script><meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><script src="./How to Use Date Picker with Django_files/count-data.js.descarga"></script><link rel="preload" href="./How to Use Date Picker with Django_files/f(3).txt" as="script"><script type="text/javascript" src="./How to Use Date Picker with Django_files/f(3).txt"></script><link rel="preload" href="./How to Use Date Picker with Django_files/f(4).txt" as="script"><script type="text/javascript" src="./How to Use Date Picker with Django_files/f(4).txt"></script><div id="_bsa_srv-CK7I4KJJ_0"></div><style>.osSwitch{position:relative;display:inline-block;width:34px;height:15.3px}.osSwitch input{opacity:0;width:0;height:0}.osSlider{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:34px;background-color:#93a0b5;transition:0.4s}.osSlider:before{position:absolute;content:'';height:13px;width:13px;left:2px;bottom:1px;border-radius:50%;background-color:white;transition:0.4s}input:checked+.sliderGreen{background-color:#04d289}input:checked+.sliderRed{background-color:#ff3b30}input:not(:checked)+.defaultGreen{background-color:#04d289}input:checked+.osSlider:before{transform:translateX(17px)}
+</style><style>
+    @font-face {
+      font-family: 'SegoeUI_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui.woff);
+    }
+
+    @font-face {
+      font-family: 'SegoeUI_bold_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui-bold.woff);
+    }
+</style></head>
+<body>
+  <div id="top" style="visibility: hidden"></div>
+<header class="nav-up">
+  <div class="container">
+    <ul class="menu menu-right">
+      <li class="menu-item">
+        <a href="https://simpleisbetterthancomplex.com/search/">
+          <span class="fa fa-search"></span>
+        </a>
+      </li>
+      <li class="toggle-menu">
+        <a href="javascript:void(0);">
+          <span class="fa fa-bars"></span>
+        </a>
+      </li>
+    </ul>
+    <ul class="menu menu-left">
+      <li class="logo">
+        <a href="https://simpleisbetterthancomplex.com/" style="font-weight: 900">simple<span class="brand">is</span>better<span class="brand">than</span>complex</a>
+      </li>
+      <li class="menu-item">
+        <a href="https://simpleisbetterthancomplex.com/">
+          <span class="fa fa-home" style="margin-right: 3px"></span>
+          Home
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="https://simpleisbetterthancomplex.com/archive/">
+          <span class="fa fa-archive" style="margin-right: 3px"></span>
+          Articles
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="https://simpleisbetterthancomplex.com/videos/">
+          <span class="fa fa-video-camera" style="margin-right: 3px"></span>
+          Videos
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="https://simpleisbetterthancomplex.com/series/">
+          <span class="fa fa-book" style="margin-right: 3px"></span>
+          Series
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="https://simpleisbetterthancomplex.com/snippets/">
+          <span class="fa fa-code" style="margin-right: 3px"></span>
+          Snippets
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="https://simpleisbetterthancomplex.com/sponsor/">
+          <span class="fa fa-bullhorn" style="margin-right: 3px"></span>
+          Sponsor
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="https://simpleisbetterthancomplex.com/feed.xml" target="_blank">
+          <span class="fa fa-rss" style="margin-right: 3px"></span>
+          RSS
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="https://colossus.simpleisbetterthancomplex.com/subscribe/d2320a41-0378-4aa8-8f4e-5bb1ffcd521d/" class="brand" target="_blank">
+          <span class="fa fa-send" style="margin-right: 3px"></span> Subscribe
+        </a>
+      </li>
+      <li class="menu-item hidden-mobile">
+        <a href="https://simpleisbetterthancomplex.com/search/">
+          <span class="fa fa-search"></span> Search
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+  <!--p style="text-align:center;font-size:1.4rem;margin-top:2rem;margin-bottom:2rem;">
+    <span style="background-color:#1eaedb;color:#fff;border-radius:3px;padding:3px 5px;font-size:1.2rem;margin-right:5px;">Sponsored</span>
+    <a href="/sponsor/" rel="noopener nofollow">
+      By You? Learn more about sponsorship of the blog.
+    </a>
+  </p-->
+
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="ten offset-by-one columns content post">
+          <div class="card post-author">
+  <div class="author-picture">
+    <img src="./How to Use Date Picker with Django_files/picture.jpg" alt="Vitor Freitas">
+  </div>
+  <div class="author-info">
+    <p class="name">By <strong>Vitor Freitas</strong></p>
+    <a href="https://www.digitalocean.com/?refcode=074832454ff1&amp;utm_campaign=Referral_Invite&amp;utm_medium=Referral_Program&amp;utm_source=badge" class="powered-by-do">
+      <img src="./How to Use Date Picker with Django_files/Badge 1.svg" alt="DigitalOcean Referral Badge">
+    </a>
+    <p class="bio">
+      I'm a passionate software developer and researcher. I write about Python, Django and Web Development on a weekly basis. <a href="https://simpleisbetterthancomplex.com/about/" rel="author">Read more</a>.
+    </p>
+    <p class="contact">
+      <a href="https://www.youtube.com/VitorFreitas" rel="me noopener" target="_blank" title="YouTube"><i class="fa fa-youtube-play"></i></a>
+      <a href="https://github.com/vitorfs" rel="me noopener" target="_blank" title="GitHub"><i class="fa fa-github"></i></a>
+      <a href="https://twitter.com/vitorfs" rel="me noopener" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a>
+      <a href="https://facebook.com/vitorfs" rel="me noopener" target="_blank" title="Facebook"><i class="fa fa-facebook-official"></i></a>
+      <a href="https://linkedin.com/in/vitorfs" rel="me noopener" target="_blank" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a>
+      <a href="https://instagram.com/vitorfs" rel="me noopener" target="_blank" title="Instagram"><i class="fa fa-instagram"></i></a>
+      <a href="https://simpleisbetterthancomplex.com/contact/" title="Contact"><i class="fa fa-envelope"></i></a>
+    </p>
+  </div>
+  
+  
+  <div class="row">
+    <div class="six columns">
+      <div id="ad">
+        <script async="" type="text/javascript" src="./How to Use Date Picker with Django_files/carbon.js.descarga" id="_carbonads_js"></script><div id="carbonads"><span><span class="carbon-wrap"><a href="https://srv.carbonads.net/ads/click/x/GTND42JYCVYDC27NCWBLYKQNFT7DVKJIFT7IVZ3JCYAD6K77F6YDK23KC67IK5QYCEAIV53UC6BD4KQNCVSIP53MHEYIK53LCT7DV23ECTNCYBZ52K?segment=placement:simpleisbetterthancomplexcom;" class="carbon-img" target="_blank" rel="noopener sponsored"><img src="./How to Use Date Picker with Django_files/1609783170-authentic-260x200-variation-1.jpg" alt="ads via Carbon" border="0" height="100" width="130" style="max-width: 130px;"></a><a href="https://srv.carbonads.net/ads/click/x/GTND42JYCVYDC27NCWBLYKQNFT7DVKJIFT7IVZ3JCYAD6K77F6YDK23KC67IK5QYCEAIV53UC6BD4KQNCVSIP53MHEYIK53LCT7DV23ECTNCYBZ52K?segment=placement:simpleisbetterthancomplexcom;" class="carbon-text" target="_blank" rel="noopener sponsored">Your new development career awaits. Check out the latest listings.</a></span><a href="http://carbonads.net/?utm_source=simpleisbetterthancomplexcom&amp;utm_medium=ad_via_link&amp;utm_campaign=in_unit&amp;utm_term=carbon" class="carbon-poweredby" target="_blank" rel="noopener sponsored">ads via Carbon</a></span></div>
+      </div>
+    </div>
+
+
+    <!--div class="six columns">
+      <div id="ad2">
+        <div id="sponsored">
+          <a href="/sponsor/">
+            <img src="/media/sponsored/ad.png" alt="Advertise Here">
+            <span>Reach 90k+ Django developers every month. Learn more about sponsorship of the blog.</span>
+          </a>
+          <small>
+            <a href="/sponsor/">Sponsored</a>
+          </small>
+        </div>
+
+        <div id="sponsored">
+          <a href="https://click.linksynergy.com/link?id=phY4769lVwA&offerid=507388.567828&type=2&murl=https%3A%2F%2Fwww.udemy.com%2Fcomplete-python-bootcamp%2F" target="_blank" rel="noopener nofollow">
+            <img border="0" src="https://udemy-images.udemy.com/course/480x270/567828_67d0.jpg" alt="Complete Python Bootcamp: Go from zero to hero in Python 3">
+            <span>Complete Python Bootcamp: Go from zero to hero in Python 3</span>
+          </a>
+          <small>
+            <a href="/sponsor/">Sponsored</a>
+          </small>
+          <img border="0" width="1" height="1" src="https://ad.linksynergy.com/fs-bin/show?id=phY4769lVwA&bids=507388.567828&type=2&subid=0" alt="LinkSynergy">
+        </div>
+
+      </div>
+    </div-->
+
+
+  </div>
+  
+</div>
+
+
+          <p style="text-align:center;font-size:1.4rem;margin-bottom:4rem;">
+            <i class="fa fa-youtube-play" style="color:#ff0000!important;"></i> <a href="https://www.youtube.com/VitorFreitas?sub_confirmation=1" target="_blank">Subscribe to our YouTube Channel!</a>
+            <br>
+            <a href="https://youtu.be/Udf4VbtM92Y" target="_blank">[Jul 12, 2021] New Video: How to Use Django Rest Framework Permissions (DRF Tutorial - Part 7)</a>
+          </p>
+
+          <div class="card">
+            
+  <h5 class="post-category">
+    
+      tutorial
+    
+  </h5>
+  <hr class="dashed">
+
+<h3 class="post-title">How to Use Date Picker with Django</h3>
+<ul class="post-meta">
+  <li>
+    <i class="fa fa-calendar"></i> Jan 3, 2019
+  </li>
+  <li>
+    <i class="fa fa-clock-o"></i>
+    13 minutes read
+  </li>
+  <li>
+    <i class="fa fa-comments"></i>
+    <a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#disqus_thread" data-disqus-identifier="/tutorial/2019/01/03/how-to-use-date-picker-with-django">34 comments</a>
+  </li>
+  <li>
+    <i class="fa fa-eye"></i>
+    <span class="ga-page-views" data-ga-identifier="/tutorial/2019/01/03/how-to-use-date-picker-with-django.html">170,400</span> views
+  </li>
+  
+  
+</ul>
+
+  <div class="post-featured-image">
+    <img src="./How to Use Date Picker with Django_files/featured-datepicker.jpg" alt="How to Use Date Picker with Django" class="featured-image">
+    
+      <small>(Picture: <a href="https://www.pexels.com/photo/brown-wooden-block-desk-calendar-displaying-september-13-1425099/" target="_blank">https://www.pexels.com/photo/brown-wooden-block-desk-calendar-displaying-september-13-1425099/</a>)</small>
+    
+  </div>
+
+
+            <article>
+              <p>In this tutorial we are going to explore three date/datetime pickers options that you can easily use in a Django 
+project. We are going to explore how to do it manually first, then how to set up a custom widget and finally how to
+use a third-party Django app with support to datetime pickers.</p>
+
+<ul>
+  <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#introduction">Introduction</a></li>
+  <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#tempus-dominus-bootstrap-4">Tempus Dominus Bootstrap 4</a>
+    <ul>
+      <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#direct-usage">Direct Usage</a></li>
+      <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#custom-widget">Custom Widget</a></li>
+    </ul>
+  </li>
+  <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#xdsoft-datetimepicker">XDSoft DateTimePicker</a>
+    <ul>
+      <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#direct-usage-1">Direct Usage</a></li>
+      <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#custom-widget-1">Custom Widget</a></li>
+    </ul>
+  </li>
+  <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#fengyuan-chens-datepicker">Fengyuan Chen’s Datepicker</a>
+    <ul>
+      <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#direct-usage-2">Direct Usage</a></li>
+      <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#custom-widget-2">Custom Widget</a></li>
+    </ul>
+  </li>
+  <li><a href="https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html#conclusions">Conclusions</a></li>
+</ul>
+
+<hr>
+
+<h4 id="introduction">Introduction</h4>
+
+<p>The implementation of a date picker is mostly done on the front-end.</p>
+
+<p>The key part of the implementation is to assure  Django will receive the date input value in the correct format, and 
+also that Django will be able to reproduce the format when rendering a form with initial data.</p>
+
+<p>We can also use custom widgets to provide a deeper integration between the front-end and back-end and also to promote
+better reuse throughout a project.</p>
+
+<p>In the next sections we are going to explore following date pickers:</p>
+
+<p><strong>Tempus Dominus Bootstrap 4</strong>
+<a href="https://tempusdominus.github.io/bootstrap-4/">Docs <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a>
+<a href="https://github.com/tempusdominus/bootstrap-4">Source <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a></p>
+
+<p><img src="./How to Use Date Picker with Django_files/tempus.png" alt="Tempus Dominus Bootstrap 4" style="margin: 0 0 20px 20px"></p>
+
+<p><strong>XDSoft DateTimePicker</strong>
+<a href="https://xdsoft.net/jqplugins/datetimepicker/">Docs <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a>
+<a href="https://github.com/xdan/datetimepicker">Source <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a></p>
+
+<p><img src="./How to Use Date Picker with Django_files/xdsoft.png" alt="XDSoft DateTimePicker" style="margin: 0 0 20px 20px"></p>
+
+<p><strong>Fengyuan Chen’s Datepicker</strong>
+<a href="https://fengyuanchen.github.io/datepicker/">Docs <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a>
+<a href="https://github.com/fengyuanchen/datepicker">Source <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a></p>
+
+<p><img src="./How to Use Date Picker with Django_files/feng.png" alt="Fengyuan Chen&#39;s Datepicker" style="margin: 0 0 20px 20px"></p>
+
+<hr>
+
+<h4 id="tempus-dominus-bootstrap-4">Tempus Dominus Bootstrap 4</h4>
+
+<p><a href="https://tempusdominus.github.io/bootstrap-4/">Docs <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a>
+<a href="https://github.com/tempusdominus/bootstrap-4">Source <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a></p>
+
+<p>This is a great JavaScript library and it integrate well with Bootstrap 4. The downside is that it requires moment.js
+and sort of need Font-Awesome for the icons.</p>
+
+<p>It only make sense to use this library with you are already using Bootstrap 4 + jQuery, otherwise the list of CSS and JS
+may look a little bit overwhelming.</p>
+
+<p>To install it you can use their <a href="https://tempusdominus.github.io/bootstrap-4/Installing/#cdn">CDN</a> or download the 
+latest release from their <a href="https://github.com/tempusdominus/bootstrap-4/releases">GitHub Releases page</a>.</p>
+
+<p>If you downloaded the code from the releases page, grab the processed code from the <strong>build/</strong> folder.</p>
+
+<p>Below, a static HTML example of the datepicker:</p>
+
+<div class="row code-view">
+    <div class="seven columns">
+
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1, shrink-to-fit=no"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Static Example<span class="nt">&lt;/title&gt;</span>
+
+    <span class="c">&lt;!-- Bootstrap 4 --&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"</span> <span class="na">integrity=</span><span class="s">"sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://code.jquery.com/jquery-3.3.1.slim.min.js"</span> <span class="na">integrity=</span><span class="s">"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"</span> <span class="na">integrity=</span><span class="s">"sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"</span> <span class="na">integrity=</span><span class="s">"sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+    <span class="c">&lt;!-- Font Awesome --&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">integrity=</span><span class="s">"sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;</span>
+
+    <span class="c">&lt;!-- Moment.js --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"</span> <span class="na">integrity=</span><span class="s">"sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA="</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+    <span class="c">&lt;!-- Tempus Dominus Bootstrap 4 --&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css"</span> <span class="na">integrity=</span><span class="s">"sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs="</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"</span> <span class="na">integrity=</span><span class="s">"sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4="</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group date"</span> <span class="na">id=</span><span class="s">"datetimepicker1"</span> <span class="na">data-target-input=</span><span class="s">"nearest"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">class=</span><span class="s">"form-control datetimepicker-input"</span> <span class="na">data-target=</span><span class="s">"#datetimepicker1"</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group-append"</span> <span class="na">data-target=</span><span class="s">"#datetimepicker1"</span> <span class="na">data-toggle=</span><span class="s">"datetimepicker"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group-text"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-calendar"</span><span class="nt">&gt;&lt;/i&gt;&lt;/div&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;script&gt;</span>
+      <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">"#datetimepicker1"</span><span class="p">).</span><span class="nx">datetimepicker</span><span class="p">();</span>
+      <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></figure>
+
+
+  </div>
+  <div class="five columns">
+    <div class="code-preview">
+      <iframe src="./How to Use Date Picker with Django_files/tempus_dominus_static_example.html" title="Tempus Dominus Static Example" style="height: 400px;"></iframe>
+    </div>
+  </div>
+</div>
+
+<h5 id="direct-usage">Direct Usage</h5>
+
+<p>The challenge now is to have this input snippet integrated with a Django form.</p>
+
+<p><strong>forms.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">DateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
+        <span class="n">input_formats</span><span class="o">=</span><span class="p">[</span><span class="s">'</span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">Y </span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M'</span><span class="p">],</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">DateTimeInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">'class'</span><span class="p">:</span> <span class="s">'form-control datetimepicker-input'</span><span class="p">,</span>
+            <span class="s">'data-target'</span><span class="p">:</span> <span class="s">'#datetimepicker1'</span>
+        <span class="p">})</span>
+    <span class="p">)</span></code></pre></figure>
+
+<p><strong>template</strong></p>
+
+<figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group date"</span> <span class="na">id=</span><span class="s">"datetimepicker1"</span> <span class="na">data-target-input=</span><span class="s">"nearest"</span><span class="nt">&gt;</span>
+  <span class="cp">{{</span> <span class="nv">form.date</span> <span class="cp">}}</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group-append"</span> <span class="na">data-target=</span><span class="s">"#datetimepicker1"</span> <span class="na">data-toggle=</span><span class="s">"datetimepicker"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group-text"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-calendar"</span><span class="nt">&gt;&lt;/i&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"#datetimepicker1"</span><span class="p">).</span><span class="nx">datetimepicker</span><span class="p">({</span>
+      <span class="na">format</span><span class="p">:</span> <span class="s1">'DD/MM/YYYY HH:mm'</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>The script tag can be placed anywhere because the snippet <code class="highlighter-rouge">$(function () { ... });</code> will run the datetimepicker 
+initialization when the page is ready. The only requirement is that this script tag is placed <em>after</em> the jQuery script
+tag.</p>
+
+<h5 id="custom-widget">Custom Widget</h5>
+
+<p>You can create the widget in any app you want, here I’m going to consider we have a Django app named <strong>core</strong>.</p>
+
+<p><strong>core/widgets.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">DateTimeInput</span>
+
+<span class="k">class</span> <span class="nc">BootstrapDateTimePickerInput</span><span class="p">(</span><span class="n">DateTimeInput</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">'widgets/bootstrap_datetimepicker.html'</span>
+
+    <span class="k">def</span> <span class="nf">get_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="n">datetimepicker_id</span> <span class="o">=</span> <span class="s">'datetimepicker_{name}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">attrs</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s">'data-target'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'#{id}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">datetimepicker_id</span><span class="p">)</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'form-control datetimepicker-input'</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">'widget'</span><span class="p">][</span><span class="s">'datetimepicker_id'</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetimepicker_id</span>
+        <span class="k">return</span> <span class="n">context</span></code></pre></figure>
+
+<p>In the implementation above we generate a unique ID <code class="highlighter-rouge">datetimepicker_id</code> and also include it in the widget context.</p>
+
+<p>Then the front-end implementation is done inside the widget HTML snippet.</p>
+
+<p><strong>widgets/bootstrap_datetimepicker.html</strong></p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group date"</span> <span class="na">id=</span><span class="s">"{{ widget.datetimepicker_id }}"</span> <span class="na">data-target-input=</span><span class="s">"nearest"</span><span class="nt">&gt;</span>
+  {% include "django/forms/widgets/input.html" %}
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group-append"</span> <span class="na">data-target=</span><span class="s">"#{{ widget.datetimepicker_id }}"</span> <span class="na">data-toggle=</span><span class="s">"datetimepicker"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input-group-text"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-calendar"</span><span class="nt">&gt;&lt;/i&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"#{{ widget.datetimepicker_id }}"</span><span class="p">).</span><span class="nx">datetimepicker</span><span class="p">({</span>
+      <span class="na">format</span><span class="p">:</span> <span class="s1">'DD/MM/YYYY HH:mm'</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>Note how we make use of the built-in <code class="highlighter-rouge">django/forms/widgets/input.html</code> template.</p>
+
+<p>Now the usage:</p>
+
+<p><strong>core/forms.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">.widgets</span> <span class="kn">import</span> <span class="n">BootstrapDateTimePickerInput</span>
+
+<span class="k">class</span> <span class="nc">DateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
+        <span class="n">input_formats</span><span class="o">=</span><span class="p">[</span><span class="s">'</span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">Y </span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M'</span><span class="p">],</span> 
+        <span class="n">widget</span><span class="o">=</span><span class="n">BootstrapDateTimePickerInput</span><span class="p">()</span>
+    <span class="p">)</span></code></pre></figure>
+
+<p>Now simply render the field:</p>
+
+<p><strong>template</strong></p>
+
+<figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="cp">{{</span> <span class="nv">form.date</span> <span class="cp">}}</span></code></pre></figure>
+
+<p>The good thing about having the widget is that your form could have several date fields using the widget and you
+could simply render the whole form like:</p>
+
+<figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+  <span class="cp">{%</span> <span class="nv">csrf_token</span> <span class="cp">%}</span>
+  <span class="cp">{{</span> <span class="nv">form.as_p</span> <span class="cp">}}</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Submit"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span></code></pre></figure>
+
+<hr>
+
+<h4 id="xdsoft-datetimepicker">XDSoft DateTimePicker</h4>
+
+<p><a href="https://xdsoft.net/jqplugins/datetimepicker/">Docs <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a>
+<a href="https://github.com/xdan/datetimepicker">Source <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a></p>
+
+<p>The XDSoft DateTimePicker is a very versatile date picker and doesn’t rely on moment.js or Bootstrap, although it looks
+good in a Bootstrap website.</p>
+
+<p>It is easy to use and it is very straightforward.</p>
+
+<p>You can download the source from <a href="https://github.com/xdan/datetimepicker/releases">GitHub releases page</a>.</p>
+
+<p>Below, a static example so you can see the minimum requirements and how all the pieces come together:</p>
+
+<div class="row code-view">
+    <div class="seven columns">
+
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1, shrink-to-fit=no"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Static Example<span class="nt">&lt;/title&gt;</span>
+
+  <span class="c">&lt;!-- jQuery --&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://code.jquery.com/jquery-3.3.1.slim.min.js"</span> <span class="na">integrity=</span><span class="s">"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+  <span class="c">&lt;!-- XDSoft DateTimePicker --&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"</span> <span class="na">integrity=</span><span class="s">"sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y="</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"</span> <span class="na">integrity=</span><span class="s">"sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk="</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+  <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"datetimepicker"</span> <span class="na">type=</span><span class="s">"text"</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;script&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s2">"#datetimepicker"</span><span class="p">).</span><span class="nx">datetimepicker</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></figure>
+
+
+  </div>
+  <div class="five columns">
+    <div class="code-preview">
+      <iframe src="./How to Use Date Picker with Django_files/xdsoft_static_example.html" title="XDSoft DateTimePicker Static Example" style="height: 300px;"></iframe>
+    </div>
+  </div>
+</div>
+
+<h5 id="direct-usage-1">Direct Usage</h5>
+
+<p>A basic integration with Django would look like this:</p>
+
+<p><strong>forms.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">DateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">input_formats</span><span class="o">=</span><span class="p">[</span><span class="s">'</span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">Y </span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M'</span><span class="p">])</span></code></pre></figure>
+
+<p>Simple form, default widget, nothing special.</p>
+
+<p>Now using it on the template:</p>
+
+<p><strong>template</strong></p>
+
+<figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="cp">{{</span> <span class="nv">form.date</span> <span class="cp">}}</span>
+
+<span class="nt">&lt;script&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"#id_date"</span><span class="p">).</span><span class="nx">datetimepicker</span><span class="p">({</span>
+      <span class="na">format</span><span class="p">:</span> <span class="s1">'d/m/Y H:i'</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>The <code class="highlighter-rouge">id_date</code> is the default ID Django generates for the form fields (<code class="highlighter-rouge">id_</code> + <code class="highlighter-rouge">name</code>).</p>
+
+<h5 id="custom-widget-1">Custom Widget</h5>
+
+<p><strong>core/widgets.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">DateTimeInput</span>
+
+<span class="k">class</span> <span class="nc">XDSoftDateTimePickerInput</span><span class="p">(</span><span class="n">DateTimeInput</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">'widgets/xdsoft_datetimepicker.html'</span></code></pre></figure>
+
+<p><strong>widgets/xdsoft_datetimepicker.html</strong></p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html">{% include "django/forms/widgets/input.html" %}
+
+<span class="nt">&lt;script&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"input[name='{{ widget.name }}']"</span><span class="p">).</span><span class="nx">datetimepicker</span><span class="p">({</span>
+      <span class="na">format</span><span class="p">:</span> <span class="s1">'d/m/Y H:i'</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>To have a more generic implementation, this time we are selecting the field to initialize the component using its name
+instead of its id, should the user change the id prefix.</p>
+
+<p>Now the usage:</p>
+
+<p><strong>core/forms.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">.widgets</span> <span class="kn">import</span> <span class="n">XDSoftDateTimePickerInput</span>
+
+<span class="k">class</span> <span class="nc">DateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
+        <span class="n">input_formats</span><span class="o">=</span><span class="p">[</span><span class="s">'</span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">Y </span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M'</span><span class="p">],</span> 
+        <span class="n">widget</span><span class="o">=</span><span class="n">XDSoftDateTimePickerInput</span><span class="p">()</span>
+    <span class="p">)</span></code></pre></figure>
+
+<p><strong>template</strong></p>
+
+<figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="cp">{{</span> <span class="nv">form.date</span> <span class="cp">}}</span></code></pre></figure>
+
+<hr>
+
+<h4 id="fengyuan-chens-datepicker">Fengyuan Chen’s Datepicker</h4>
+
+<p><a href="https://fengyuanchen.github.io/datepicker/">Docs <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a>
+<a href="https://github.com/fengyuanchen/datepicker">Source <small><i class="fa fa-external-link" aria-hidden="true"></i></small></a></p>
+
+<p>This is a very beautiful and minimalist date picker. Unfortunately there is no time support. But if you only need dates
+this is a great choice.</p>
+
+<p>To install this datepicker you can either use their <a href="https://cdnjs.com/libraries/datepicker">CDN</a> or download the 
+sources from their <a href="https://github.com/fengyuanchen/datepicker/releases">GitHub releases page</a>. Please note that they
+do not provide a compiled/processed JavaScript files. But you can download those to your local machine using the CDN.</p>
+
+<div class="row code-view">
+    <div class="seven columns">
+
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1, shrink-to-fit=no"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Static Example<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;style&gt;body</span> <span class="p">{</span><span class="nl">font-family</span><span class="p">:</span> <span class="n">Arial</span><span class="p">,</span> <span class="nb">sans-serif</span><span class="p">;}</span><span class="nt">&lt;/style&gt;</span>
+  
+  <span class="c">&lt;!-- jQuery --&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://code.jquery.com/jquery-3.3.1.slim.min.js"</span> <span class="na">integrity=</span><span class="s">"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+  <span class="c">&lt;!-- Fengyuan Chen's Datepicker --&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css"</span> <span class="na">integrity=</span><span class="s">"sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE="</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"</span> <span class="na">integrity=</span><span class="s">"sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k="</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+  <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"datepicker"</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;script&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s2">"#datepicker"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></figure>
+
+
+  </div>
+  <div class="five columns">
+    <div class="code-preview">
+      <iframe src="./How to Use Date Picker with Django_files/feng_static_example.html" title="Fengyuan Chen&#39;s Datepicker" style="height: 300px;"></iframe>
+    </div>
+  </div>
+</div>
+
+<h5 id="direct-usage-2">Direct Usage</h5>
+
+<p>A basic integration with Django (note that we are now using <code class="highlighter-rouge">DateField</code> instead of <code class="highlighter-rouge">DateTimeField</code>):</p>
+
+<p><strong>forms.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">DateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">input_formats</span><span class="o">=</span><span class="p">[</span><span class="s">'</span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">Y </span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M'</span><span class="p">])</span></code></pre></figure>
+
+<p><strong>template</strong></p>
+
+<figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="cp">{{</span> <span class="nv">form.date</span> <span class="cp">}}</span>
+
+<span class="nt">&lt;script&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"#id_date"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">({</span>
+      <span class="na">format</span><span class="p">:</span><span class="s1">'dd/mm/yyyy'</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<h5 id="custom-widget-2">Custom Widget</h5>
+
+<p><strong>core/widgets.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">DateInput</span>
+
+<span class="k">class</span> <span class="nc">FengyuanChenDatePickerInput</span><span class="p">(</span><span class="n">DateInput</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">'widgets/fengyuanchen_datepicker.html'</span></code></pre></figure>
+
+<p><strong>widgets/fengyuanchen_datepicker.html</strong></p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html">{% include "django/forms/widgets/input.html" %}
+
+<span class="nt">&lt;script&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"input[name='{{ widget.name }}']"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">({</span>
+      <span class="na">format</span><span class="p">:</span><span class="s1">'dd/mm/yyyy'</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>Usage:</p>
+
+<p><strong>core/forms.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">.widgets</span> <span class="kn">import</span> <span class="n">FengyuanChenDatePickerInput</span>
+
+<span class="k">class</span> <span class="nc">DateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
+        <span class="n">input_formats</span><span class="o">=</span><span class="p">[</span><span class="s">'</span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">Y </span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M'</span><span class="p">],</span> 
+        <span class="n">widget</span><span class="o">=</span><span class="n">FengyuanChenDatePickerInput</span><span class="p">()</span>
+    <span class="p">)</span></code></pre></figure>
+
+<p><strong>template</strong></p>
+
+<figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="cp">{{</span> <span class="nv">form.date</span> <span class="cp">}}</span></code></pre></figure>
+
+<hr>
+
+<h4 id="conclusions">Conclusions</h4>
+
+<p>The implementation is very similar no matter what date/datetime picker you are using. Hopefully this tutorial provided
+some insights on how to integrate this kind of frontend library to a Django project.</p>
+
+<p>As always, the best source of information about each of those libraries are their official documentation.</p>
+
+<p>I also created an example project to show the usage and implementation of the widgets for each of the libraries 
+presented in this tutorial. Grab the source code at <a href="https://github.com/sibtc/django-datetimepicker-example">github.com/sibtc/django-datetimepicker-example</a>.</p>
+
+
+            </article>
+            
+            <hr>
+            <div class="popular-posts related-posts">
+  <h4>Related Posts</h4>
+    <div class="row">
+      <div class="four columns">
+<a href="https://simpleisbetterthancomplex.com/tutorial/2018/11/28/advanced-form-rendering-with-django-crispy-forms.html">
+<img src="./How to Use Date Picker with Django_files/featured-forms.jpg" alt="Advanced Form Rendering with Django Crispy Forms" title="Advanced Form Rendering with Django Crispy Forms">
+Advanced Form Rendering with Django Crispy Forms
+</a>
+</div>
+<div class="four columns">
+<a href="https://simpleisbetterthancomplex.com/tutorial/2018/08/13/how-to-use-bootstrap-4-forms-with-django.html">
+<img src="./How to Use Date Picker with Django_files/featured-crispy.jpg" alt="How to Use Bootstrap 4 Forms With Django" title="How to Use Bootstrap 4 Forms With Django">
+How to Use Bootstrap 4 Forms With Django
+</a>
+</div>
+<div class="four columns">
+<a href="https://simpleisbetterthancomplex.com/references/2016/06/21/date-filter.html">
+<img src="./How to Use Date Picker with Django_files/featured-date.jpg" alt="Date Template Filter" title="Date Template Filter">
+Date Template Filter
+</a>
+</div>
+    </div>
+</div>
+
+
+            <hr class="dashed">
+<div class="row">
+  <div class="six columns post-tags" style="padding-top: 4px">
+    
+      <a href="https://simpleisbetterthancomplex.com/tag/django/"><span class="tag">django</span></a>
+    
+      <a href="https://simpleisbetterthancomplex.com/tag/date/"><span class="tag">date</span></a>
+    
+      <a href="https://simpleisbetterthancomplex.com/tag/datepicker/"><span class="tag">datepicker</span></a>
+    
+      <a href="https://simpleisbetterthancomplex.com/tag/datetimepicker/"><span class="tag">datetimepicker</span></a>
+    
+      <a href="https://simpleisbetterthancomplex.com/tag/bs4/"><span class="tag">bs4</span></a>
+    
+      <a href="https://simpleisbetterthancomplex.com/tag/bootstrap4/"><span class="tag">bootstrap4</span></a>
+    
+  </div>
+  <div class="six columns post-share">
+    <div class="social">
+  Share this post
+  <a href="http://vk.com/share.php?url=https://sibt.co/2QkW62S" rel="nofollow" target="_blank" title="Share on VK">
+    <i class="fa fa-vk"></i>
+  </a>
+  <a href="https://twitter.com/intent/tweet?text=How%20to%20Use%20Date%20Picker%20with%20Django&amp;url=https://sibt.co/2QkW6zU&amp;via=vitorfs&amp;related=vitorfs" rel="nofollow" target="_blank" title="Share on Twitter">
+    <i class="fa fa-twitter"></i>
+  </a>
+  <a href="https://www.facebook.com/sharer/sharer.php?app_id=1645747765697865&amp;u=https://sibt.co/2QkWdvk" rel="nofollow" target="_blank" title="Share on Facebook">
+    <i class="fa fa-facebook"></i>
+  </a>
+  <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://sibt.co/2QkW7Uu&amp;title=How%20to%20Use%20Date%20Picker%20with%20Django&amp;summary=In%20this%20tutorial%20we%20are%20going%20to%20explore%20three%20date/datetime%20pickers%20options%20that%20you%20can%20easily%20use%20in%20a%20Django%20project.%20We%20are%20going%20to%20explore%20how%20to%20do%20it%20manually%20first,%20then%20how%20to%20set%20up%20a%20c...&amp;source=https://simpleisbetterthancomplex.com" rel="nofollow" target="_blank" title="Share on LinkedIn">
+    <i class="fa fa-linkedin"></i>
+  </a>
+</div>
+
+  </div>
+</div>
+
+          </div>
+          <!--div style="text-align:center;margin-bottom:20px">
+
+            <a href="//namecheap.pxf.io/c/477033/408288/5618" target="_blank" rel="noopener nofollow">
+              <img src="//a.impactradius-go.com/display-ad/5618-408288" border="0" alt="Search and buy domains from Namecheap. Lowest prices!" width="728" height="90" style="max-width:100%!important" />
+            </a>
+            <img height="0" width="0" src="//namecheap.pxf.io/i/477033/408288/5618" alt="Impact Radius" style="position:absolute;visibility:hidden;" border="0" />
+
+
+            <a href="https://click.linksynergy.com/fs-bin/click?id=phY4769lVwA&offerid=467035.415&subid=0&type=4" target="_blank" rel="noopener nofollow">
+              <img border="0" alt="Deep Learning Specialization on Coursera" src="https://ad.linksynergy.com/fs-bin/show?id=phY4769lVwA&bids=467035.415&subid=0&type=4&gridnum=16" style="max-width:100%!important">
+            </a>
+
+          </div-->
+
+          <div class="card">
+            
+  <div id="comments">
+    <div id="disqus_thread"><iframe id="dsq-app9131" name="dsq-app9131" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" sandbox="allow-forms allow-popups allow-same-origin allow-scripts" width="100%" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 709px !important;" src="./How to Use Date Picker with Django_files/saved_resource(5).html"></iframe><iframe id="dsq-app9128" name="dsq-app9128" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./How to Use Date Picker with Django_files/saved_resource(6).html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 6318px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe><iframe id="dsq-app9133" name="dsq-app9133" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" sandbox="allow-forms allow-popups allow-same-origin allow-scripts" width="100%" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 284px !important;" src="./How to Use Date Picker with Django_files/saved_resource(7).html"></iframe></div>
+    <script>
+      var disqus_config = function () {
+        this.page.url = 'https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html';
+        this.page.identifier = '/tutorial/2019/01/03/how-to-use-date-picker-with-django';
+      };
+      (function() {
+      var d = document, s = d.createElement('script');
+      s.src = '//simpleisbetterthancomplex.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <script id="dsq-count-scr" src="./How to Use Date Picker with Django_files/count.js.descarga" async=""></script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+
+
+          </div>
+          <div class="card subscribe">
+  <form action="https://colossus.simpleisbetterthancomplex.com/subscribe/d2320a41-0378-4aa8-8f4e-5bb1ffcd521d/" method="post" target="_blank" novalidate="">
+    <h4>
+      <span class="fa fa-send" style="margin-right: 5px"></span> Subscribe to our Mailing List
+    </h4>
+    <h5>Receive updates from the Blog!</h5>
+    <div class="row">
+      <div class="eight columns">
+        <input class="u-full-width" placeholder="Your email address" type="email" name="email">
+      </div>
+      <div class="four columns">
+        <button type="submit" class="u-full-width">Subscribe</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+          <div class="card popular-posts">
+  <h4>Popular Posts</h4>
+  <div class="row">
+    
+      <div class="four columns">
+        <a href="https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html">
+          <img src="./How to Use Date Picker with Django_files/featured-post-image.jpg" alt="How to Extend Django User Model" title="How to Extend Django User Model">
+          How to Extend Django User Model
+        </a>
+      </div>
+    
+      <div class="four columns">
+        <a href="https://simpleisbetterthancomplex.com/tutorial/2016/05/11/how-to-setup-ssl-certificate-on-nginx-for-django-application.html">
+          <img src="./How to Use Date Picker with Django_files/featured-post-image(1).jpg" alt="How to Setup a SSL Certificate on Nginx for a Django Application" title="How to Setup a SSL Certificate on Nginx for a Django Application">
+          How to Setup a SSL Certificate on Nginx for a Django Application
+        </a>
+      </div>
+    
+      <div class="four columns">
+        <a href="https://simpleisbetterthancomplex.com/tutorial/2016/10/14/how-to-deploy-to-digital-ocean.html">
+          <img src="./How to Use Date Picker with Django_files/featured-do.jpg" alt="How to Deploy a Django Application to Digital Ocean" title="How to Deploy a Django Application to Digital Ocean">
+          How to Deploy a Django Application to Digital Ocean
+        </a>
+      </div>
+    
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+  <div class="container">
+    <ul>
+      <li>© 2015-2021 simple complex</li>
+      <li><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">cc by-nc-sa 3.0</a></li>
+      <li>//</li>
+      <li><a href="https://simpleisbetterthancomplex.com/about/" rel="author">about</a></li>
+      <li><a href="https://simpleisbetterthancomplex.com/contact/">contact</a></li>
+      <li><a href="https://simpleisbetterthancomplex.com/faq/">faq</a></li>
+      <li><a href="https://simpleisbetterthancomplex.com/cookies/">cookies</a></li>
+      <li><a href="https://simpleisbetterthancomplex.com/privacy/">privacy policy</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="overlay"></div>
+
+  
+  <script id="ga-page-views" src="./How to Use Date Picker with Django_files/page-views.js.descarga" async=""></script>
+  <script src="https://z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&amp;adInstanceId=1d8c6a0f-2136-49ad-b0b3-0b09662b7e28"></script><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><div id="aswift_0_host" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./How to Use Date Picker with Django_files/ads.html" data-google-container-id="a!1" data-load-complete="true"></iframe></div></ins><iframe style="display: none;" src="./How to Use Date Picker with Django_files/saved_resource(8).html"></iframe>
+
+
+<style>
+.related-posts .row {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.related-posts .four.columns {
+  width: 100%;
+}
+</style>
+
+<script>
+_bsa.init('recommended', 'CK7I4KJJ', 'placement:simpleisbetterthancomplexcom',
+    {
+      target: '.related-posts .columns',
+      template: `
+<div class="four columns">
+<a href="##link##" rel="noopener nofollow">
+<img src="##smallImage##" alt="##title##" title="##title##">[Sponsored] ##title##</a>
+</div>
+      `
+    }
+  );
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": "https://simpleisbetterthancomplex.com/tutorial/2019/01/03/how-to-use-date-picker-with-django.html",
+  "headline": "How to Use Date Picker with Django",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://simpleisbetterthancomplex.com/media/2019/01/featured-datepicker.jpg",
+    "height": 370,
+    "width": 960
+  },
+  "datePublished": "2019-01-03T18:35:00+02:00",
+  "dateModified": "2019-01-03T18:35:00+02:00",
+  "author": {
+    "@type": "Person",
+    "name": "Vitor Freitas"
+  },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Simple is Better Than Complex",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://simpleisbetterthancomplex.com/img/gplus_logo.png",
+      "height": 60,
+      "width": 600
+    }
+  },
+  "description": "In this tutorial we are going to explore three date/datetime pickers options that you can easily use in a Django project. We are going to explore how to do it manually first, then how to set up a c..."
+}
+</script>
+
+
+
+<iframe src="./How to Use Date Picker with Django_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body><iframe id="google_esf" name="google_esf" src="./How to Use Date Picker with Django_files/zrt_lookup.html" style="display: none;"></iframe></html>

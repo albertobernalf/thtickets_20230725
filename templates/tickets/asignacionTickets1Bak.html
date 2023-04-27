@@ -1,0 +1,142 @@
+{%extends 'Tickets/cabeza.html'%}
+{% load static %}
+
+
+{%block content%}
+<script>
+function buscar()
+	{
+	alert("Entre buscar");
+
+
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+
+		var apasar = username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+
+
+
+		 $(location).attr('href',  '/asignacionTickets/' + apasar);
+
+
+
+	}
+
+	function golpe(id)
+	{
+
+
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+
+		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+
+
+
+		 $(location).attr('href',  'update/' + apasar);
+
+
+
+	}
+</script>
+
+
+
+
+
+<div class="center">
+	<h2>Tickets No asignados</h2>
+
+
+	<div class="form-group mx-sm-12 ">
+	<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
+	<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
+	<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
+	<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
+	<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+
+	<input type="text"  id="idTicket" name="idTicket" size="45px" placeholder="Busqueda" values="0">
+		<span size="150px"></span>
+		<input type="button"  id="buttonTicket" name="buttonTicket" value="BUSCAR" onclick="buscar()">
+	</div>
+
+	{% if AsignacionTickets %}
+
+	<ul class="tasks">
+		<div id="noTomar1" class="scrollable2" align="center">
+		<div class="alert alert-success success-msg" style="display:none"></div>
+		<table class="table table-bordered tablaAsignacionTickets">
+			<thead>
+			<tr>
+				<th>id</th>
+				<th>Tipo</th>
+				<th>TipoNom</th>
+				<th>empleado_id</th>
+				<th>empleadoNom</th>
+				<th>fecha</th>
+				<th>desde Ini</th>
+				<th>hasta Ini</th>
+				<th> </th>
+				<th>Editar </th>
+			</tr>
+			</thead>
+
+			<tbody>
+
+			{% for asignacionTickets in AsignacionTickets %}
+			   <a href="#" class="{% if asignacionTickets.completed%}completed{%endif%}"></a>
+				<div class="task-controls">
+					<tr>
+					<td>{{ asignacionTickets.id }} </td>
+						<td>{{ asignacionTickets.tiposTicket_id }} </td>
+							<td>{{asignacionTickets.nombreTipo}} </td>
+					<td>{{ asignacionTickets.empleado_id }} </td>
+						<td>{{asignacionTickets.empleado_id.empleados.nombre}} </td>
+					<td>{{ asignacionTickets.fecha }} </td>
+					<td>{{ asignacionTickets.desdeInicial }} </td>
+					<td>{{ asignacionTickets.hastaInicial }} </td>
+					<td><a href="#"><i class="fa fa-trash"></i></a> </td>
+					<!-- <td><a href="#"><i class="fa fa-pencil"></i></a> </td>  -->
+					<td><a id="golpe" name="golpe" onclick="golpe({{asignacionTickets.id}})"  ><i class="fa fa-pencil"></i></a> </td>
+
+					</tr>
+				</div>
+
+			{% endfor %}
+
+			</tbody>
+		</table>
+		</div>
+
+		{% else %}
+		<p>🎉 Yay, you have no pending tasks!</p>
+	{% endif %}
+	</ul>
+	<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+{%endblock content%}
+{% block final %}
+final
+{% endblock %}

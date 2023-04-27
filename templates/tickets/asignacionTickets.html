@@ -1,0 +1,436 @@
+{% extends "Tickets/cabeza.html" %}
+{% load static %}
+ {% block title %}Tickets {% endblock %}
+
+{% block content %}
+<script>
+    window.onload = function(){
+
+
+    }
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*------------------------------------------
+        --------------------------------------------
+        Post Listing Page
+        --------------------------------------------
+        --------------------------------------------*/
+
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+
+         var data =  {}   ;
+
+         data['username'] = username;
+         data['sedeSeleccionada'] = sedeSeleccionada;
+         data['nombreUsuario'] = nombreUsuario;
+         data['nombreSede'] = nombreSede;
+         data['empleadoId'] = empleadoId;
+         data = JSON.stringify(data);
+
+
+        var table = $('.tablaAsignacionTickets').DataTable({
+         "language": {
+                  "lengthMenu": "Display _MENU_ registros",
+                   "search": "Filtrar registros:",
+                    "paginate": {
+                         "first": "Primera pag",
+                         "previous": "Anterior",
+                         "next": "Siguiente",
+                        }
+                    },
+
+            processing: true,
+            serverSide: false,
+            columnDefs: [
+                {
+                    "render": function ( data, type, row ) {
+                        var btn = '';
+
+                        btn = btn + " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
+                     <!--   btn = btn + " <button class='btn btn-danger deletePost' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>"; -->
+
+                        return btn;
+                    },
+                    "targets": 8
+                }
+            ],
+            ajax: {
+
+                 url:"/load_asignacionTickets/" +  data,
+                 type: "POST",
+
+                dataSrc: ""
+            },
+
+            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
+            columns: [
+                  { data: "fields.id"},
+
+                { data: "fields.nombreTiposTicket"},
+                { data: "fields.fecha"},
+                { data: "fields.empleado"},
+                { data: "fields.sedeInicial_id"},
+                { data: "fields.nombreTiposTurnoInicial"},
+                { data: "fields.desdeInicial"},
+                { data: "fields.hastaInicial"},
+                { data: "fields.textoRespuestaThumano"},
+
+
+            ]
+        });
+
+       /*--------------------------------------------
+        Click to Edit Button
+        --------------------------------------------
+        --------------------------------------------*/
+        $('body').on('click', '.editPost', function () {
+
+          var username = document.getElementById("username").value;
+          var empleadoId = document.getElementById("empleadoId").value;
+
+            var post_id = $(this).data('pk');
+
+            $.get("/creacionTickets/postConsultaTicket" +'/' + post_id + ',' + username + ',' + empleadoId + '/edit/' ,function (data) {
+
+                $('#modelHeading').html("Edit Post");
+                $('#saveBtn').val("edit-post");
+                $('#ajaxModel').modal('show');
+                $('#pk').val(data.pk);
+                $('#nombreTiposTicket').val(data.nombreTiposTicket);
+                $('#empleado').val(data.nombreEmpleado);
+                $('#sedeInicial_id').val(data.nomSedeinicial);
+                $('#nombreTiposTurnoInicial').val(data.nombreTiposTurnoInicial);
+                $('#desdeInicial').val(data.desdeInicial);
+                $('#hastaInicial').val(data.hastaInicial);
+                   $('#sedeReemplazo').val(data.nomSedeReemplazo);
+                      $('#reemplazo').val(data.nombreEmpleadoReemplazo);
+
+                if (data.visibleTicketEmpleado=='S')
+                    {
+
+                    $('#sedeReemplazo').val(data.sedeReemplazo);
+                    $('#reemplazo').val(data.reemplazo);
+                    $('#respuestaEmpleadoCoordinador').val(data.respuestaEmpleadoCoordinador);
+                    $('#textoRespuestaCoordinador').val(data.textoRespuestaCoordinador);
+                    $('#estadoRespuestaCoordinador').val(data.estadoRespuestaCoordinador);
+                    $('#respuestaEmpleadoThumano').val(data.respuestaEmpleadoThumano);
+                    $('#textoRespuestaThumano').val(data.textoRespuestaThumano);
+                    $('#estadoRespuestaThumano').val(data.estadoRespuestaThumano);
+                    }
+            })
+        });
+
+        /*------------------------------------------
+        --------------------------------------------
+        Print Error Msg
+        --------------------------------------------
+        --------------------------------------------*/
+        function printErrorMsg(msg) {
+            $('.error-msg').find('ul').html('');
+            $('.error-msg').css('display','block');
+            $.each( msg, function( key, value ) {
+                $(".error-msg").find("ul").append('<li>'+value+'</li>');
+            });
+        }
+
+
+   });
+</script>
+         <input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
+                    <input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
+                    <input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
+                    <input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
+                    <input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+
+    <div class="col-lg-12">
+   <br>
+
+        <div class="row">
+
+            <div style=" background-color:#7B67FA ">
+                <center>
+                    <H4>
+                    <span style="font-style:font-size:2px">
+                            <b>
+                           <FONT COLOR="white">  TICKETS  </FONT>
+                            </b>
+                    </span>
+                    </H4>
+                </center>
+            </div>
+        </div>
+
+        <br>
+        <!-- INICIO ENCABEZADO PROPUESTO -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body">
+                        {{form.errors}}
+                        <form method="post" id="ticketForm" name="ticketForm" class="form-inline" enctype="multipart/form-data" novalidate>
+
+
+                            <div class="form-group mx-sm-1 ">
+                                <h6>tipo: <span class="text-primary">{{form.tiposTicket}}</span></h6>
+                            </div>
+                            <div class="form-group mx-sm-1 ">
+                                <h6>fecha: <span class="text-primary">{{form.fecha}}</span></h6>
+                            </div>
+                            <div class="form-group mx-sm-1 ">
+                                <h6>cedula: <span hidden="hidden" class="text-primary" >{{form.empleado}}</span></h6>
+                            </div>
+
+
+                            <div class="form-group mx-sm-1 ">
+                                    <h6>SEDE INICIAL: <span class="text-primary">{{form.sedeInicial}}</span></h6>
+                                </div>
+                                <div class="form-group mx-sm-1 ">
+                                    <h6>tipo turno desde: <span class="text-primary">{{form.tiposTurnoInicial}}</span>
+                                    </h6>
+                                </div>
+                                <div class="form-group mx-sm-1 ">
+                                    <h6>Desde Inicial: <span class="text-primary">{{form.desdeInicial}}</span></h6>
+                                </div>
+                                <div class="form-group mx-sm-1 ">
+                                    <h6>Hasta Inicial: <span class="text-primary">{{form.hastaInicial}}</span></h6>
+                                </div>
+
+                             <div class="form-group mx-sm-1 ">
+                                    <h6>Adjunto: <span class="text-primary">{{form.adjunto}}</span></h6>
+                                </div>
+                            <div class="form-group mx-sm-1 ">
+                                    <h6>sedeFinal: <span class="text-primary">{{form.sedeFinal}}</span></h6>
+                                </div>
+                            <div class="form-group mx-sm-1 ">
+                                    <h6>tiposTurnoFinal: <span class="text-primary">{{form.tiposTurnoFinal}}</span></h6>
+                                </div>
+                            <div class="form-group mx-sm-1 ">
+                                    <h6>desdeFinal: <span class="text-primary">{{form.desdeFinal}}</span></h6>
+                                </div>
+                            <div class="form-group mx-sm-1 ">
+                                    <h6>hastaFinal: <span class="text-primary">{{form.hastaFinal}}</span></h6>
+                                </div>
+
+                             <div class="form-group mx-sm-1 ">
+                                    <h6>Sede Reemplazo: <span class="text-primary">{{form.sedeReemplazo}}</span></h6>
+                                </div>
+                             <div class="form-group mx-sm-1 ">
+                                    <h6>Reemplazo: <span class="text-primary">{{form.reemplazo}}</span></h6>
+                                </div>
+
+                             <div class="form-group mx-sm-1 ">
+                                    <h6><span class="text-primary">Suministre campos necesarios de acuerdo a ticket</span></h6>
+                                </div>
+
+                            <div class="form-group mx-sm-1">
+                                <input type="submit" value="Crear Ticket"/>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer"  >
+                    <div class="row"  >
+                        <div class="col-md-12" >
+
+                    </div>
+                        </div>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<br>
+    <!-- INICIO ENCABEZADO PROPUESTO -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card"  >
+                <div class="card-header">
+                    <div class="row">
+                        <div class="row">
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row" >
+                        <div class="col-md-12" >
+                            <div class="alert alert-success success-msg" style="display:none"></div>
+                            <table class="table table-bordered tablaAsignacionTickets"   >
+                                <thead>
+                                <tr>
+                                    <th>id </th>
+                                    <th>tiposTicket</th>
+                                    <th>fecha</th>
+                                    <th>cedula</th>
+                                    <th>sedeInicial</th>
+                                    <th>tiposTurnoInicial</th>
+                                    <th>desdeInicial</th>
+                                    <th>hastaInicial</th>
+                                    <th>Action</th>
+                                  <!--  <th data-visible="true"></th>  -->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- MODAL -->
+
+<div class="modal fade" id="ajaxModel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modelHeading"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger error-msg" style="display:none">
+                    <ul class="mb-0"></ul>
+                </div>
+                <form id="postForm" name="postForm" class="form-horizontal" novalidate>
+
+
+                    <input type="hidden" name="pk" id="pk">
+
+                    <div class="form-group">
+                        <label for="nombreTiposTicket" class="col-sm-2 control-label">Tipo </label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="nombreTiposTicket" name="nombreTiposTicket"
+                                   placeholder="nombreTiposTicket" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+                 <div class="form-group">
+                        <label for="empleado" class="col-sm-2 control-label">Nombre</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="empleado" name="empleado" placeholder="Enter cedula" value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sedeInicial_id" class="col-sm-2 control-label">sedeInicial</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="sedeInicial_id" name="sedeInicial_id" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreTiposTurnoInicial" class="col-sm-2 control-label">TurnoInicial</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="nombreTiposTurnoInicial" name="nombreTiposTurnoInicial" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+
+                           <div class="form-group">
+                        <label for="desdeInicial" class="col-sm-2 control-label">desdeInicial</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="desdeInicial" name="desdeInicial" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+                           <div class="form-group">
+                        <label for="hastaInicial" class="col-sm-2 control-label">hastaInicial</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="hastaInicial" name="hastaInicial" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+                           <div class="form-group">
+                        <label for="sedeReemplazo" class="col-sm-2 control-label">sedeReemplazo</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="sedeReemplazo" name="sedeReemplazo" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+                              <div class="form-group">
+                        <label for="reemplazo" class="col-sm-2 control-label">EmpleadoReemplazo</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="reemplazo" name="reemplazo" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+                                 <div class="form-group">
+                        <label for="respuestaEmpleadoCoordinador" class="col-sm-2 control-label">respuestaEmpleadoCoordinador</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="respuestaEmpleadoCoordinador" name="respuestaEmpleadoCoordinador" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+                                      <div class="form-group">
+                        <label for="textoRespuestaCoordinador" class="col-sm-2 control-label">textoRespuestaCoordinador</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="textoRespuestaCoordinador" name="textoRespuestaCoordinador" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+                                             <div class="form-group">
+                        <label for="estadoRespuestaCoordinador" class="col-sm-2 control-label">estadoRespuestaCoordinador</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="estadoRespuestaCoordinador" name="estadoRespuestaCoordinador" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+                                                     <div class="form-group">
+                        <label for="respuestaEmpleadoThumano" class="col-sm-2 control-label">estadoRespuestaCoordinador</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="respuestaEmpleadoThumano" name="respuestaEmpleadoThumano" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+                                                             <div class="form-group">
+                        <label for="textoRespuestaThumano" class="col-sm-2 control-label">textoRespuestaThumano</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="textoRespuestaThumano" name="textoRespuestaThumano" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+                                                                 <div class="form-group">
+                        <label for="estadoRespuestaThumano" class="col-sm-2 control-label">estadoRespuestaThumano</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="estadoRespuestaThumano" name="estadoRespuestaThumano" placeholder=""
+                                   value="" maxlength="150" readonly>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-offset-2 col-sm-10 mt-2">
+                        <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Ok
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- FIN  MODAL -->
+
+{% endblock %}
+{% block final %}
+
+{% endblock %}

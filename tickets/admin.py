@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 
-from tickets.models import Sedes, TiposEmpresa, TiposTicket, Areas, Ubicaciones, Cargos, TiposTurno, TiposEmpleadosPerfil, Empleados, Tickets, MallaTurnos
+from tickets.models import Sedes, TiposEmpresa, TiposTicket, Areas, Ubicaciones, Cargos, TiposTurno, TiposEmpleadosPerfil, Empleados, Tickets, MallaTurnos, TicketsMalla
 
 
 @admin.register(Sedes)
@@ -42,7 +42,7 @@ class tiposTicketAdmin(admin.ModelAdmin):
 class areasAdmin(admin.ModelAdmin):
 
     list_display = ("id","sedes", "nombre","estadoReg")
-    search_fields = ("id","sedes", "nombre","estadoReg")
+    search_fields = ("id","sedes_id__nom_sede", "nombre","estadoReg")
     # Filtrar
     list_filter = ("id","sedes", "nombre","estadoReg")
 
@@ -50,7 +50,7 @@ class areasAdmin(admin.ModelAdmin):
 @admin.register(Ubicaciones)
 class ubicacionesAdmin(admin.ModelAdmin):
     list_display = ("id","sedes", "nombre", "estadoReg")
-    search_fields = ("id", "sedes","nombre", "estadoReg")
+    search_fields = ("id", "sedes_id__nom_sede","nombre", "estadoReg")
     # Filtrar
     list_filter = ("id","sedes", "nombre", "estadoReg")
 
@@ -64,10 +64,10 @@ class cargosAdmin(admin.ModelAdmin):
 
 @admin.register(TiposTurno)
 class tiposTurnoAdmin(admin.ModelAdmin):
-    list_display = ("id", "nombre", "desde", "hasta", "estadoReg")
-    search_fields = ("id", "nombre", "desde", "hasta", "estadoReg")
+    list_display = ("id", "nombre","abrev", "desde", "hasta", "estadoReg")
+    search_fields = ("id", "nombre", "abrev", "desde", "hasta", "estadoReg")
     # Filtrar
-    list_filter = ("id", "nombre", "desde", "hasta", "estadoReg")
+    list_filter = ("id", "nombre", "abrev","desde", "hasta", "estadoReg")
 
 @admin.register(TiposEmpleadosPerfil)
 class tiposEmpleadosPerfilAdmin(admin.ModelAdmin):
@@ -80,7 +80,7 @@ class tiposEmpleadosPerfilAdmin(admin.ModelAdmin):
 @admin.register(Empleados)
 class empleadosAdmin(admin.ModelAdmin):
     list_display = ("id", "tiposEmpleadoPerfil", "cedula","nombre","salario","fechaIngreso","fechaRetiro","empresa","sede", "area")
-    search_fields = ("id", "tiposEmpleadoPerfil", "cedula","nombre","salario","fechaIngreso","fechaRetiro","empresa","sede", "area")
+    search_fields = ("id", "tiposEmpleadoPerfil_id__nombre", "cedula","nombre","salario","fechaIngreso","fechaRetiro","empresa_id__nombre","sede_id__nom_sede", "area_id__nombre")
     # Filtrar
     list_filter =  ("id", "tiposEmpleadoPerfil", "cedula","nombre","salario","fechaIngreso","fechaRetiro","empresa","sede", "area")
 
@@ -88,17 +88,23 @@ class empleadosAdmin(admin.ModelAdmin):
 @admin.register(Tickets)
 class ticketsAdmin(admin.ModelAdmin):
 
-    list_display = ("id", "tiposTicket",  "sedeInicial", "tiposTurnoInicial", "desdeInicial","hastaInicial","sedeFinal","tiposTurnoFinal","desdeFinal","hastaFinal")
-    search_fields = ("id", "tiposTicket", "sedeInicial", "tiposTurnoInicial", "desdeInicial","hastaInicial","sedeFinal","tiposTurnoFinal","desdeFinal","hastaFinal")
+    list_display = ("id", "tiposTicket",  "sedeInicial", "tiposTurnoInicial", "desdeInicial","hastaInicial","sedeFinal","tiposTurnoFinal","desdeFinal","hastaFinal","visibleTicketEmpleado")
+    search_fields = ("id", "tiposTicket_id__nombre", "sedeInicial_id__nom_sede", "tiposTurnoInicial_id__nombre", "desdeInicial","hastaInicial","sedeFinal_id__nom_sede","tiposTurnoFinal_id__nombre","desdeFinal","hastaFinal","visibleTicketEmpleado")
     # Filtrar
-    list_filter =  ("id", "tiposTicket",  "sedeInicial", "tiposTurnoInicial", "desdeInicial","hastaInicial","sedeFinal","tiposTurnoFinal","desdeFinal","hastaFinal")
-
+    list_filter =  ("id", "tiposTicket",  "sedeInicial", "tiposTurnoInicial", "desdeInicial","hastaInicial","sedeFinal","tiposTurnoFinal","desdeFinal","hastaFinal","visibleTicketEmpleado")
 
 
 @admin.register(MallaTurnos)
 class mallaTurnosAdmin(admin.ModelAdmin):
-    list_display = ("id", "empleado", "año","mes","dia1","dia2","dia3","dia4","dia5","dia6","dia7","dia8","dia9","dia10")
-    search_fields = ("id", "empleado", "año","mes","dia1","dia2","dia3","dia4","dia5","dia6","dia7","dia8","dia9","dia10")
+    list_display = ("id", "empleado", "ano","mes","dia1","dia2","dia3","dia4","dia5","dia6","dia7","dia8","dia9","dia10","estadoReg")
+    search_fields = ("id", "empleado_id__nombre", "ano","mes","dia1_id__nombre","dia2_id__nombre","dia3_id__nombre","dia4_id__nombre","dia5_id__nombre","dia6_id__nombre","dia7_id__nombre","dia8_id__nombre","dia9_id__nombre","dia10_id__nombre","estadoReg")
     # Filtrar
-    list_filter = ("id", "empleado", "año","mes","dia1","dia2","dia3","dia4","dia5","dia6","dia7","dia8","dia9","dia10")
+    list_filter = ("id", "empleado", "ano","mes","dia1","dia2","dia3","dia4","dia5","dia6","dia7","dia8","dia9","dia10","estadoReg")
 
+
+@admin.register(TicketsMalla)
+class ticketsMallaAdmin(admin.ModelAdmin):
+    list_display =  ("id", "fecha", "empleado","ticket","mallaTurnos")
+    search_fields = ("id", "fecha", "empleado_id__nombre")
+    # Filtrar
+    list_filter =   ("id", "fecha", "empleado_id__nombre","mallaTurnos")

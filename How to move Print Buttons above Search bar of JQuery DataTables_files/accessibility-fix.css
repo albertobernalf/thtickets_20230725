@@ -1,0 +1,492 @@
+﻿/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85202/  override widgets css style */
+.unified-baseball-card .baseball-card-custom-link, .unified-baseball-card
+.baseball-card-user-activity
+, .unified-baseball-card-compact-hover .baseball-card-custom-link, .unified-baseball-card-compact-hover
+.baseball-card-user-activity
+, .unified-baseball-card-compact .baseball-card-custom-link, .unified-baseball-card-compact
+.baseball-card-user-activity {
+    color: #0080A9 !important;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85271/  override SocilaFramework css style */
+#allCategoryPopupContainer li.categoryArea a.categoryHeaderText {
+    color: #767676 !important;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85242/  override widgets css style */
+.unified-baseball-card .baseball-card-header a#baseball-card-userimage:focus{
+  border:1px #bbb dotted !important;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86263/ */
+@media screen and (-ms-high-contrast: active)
+{
+  #categoryFilterSection #categoryFilter #allCategoryPopupContainer #forumDetailsContainer a#submitAllCategories:focus {
+    border:1px dotted;
+  }
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86266/ */
+@media screen and (-ms-high-contrast: active)
+{
+  #quickActions .section #askaquestion a.btn.askQuestionLink:focus {
+    border:1px dotted;
+  }
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85261 */
+a.rssLink:focus{
+    border: 1px dotted;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85277 */
+.threadsnippet .arrowoutercontainer .arrowcontainer a.arrowdown.visible:focus{
+    border:1px dotted;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85827 */
+#messageAlert {
+    display:none;
+    width:0px;
+    height:0px;
+    font-size:0px !important;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86193 */
+.noAnnouncementsText, .seeAnnouncementsLink {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    padding-left: 0.4em;
+    display: block;
+}
+
+.IE7 #MainContent #msdn-technet-en-home a.seeAnnouncementsLink,
+.IE7 #MainContent #msdn-technet-en-thread a.seeAnnouncementsLink,
+.IE7 #MainContent #msdn-technet-en-thread span.noAnnouncementsText {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#MainContent #msdn-technet-en-home a.seeAnnouncementsLink, 
+#MainContent #msdn-technet-en-thread a.seeAnnouncementsLink, 
+#MainContent #msdn-technet-en-thread span.noAnnouncementsText {
+    color: #000;
+    text-decoration: none;
+    font-weight: normal;
+    display: block;
+}
+
+.announcementsContainer {
+    background-color: #ececec;
+    border: 1px solid transparent;
+}
+
+#searchActions .seeAnnouncementsLinkBox {
+    font-weight: bold;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85207 */
+.unified-baseball-card .baseball-card-header a.baseball-card-userimage:focus{
+    border:1px #bbb dotted !important;
+}
+
+.unified-baseball-card-compact-hover
+.baseball-card-compact-header
+a.baseball-card-userimage
+, .unified-baseball-card-compact
+.baseball-card-compact-header
+a.baseball-card-userimage {
+    display: inline-block;
+    float: left;
+}
+
+.unified-baseball-card
+.baseball-card-header
+a.baseball-card-userimage {
+    display: inline-block;
+    float: left;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86259/ */
+@media screen and (-ms-high-contrast:active) {
+    img.icon.question, img.icon.unanswered, img.icon.discussion, img.icon.reply, img.icon.unansweredlocked,
+    img.icon.unansweredprivate, img.icon.discussionlocked, img.icon.discussionprivate, img.icon.questionlocked,
+    img.icon.questionprivate, img.icon.deleted, img.icon.alert, img.icon.alert-small {
+        background-color:#b5b5b5 !important;
+    }
+    img.icon.proposed, img.icon.answered, img.icon.answer, img.icon.answeredlocked, img.icon.answeredprivate, 
+    img.icon.proposedprivate, img.icon.proposedlocked, img.icon.sticky {
+        background-color:#007acc !important;
+    }
+    img.icon.abusive {
+        background-color:#ba121a !important;
+    }
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86192 */
+.searchbar #categorysearchbox {
+    background-color: transparent;
+    height: 18px;
+    font-family: 'Segoe UI' ,Tahoma;
+    border: 0;
+    margin: 0;
+    vertical-align: middle;
+    width: 100%;
+    outline: none;
+}
+
+/*fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/183253*/
+#forumsSelectedAlert {
+    height: 0;
+    display: none;
+}
+
+/*fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/183404 */
+.usabilla_live_button_container:focus {
+    border: 1px #9DBFF6 solid;
+}
+
+/* fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/182518 */
+#ux-header header div.top .left a#SkipNavigation {
+    margin: 0 18px 0 18px;
+    line-height: 37px;
+    font-size: 16px;
+    color: #a0a0a0;
+    display:none;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/182705 */
+#homePageContentContainer .details .breadcrumb a, #homePageContentContainer .details .metrics.smallgreytext a {
+    font-style: italic;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/183292 */
+#tagFilter #tagSearch #inputTagSearch, #searchActionsContainer #searchActions #threadsearchbarContainer {
+    border: 1px solid #7d7d7d;
+}
+
+.searchboxinnercontainer #searchimage {
+    background: url('../images/homesearch_dark.png') no-repeat;
+}
+
+.status.deleted, .status.discussion, .status.discussionlocked, .status.discussionprivate, div.replies div.messageIcon.status, div.messageIcon.reply.status, div#msdn-technet-en-thread div.threadIcon.locked, div#msdn-technet-en-thread div.threadIcon, .Forums div.messageIcon.question.root, .status.unanswered, .status.unansweredlocked, .status.private, .status.unansweredprivate {
+    background-color: #949494;
+}
+
+/* fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/183767/ */
+#allCategoryPopupText {
+    display: none;
+    height: 0;
+    font-size: 0;
+}
+
+.alertText {
+    height: 0;
+    font-size: 0;
+}
+
+@media (max-width: 1000px) {
+    div#ux-header {
+        min-width: 0;
+        width: 100%;
+    }
+
+    div#ux-header header div.row, #ux-banner div.banner div.row, #ux-header header .tocLevel2 ul {
+        min-width: 0;
+        width: 100%;
+    }
+
+    div#ux-footer, div#footerSock div#footerSockInner, div#ux-footer footer {
+        min-width: 0;
+    }
+
+
+    div#BodyBackground div#JelloSizer{
+        width: 90% !important;
+    }
+
+    #JelloExpander {
+        min-width: 0 !important;
+    }
+
+    div#msdn-technet-en-home div#homePageSidebarContainer, div#msdn-technet-en-thread div#threadPageSidebarContainer, div#threadPageActionsContainer .quickActions {
+        width: 23% !important;
+        min-width: 0 !important;
+    }
+
+    #quickActions {
+         width: 23%;
+    }
+
+    #homePageContentContainer, .Forums div#homePageContentContainer, .Forums div#msdn-technet-en-thread div#threadPageContentContainer {
+        width: 75% !important;
+    }
+
+    #threadsearchbarContainer {
+        width: 70% !important;
+    }
+
+    #tagSearch {
+        width: 96% !important;
+    }
+
+    #homePageSidebarContainer div#sidebar, #threadPageSidebarContainer div#sidebar {
+        width: 100% !important;
+    }
+
+    #msdn-technet-en-home .tagcontainer {
+        width: 98%;
+    }
+
+    #msdn-technet-en-home .tags .forumtag {
+        width: 76%;
+    }
+
+    .migrateAnnouncement .announcementContainer {
+        width: 90%;
+        min-width: 0;
+    }
+
+    .migrateAnnouncement .announcementContent {
+        width: 80%;
+    }
+
+    .migrateAnnouncement a.learnMore {
+        right: -27%;
+    }
+
+    .forumFilter .forumItem div.checkboxContainer {
+        width: 25px !important;
+    }
+
+    #allCategoryPopupContainer {
+        width: 80% !important;
+        z-index: 9999999;
+    }
+
+    #ux-banner {
+        min-width: 0;
+    }
+
+    #megabladeContainer {
+        min-width: 0;
+    }
+
+    #megabladeContainer #megabladeContainerCenter{
+        width: 98% !important;
+    }
+
+    #megabladeContainer .bladeItemMenu{
+        padding: 0 5% 5%;
+        width: 90%
+    }
+
+    .BrandLogo, .GlobalBar{
+        width: 30%;
+    }
+
+    #JelloSizer{
+        min-width: 0;
+        word-break: break-word;
+    }
+
+    #msdn-technet-en-home .searchBox {
+        width: 85%;
+        text-overflow: ellipsis;
+    }
+
+    #selectedTags .toprow h3.sectiontitle, .forumDetailsTip {
+        width: 100%;
+    }
+
+    .textsize, #myThreadTable, .leaderboards .num {
+        word-break:normal;
+    }
+
+    div.unified-baseball-card, .unified-baseball-card-compact, .unified-baseball-card-hover div.unified-baseball-card {
+        width: 90% !important;
+    }
+
+    .unified-baseball-card .baseball-card-display-name, .unified-baseball-card-compact-hover .baseball-card-display-name, .unified-baseball-card-compact .baseball-card-display-name {
+        width: 100%;
+    }
+
+    div#msdn-technet-en-thread #threadPageContainer .messageContent{
+        width: 80% !important;
+    }
+
+    .unified-baseball-card .baseball-card-header .crop, .unified-baseball-card .baseball-card-header .crop img, .unified-baseball-card-compact .baseball-card-compact-header .crop,.unified-baseball-card-compact .baseball-card-compact-header .crop img{
+        width: 100% !important;
+        min-width: 10px;
+    }
+ }
+
+@media (max-width: 400px) {
+    div#msdn-technet-en-home div#homePageSidebarContainer, div#msdn-technet-en-thread div#threadPageSidebarContainer, div#threadPageActionsContainer .quickActions {
+        width: 23% !important;
+        min-width: 0 !important;
+        margin-top: 60px;
+    }
+
+    #forumDetailsContainerBanner {
+        overflow-y: scroll;
+    }
+
+    #allCategoriesSearchContainer {
+        margin-bottom: 0;
+    }
+
+    .unified-baseball-card-compact-whole {
+        width:75% !important;
+    }
+
+    .BrandLogo {
+        width: 120px !important;
+    }
+
+    /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/586225/ for Forums */
+    .BrandLogoLink {
+        width: 100% !important;
+    }
+
+    input#MastHeadSearchTextBox {
+        width: 60px !important;
+    }
+
+    div#homePageFilterBarContainer {
+        margin-top: 0 !important;
+    }
+
+    /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/586225/ for Forums */
+    #JelloSizer {
+        width: 90% !important;
+    }
+
+    #megabladeContainer #megabladeContainerCenter {
+        padding: 0 !important;
+    }
+}
+
+.singleforumdetails {
+    overflow-y: scroll;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/481909/ */
+.GlobalBar a:focus, .ThinNavBox a.BrandLogo:focus {
+    outline: 1px dotted;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/481900/ */
+@media screen and (-ms-high-contrast:active) {
+    .FooterLogo {
+        background-image: url(https://msdn.microsoft.com/uxresources/Areas/Centers/Themes/StandardDevCenter/Content/HeaderFooterSprite.png);
+        background-position-x: 66.3%;
+        width: 90px;
+        margin-right: 20px;
+    }
+}
+
+/* fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/484626 */
+.internav a:hover, .internav a:focus {
+    background: #0063b1 !important;
+    color: #fff !important;
+}
+
+.migrateAnnouncement.microsoftAnnounce {
+    width: 100%;
+    max-width: 1400px;
+    min-width: 1200px;
+}
+
+.migrateAnnouncement.microsoftAnnounce .announcementContainer {
+    width: 100%;
+    max-width: 1400px;
+    min-width: 1200px;
+}
+
+.migrateAnnouncement.microsoftAnnounce .announcementContent {
+    width: 76%;
+    padding: 3px 10px;
+}
+
+.migrateAnnouncement.microsoftAnnounce a.learnMore {
+    right: -27%;
+}
+
+#inputTagSearch {
+    font-size: 0.8em;
+}
+
+#askaquestion a.askQuestionLink:focus {
+    border-color: #000;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/487446/ autocomplete style*/
+.ui-widget-content .ui-state-focus {
+    background-color: #949494;
+    color: #fff;
+}
+
+#Footer a:focus {
+    outline: 1px dotted;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/586237/ */
+#topbar {
+    height: 100% !important;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/586225/ */
+#BrandLogo {
+    background: url('../images/Technet-logo.png') no-repeat 0 0;
+}
+
+#megabladeItems a:focus, .internav a:focus {
+    outline: 1px dotted;
+}
+
+
+
+/* https://ceapex.visualstudio.com/Engineering/_workitems/edit/586652/ */
+.internav a.active, .internav a.active:link, .internav a.active:visited {
+    border: 1px solid;
+}
+
+/* https://ceapex.visualstudio.com/Engineering/_workitems/edit/586694/ */
+#askaquestion a.askQuestionLink:hover, #askaquestion a.askQuestionLink:focus {
+    text-decoration: underline !important;
+}
+
+#msdn-technet-en-home .threadsnippet .details .detailscontainer .breadcrumb a:hover {
+    color: #007ea7 !important;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/680803/ */ 
+.internav a.active, .internav a.active:link {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+div.box h4 {
+    color: #000 !important;
+}
+
+blockquote a, blockquote a span {
+    color: #005d7f !important;
+}
+
+div.messageContent div.container p span {
+    color: #585858 !important;
+}
+
+/* fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/786069/ */
+/* fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/793468/ */
+div.messageContent div.container div a {
+    text-decoration-line: underline;
+}
+
+a,
+a:link,
+a:visited {
+    text-decoration: underline;
+}

@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)https://www.webforefront.com/django/modelclassbasedviews.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Required meta tags always come first -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Django class-based views with models</title>
+    <meta name="description" content="How to create Django class-based views with models">
+    <meta name="keywords" content="How to create Django class-based views with models">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./Django class-based views with models_files/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> 
+<link href="./Django class-based views with models_files/font-awesome.min.css" rel="stylesheet"> <style type="text/css"></style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.2.0/ekko-lightbox.min.css">
+<link href="./Django class-based views with models_files/webforefront.css" rel="stylesheet">
+<meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><style>.osSwitch{position:relative;display:inline-block;width:34px;height:15.3px}.osSwitch input{opacity:0;width:0;height:0}.osSlider{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:34px;background-color:#93a0b5;transition:0.4s}.osSlider:before{position:absolute;content:'';height:13px;width:13px;left:2px;bottom:1px;border-radius:50%;background-color:white;transition:0.4s}input:checked+.sliderGreen{background-color:#04d289}input:checked+.sliderRed{background-color:#ff3b30}input:not(:checked)+.defaultGreen{background-color:#04d289}input:checked+.osSlider:before{transform:translateX(17px)}
+</style><style>
+    @font-face {
+      font-family: 'SegoeUI_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui.woff);
+    }
+
+    @font-face {
+      font-family: 'SegoeUI_bold_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui-bold.woff);
+    }
+</style><link rel="preload" href="./Django class-based views with models_files/f(8).txt" as="script"><script src="./Django class-based views with models_files/f(7).txt"></script><script type="text/javascript" src="./Django class-based views with models_files/f(8).txt"></script><link rel="preload" href="./Django class-based views with models_files/f(9).txt" as="script"><script type="text/javascript" src="./Django class-based views with models_files/f(9).txt"></script><link rel="preload" href="./Django class-based views with models_files/f(8).txt" as="script"><script type="text/javascript" src="./Django class-based views with models_files/f(8).txt"></script><link rel="preload" href="./Django class-based views with models_files/f(9).txt" as="script"><script type="text/javascript" src="./Django class-based views with models_files/f(9).txt"></script></head>
+  <body data-target="#sidebar" aria-hidden="false">
+   <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+      <span class="navbar-brand mb-0"><a class="navbar-brand" href="https://www.webforefront.com/django/modelclassbasedviews.html#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-lg"></i>&nbsp;&nbsp;&nbsp;</a> <a class="navbar-brand" href="https://www.webforefront.com/">Web Forefront</a></span>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+     <ul class="navbar-nav mr-auto">
+       <li class="nav-item active">
+         <a class="nav-link active" href="https://www.webforefront.com/consulting.html">Aboute the author &amp; Consulting</a>
+       </li>              
+       <li class="nav-item dropdown">
+         <a class="nav-link active dropdown-toggle" href="https://www.webforefront.com/django/modelclassbasedviews.html#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Writing<b class="caret"></b></a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+         <a class="dropdown-item" href="https://www.webforefront.com/about/danielrubio/articles.html">All books &amp; articles</a>
+         <a class="dropdown-item" href="https://www.webforefront.com/django/index.html">Beginning Django</a>
+         <a class="dropdown-item" href="https://www.webforefront.com/performance/index.html">Web performance and scalability essays (2005)</a>
+         </div>
+       </li>
+       </ul>
+      <form action="https://www.google.com/" id="cse-search-box" class="form-inline my-2 my-lg-0">
+         <input type="hidden" name="cx" value="partner-pub-4639088530133416:3689263939">
+         <input type="hidden" name="ie" value="UTF-8">
+         <input type="text" name="q" size="20" placeholder="" style="background: url(&quot;https://www.google.com/cse/static/images/1x/en/branding.png&quot;) left 9px top 50% no-repeat rgb(255, 255, 255);">
+         <button type="submit" name="sa" value="Search" class="btn-sm btn-outline-primary my-2 my-sm-0">Search</button>
+      <input name="siteurl" value="www.webforefront.com/django/modelclassbasedviews.html" type="hidden"><input name="ref" value="www.google.com/" type="hidden"><input name="ss" value="" type="hidden"></form>
+      <script src="./Django class-based views with models_files/f(10).txt"></script><script src="./Django class-based views with models_files/f(11).txt" id="google_shimpl"></script><script type="text/javascript" src="./Django class-based views with models_files/brand"></script>
+    </div>
+    </nav><main class="col-12 col-md-9 col-md-push-9 ml-auto p-l-3 p-t-3" id="content" style="padding-top:5rem;">
+<div class="row"></div>
+
+
+<h1>Class-based views with models</h1>
+<p class="card-text text-justify">Back in chapter 2, you learned
+how <a href="https://www.webforefront.com/django/classbasedviews.html">class-based views</a> allow you to create views that operate with
+object oriented programming (OOP) principles (e.g. encapsulation,
+polymorphism and inheritance) leading to greater re-usability and
+shorter implementation times. Now that you know how Django models
+work, we can address class-based views that integrate with models
+described in the last part of <a href="https://www.webforefront.com/django/classbasedviews.html#table-2-10">table 2-10</a>.</p>
+<p class="card-text text-justify">Unlike standard <a href="https://www.webforefront.com/django/viewmethodrequests.html">Django views</a> --
+explored in the early sections of chapter 2 -- which allow open
+ended logic to process a request and generate a response,
+class-based views with models encapsulate the logic performed
+against Django models in a more modular way.</p>
+<p class="card-text text-justify">For example, the logical patterns
+to create, read, update and delete model instances in a standard
+view method, generally follow a very consistent workflow: get input
+data from a url or form, execute CRUD operation on the model and
+send the response to a template.</p>
+<p class="card-text text-justify">In the spirit of <a href="https://www.webforefront.com/django/designprinciples.html#dry">Django's DRY
+(Don't repeat yourself) principle</a>, class-based views with models
+offer a way to cut down on the boilerplate code used in standard
+view methods and use class fields and methods to define the
+workflow used for Django model CRUD operations.</p>
+
+<h2>Create model records with the class-based view CreateView</h2>
+<p class="card-text text-justify">As you've learned up to this
+point, the creation of Django model instances in real-life projects
+comes accompanied by a series of constructs that can include: model
+forms, GET/POST request processing and the use of templates, among
+other things.</p>
+<p class="card-text text-justify">The Django
+<code>CreateView</code> class-based view is specifically designed
+to cut-down on the amount of boilerplate code needed to perform the
+creation of a model record. Listing 9-9 illustrates a class-based
+view that uses the <code>CreateView</code> class.</p>
+
+<a id="listing-9-9"></a>
+<h4>Listing 9-9 Django class-based view with CreateView to create
+model records</h4>
+<pre># views.py
+from django.views.generic.edit import CreateView
+from .models import Item, ItemForm
+from django.core.urlresolvers import reverse_lazy
+
+class ItemCreation(CreateView):
+    model = Item
+    form_class = ItemForm
+    success_url = reverse_lazy('items:index')
+
+# models.py
+from django import forms
+from django.db import models
+
+class Menu(models.Model):
+    name = models.CharField(max_length=30)
+
+class Item(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=100)
+
+class ItemForm(forms.ModelForm): 
+    class Meta: 
+        model = Item
+        fields = '__all__'
+        widgets = {
+            'description': forms.Textarea(),
+        }
+
+# urls.py 
+from django.conf.urls import url
+from coffeehouse.items import views as items_views
+
+urlpatterns = [
+    url(r'^new/$', items_views.ItemCreation.as_view(), name='new'),
+]
+
+# templates/items/item_form.html 
+    &lt;form method="post"&gt;
+        {% csrf_token %}
+        {{ form.as_p }}
+        &lt;button type="submit" class="btn btn-primary"&gt;Create&lt;/button&gt;
+    &lt;/form&gt;
+</pre>
+<p class="card-text text-justify">The first part in listing 9-9
+illustrates the <code>ItemCreation</code> class-based view that
+inherits its behavior from the <code>CreateView</code> class.
+Notice this view lacks a <code>request</code> reference, processing
+logic or <code>return</code> statement, all of which were <a href="https://www.webforefront.com/django/viewmethodrequests.html">common in
+the standard view methods</a> described in chapter 2. So what is the
+<code>ItemCreation</code> class-based view actually doing ?</p>
+<p class="card-text text-justify">Because you know beforehand you
+want to create a model record, the <code>CreateView</code> class --
+used by the <code>ItemCreation</code> class-based view -- supports
+all the necessary boilerplate logic and requires a minimum set of
+code to fulfill its model record creation logic.</p>
+<p class="card-text text-justify">The <code>ItemCreation</code>
+class-based view in listing 9-9 uses the <code>model</code> field
+to tell Django to create <code>Item</code> model records. In
+addition, the <code>form_class</code> field specifies the
+<code>ItemForm</code> form -- also declared in isting 9-9 -- which
+is used to create model records. In addition, the
+<code>success_url</code> field is used to return control to the
+<code>item:index</code> url when model record creation is
+successful.</p>
+<div class="card mt-2 mb-2">
+<div class="card-header text-center">Why use reverse_lazy in class-based views, instead of reverse ?</div>
+<div class="card-body">
+  <blockquote class="card-blockquote text-justify">
+    <p class="card-text text-justify">Due to the
+simultaneous import order of models, views and urls in class-based
+views, using the standard reverse() method to resolve url names can
+result in the error:
+<em>django.core.exceptions.ImproperlyConfigured: The included
+URLconf '------' does not appear to have any patterns in it. If you
+see valid patterns in the file then the issue is probably caused by
+a circular import</em>.</p>
+<p class="card-text text-justify">The reverse_lazy method ensures
+any reverse url name resolution is attempted only after all models,
+views and urls have been properly imported, therefore it's the
+  common choice in the context of class-based views.</p>
+</blockquote>
+</div></div>
+
+
+<p class="card-text text-justify">You may still be left wondering,
+where are the <code>save()</code> and <code>is_valid()</code>
+methods for the <code>ItemCreation</code> class-based view in
+listing 9-9 if its creating model records ? By default there aren't
+any. Because you <em>just</em> want to create a model record, the
+parent <code>CreateView</code> class takes care of this supporting
+logic.</p>
+<p class="card-text text-justify">The next part in listing 9-9
+contains the <code>urls.py</code> file with the hook to set up the
+class-based view into the application. In this case, the
+<code>ItemCreation</code> class-based view is set to run on the
+<code>new/</code> url and is declared as part of the
+<code>url()</code> method by using the class-based view
+<code>as_view()</code> method -- note this url set up technique is
+identical for all class-based views and was described <a href="https://www.webforefront.com/django/classbasedviews.html#view-structure">toward the
+end of chapter 2 for class-based views without models</a>.</p>
+<p class="card-text text-justify">So what happens when a user
+visits the <code>new/</code> url ? Control is sent to the
+<code>ItemCreation</code> class-based view. And because this view's
+purpose is to create an <code>Item</code> model record, the
+class-based view looks for a template to render the form, under the
+<code>TEMPLATES</code> directory path of a project following the
+convention
+<code>&lt;app_name&gt;/&lt;model_name&gt;_form.html</code>.</p>
+<p class="card-text text-justify">In the last part of <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-9">listing 9-9</a>,
+you can see the template
+<code>templates/items/item_form.html</code>, where
+<code>templates</code> represents a <code>TEMPLATES</code>
+directory path value, <code>items</code> the app name and
+<code>item</code> the model name defined for the class-based view.
+In addition, notice the contents of the <code>item_form.html</code>
+template use a standard form layout, which you can adjust like any
+Django form.</p>
+<p class="card-text text-justify">So where is the POST form handler
+and error handling in listing 9-9 ? By default, there isn't any
+either. Once a user gets an unbound form illustrated at the bottom
+of listing 9-9, the form processing and validation is taken care of
+behind the scenes by the <code>ItemCreation</code> class-based
+view. If the form contains errors, the template is re-rendered --
+like any other form -- using the same template in listing 9-9. If
+the form data is valid, form processing is deemed successful and
+the class-based view creates an <code>Item</code> model record --
+like a model form -- redirecting control to the
+<code>item:index</code> url defined in the class-based view
+<code>success_url</code> field.</p>
+<p class="card-text text-justify">As you can see in this example, a
+class-based view that inherits its behavior from the
+<code>CreateView</code> class, cuts-down the boilerplate code
+needed to a create model record.</p>
+
+
+
+
+<a id="create-view-fields-and-methods"></a>
+<h2>CreateView fields and methods</h2>
+<p class="card-text text-justify">While at first glance a
+class-based view that inherits its behavior from the
+<code>CreateView</code> class can appear to be inflexible, it's
+possible to override its default behaviors like any Django
+construct.</p>
+<p class="card-text text-justify">As it turns out, the
+<code>CreateView</code> class inherits its behavior from many other
+Django class-based views, which is what gives the
+<code>CreateView</code> class -- and its implementing child classes
+like the class-based view in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-9">listing 9-9</a> -- its behind-the-scene
+powers. The <code>CreateView</code> class inherits its behavior
+from the following class-based view classes:</p>
+<pre>django.views.generic.detail.SingleObjectTemplateResponseMixin
+django.views.generic.base.TemplateResponseMixin
+django.views.generic.edit.BaseCreateView
+django.views.generic.edit.ModelFormMixin
+django.views.generic.edit.FormMixin
+django.views.generic.detail.SingleObjectMixin
+django.views.generic.edit.ProcessFormView
+django.views.generic.base.View
+</pre>
+<p class="card-text text-justify">So why are these classes even
+important ? Because they provide the default behavior for all
+<code>CreateView</code> class-based views. The scant fields
+declared in the <code>ItemCreation</code> class-based view in
+listing 9-9 are only three fields for <code>CreateView</code>
+class-based views. It's possible to declare over a dozen more
+fields and methods -- that belong to this past list of classes --
+to provide behaviors, such as: using another template other than
+<code>&lt;app_name&gt;/&lt;model_name&gt;_form.html</code>;
+specifying the content type for the response (e.g.
+<code>text/csv</code>); custom methods to run when a model form is
+valid or invalid; as well as declaring custom methods to manually
+execute GET and POST workflow logic.</p>
+<div class="card border-primary mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Note</strong> A <code>CreateView</code> class-based view
+inherits many fields and methods from its parent classes. The
+following options are the most common ones, for an exhaustive list
+consult each of the <code>CreateView</code> parent
+classes.</blockquote>
+</div>
+</div>
+<h3>Basic CreateView options: model, form_class and success_url
+fields</h3>
+<p class="card-text text-justify">As you've already seen in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-9">listing 9-9</a>, the essential logic fulfilled by a <code>CreateView</code>
+class-based view is to create a model record using a form, which in
+turn requires a basic set of parameters. First, the
+<code>model</code> field is basic to the whole operation, because a
+<code>CreateView</code> class-based view must know beforehand which
+type of model record to create. Second, the <code>form_class</code>
+is also a basic parameter, because a user must be presented with a
+form to capture the data to create the model record.</p>
+<p class="card-text text-justify">Finally, because successfully
+creating a model record entails notifying a user about the action
+and moving away from the form page, the <code>success_url</code>
+field is also a basic part of a <code>CreateView</code> class-based
+view to indicate where to redirect a user after a model record is
+created.</p>
+<h3>Customize template name, MIME type and context : template_name
+and content_type fields &amp; get_context_data() method</h3>
+<p class="card-text text-justify">Sometimes relying on the
+<code>CreateView</code> class-based view template naming convention
+<code>&lt;app_name&gt;/&lt;model_name&gt;_form.html</code> is
+unfeasible, either because you have a pre-existing template to
+reuse or simply because you don't like the default convention. You
+can declare the <code>template_name</code> field as part of a
+<code>CreateView</code> class-based view to override this
+convention. Similarly, it's also possible to override the default
+MIME type used by a class-based view response -- if the template
+contains something other than <code>text/html</code> (e.g.
+<code>text/csv</code>) -- using the <code>content_type</code> field
+as part of a <code>CreateView</code> class-based view.</p>
+<p class="card-text text-justify">In addition, you can alter the
+context data passed to a class-based view template by defining an
+implementation of the <code>get_context_data()</code> method. This
+last process is common when you need to pass additional data to a
+template -- besides the <code>form</code> reference -- or change
+the actual <code>form</code> reference to another name.</p>
+<p class="card-text text-justify">Listing 9-10 illustrates a
+<code>CreateView</code> class-based view that makes use of the
+<code>template_name</code> and <code>content_type</code> fields, as
+well as the <code>get_context_data()</code> method.</p>
+<h4>Listing 9-10 Django class-based view with CreateView with
+template_name, content_type and get_context_data()</h4>
+<pre># views.py
+from django.views.generic.edit import CreateView
+from .models import Item, ItemForm, Menu
+
+class ItemCreation(CreateView):
+<strong>    template_name = "items/item_form.html"</strong>
+<strong>    context_type = "text/html"</strong>
+    model = Item
+    form_class = ItemForm
+    success_url = reverse_lazy('items:index')
+   <strong> def get_context_data(self,**kwargs):</strong>
+<strong>        kwargs['special_context_variable'] = 'My special context variable!!!'</strong>
+<strong>        context = super(ItemCreation, self).get_context_data(**kwargs)</strong>
+<strong>        return context        </strong>
+</pre>
+<p class="card-text text-justify">You can see in listing 9-10 the
+<code>template_name</code> and <code>content_type</code> fields are
+declared as part of the class-based view. In this particular case,
+both fields values are assigned their default values -- making them
+redundant -- for simplicity, but you can adjust accordingly to your
+needs.</p>
+<p class="card-text text-justify">The
+<code>get_context_data()</code> method in listing 9-10 first adds
+the custom <code>special_context_variable</code> key to make it
+available to the class-based view template (i.e.
+<code>items/item_form.html</code>). Next, a call is made to the
+parent class's <code>get_context_data()</code> method (i.e.
+<code>CreateView</code>) to run its context set up logic, which
+consists of setting up the <code>form</code> reference which is
+also used in the template. Finally, the <code>context</code>
+reference with all the template context values is returned by the
+<code>get_context_data()</code> method for use inside the
+template.</p>
+<p class="card-text text-justify">As you can see in listing 9-10,
+by simply adding fields and overriding methods in a
+<code>CreateView</code> class-based view, you can easily start
+changing its default behavior.</p>
+<h3>Customize form initialization and validation: initial field,
+get_initial(), get_form(), form_valid() and form_invalid()
+methods</h3>
+<p class="card-text text-justify">The <code>initial</code> field on
+a <code>CreateView</code> class-based view works just like a
+<a href="https://www.webforefront.com/django/formprocessing.html#initialize">standard form's <code>initial</code> argument</a> to specify default
+values for an unbound form. For example, declaring the field
+<code>initial = {'size':'L'}</code> on a <code>CreateView</code>
+class-based view sets its form's <code>size</code> field to
+<code>L</code>.</p>
+<p class="card-text text-justify">Form initialization can sometimes
+require more complex requirements than a single line statement, in
+which a <code>CreateView</code> class-based view also offers the
+<code>get_initial()</code> method. The <code>get_initial()</code>
+method functions like the <code>__init__</code> method used in
+standard forms -- in that you can introduce open-ended logic to set
+up default values -- but is intended solely to set up
+<code>initial</code> values and to return a dictionary of values --
+unlike the <code>__init__</code> method where you can introduce
+other actions besides default form values (e.g. change widgets, add
+validation).</p>
+<p class="card-text text-justify">Listing 9-11 illustrates the use
+of the <code>initial</code> argument and <code>get_initial()</code>
+method on a <code>CreateView</code> class-based view.</p>
+
+<a id="listing-9-11"></a>
+<h4>Listing 9-11 Django class-based view with CreateView with
+initial and get_initial()</h4>
+<pre># views.py
+from django.views.generic.edit import CreateView
+from .models import Item, ItemForm, Menu
+
+class ItemCreation(CreateView):
+    <strong>initial = {'size':'L'}</strong>
+    model = Item
+    form_class = ItemForm
+    success_url = reverse_lazy('items:index')
+   <strong> def get_initial(self):</strong>
+<strong>        initial_base = super(ItemCreation, self).get_initial()</strong>
+<strong>        initial_base['menu'] = Menu.objects.get(id=1)</strong>
+<strong>        return initial_base</strong>
+</pre>
+<p class="card-text text-justify">The first step in listing 9-11
+set the <code>initial</code> field to set the class-based view's
+form <code>size</code> field to <code>L</code>. Next, the
+<code>get_initial()</code> method is declared to add another
+default value to a class-based view form.</p>
+<p class="card-text text-justify">Inside the the
+<code>get_initial()</code> method, the first step is to call the
+parent class's <code>get_initial()</code> method (i.e.
+<code>CreateView</code>) to run its initial set up logic, this
+ensures the class's <code>initial</code> field value
+(i.e.<code>{'size':'L'}</code>) is taken into account to as part of
+the <code>initial</code> value. Next, the <code>initial_base</code>
+reference is updated to set the form's <code>menu</code> field to
+the <code>Menu</code> record with <code>id=1</code>. Finally, the
+<code>get_initial()</code> method in listing 9-11 returns a
+dictionary containing both the <code>initial</code> field value set
+by the class-based view and the custom form value set in its
+body.</p>
+<p class="card-text text-justify">The <code>get_form()</code>
+method of a <code>CreateView</code> class-based view is designed to
+tap into the full initialization process of a form and not just on
+setting its default values like the <code>initial</code> field and
+<code>get_initial()</code> method. This makes
+<code>get_form()</code> method suited to perform broader form
+initialization tasks like setting form widgets and validation
+initialization, like its done in the <code>__init__</code> method
+in standard forms. Inclusively, it's possible to use the
+<code>get_form()</code> method to specify default form values and
+forgo the use of <code>initial</code> and
+<code>get_initial()</code> altogether. Listing 9-12 illustrates the
+use of the <code>get_form()</code> method in a
+<code>CreateView</code> class-based view.</p>
+<h4>Listing 9-12 Django class-based view with CreateView with
+get_form()</h4>
+<pre># views.py
+from django.views.generic.edit import CreateView
+from .models import Item, ItemForm, Menu
+
+class ItemCreation(CreateView):
+    <strong>initial = {'size':'L'}</strong>
+    model = Item
+    form_class = ItemForm
+    success_url = reverse_lazy('items:index')
+<strong>    def get_form(self):</strong>
+<strong>        form = super(ItemCreation, self).get_form()</strong>
+<strong>        initial_base = self.get_initial() </strong>
+<strong>        initial_base['menu'] = Menu.objects.get(id=1)</strong>
+<strong>        form.initial = initial_base</strong>
+<strong>        form.fields['name'].widget = forms.widgets.Textarea()</strong>
+<strong>        return form</strong>
+</pre>
+<p class="card-text text-justify">The first step in the
+<code>get_form()</code> method in listing 9-12 is to call the
+parent class's <code>get_form()</code> method (i.e.
+<code>CreateView</code>) to get the base form. Next, a call is made
+to the class-based view's <code>get_initial()</code> method to get
+its <code>initial</code> form value, as well as set up a default
+value for the form's <code>menu</code> field using a model query.
+In this case, the form initialization form dictionary has the same
+values as those in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-11">listing 9-11</a>.</p>
+<p class="card-text text-justify">Next, the form initialization
+dictionary is assigned to the base form using the standard
+<code>initial</code> form reference. Finally, before returning an
+instance of the form class, a custom widget is set on the form's
+<code>name</code> field, overriding the default widget of the form
+<code>name</code> field.</p>
+<p class="card-text text-justify">In addition to initialization
+tasks, the form validation process for a <code>CreateView</code>
+class-based view can also be customized. The
+<code>form_valid()</code> and <code>form_invalid()</code> methods
+are used to access the points at which a class-based view form is
+deemed successful or erroneous, respectively. Listing 9-13
+illustrates an example that uses the <code>form_valid()</code> and
+<code>form_invalid()</code> methods in a <code>CreateView</code>
+class-based view.</p>
+<a id="listing-9-13"></a>
+<h4>Listing 9-13 Django class-based view with CreateView with
+form_valid() and form_invalid()</h4>
+<pre># views.py
+from django.views.generic.edit import CreateView
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from .models import Item, ItemForm, Menu
+
+class ItemCreation(CreateView):
+    initial = {'size':'L'}
+    model = Item
+    form_class = ItemForm
+    success_url = reverse_lazy('items:index')
+<strong>    def form_valid(self,form):</strong>
+<strong>        super(ItemCreation,self).form_valid(form)</strong>
+<strong>        # Add action to valid form phase</strong>
+<strong>        messages.success(self.request, 'Item created successfully!')        </strong>
+<strong>        return HttpResponseRedirect(self.get_success_url())        </strong>
+<strong>    def form_invalid(self,form):</strong>
+<strong>        # Add action to invalid form phase</strong>
+<strong>        return self.render_to_response(self.get_context_data(form=form))</strong>
+</pre>
+
+
+
+<p class="card-text text-justify">As you can see in listing 9-13,
+the <code>form_valid()</code> method gains access to the form
+instance via its <code>form</code> input argument, which in turn
+allows you to perform actions on the form when it passes its
+validation phase. In this case, no action is taken on the form
+itself to simplify things, but an additional piece of logic is
+added to illustrate the customization process.</p>
+<p class="card-text text-justify">The first step in the
+<code>form_valid()</code> in listing 9-13 is a call to the parent
+class's <code>form_valid()</code> method (i.e.
+<code>CreateView</code>) to run its form validation set up logic,
+this ensures the base class's form validation is run first to
+verify any form rule violations (e.g. add errors to the form). If a
+call to the parent's <code>form_valid()</code> method detects a
+rule violation, then the class's <code>form_valid()</code> method
+(i.e. the one listing 9-13) short-circuits and falls back to the
+<code>form_invalid()</code> method. If the parent's
+<code>form_valid()</code> method passes, the logic In listing 9-13
+continues to add a Django message framework success message to
+present to a user.</p>
+<div class="card border-success mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Tip</strong> It's also possible to add <a href="https://www.webforefront.com/django/setupdjangomessages.html">Django message
+framework</a> success messages to a class-based view form validation
+process through a mixin. <a href="https://www.webforefront.com/django/modelclassbasedviews.html#mixins">Mixins for class-based views</a> are described
+in the last section of this chapter.</blockquote>
+</div>
+</div>
+<p class="card-text text-justify">Finally, because you're handling
+a valid form workflow, the <code>form_valid()</code> method in
+listing 9-13 must explicitly redirect a user to a location to
+finish its work. In this case, a <a href="https://www.webforefront.com/django/viewmethodresponses.html#table-2-4">standard Django
+<code>HttpResponseRedirect</code> method</a> is used with the
+class-based view's <code>get_success_url()</code> method, the last
+of which gets the class-based view <code>success_url</code> field
+value.</p>
+<p class="card-text text-justify">The <code>form_invalid()</code>
+method in listing 9-13 does nothing in particular to handle an
+invalid form. It simply does the minimum amount work -- by means of
+class-based view methods -- which is to return control to the same
+template location and add the context that contains the form with
+errors to present to a user.</p>
+<p class="card-text text-justify">As you can see, the benefit of
+the <code>form_valid()</code> and <code>form_invalid()</code>
+methods in a <code>CreateView</code> class-based view is they allow
+you to customize the form validation workflow, without the need to
+modify other parts of a <code>CreateView</code> workflow (e.g.
+saving the form data to the database).</p>
+
+
+
+
+<a id="get-and-post"></a>
+<h3>Customize view method workflow: get() and post() methods</h3>
+<p class="card-text text-justify">Beside the previous customization
+options for a <code>CreateView</code> class-based view, it's also
+possible to get absolute control over the workflow done by a
+class-based view with either the <code>get()</code> or
+<code>post()</code> methods. The <code>get()</code> method is used
+to tap into the HTTP GET workflow associated with a class-based
+view, where as the <code>post()</code> method is used to tap into
+the HTTP POST workflow associated with a class-based view.</p>
+<p class="card-text text-justify">Although the use of the
+<code>get()</code> or <code>post()</code> methods can offer some of
+the greatest flexibility to a class-based view, they also require
+to explicitly declare the initialization, validation and redirect
+sequences of a class-based view. This means class-based views that
+use either the <code>get()</code> or <code>post()</code> methods,
+can resemble more the <a href="https://www.webforefront.com/django/viewmethodrequests.html">standard open-ended Django views</a> -- described
+in Chapter 2 -- than the succinct class-based view presented
+earlier in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-9">listing 9-9</a>.</p>
+<p class="card-text text-justify">Still, sometimes the appeal of
+class-based views is so great, the use of the <code>get()</code> or
+<code>post()</code> methods is warranted. Listing 9-14 illustrates
+an example that uses the <code>get()</code> and <code>post()</code>
+methods in a <code>CreateView</code> class-based view.</p>
+<a id="listing-9-14"></a>
+<h4>Listing 9-14 Django class-based view with CreateView with get()
+and post()</h4>
+<pre># views.py
+from django.views.generic.edit import CreateView
+from django.shortcuts import render
+from django.contrib import messages
+
+class ItemCreation(CreateView):
+    initial = {'size':'L'}
+    model = Item
+    form_class = ItemForm
+    success_url = reverse_lazy('items:index')
+    template_name = "items/item_form.html"
+    <strong>def get(self,request, *args, **kwargs):</strong>
+       <strong> form = super(ItemCreation, self).get_form()</strong>
+<strong>        # Set initial values and custom widget</strong>
+<strong>        initial_base = self.get_initial() </strong>
+<strong>        initial_base['menu'] = Menu.objects.get(id=1)</strong>
+<strong>        form.initial = initial_base</strong>
+<strong>        form.fields['name'].widget = forms.widgets.Textarea()</strong>
+<strong>        # return response using standard render() method</strong>
+<strong>        return render(request,self.template_name,</strong>
+<strong>                      {'form':form,</strong>
+<strong>                       'special_context_variable':'My special context variable!!!'})</strong>
+ 
+    <strong>def post(self,request,*args, **kwargs):</strong>
+      <strong>  form = self.get_form()</strong>
+<strong>        # Verify form is valid</strong>
+<strong>        if form.is_valid():</strong>
+<strong>            # Call parent form_valid to create model record object</strong>
+<strong>            super(ItemCreation,self).form_valid(form)</strong>
+<strong>            # Add custom success message</strong>
+<strong>            messages.success(request, 'Item created successfully!')    </strong>
+<strong>            # Redirect to success page    </strong>
+<strong>            return HttpResponseRedirect(self.get_success_url())</strong>
+<strong>        # Form is invalid</strong>
+<strong>        # Set object to None, since class-based view expects model record object</strong>
+<strong>        self.object = None</strong>
+<strong>        # Return class-based view form_invalid to generate form with errors</strong>
+<strong>        return self.form_invalid(form)</strong>
+</pre>
+<p class="card-text text-justify">You can see in listing 9-14, both
+the <code>get()</code> and <code>post()</code> methods have access
+to a <code>request</code> input -- an <code>HttpRequest</code>
+instance -- like standard view methods. This <code>request</code>
+reference allows class-based views <a href="https://www.webforefront.com/django/viewmethodrequests.html">access to request data</a>, such as
+HTTP meta data (e.g. user's IP address), which is a topic described
+in detail in Chapter 2.</p>
+<p class="card-text text-justify">The first step in the
+<code>get()</code> method in listing 9-14 is to create an unbound
+form using the parent class's <code>get_form()</code> method (i.e.
+<code>CreateView</code>). Because the <code>get()</code> method
+gives you full control over the workflow, it would be equally valid
+to create an unbound form using standard form syntax (e.g.
+<code>form = ItemForm()</code>), but since it's a class-based view,
+the example leverages a class-based view construct. Once the
+unbound form is created, a series of initial values and a custom
+widget is set on the form, just like it's done in the previous
+class-based view examples.</p>
+<p class="card-text text-justify">Once the unbound form is ready,
+notice the <code>return</code> statement of the <code>get()</code>
+method uses the standard <code>render()</code> method used in
+regular view methods. In this case, the <code>render()</code>
+method redirects control to the class-based view template and sets
+the template context with the unbound <code>form</code> and an
+additional <code>special_context_variable</code> variable to use in
+the template.</p>
+<p class="card-text text-justify">Next, the <code>post()</code>
+method in listing 9-14 is tasked with processing the form with user
+data. The first step in the <code>post()</code> method is to get a
+bound form instance using the class-based view
+<code>get_form()</code> class. Similarly to the <code>get()</code>
+method, it would be equally valid to create a bound form using
+standard form syntax (e.g. <code>form =
+ItemForm(request.POST)</code>).</p>
+<p class="card-text text-justify">With a bound form instance, a
+check is made to verify if the user provided form data is valid,
+just like it's done with standard forms (e.g.
+<code>form.is_valid()</code>). If the form data is valid, a call is
+made to the parent class's <code>is_valid()</code> method (i.e.
+<code>CreateView</code>), which ensures the core logic of a
+class-based view is executed when a form is valid (e.g. saving the
+form data to a database). Here it's possible once again to use any
+standard model construct, but calling the parent class's
+<code>is_valid()</code> method is easier to execute this routine
+logic to create a model object record. Once the routine validation
+logic is complete, a success message is added to present to an end
+user and a redirect is made to the class-based view's success url.
+If the form data is invalid, the class-based view's object field is
+set to <code>None</code> -- since class-based views expect to
+handle an object record instance in POST processing -- and control
+is returned using the class-based <code>form_invalid()</code>
+method which takes care of the underlying details vs. using the
+<code>render()</code> method to create a standard view method
+response.</p>
+<p class="card-text text-justify">As you can now understand from
+this example in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-14">listing 9-14</a>, a <code>CreateView</code> class-based
+view can be just as flexible as a standard view method. It's simply
+a matter of knowing and understanding the different fields and
+methods supported by a <code>CreateView</code> class-based view. Of
+course, if you feel the custom logic for a <code>CreateView</code>
+class-based view becomes to unwieldy, you can always fall back to a
+<a href="https://www.webforefront.com/django/viewmethodrequests.html">standard view method</a> presented back in Chapter 2.</p>
+<h2>Read model records with the class-based views ListView and
+DetailView</h2>
+<p class="card-text text-justify">Similar to the process of
+creating model records, the process to read model records also
+follows a near identical process for all models: create a query to
+get model record(s) and then use a template to display the model
+record(s). The Django <code>ListView</code> and
+<code>DetailView</code> class-based views are specifically designed
+to cut-down on the amount of boilerplate code needed to display a
+list of Django model records and a single Django model record,
+respectively.</p>
+<p class="card-text text-justify">The <code>ListView</code>
+class-based view can quickly set up a query for a list of model
+records and display them in a template. Listing 9-15 illustrates a
+class-based view that uses the <code>ListView</code> class-based
+view.</p>
+
+<a id="listing-9-15"></a>
+<h4>Listing 9-15 Django class-based view with ListView to read list
+of records</h4>
+<pre># views.py
+from django.views.generic.list import ListView
+from .models import Item
+
+class ItemList(ListView):
+    model = Item
+
+# urls.py 
+from django.conf.urls import url
+from coffeehouse.items import views as items_views
+
+urlpatterns = [
+    url(r'^$',items_views.ItemList.as_view(),name="index"),
+]
+
+# templates/items/item_list.html 
+  {% regroup object_list by menu as item_menu_list %}
+  {% for menu_section in item_menu_list %}
+   &lt;li&gt;{{ menu_section.grouper }}
+    &lt;ul&gt;
+        {% for item in menu_section.list %}
+        &lt;li&gt;{{item.name|title}}&lt;/li&gt;    
+        {% endfor %}
+    &lt;/ul&gt;
+    &lt;/li&gt;
+{% endfor %}
+</pre>
+
+
+<p class="card-text text-justify">The first definition in listing
+9-15 is the <code>ItemList</code> class which inherits its behavior
+from the <code>ListView</code> class-based view class. The
+<code>model</code> field in the <code>ItemList</code> class set to
+<code>Item</code>, tells Django to generate a list of all
+<code>Item</code> model records (e.g.
+<code>Item.objects.all()</code>)</p>
+<p class="card-text text-justify">Next, the <code>ListView</code>
+class-based view is hooked up to a root url regular exression --
+<code>r'^$'</code> -- using the <code>as_view()</code> method, the
+last of which is available on all class-based views and was also
+used in the past section to set up a a <code>CreateView</code>
+class-based view.</p>
+<p class="card-text text-justify">Finally, the last part in listing
+9-15 illustrates the template <code>item_list.html</code> which
+generates a loop over the <code>object_list</code> reference, the
+last of which is the default context variable used by a
+<code>ListView</code> class-based view that contains the model
+record list.</p>
+<p class="card-text text-justify">Recapping, the most important
+default behaviors of a <code>ListView</code> class-based view
+are:</p>
+<ul>
+<li>The list of records is made from
+all records of the model defined in the <code>model</code>
+option.</li>
+<li>The template to render the list
+of records uses the convention
+<code>&lt;app_name&gt;/&lt;model_name&gt;_list.html</code> under
+the <code>TEMPLATES</code> directory path of a project.</li>
+<li>The context variable passed to a
+template (i.e. the one containing the records) is named
+<code>object_list</code>.</li>
+</ul>
+
+<p class="card-text text-justify">As you can see in this example, a
+<code>ListView</code> class-based view cuts-down the boilerplate
+code needed to present a list of model records to one field.</p>
+<p class="card-text text-justify">The <code>DetailView</code>
+class-based view is another record reading construct, designed to
+quickly set up a single record query and present the results in a
+template. Listing 9-16 illustrates a class-based view that uses the
+<code>DetailView</code> class.</p>
+
+<a id="listing-9-16"></a>
+<h4>Listing 9-16 Django class-based view with DetailView to read
+model record</h4>
+<pre># views.py
+from django.views.generic. import DetailView
+from .models import Item
+
+class ItemDetail(DetailView):
+    model = Item
+
+# urls.py 
+from django.conf.urls import url
+from coffeehouse.items import views as items_views
+
+urlpatterns = [
+    url(r'^(?P&lt;pk&gt;\d+)/$',items_views.ItemDetail.as_view(),name="detail"),
+]
+
+# templates/items/item_detail.html 
+&lt;h4&gt; {{item.name|title}}&lt;/h4&gt;
+&lt;p&gt;{{item.description}}&lt;/p&gt;
+&lt;p&gt;${{item.price}}&lt;/p&gt;
+&lt;p&gt;For {{item.get_size_display}} size: Only {{item.calories}} calories
+{% if item.drink %}
+and {{item.drink.caffeine}} mg of caffeine.&lt;/p&gt;
+{% endif %}
+&lt;/p&gt;
+</pre>
+
+<p class="card-text text-justify">The first definition in listing
+9-16 is the <code>ItemDetail</code> class which inherits its
+behavior from the <code>DetailView</code> class-based view class.
+The <code>model</code> field in the <code>ItemDetail</code> class
+is set to <code>Item</code>, which tells Django to get an
+<code>Item</code> model record. Unlike the <code>ListView</code>
+class-based view class in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-15">listing 9-15</a> that reads all model
+records, a <code>DetailView</code> class-based view class must
+always limit its model query to a single record, which is where the
+class-based view url definition comes into play.</p>
+<p class="card-text text-justify">The <code>DetailView</code>
+class-based view in listing 9-16 is hooked up to a root url regular
+exression -- <code>r'^$'</code> -- using the <code>as_view()</code>
+method -- just like other class-based views -- but notice the url
+definition contains the <code>(?P&lt;pk&gt;\d+)</code> url
+parameter, which gets passed to the class-based view to delimit the
+model query to a single record.</p>
+<p class="card-text text-justify">For example, if a request is made
+on the url <code>/items/1/</code>, the <code>1</code> is assigned
+to the <code>pk</code> parameter, which is passed to the
+classed-based view, to build the model query
+<code>Item.objects.get(pk=1)</code> that gets the <code>Item</code>
+model record with <code>pk=1</code> -- note the <code>pk</code>
+field stands for primary key, which is generally equivalent to the
+<code>id</code> field.</p>
+<p class="card-text text-justify">In this manner, as the url
+requests made on the <code>DetailView</code> class-based view
+change (e.g. <code>/items/2/</code>, <code>/items/3/</code>), so
+does the backing query made for a model a record, and with it the
+record returned to be displayed in the template.</p>
+<p class="card-text text-justify">Finally, the last part in listing
+9-16 illustrates the template <code>item_detail.html</code> which
+outputs various fields of the <code>item</code> reference that
+represents the model record. In this case, the <code>item</code>
+reference is used because the default context variable used by a
+<code>DetailView</code> class-based view for a model record is the
+name of the model itself.</p>
+<p class="card-text text-justify">Recapping, the most important
+default behaviors of a <code>DetailView</code> class-based view
+are:</p>
+<ul>
+<li>The model record is determined
+based on the <code>model</code> option and the url <code>pk</code>
+parameter that delimits the query to a single record based on the
+model's primary key.</li>
+<li>The template to render the record
+uses the convention
+<code>&lt;app_name&gt;/&lt;model_name&gt;_detail.html</code> under
+the <code>TEMPLATES</code> directory path of a project.</li>
+<li>The context variable passed to a
+template (i.e. the one containing the record) is named after the
+<code>model</code> of the class-based view. (e.g. if
+<code>model=Item</code>, the context variable is named
+<code>item</code>).</li>
+</ul>
+
+<p class="card-text text-justify">As you can see in this example, a
+class-based view that inherits its behavior from the
+<code>DetailView</code> class, cuts-down the boilerplate code
+needed to present a single model record.</p>
+
+
+
+<h2>ListView fields and methods</h2>
+<p class="card-text text-justify">Similar to the
+<a href="https://www.webforefront.com/django/modelclassbasedviews.html#create-view-fields-and-methods"><code>CreateView</code> class-based view</a> presented earlier, it's
+possible to override many of default behaviors of a
+<code>ListView</code> class-based view.</p>
+<p class="card-text text-justify">As it turns out, the
+<code>ListView</code> class-based view inherits its behavior from
+many other Django class-based views, presented in the following
+list:</p>
+<pre>django.views.generic.list.MultipleObjectTemplateResponseMixin
+django.views.generic.base.TemplateResponseMixin
+django.views.generic.list.BaseListView
+django.views.generic.list.MultipleObjectMixin
+django.views.generic.base.View
+</pre>
+<div class="card border-primary mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Note</strong> A <code>ListView</code> class-based view
+inherits many fields and methods from its parent classes. The
+following options are the most common ones, for an exhaustive list
+consult each of the <code>ListView</code> parent
+classes.</blockquote>
+</div>
+</div>
+<h3>Basic ListView option: model field</h3>
+<p class="card-text text-justify">As you saw in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-15">listing 9-15</a>, the
+essential logic fulfilled by a <code>ListView</code> class-based
+view is to create a list of records from a model. Therefore the
+<code>model</code> field option is essential to indicate on which
+model to create a record list.</p>
+<p class="card-text text-justify">The next sections describe how to
+customize a <code>ListView</code> class-based view, including how
+to delimit and generate multiple pages for a list of records, as
+well as how to override other default behaviors.</p>
+<h3>Customize template context reference name: context_object_name</h3>
+<p class="card-text text-justify">In <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-15">listing 9-15</a>, you can see the
+template of the <code>ListView</code> class-based view uses the
+rather unfriendly context variable named <code>object_list</code>.
+This is the default behavior, but to help template editors, it's
+possible to use a different context variable to contain the list of
+records.</p>
+<p class="card-text text-justify">The
+<code>context_object_name</code> field is used to define a custom
+context variable name to manipulate the list of records inside a
+template (e.g. <code>context_object_name = 'item_list'</code>).</p>
+<div class="card border-success mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Tip</strong> A <code>ListView</code> class-based view also
+inherits its behavior from many of the same classes as the
+<a href="https://www.webforefront.com/django/modelclassbasedviews.html#create-view-fields-and-methods"><code>CreateView</code> class</a> described earlier. Therefore, you can
+also use: the <code>template_name</code> field to specify a custom
+template name; the <code>content_type</code> field to specify a
+MIME type and the <code>get_context_data()</code> method to alter
+the context used by a template.</blockquote>
+</div>
+</div>
+<h3>Customize record list: queryset and ordering fields &amp;
+pagination behavior</h3>
+<p class="card-text text-justify">By default, a
+<code>ListView</code> class-based view generates a list for all
+records that belong to a model. While this behavior is reasonable,
+it can also be necessary to create a <code>ListView</code>
+class-based view that returns a more limited criteria, in which
+case it's necessary to delimit the backing model query. The
+<code>queryset</code> field is used to define a custom query to
+generate a list of records.</p>
+<p class="card-text text-justify">Another helpful option to
+customize a record list is to specify the field order in which to
+generate the record list. Similar to the <a href="https://www.webforefront.com/django/modelqueriesbysql.html#order">standard
+<code>order_by()</code> method</a> used in model queries, a
+<code>ListView</code> class-based view can specify the
+<code>ordering</code> field to define the sort order of a record
+list.</p>
+<p class="card-text text-justify">Listing 9-17 illustrates the use
+of the <code>queryset</code> and <code>ordering</code> fields in a
+<code>ListView</code> class-based view.</p>
+<h4>Listing 9-17 Django class-based view with ListView to reduce
+record list with queryset</h4>
+<pre># views.py
+from django.views.generic.list import ListView
+from .models import Item
+
+class ItemList(ListView):
+    model = Item
+    <strong>queryset = Item.objects.filter(menu__id=1)</strong>
+<strong>    ordering = ['name']</strong>
+</pre>
+<p class="card-text text-justify">As you can see in listing 9-17,
+the <code>queryset</code> field is assigned a standard model query
+to produce <code>Item</code> records with a <code>menu</code>
+<code>id=1</code>. In this manner, the resulting record list passed
+by <code>ListView</code> the class-based view to the template only
+contains <code>Item</code> records that match this criteria. In
+addition, listing 9-17 also makes use of the <code>ordering =
+['name']</code> field, which in this case ensures the query to
+generate the record list is sorted by the <code>Item</code> model's
+<code>name</code> field.</p>
+<p class="card-text text-justify">Although the
+<code>queryset</code> option is helpful to delimit the size of the
+record list presented by a <code>ListView</code> class-based view,
+sometimes it's necessary to deal with a large record list and still
+be able to delimit the amount of results displayed in a template.
+For such scenarios, you can use pagination to split out a large
+record list over multiple pages.</p>
+<p class="card-text text-justify">Since pagination by definition
+depends on the use of multiple pages, it forces you to adjust not
+only a <code>ListView</code> class-based view definition, but also
+the url structure and template used by the class-based view to
+support multiple pages. Listing 9-18 illustrates a pagination
+example for a a <code>ListView</code> class-based view, which is
+based on the example from <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-15">listing 9-15</a>.</p>
+<h4>Listing 9-18 Django class-based view with ListView to read list
+of records with pagination</h4>
+<pre># views.py
+from django.views.generic.list import ListView
+from .models import Item
+
+class ItemList(ListView):
+    model = Item
+    <strong>paginate_by = 5</strong>
+
+# urls.py 
+from django.conf.urls import url
+from coffeehouse.items import views as items_views
+
+urlpatterns = [
+    url(r'^$',items_views.ItemList.as_view(),name="index"),
+   <strong> url(r'^page/(?P&lt;page&gt;\d+)/$',items_views.ItemList.as_view(),name="page"),</strong>
+]
+
+# templates/items/item_list.html 
+  {% regroup object_list by menu as item_menu_list %}
+  {% for menu_section in item_menu_list %}
+   &lt;li&gt;{{ menu_section.grouper }}
+    &lt;ul&gt;
+        {% for item in menu_section.list %}
+        &lt;li&gt;{{item.name|title}}&lt;/li&gt;    
+        {% endfor %}
+    &lt;/ul&gt;
+    &lt;/li&gt;
+  {% endfor %}
+<strong> {% if is_paginated %}</strong>
+<strong>    {{page_obj}}</strong>
+<strong> {% endif %}</strong>
+</pre>
+
+<p class="card-text text-justify">The relevant pagination logic in
+listing 9-18 is in bold. First off, the <code>paginate_by =
+5</code> is added to the class-based view definition, which tells
+Django to limit the record list to five records per page. Since the
+<code>ListView</code> class-based view will require a page number
+to display records beyond the first five records of query -- since
+pages are limited 5 -- the natural place to obtain a page number is
+through a url (e.g. <code>/page/1/</code> to create a list with the
+first five records of a query, <code>/page/2/</code> to create a
+list with the records six through ten, etc).</p>
+<p class="card-text text-justify">Next in listing 9-18, you can see
+a new url definition with the <code>(?P&lt;page&gt;\d+)</code>
+parameter hooked up the <code>ListView</code> class-based view.
+This url definition allows a request that matches the regular
+expression pattern (e.g. <code>/page/1/,/page/2/)</code> to pass
+the url <code>page</code> parameter value to the class-based view.
+When a <code>ListView</code> class-based view detects a url
+<code>page</code> parameter value with the presence of the
+<code>paginate_by</code> option, it adjusts the query for the
+record list to return the appropriate set of records to a template
+based on the page (e.g. <code>/page/1/</code> generates a list of
+records from one to five of the overall query,
+<code>/page/2/</code> generates a list of records from six to ten
+of the overall query, etc<code>).</code></p>
+<p class="card-text text-justify">Finally, the last section in
+listing 9-18 represents the backing template for a
+<code>ListView</code> class-based view that uses pagination. The
+<code>{% is_paginated %}</code> tag and <code>{{page_obj}}</code>
+context reference are used let users know on which page of the
+overall record list they're on.</p>
+<div class="card border-success mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Tip</strong> A <code>ListView</code> class-based view can
+also use the <code>get()</code> class-based view method to get full
+control over the view workflow. See the previous section on <a href="https://www.webforefront.com/django/modelclassbasedviews.html#get-and-post">the
+<code>CreateView</code> class-based view</a> which describes how to use
+it and its implications.</blockquote>
+</div>
+</div>
+<h2>DetailView fields and methods</h2>
+<p class="card-text text-justify">Like other class-based views, a
+<code>DetailView</code> class-based view can also be created with
+custom fields and methods to override their default behaviors.</p>
+<p class="card-text text-justify">As it turns out, the
+<code>DetailView</code> class inherits its behavior from many other
+Django class-based views, which are described in the following
+list:</p>
+<pre>django.views.generic.detail.SingleObjectTemplateResponseMixin
+django.views.generic.base.TemplateResponseMixin
+django.views.generic.detail.BaseDetailView
+django.views.generic.detail.SingleObjectMixin
+django.views.generic.base.View
+</pre>
+<div class="card border-primary mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Note</strong> A <code>DetailView</code> class-based view
+inherits many fields and methods from its parent classes. The
+following options are the most common ones, for an exhaustive list
+consult each of the <code>DetailView</code> parent
+classes.</blockquote>
+</div>
+</div>
+<h3>Basic DetailView options: model field and url with pk
+parameter</h3>
+<p class="card-text text-justify">As you saw in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-16">listing 9-16</a>, the
+essential logic fulfilled by a <code>DetailView</code> class-based
+view is to get a model record and display it in a template.
+Therefore the <code>model</code> field is one of the essential
+pieces to this type of class-based view and must always by
+provided.</p>
+<p class="card-text text-justify">In order to get a specific model
+record, a <code>DetailView</code> class-based view must also define
+a url parameter which helps it select a model record. By default,
+this url parameter must be named <code>pk</code> and its value is
+used to perform a query on the <code>model</code> value using the
+<code>pk</code> field, which is generally equivalent to a model's
+<code>id</code> field.</p>
+<div class="card border-success mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Tip</strong> A <code>DetailView</code> class-based view
+also inherits its behavior from many of the class-based view
+classes described earlier. Therefore, you can also use: the
+<code>template_name</code> field to specify a custom template name;
+the <code>content_type</code> field to specify a MIME type; the
+<code>get_context_data()</code> method to alter the context used by
+a template; as well as the <code>context_object_name</code> field
+to declare a different context variable to access a record in a
+template.</blockquote>
+</div>
+</div>
+<h3>Customize url and query parameters: pk_url_kwarg, slug_field
+&amp; slug_url_kwarg</h3>
+<p class="card-text text-justify">By default, a
+<code>DetailView</code> class-based view expects a url argument
+named <code>pk</code> to determine on which model record to make a
+query by its primary key. However, if you already have a
+pre-existing url or simply don't like this inexpressive url
+parameter name, you can assign a custom url parameter with the
+<code>pk_url_kwarg</code> field.</p>
+<p class="card-text text-justify">For example, setting
+<code>pk_url_kwarg='item_id'</code> on a <code>DetailView</code>
+class-based view, allows a url to be defined as
+<code>url(r'^(?P&lt;item_id&gt;\d+)/$',items_views.ItemDetail.as_view())</code>
+vs. the default
+<code>url(r'^(?P&lt;pk&gt;\d+)/$',items_views.ItemDetail.as_view())</code>.</p>
+<p class="card-text text-justify">Even though performing the record
+query of a <code>DetailView</code> class-based view with the
+<code>pk</code> field is a common practice -- given the
+<code>pk</code> field is generally an integer field with a database
+index to increase lookup performance -- sometimes in can be
+necessary to perform the record query of a <code>DetailView</code>
+class-based with another model field (e.g. to create more
+user/SEO-friendly urls like <code>/item/capuccino/</code>, instead
+of <code>/item/1/</code>).</p>
+<p class="card-text text-justify">Listing 9-19 illustrates a
+<code>DetailView</code> class-based view that uses the
+<code>slug_field</code> option to allow a model record query to be
+made against a model field other than <code>pk</code>.</p>
+<h4>Listing 9-19 Django class-based view with DetailView and
+slug_field option</h4>
+<pre># views.py
+from django.views.generic import DetailView
+from .models import Item
+
+class ItemDetail(DetailView):
+    model = Item
+    <strong>slug_field = 'name__iexact'</strong>
+
+# urls.py 
+from django.conf.urls import url
+from coffeehouse.items import views as items_views
+urlpatterns = [
+    url(<strong>r'^(?P&lt;slug&gt;\w+)</strong>/$',items_views.ItemDetail.as_view(),name="detail"),
+]
+
+# Template identical to listing to template in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-16">listing 9-16</a>
+</pre>
+<p class="card-text text-justify">The first important aspect in
+listing 9-19 is the url definition has a url parameter named
+<code>slug</code> that matches any word pattern due to the
+<code>w+</code> regular expression. This means urls such as
+<code>/items/espresso/</code> and <code>/items/latte/</code> match
+this url, unlike the prior <code>DetailView</code> class-based url
+definition that uses the <code>pk</code> parameter to match numeric
+values with <code>d+</code> regular expression.</p>
+<p class="card-text text-justify">When a <code>DetailView</code>
+class-based view receives a url parameter named <code>slug</code>,
+it signals the class-based view that the model record query should
+done on a model field other thank <code>pk</code>. Because this
+<code>slug</code> value can be ambiguous (e.g. it can represent one
+of several model field values, such as name, cost or description),
+it's necessary to qualify which model field the <code>slug</code>
+value represents, which is the purpose of <code>slug_field</code>
+field.</p>
+<p class="card-text text-justify">In the case of listing 9-19, the
+<code>slug_field</code> field is set to <code>name__iexact</code>,
+which tells the <code>DetailView</code> class-based view to perform
+a case-insensitive model query with the <code>slug</code> value on
+the <code>Item</code> model <code>name</code> field. The case
+insensitive query is provided by the <code>__iexact</code> lookup
+and is important in case the database record values are mixed-case
+(e.g. the url <code>/items/capuccino/</code> would match an
+<code>Item</code> name record <code>capuccino</code>,
+<code>Capuccino</code> or <code>CAPUCCINO</code>. Without case
+inventivenesses, the <code>Item</code> name record would need to be
+exactly <code>capuccino</code> to match the url).</p>
+<p class="card-text text-justify">Although not presented in the
+sample in listing 9-19, another option available for a
+<code>DetailView</code> class-based view is the
+<code>slug_url_kwarg</code> option, which has a similar to the
+<code>pk_url_kwarg</code> option described earlier.</p>
+<p class="card-text text-justify">By default, a
+<code>DetailView</code> class-based view that uses a slug query
+(i.e. non <code>pk</code> query) expects a url argument named
+<code>slug</code> to determine on which model field to make a query
+to obtain a record. However, if you already have a pre-existing url
+or simply don't like this inexpressive url parameter name, you can
+assign a custom url parameter with the <code>slug_url_kwarg</code>
+field.</p>
+<p class="card-text text-justify">For example, setting
+<code>slug_url_kwarg='item_name'</code> on a
+<code>DetailView</code> class-based view, allows a url to be
+defined as
+<code>url(r'^(?P&lt;item_name&gt;\w+)/$',items_views.ItemDetail.as_view())</code>
+vs. the default
+<code>url(r'^(?P&lt;slug&gt;\w+)/$',items_views.ItemDetail.as_view())</code>.</p>
+<div class="card border-success mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Tip</strong> A <code>DetailView</code> class-based view can
+also use the <code>get()</code> class-based view method to get full
+control over the view workflow. See the previous section on <a href="https://www.webforefront.com/django/modelclassbasedviews.html#get-and-post">the
+<code>CreateView</code> class-based view</a> which describes how to use
+it and its implications.</blockquote>
+</div>
+</div>
+
+
+
+<h2>Update model records with the class-based view UpateView</h2>
+<p class="card-text text-justify">When you update a Django model
+record, the typical process involves: fetching the model record you
+want to update from a database, presenting the model data in a form
+so a user can make changes and finally saving the changes back to
+the database. The Django <code>UpdateView</code> class-based view
+is specifically designed to cut-down on the amount of boilerplate
+code needed to update a Django model record.</p>
+<p class="card-text text-justify">Due to its functionality, the
+<code>UpdateView</code> class-based view operates like a
+combination of the <code>CreateView</code> -- which creates a model
+record through a form -- and the <code>DetailView</code> -- which
+displays a model record. Listing 9-20 illustrates an example of an
+<code>UpdateView</code> class-based view.</p>
+<h4>Listing 9-20 Django class-based view with UpdateView to edit a
+record</h4>
+<pre># views.py
+from django.views.generic import UpdateView
+from .models import Item
+
+class ItemUpdate(UpdateView):
+    model = Item
+    form_class = ItemForm
+    success_url = reverse_lazy('items:index')
+
+# urls.py 
+from django.conf.urls import url
+from coffeehouse.items import views as items_views
+
+urlpatterns = [
+     url(r'^edit/(?P&lt;pk&gt;\d+)/$', items_views.ItemUpdate.as_view(), name='edit'),
+]
+
+# templates/items/item_form.html 
+&lt;form method="post"&gt;
+        {% csrf_token %}
+        {{ form.as_p }}
+        &lt;button type="submit" class="btn btn-primary"&gt;
+          {% if object == None%}Create{% else %}Update{% endif %}
+        &lt;/button&gt;
+&lt;/form&gt;
+</pre>
+<p class="card-text text-justify">The first definition in listing
+9-20 is the <code>ItemUpdate</code> class which inherits its
+behavior from the <code>UpdateView</code> class-based view class.
+The <code>model</code> field in the <code>ItemUpate</code> class
+sets a value to <code>Item</code>, which tells Django to update
+<code>Item</code> model records. In addition, because you're
+dealing with an update operation, the <code>Item</code> model
+record must be presented in a form -- which is the purpose of the
+<code>from_class</code> option -- as well as define a success url
+to redirect a user if an update is successful, which is the purpose
+of the <code>success_url</code> option.</p>
+
+
+
+<p class="card-text text-justify">Next in listing 9-20 is the url
+definition that hooks up the <code>UpdateView</code> class-based
+view class. Because an <code>UpdateView</code> class-based view
+must present a specific model record to edit, it relies on a url
+parameter to limit a query to a single record. In this case, notice
+the url contains the <code>pk</code> url parameter that gets passed
+to the class-based view -- just like it's done with a
+<code>DetailView</code> class-based view.</p>
+<p class="card-text text-justify">For example, if a request is made
+for the url <code>/items/edit/1/</code>, <code>1</code> is passed
+as the <code>pk</code> argument to the <code>UpdateView</code>
+class-based view, which in turn performs the query
+<code>Item.objects.get(pk=1)</code> to retrieve the record and
+present it in a form for editing.</p>
+<p class="card-text text-justify">Finally, the last part in listing
+9-20 illustrates the template <code>item_form.html</code> which
+displays the record inside a form to edit. One important aspect of
+the default <code>UpdateView</code> class-based view template, is
+that it's the same default template used by a
+<code>CreateView</code> class-based view. This is because both
+class-based views share the same parent class-based view class for
+this functionality, not to mention the purpose of the form is the
+same (e.g. the form in a <code>CreateView</code> class-based view
+is sent empty for a user to fill in new record data, where as the
+form in a <code>UpdateView</code> class-based view is sent
+pre-filled with a record to update the record data).</p>
+<p class="card-text text-justify">For this reason, the template in
+listing 9-20 is almost identical to the template in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-9">listing 9-9</a>
+used in a <code>CreateView</code> class-based view. The minor
+difference is that if the template detects the presence the
+<code>object</code> variable in its context, it means the
+<code>UpdateView</code> class-based view is passing a record for
+editing and the form button is set to <code>Update</code>,
+otherwise, if no <code>object</code> variable is present, it means
+the <code>CreateView</code> class-based view is calling the
+template and the form button is set to <code>Create</code>.</p>
+<p class="card-text text-justify">Recapping, the most important
+default behaviors of an <code>UpdateView</code> class-based
+view:</p>
+<ul>
+<li>The model record to update is
+determined based on the <code>model</code> option and a url
+<code>pk</code> parameter that delimits the query to a single
+record based on the model's primary key.</li>
+<li>The template to render a form to
+update a record uses the convention
+<code>&lt;app_name&gt;/&lt;model_name&gt;_form.html</code> under
+the <code>TEMPLATES</code> directory path of a project; noting it's
+the same default template used by <code>CreateView</code>
+class-based views, for which you can rely on the presence of the
+<code>object</code> context variable to determine if it's the
+<code>UpdateView</code> calling the template.</li>
+<li>The context variable passed to a
+template (i.e. the one containing the record) is named
+<code>object</code>, albeit the form is automatically populated
+with this record value.</li>
+</ul>
+
+<p class="card-text text-justify">As you can see in this example, a
+class-based view that inherits its behavior from the
+<code>UpdateView</code> class, cuts-down the boilerplate code
+needed to edit a model record.</p>
+<h2>UpdateView fields and methods</h2>
+<p class="card-text text-justify">Like other class-based views,
+<code>UpdateView</code> class-based views can also be created with
+custom fields and methods to override their default behaviors.</p>
+<p class="card-text text-justify">As it turns out, the
+<code>UpdateView</code> class inherits its behavior from many other
+Django class-based views, presented in the following list:</p>
+<pre>django.views.generic.detail.SingleObjectTemplateResponseMixin
+django.views.generic.base.TemplateResponseMixin
+django.views.generic.edit.BaseUpdateView
+django.views.generic.edit.ModelFormMixin
+django.views.generic.edit.FormMixin
+django.views.generic.detail.SingleObjectMixin
+django.views.generic.edit.ProcessFormView
+django.views.generic.base.View
+</pre>
+<div class="card border-primary mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Note</strong> An <code>UpdateView</code> class-based view
+inherits many fields and methods from its parent classes. The
+following options are the most common ones, for an exhaustive list
+consult each of the <code>UpdateView</code> parent
+classes.</blockquote>
+</div>
+</div>
+<h3>Basic UpdateView options: model, form_class and success_url
+fields &amp; url with pk parameter</h3>
+<p class="card-text text-justify">As you saw in listing 9-20, the
+essential logic fulfilled by an <code>UpdateView</code> class-based
+view is to get a model record and display it in a form for editing.
+Therefore the <code>model</code> field is one of the essential
+pieces for this type of class-based view and must always by
+provided. In addition, because a record is updated via form, it's
+also necessary to specify a form through the
+<code>form_class</code> option, as well as a success url through
+the <code>success_url</code> option for when an update is
+successful.</p>
+<p class="card-text text-justify">In order to get a specific model
+record, an <code>UpdateView</code> class-based view must also
+define a url parameter which helps it select a model record to
+edit. By default, this url parameter must be named <code>pk</code>
+and its value is used to perform a query on the <code>model</code>
+value using the <code>pk</code> field, which is generally
+equivalent to a model's <code>id</code> field.</p>
+<div class="card border-success mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Tip</strong> An <code>UpdateView</code> class-based view
+also inherits its behavior from many of the class-based view
+classes described earlier. Therefore, you can also use: the
+<code>template_name</code> field to specify a custom template name;
+the <code>content_type</code> field to specify a MIME type; the
+<code>get_context_data()</code> method to alter the context used by
+a template; as well as the <code>context_object_name</code> field
+to declare a different context variable to access a record in a
+template. In addition, because an <code>UpdateView</code>
+class-based view requires obtaining a model record, it can also
+use: the <code>pk_url_kwarg</code> field to accept a different url
+parameter named differently than <code>pk</code>; the
+<code>slug_field</code> field to specify an alternative record
+query field; and the <code>slug_url_kwarg</code> field to accept a
+different url parameter named differently than
+<code>slug</code>.Finally, an <code>UpdateView</code> class-based
+view can also use the the <code>get()</code> and
+<code>post()</code> class-based view methods to get full control
+over the view workflow. The previous class-based view sections
+which describes how use all these class-based view fields and
+methods.</blockquote>
+</div>
+</div>
+<h2>Delete records with the class-bases view DeleteView</h2>
+<p class="card-text text-justify">When you delete a Django model
+record, besides executing the actual delete operation, it's
+generally a good practice to present a confirmation page to a user.
+The Django <code>DeleteView</code> class-based view is specifically
+designed to cut-down on the amount of boilerplate code needed to
+delete a model record, while presenting a confirmation page.
+Listing 9-21 illustrates a <code>DeleteView</code> class-based view
+example.</p>
+<a id="listing-9-21"></a>
+<h4>Listing 9-21 Django class-based view with DeleteView to delete
+record</h4>
+<pre># views.py
+from django.views.generic.edit import DeleteView
+from .models import Item
+
+class ItemDelete(UpdateView):
+    model = Item
+    success_url = reverse_lazy('items:index')
+
+# urls.py 
+from django.conf.urls import url
+from coffeehouse.items import views as items_views
+
+urlpatterns = [
+    url(r'^delete/(?P&lt;pk&gt;\d+)/$', items_views.ItemDelete.as_view(), name='delete'),  
+]
+
+# templates/items/item_confirm_delete.html 
+  &lt;form method="post"&gt;
+        {% csrf_token %}
+        Do you really want to delete "{{ object }}"?
+        &lt;button class="btn btn-primary" type="submit"&gt;Yes, remove it!&lt;/button&gt;
+  &lt;/form&gt;
+</pre>
+<p class="card-text text-justify">The first definition in listing
+9-21 is the <code>ItemDelete</code> class which inherits its
+behavior from the <code>DeleteView</code> class-based view class.
+The <code>model</code> field in the <code>ItemDelete</code> class
+sets a value to <code>Item</code>, which tells Django to delete
+<code>Item</code> model records. In addition, because you'll want
+users to confirm the delete operation, the <code>success_url</code>
+option must also be declared to specify where to take users after
+the delete operation is successful.</p>
+<p class="card-text text-justify">Next in listing 9-21 is the url
+definition that hooks up the <code>DeleteView</code> class-based
+view class. Because a <code>DeleteView</code> class-based view must
+be told which model record to delete, it relies on a url parameter
+to provide this query delimiter. In this case, notice the url
+contains the <code>pk</code> url parameter that gets passed to the
+class-based view -- just like it's done with a
+<code>DetailView</code> class-based view.</p>
+<p class="card-text text-justify">For example, if a request is made
+for the url <code>/items/delete/1/</code>, <code>1</code> is passed
+as the <code>pk</code> argument to the <code>DeleteView</code>
+class-based view, which in turn performs the query
+<code>Item.objects.get(pk=1)</code> to prepare the record for
+deletion.</p>
+<p class="card-text text-justify">Finally, the last part in listing
+9-21 illustrates the <code>item_confirm_delete.html</code> template
+which is used for the user-facing deletion sequence. Notice this
+template contains a pseudo-form (i.e no form fields) with a
+question and submit button. The reason for this pseudo-form is the
+<code>item_confirm_delete.html</code> template has a dual
+function.</p>
+<p class="card-text text-justify">If an HTTP GET request is made on
+a <code>DeleteView</code> class-based view, a page with this
+pseudo-form is returned to the user presenting him with the
+question <code>Do you really want to delete "{{ object }}"?</code>
+, where <code>object</code> is the model record to be deleted. If
+the user clicks on this pseudo-form submit button, it issues an
+HTTP POST request -- notice the <code>&lt;form
+method="post"&gt;</code> tag -- to the same <code>DeleteView</code>
+class-based view, which invokes the actual delete procedure. In
+this manner, this template with a pseudo-form allows a user to
+confirm if he really wants to delete the record after hitting a url
+delete link (e.g. <code>/items/delete/1/</code>), instead of
+immediately deleting a record when hitting a url delete link.</p>
+<p class="card-text text-justify">Recapping, the most important
+default behaviors of a <code>DeleteView</code> class-based view
+are:</p>
+<ul>
+<li>The model record to delete is
+determined based on the <code>model</code> option and a url
+<code>pk</code> parameter that delimits the query to a single
+record based on the model's primary key.</li>
+<li>The template to render a form to
+update a record uses the convention
+<code>&lt;app_name&gt;/&lt;model_name&gt;_confirm_delete.html</code>
+under the <code>TEMPLATES</code> directory path of a project.</li>
+<li>The context variable passed to a
+template (i.e. the one containing the record to delete) is named
+<code>object.</code></li>
+<li>An HTTP GET request on a
+<code>DeleteView</code> class-based view presents the confirmation
+page from the
+<code>&lt;app_name&gt;/&lt;model_name&gt;_confirm_delete.html</code>
+template. An HTTP POST request on a <code>DeleteView</code>
+class-based view performs the actual delete procedure.</li>
+</ul>
+
+
+<p class="card-text text-justify">As you can see in this example, a
+class-based view that inherits its behavior from the
+<code>DeleteView</code> class, cuts-down the boilerplate code
+needed to delete a model record.</p>
+<h2>DeleteView fields and methods</h2>
+<p class="card-text text-justify">Like other class-based views, a
+<code>DeleteView</code> class-based view can also be created with
+custom fields and methods to override their default behaviors.</p>
+<p class="card-text text-justify">As it turns out, the
+<code>DeleteView</code> class inherits its behavior from many other
+Django class-based views, presented in the following list:</p>
+<pre>django.views.generic.detail.SingleObjectTemplateResponseMixin
+django.views.generic.base.TemplateResponseMixin
+django.views.generic.edit.BaseDeleteView
+django.views.generic.edit.DeletionMixin
+django.views.generic.detail.BaseDetailView
+django.views.generic.detail.SingleObjectMixin
+django.views.generic.base.View
+</pre>
+<div class="card border-primary mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Note</strong> A <code>DeleteView</code> class-based view
+inherits many fields and methods from its parent classes. The
+following options are the most common ones, for an exhaustive list
+consult each of the <code>DeleteView</code> parent
+classes.</blockquote>
+</div>
+</div>
+<h3>Basic DeleteView options: model and success_url fields &amp;
+url with pk parameter</h3>
+<p class="card-text text-justify">As you saw in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-21">listing 9-21</a>, the
+essential logic fulfilled by a <code>DeleteView</code> class-based
+view is to get a model record and delete it while presenting a
+confirmation page. Therefore the <code>model</code> field is one of
+the essential pieces to this type of class-based view and must
+always by provided. In addition, because a record is set to be
+deleted, it's also necessary to specify a success url through the
+<code>success_url</code> option to re-direct a user after the
+record is deleted.</p>
+<p class="card-text text-justify">In order to get a specific model
+record, a <code>DeleteView</code> class-based view must also define
+a url parameter which helps it select a model record to delete. By
+default, this url parameter must be named <code>pk</code> and its
+value is used to perform a query on the <code>model</code> value
+using the <code>pk</code> field, which is generally equivalent to a
+model's <code>id</code> field.</p>
+<div class="card border-success mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Tip</strong> A <code>DeleteView</code> class-based view
+also inherits its behavior from many of the class-based view
+classes described earlier. Therefore, you can also use: the
+<code>template_name</code> field to specify a custom template name;
+the <code>content_type</code> field to specify a MIME type; the
+<code>get_context_data()</code> method to alter the context used by
+a template; as well as the <code>context_object_name</code> field
+to declare a different context variable to access a record in a
+template. In addition, because a <code>DeleteView</code>
+class-based view requires obtaining a model record, it can also
+use: the <code>pk_url_kwarg</code> field to accept a different url
+parameter named differently than <code>pk</code>; the
+<code>slug_field</code> field to specify an alternative record
+query field; and the <code>slug_url_kwarg</code> field to accept a
+different url parameter named differently than
+<code>slug</code>.Finally, an <code>DeleteView</code> class-based
+view can also use the <code>get()</code> and post() class-based
+view methods to get full control over the view workflow. The
+previous class-based view sections describe how to use all these
+class-based view fields and methods.</blockquote>
+</div>
+</div>
+
+
+
+
+<a id="mixins"></a>
+<h2>Class-based views with mixins</h2>
+<p class="card-text text-justify">Although all class-based views
+that operate on models typically follow the same workflow to
+create, read, update and delete model records, it's fair to say
+that after seeing the previous class-based view sections, you'll
+often find yourself adjusting the default behavior of class-based
+views.</p>
+<p class="card-text text-justify">While it can be perfectly
+reasonable to adjust the methods and fields of a class-based view a
+couple of times, it can get tiresome if you need to do it over and
+over to obtain the same functionality across dozens or hundreds of
+class-based views.</p>
+<p class="card-text text-justify">Nowhere is this more evident than
+when you're forced to define a <code>get()</code> or
+<code>post()</code> method in a class-based view, to include some
+functionality that's not supported in a class-based view (e.g.
+<code>CreateView</code>, <code>ListView</code>,
+<code>DetailView</code>, <code>UpdateView</code>,
+<code>DeleteView</code>), which requires typing in a a long winded
+workflow which can turn out to be repetitive if done multiple
+times. To cut down on repetitive customizations in the context of
+class-based views, you can use <em>mixins</em>.</p>
+<p class="card-text text-justify">For starters, you've already used
+mixins in the context of class-based views, even if you didn't
+realize it. If you looked closely at the class-based view classes
+that provide the behaviors to the model class-based views described
+in previous sections, you may have noticed many include the term
+<em>mixin</em> in their name (e.g. <code>ModelFormMixin</code>,
+<code>FormMixin</code>, <code>SingleObjectMixin</code>).</p>
+<p class="card-text text-justify">A software mixin is a construct
+that allows <em>inheritance-like</em> behavior between classes,
+noting the emphasis on <em>inheritance-like</em>. When you use
+class inheritance, a parent-child class relationship is often
+described with the 'is a' term (e.g. if a Drink class inherits its
+behavior from an Item class, a Drink <em>is an</em> Item). A mixin
+class on the other hand, allows a class to adopt the behaviors of a
+mixin class without the 'is a' behavior.</p>
+<p class="card-text text-justify">In other words, a mixin class is
+a way to add functionality to classes, with the mixin class serving
+as a re-usable component. For example, you can have a mixin
+Checkout class used by a Store class and OnlineStore class, which
+allows the functionality of the mixin class to be reused in any
+other class. Notice that for mixin classes, the inheritance 'is a'
+behavior doesn't apply, you can't say a Store <em>is a</em>
+Checkout or an OnlineStore <em>is a</em> Checkout, it's more of
+'uses a' behavior. Therefore although mixin classes -- semantically
+speaking -- are used to inherit behaviors, technically speaking
+they don't use inheritance as it's commonly known in software
+engineering, hence the use of the term
+<em>inheritance-like</em>.</p>
+<p class="card-text text-justify">So why are mixins important to
+class-based views ? It turns out, all of the base class-based view
+classes you learned about in the previous section are built on
+class-based views mixins. This not only means you can mix and match
+mixins to create custom class-based views, but you can also create
+or re-use other mixins to enhance the functionality of class-based
+views.</p>
+<p class="card-text text-justify">Earlier when you learned about
+the <code>CreateView()</code> class-based view, you may recall the
+examples in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-13">listing 9-13</a> and <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-14">listing 9-14</a> added a Django framework success
+message to inform a user when a record was created. In the case of
+<a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-13">listing 9-13</a>, this required tapping into the
+<code>form_valid()</code> class-based view method to add this
+message, while in the case of <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-14">listing 9-14</a>, this required tapping
+into the <code>post()</code> class-based view method. Although both
+approaches are perfectly valid, declaring either of these methods
+in a class-based view for the sole purpose of adding a Django
+framework success message is a lot of work.</p>
+<p class="card-text text-justify">By using a mixin on a class-based
+view, you can simplify the addition of Django framework success
+messages in a class-based view to a single field, without the need
+to customize more elaborate methods and/or add logic to a
+class-based view.</p>
+<p class="card-text text-justify">Listing 9-22 illustrates a
+<code>CreateView</code> class-based view that uses a mixin to
+support this functionality to add a Django framework success
+message to a class-based view response.</p>
+<p class="card-text text-justify">Listing 9-22 Django class-based
+view with CreateView and mixin class</p>
+<pre># views.py
+from django.views.generic.edit import CreateView
+<strong>from django.contrib.messages.views import SuccessMessageMixin</strong>
+from .models import Item, ItemForm
+
+class ItemCreation(<strong>SuccessMessageMixin</strong>,CreateView):
+    model = Item
+    form_class = ItemForm
+    success_url = reverse_lazy('items:index')
+   <strong> success_message = "Item %(name)s created successfully"</strong>
+</pre>
+
+<div class="card border-danger mb-3 text-center">
+<div class="card-body">
+<blockquote class="card-blockquote text-justify">
+<strong>Caution</strong> Mixin classes should always be declared first to take precedence over coarser grained class-based views classes in the context of multiple inheritance class-based views (e.g. <code>class ItemCreation(SuccessMessageMixin,CreateView)</code> ).
+</blockquote>
+</div>
+</div>
+
+<p class="card-text text-justify">The first important aspect of
+listing 9-22 is the <code>import</code> statement for the
+<code>SuccessMessageMixin</code> mixin class, which is what gives
+any class-based view the ability to easily add success messages.
+Next, the <code>SuccessMessageMixin</code> mixin class is added to
+the <code>ItemCreation</code> class, along with the
+<code>CreateView</code> class-based view to give the class-based
+view its core functionality. Notice the mixin class is added to the
+class-based view using standard Python inheritance syntax.</p>
+<p class="card-text text-justify">Once the
+<code>ItemCreation</code> class-based view gains access to the
+<code>SuccessMessageMixin</code> mixin class behavior, all that's
+needed to generate a success message is define the actual message
+in the <code>success_message</code> field. In this manner, when a
+success operation occurs in the context of the class-based view
+(e.g. the <code>success_url</code> is triggered), the class-based
+view automatically adds the <code>success_message</code> value to
+the request to display to an end user.</p>
+<p class="card-text text-justify">As you can see in listing 9-22,
+the process to add a Django framework success message to a
+class-based view is greatly simplified and made reusable by means
+of a mixin class. This is particularly true, when you compare it to
+the approaches taken in <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-13">listing 9-13</a> and <a href="https://www.webforefront.com/django/modelclassbasedviews.html#listing-9-14">listing 9-14</a>, consisting of
+overriding class-based view methods that require a lot of typing --
+many repetitive -- to fulfill a simple task.</p>
+
+
+
+
+</main><div class="col-12 col-md-3 col-md-pull-3 d-none d-md-block p-l-0 p-r-0 collapse show" id="sidebar">
+            <div class="list-group panel" id="navigation" style="height: auto !important;"><a href="https://www.webforefront.com/" class="list-group-item" data-parent="#sidebar"><i class="fa fa-home"></i>&nbsp;<span>Homepage</span></a><a href="https://www.webforefront.com/about/danielrubio/articles.html" class="list-group-item" data-parent="#sidebar"><i class="fa fa-pencil"></i>&nbsp;<span>All books and articles</span></a><a href="https://www.webforefront.com/django/subscription.html" class="list-group-item active" data-parent="#sidebar"><h5><i class="fa fa-book"></i>&nbsp;<span>Lifetime subscription to Django book<br>&nbsp;Skip the ads + get the video version!<br> <div class="col-12 mx-auto text-center"></div></span></h5></a><script async="" src="./Django class-based views with models_files/f(12).txt" crossorigin="anonymous" data-checked-head="true"></script><ins class="adsbygoogle" style="display: block; height: 250px;" data-ad-client="ca-pub-4639088530133416" data-ad-slot="5988496453" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_1_host" style="border: none; height: 250px; width: 323px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:323px;height:250px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="323" height="250" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Django class-based views with models_files/ads.html" data-google-container-id="a!2" data-google-query-id="CPzB3pyIu_4CFZEOoQodJ2sFiQ" data-load-complete="true"></iframe></div></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                <a href="https://www.webforefront.com/django/" class="list-group-item" data-parent="#sidebar"><i class="fa fa-home"></i>&nbsp;<span>Beginning Django</span></a>
+                  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch1" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Introduction to the Django framework</span></a>
+                    <div class="collapse" id="ch1">
+		         <a href="https://www.webforefront.com/django/designprinciples.html" class="list-group-item" data-parent="#ch1"><i class="fa arrow"></i> <span>Django design principles</span></a>
+                         <a href="https://www.webforefront.com/django/installdjango.html" class="list-group-item" data-parent="#ch1"><i class="fa arrow"></i> <span>Install Django</span></a>
+                         <a href="https://www.webforefront.com/django/startdjangoproject.html" class="list-group-item" data-parent="#ch1"><i class="fa arrow"></i> <span>Start a Django project</span></a>
+			 <a href="https://www.webforefront.com/django/setupdjangodatabase.html" class="list-group-item" data-parent="#ch1"><i class="fa arrow"></i> <span>Set up a database for a Django project</span></a>
+			 <a href="https://www.webforefront.com/django/setupdjangocontent.html" class="list-group-item" data-parent="#ch1"><i class="fa arrow"></i> <span>Set up content in Django: Understand urls, templates and apps</span></a>
+			 <a href="https://www.webforefront.com/django/setupdjangoadminsite.html" class="list-group-item" data-parent="#ch1"><i class="fa arrow"></i> <span>Set up the Django admin site</span></a>
+  		    </div>
+                  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch2" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django urls &amp; views</span></a>
+                    <div class="collapse" id="ch2">
+			 <a href="https://www.webforefront.com/django/regexpdjangourls.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>Url paths &amp; regular expressions</span></a>
+			 <a href="https://www.webforefront.com/django/accessurlparamstemplates.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>Url parameters, extra options &amp; query strings</span></a>
+			 <a href="https://www.webforefront.com/django/consolidatedjangourls.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>Url consolidation and modularization</span></a>
+			 <a href="https://www.webforefront.com/django/namedjangourls.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>Url naming and namespaces</span></a>
+			 <a href="https://www.webforefront.com/django/viewmethodrequests.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>View method requests</span></a>
+			 <a href="https://www.webforefront.com/django/viewmethodresponses.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>View method responses</span></a>
+			 <a href="https://www.webforefront.com/django/middlewaredjango.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>View method middleware</span></a>
+			 <a href="https://www.webforefront.com/django/setupdjangomessages.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>Middleware flash messages in view methods</span></a>
+			 <a href="https://www.webforefront.com/django/classbasedviews.html" class="list-group-item" data-parent="#ch2"><i class="fa arrow"></i> <span>Class-based views</span></a>			 
+		    </div>
+		  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch3" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django templates</span></a>
+		    <div class="collapse" id="ch3">
+		       <a href="https://www.webforefront.com/django/templatesyntax.html" class="list-group-item" data-parent="#ch3"><i class="fa arrow"></i> <span>Django template syntax</span></a>
+		       <a href="https://www.webforefront.com/django/customizedjangotemplates.html" class="list-group-item" data-parent="#ch3"><i class="fa arrow"></i> <span>Django template configuration</span></a>
+		       <a href="https://www.webforefront.com/django/createreusabledjangotemplates.html" class="list-group-item" data-parent="#ch3"><i class="fa arrow"></i> <span>Create reusable Django templates</span></a>
+		       <a href="https://www.webforefront.com/django/usedefaultdjangocontextprocessors.html" class="list-group-item" data-parent="#ch3"><i class="fa arrow"></i> <span>Built-in Django context processors</span></a>
+		       <a href="https://www.webforefront.com/django/setupdjangocontextprocessors.html" class="list-group-item" data-parent="#ch3"><i class="fa arrow"></i> <span>Custom Django context processors</span></a>
+		       <a href="https://www.webforefront.com/django/usebuiltindjangofilters.html" class="list-group-item" data-parent="#ch3"><i class="fa arrow"></i> <span>Built-in Django filters</span></a>
+		       <a href="https://www.webforefront.com/django/usebuiltindjangotags.html" class="list-group-item" data-parent="#ch3"><i class="fa arrow"></i> <span>Built-in Django tags</span></a>
+		       <a href="https://www.webforefront.com/django/createcustomdjangofilters.html" class="list-group-item" data-parent="#ch3"><i class="fa arrow"></i> <span>Custom Django filters for Django templates</span></a>      
+		    </div>
+		  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch4" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Jinja templates in Django</span></a>
+		    <div class="collapse" id="ch4">
+		       <a href="https://www.webforefront.com/django/usejinjatemplatesindjango.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Jinja advantages &amp; disadvantages</span></a>
+		       <a href="https://www.webforefront.com/django/transitiontojinjatemplates.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Transition to Jinja templates from Django templates</span></a>
+		       <a href="https://www.webforefront.com/django/jinjaconfiguration.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Jinja template configuration in Django</span></a>
+		       <a href="https://www.webforefront.com/django/createreusablejinjatemplates.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Create reusable Jinja templates</span></a>
+		       <a href="https://www.webforefront.com/django/setupjinjadataforalltemplates.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Jinja globals: Access data on all Jinja templates, like Django context processors</span></a>
+		       <a href="https://www.webforefront.com/django/usebuiltinjinjastatements.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Jinja built-in statements/tags and functions (like Django template tags)</span></a>
+		       <a href="https://www.webforefront.com/django/usebuiltinjinjafilters.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Jinja built-in filters &amp; tests (like Django filters)</span></a>
+		       <a href="https://www.webforefront.com/django/jinjacustomfiltersandtests.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Custom filters &amp; tests in Jinja</span></a>
+		       <a href="https://www.webforefront.com/django/useandcreatejinjaextensions.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Jinja extensions</span></a>
+		     	<a href="https://www.webforefront.com/django/jinjapolicies.html" class="list-group-item" data-parent="#ch4"><i class="fa arrow"></i> <span>Jinja policies</span></a>
+		    </div>
+		  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch5" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django application management</span></a>
+		    <div class="collapse" id="ch5">
+		       <a href="https://www.webforefront.com/django/configuredjangosettings.html" class="list-group-item" data-parent="#ch5"><i class="fa arrow"></i> <span>Django settings.py for the real world</span></a>
+  		       <a href="https://www.webforefront.com/django/setupdjangoxsgiserver.html" class="list-group-item" data-parent="#ch5"><i class="fa arrow"></i> <span>Set up Django on a WSGI/ASGI server</span></a>		       
+  		       <a href="https://www.webforefront.com/django/setupstaticdjangowebpageresources.html" class="list-group-item" data-parent="#ch5"><i class="fa arrow"></i> <span>Set up static web page resources -- Images, CSS, JavaScript</span></a>
+		       <a href="https://www.webforefront.com/django/setupdjangologging.html" class="list-group-item" data-parent="#ch5"><i class="fa arrow"></i> <span>Django logging</span></a>
+		       <a href="https://www.webforefront.com/django/setupdjangoemail.html" class="list-group-item" data-parent="#ch5"><i class="fa arrow"></i> <span>Django email service</span></a>
+ 		       <a href="https://www.webforefront.com/django/debugdjangoapps.html" class="list-group-item" data-parent="#ch5"><i class="fa arrow"></i> <span>Debug Django applications</span></a>
+		       <a href="https://www.webforefront.com/django/managementcommands.html" class="list-group-item" data-parent="#ch5"><i class="fa arrow"></i> <span>Django management commands</span></a>
+	            </div>
+		  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch6" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django forms</span></a>
+		    <div class="collapse" id="ch6">
+                       <a href="https://www.webforefront.com/django/setupdjangoforms.html" class="list-group-item" data-parent="#ch6"><i class="fa arrow"></i> <span>Django form structure and workflow</span></a>
+		       <a href="https://www.webforefront.com/django/formprocessing.html" class="list-group-item" data-parent="#ch6"><i class="fa arrow"></i> <span>Django form processing: Initialization, field access, validation and error handling</span></a>
+		       <a href="https://www.webforefront.com/django/formfieldtypesandvalidation.html" class="list-group-item" data-parent="#ch6"><i class="fa arrow"></i> <span>Django form field types: Widgets, options and validations</span></a>
+		       <a href="https://www.webforefront.com/django/formtemplatelayout.html" class="list-group-item" data-parent="#ch6"><i class="fa arrow"></i> <span>Set up the layout for Django forms in templates</span></a>
+		       <a href="https://www.webforefront.com/django/formcustomfieldsandwidgets.html" class="list-group-item" data-parent="#ch6"><i class="fa arrow"></i> <span>Django custom form fields and widgets</span></a>
+		       <a href="https://www.webforefront.com/django/formadvancedprocessing.html" class="list-group-item" data-parent="#ch6"><i class="fa arrow"></i> <span>Django advanced form processing: Partial forms, AJAX and files</span></a>
+		       <a href="https://www.webforefront.com/django/formsets.html" class="list-group-item" data-parent="#ch6"><i class="fa arrow"></i> <span>Django formsets</span></a>
+                    </div>
+		  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch7" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django models</span></a>
+		    <div class="collapse" id="ch7">
+                       <a href="https://www.webforefront.com/django/setupdjangomodels.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django models and the migrations workflow</span></a>
+                       <a href="https://www.webforefront.com/django/modeldatatypesandvalidation.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django model data types</span></a>
+		       <a href="https://www.webforefront.com/django/modelmethodsandmetaoptions.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django model default and custom behaviors</span></a>
+		       <a href="https://www.webforefront.com/django/setuprelationshipsdjangomodels.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Relationships in Django models</span></a>
+		       <a href="https://www.webforefront.com/django/modeltransactions.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django model transactions</span></a>
+		       <a href="https://www.webforefront.com/django/modelmigrations.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django model migrations</span></a>      
+		       <a href="https://www.webforefront.com/django/modeldatabasetasks.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django model database tasks</span></a>      
+<a href="https://www.webforefront.com/django/setupinitialdatadjangomodels.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django model initial data set up</span></a>
+		       <a href="https://www.webforefront.com/django/modelsignals.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django model signals</span></a>      
+		       <a href="https://www.webforefront.com/django/modelsoutsidemodels.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django models outside of models.py</span></a>
+		       <a href="https://www.webforefront.com/django/modelmultidatabases.html" class="list-group-item" data-parent="#ch7"><i class="fa arrow"></i> <span>Django models and multiple databases</span></a>
+		    </div>
+		  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch8" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django model queries and managers</span></a>
+		    <div class="collapse" id="ch8">
+                       <a href="https://www.webforefront.com/django/singlemodelrecords.html" class="list-group-item" data-parent="#ch8"><i class="fa arrow"></i> <span>CRUD single records in Django models</span></a>
+                       <a href="https://www.webforefront.com/django/multiplemodelrecords.html" class="list-group-item" data-parent="#ch8"><i class="fa arrow"></i> <span>CRUD multiple records in Django models</span></a>
+                       <a href="https://www.webforefront.com/django/relationshipmodelrecords.html" class="list-group-item" data-parent="#ch8"><i class="fa arrow"></i> <span>CRUD relationship records across Django models</span></a>
+                       <a href="https://www.webforefront.com/django/modelqueriesbysql.html" class="list-group-item" data-parent="#ch8"><i class="fa arrow"></i> <span>Model queries by SQL keyword</span></a>
+                       <a href="https://www.webforefront.com/django/modelquerieswithrawsql.html" class="list-group-item" data-parent="#ch8"><i class="fa arrow"></i> <span>Model queries with raw (open-ended) SQL</span></a>
+		       <a href="https://www.webforefront.com/django/modelmanagers.html" class="list-group-item" data-parent="#ch8"><i class="fa arrow"></i> <span>Model managers</span></a>
+		    </div>
+		  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch9" class="list-group-item" data-toggle="collapse" aria-expanded="true"><i class="fa arrow"></i> <span>Django model forms &amp; class views</span></a>
+		    <div class="collapse show" id="ch9" style="">
+                       <a href="https://www.webforefront.com/django/modelforms.html" class="list-group-item" data-parent="#ch9"><i class="fa arrow"></i> <span>Django model form structure, options and field mapping</span></a>
+                       <a href="https://www.webforefront.com/django/modelformrelationships.html" class="list-group-item" data-parent="#ch9"><i class="fa arrow"></i> <span>Django model forms with relationships</span></a>
+                       <a href="https://www.webforefront.com/django/modelformprocessing.html" class="list-group-item" data-parent="#ch9"><i class="fa arrow"></i> <span>Django model form processing</span></a>
+                       <a href="https://www.webforefront.com/django/modelformsets.html" class="list-group-item" data-parent="#ch9"><i class="fa arrow"></i> <span>Django model formsets</span></a>
+                       <a href="https://www.webforefront.com/django/modelclassbasedviews.html" class="list-group-item active" data-parent="#ch9"><i class="fa arrow"></i> <span>Class-based views with models</span></a>		       
+		    </div>
+	 	  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch10" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django user management</span></a>
+		    <div class="collapse" id="ch10">
+                       <a href="https://www.webforefront.com/django/setupdjangousers.html" class="list-group-item" data-parent="#ch10"><i class="fa arrow"></i> <span>Introduction to the Django user system</span></a>
+                       <a href="https://www.webforefront.com/django/permissionchecks.html" class="list-group-item" data-parent="#ch10"><i class="fa arrow"></i> <span>Permission checks and enforcement</span></a>
+                       <a href="https://www.webforefront.com/django/setupdjangousercreation.html" class="list-group-item" data-parent="#ch10"><i class="fa arrow"></i> <span>User authentication and auto-management</span></a>
+                       <a href="https://www.webforefront.com/django/customusermodel.html" class="list-group-item" data-parent="#ch10"><i class="fa arrow"></i> <span>Custom User model fields</span></a>
+                       <a href="https://www.webforefront.com/django/customauthbackend.html" class="list-group-item" data-parent="#ch10"><i class="fa arrow"></i> <span>Custom authentication back-ends</span></a>
+                       <a href="https://www.webforefront.com/django/usermanagementallauth.html" class="list-group-item" data-parent="#ch10"><i class="fa arrow"></i> <span>User management with Django allauth</span></a>
+                       <a href="https://www.webforefront.com/django/setupdjangosocialauthentication.html" class="list-group-item" data-parent="#ch10"><i class="fa arrow"></i> <span>Social authentication with Django allauth</span></a>		       
+	          </div>
+	 	  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch11" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django admin management</span></a>
+		    <div class="collapse" id="ch11">
+                       <a href="https://www.webforefront.com/django/setupdjangomodelsindjangoadmin.html" class="list-group-item" data-parent="#ch11"><i class="fa arrow"></i> <span>Set up Django models in the Django admin</span></a>
+                       <a href="https://www.webforefront.com/django/adminreadrecords.html" class="list-group-item" data-parent="#ch11"><i class="fa arrow"></i> <span>Django admin read record options</span></a>
+                       <a href="https://www.webforefront.com/django/admincreateupdatedeleterecords.html" class="list-group-item" data-parent="#ch11"><i class="fa arrow"></i> <span>Django admin create, update, delete record options</span></a>
+                       <a href="https://www.webforefront.com/django/admincustomlayout.html" class="list-group-item" data-parent="#ch11"><i class="fa arrow"></i> <span>Django admin custom page layout, data &amp; behaviors</span></a>
+                       <a href="https://www.webforefront.com/django/adminpermissions.html" class="list-group-item" data-parent="#ch11"><i class="fa arrow"></i> <span>Django admin CRUD permissions</span></a>
+                       <a href="https://www.webforefront.com/django/adminmultiplesites.html" class="list-group-item" data-parent="#ch11"><i class="fa arrow"></i> <span>Multiple Django admin sites</span></a>		       
+	            </div>
+	 	  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch12" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>REST services with Django</span></a>
+		    <div class="collapse" id="ch12">
+                       <a href="https://www.webforefront.com/django/introrestservices.html" class="list-group-item" data-parent="#ch12"><i class="fa arrow"></i> <span>Introduction to REST services options for Django</span></a>
+                       <a href="https://www.webforefront.com/django/introrestframework.html" class="list-group-item" data-parent="#ch12"><i class="fa arrow"></i> <span>Django REST framework concepts and introduction</span></a>
+                       <a href="https://www.webforefront.com/django/restframeworksecurity.html" class="list-group-item" data-parent="#ch12"><i class="fa arrow"></i> <span>Django REST framework security</span></a>		       
+	            </div>
+	 	  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch13" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django i18n, L10n and time zones</span></a>
+		    <div class="collapse" id="ch13">
+                       <a href="https://www.webforefront.com/django/i18ndefault.html" class="list-group-item" data-parent="#ch13"><i class="fa arrow"></i> <span>Default Django i18n, L10n &amp; time zone behavior</span></a>
+                       <a href="https://www.webforefront.com/django/i18nselectionworkflow.html" class="list-group-item" data-parent="#ch13"><i class="fa arrow"></i> <span>Django language selection workflow</span></a>
+                       <a href="https://www.webforefront.com/django/i18nlocalemessagebundles.html" class="list-group-item" data-parent="#ch13"><i class="fa arrow"></i> <span>Django locale message bundles</span></a>
+	            </div>
+	 	  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch14" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django search</span></a>
+		    <div class="collapse" id="ch14">
+                       <a href="https://www.webforefront.com/django/introsearch.html" class="list-group-item" data-parent="#ch14"><i class="fa arrow"></i> <span>Introduction to search options for Django</span></a>
+		    </div>
+	 	  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#ch15" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Django async applications</span></a>
+		    <div class="collapse" id="ch15">
+                       <a href="https://www.webforefront.com/django/introasyncwebapps.html" class="list-group-item" data-parent="#ch15"><i class="fa arrow"></i> <span>Introduction to async web applications for Python &amp; Django</span></a>
+		    </div>		    
+	 	  <a href="https://www.webforefront.com/django/modelclassbasedviews.html#appa" class="list-group-item" data-toggle="collapse" aria-expanded="false"><i class="fa arrow"></i> <span>Python basics</span></a>
+		    <div class="collapse" id="appa">
+                       <a href="https://www.webforefront.com/django/pythonbasics-text.html" class="list-group-item" data-parent="#appa"><i class="fa arrow"></i> <span>Strings, unicode and other annoying text behaviors</span></a>
+                       <a href="https://www.webforefront.com/django/pythonbasics-methods.html" class="list-group-item" data-parent="#appa"><i class="fa arrow"></i> <span>Methods: Default, optional, *args &amp; **kwargs arguments</span><br></a>
+                       <a href="https://www.webforefront.com/django/pythonbasics-classes.html" class="list-group-item" data-parent="#appa"><i class="fa arrow"></i> <span>Classes and subclasses</span></a>
+                       <a href="https://www.webforefront.com/django/pythonbasics-loops.html" class="list-group-item" data-parent="#appa"><i class="fa arrow"></i> <span>Loops, iterators and generators</span><br></a>
+                       <a href="https://www.webforefront.com/django/pythonbasics-comprehensions.html" class="list-group-item" data-parent="#appa"><i class="fa arrow"></i> <span>List comprehensions, generator expressions, maps and filters</span><br></a>
+                       <a href="https://www.webforefront.com/django/pythonbasics-lambda.html" class="list-group-item" data-parent="#appa"><i class="fa arrow"></i> <span>Lambda keyword for anonymous methods</span><br></a>
+                       <a href="https://www.webforefront.com/django/pythonbasics-asynchronous.html" class="list-group-item" data-parent="#appa"><i class="fa arrow"></i> <span>Asynchronous behavior: Coroutines, threads, processes, event loops, asyncio, async &amp; await</span></a>		       
+	            </div>
+           <a href="https://github.com/drubio/beginningdjango" class="list-group-item" data-parent="#sidebar"><i class="fa fa-github"></i>&nbsp;<span>Source code on github</span></a>
+            </div>
+	    
+</div>
+   
+    <!-- Bootstrap core JavaScript
+	 ================================================== -->
+ <!-- jQuery first, then Tether, then Bootstrap JS. -->
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+<script src="./Django class-based views with models_files/jquery.min.js.descarga" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><div id="aswift_0_host" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Django class-based views with models_files/ads(1).html" data-google-container-id="a!1" data-load-complete="true"></iframe></div></ins>
+<script src="./Django class-based views with models_files/popper.min.js.descarga" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="./Django class-based views with models_files/bootstrap.min.js.descarga" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+ <script src="./Django class-based views with models_files/ekko-lightbox.min.js.descarga"></script>
+ <!-- Theme JavaScript -->
+    <script src="./Django class-based views with models_files/webforefront.js.descarga"></script>
+    <script src="./Django class-based views with models_files/jquery.prettyPhoto.js.descarga"></script>
+    <script type="text/javascript">
+ $(document).ready(function(){
+    $("a[rel^='prettyPhoto']").prettyPhoto({social_tools: ''});
+  });
+</script>    
+    <script>
+		$(document).ready(function () {
+   		                //activate link on sidebar based on url
+				  jQuery('a.list-group-item[href$="' + window.location.pathname + '"]').addClass("active").parents('.collapse').not($("#sidebar")).collapse();
+				//.collapse('show')
+		   		// collapse detection for hide-able sidebar
+				$('#sidebar').on('show.bs.collapse', function (event) {
+				    //event.stopPropagation();
+				    if (event.target.id == 'sidebar') { // This prevents behavior on internal links
+			 	    $("#content").removeClass("col-md-12").addClass("col-md-9");
+		          	    $("#sidebar").removeClass("d-block d-sm-none d-none d-sm-block d-md-none").addClass("d-none d-md-block");
+				    }
+				  }).on('hide.bs.collapse', function (event) {
+		   	            //event.stopPropagation();
+				    if (event.target.id == 'sidebar') { // This prevents behavior on internal links
+			     	    $("#content").removeClass("col-md-9").addClass("col-md-12");
+			     	    $("#sidebar").addClass("d-block d-sm-none d-none d-sm-block d-md-none").removeClass("d-none d-md-block");
+				    }
+                                  });
+			        $('a.list-group-item').on('click', function (event) {
+				     if ($(this).attr('href').endsWith(window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1))) {
+				         // Anchor link on same page
+					 $(this).parents().find('a').removeClass("active");
+					 $(this).addClass("active").parents('.collapse').not($("#sidebar")).collapse();
+				     }
+				})
+				$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+				    event.preventDefault();
+				        $(this).ekkoLightbox();
+				});
+		});
+	</script><noscript>
+  <div style="position: fixed;top: 0;left: 0;width: 100%;text-align: center;background-color:#FF5252;color:#fff;font-size:large;padding:10px;z-index:5000;">
+    <b>Enabling JavaScript offers a better navigation experience</b>
+  </div>
+</noscript><!-- Modal -->
+<div class="modal fade" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLongTitle">Welcome!</h5>
+      </div>
+      <div class="modal-body">
+       	<p>It looks like you're using an ad blocker.</p>
+	<p>We respect your privacy, however, the content you're reading wouldn't be freely available without revenue from advertisers.</p>
+        <ul>
+	   <li>You can disable your adblocker to continue reading freely</li>
+	   <li>Or, you can purchase a subscription to get an ad-free experience, that also includes exclusive content.</li>
+      </ul></div>
+      <div class="modal-footer">
+        <button type="button" id="modalHomepage" class="btn btn-secondary" data-dismiss="modal">Go to Beginning Django Homepage</button>
+        <button type="button" id="modalSubscription" class="btn btn-primary" data-dismiss="modal">Go to subscription details</button>
+      </div>
+    </div>
+  </div>
+</div><script async="" src="./Django class-based views with models_files/f(12).txt" crossorigin="anonymous" data-checked-head="true"></script><script> $.ajax({
+  url: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4639088530133416',
+  cache: false,
+  success: function( data ) {
+  },
+  error: function( data ) {
+   setTimeout(function() { $('#modalCenter').modal('show') },8000);
+   modalShow();
+  }
+});
+$("#modalSubscription").on("click", function () {
+    window.location = "/django/subscription.html";
+});
+$("#modalSubscription").on("hide.bs.modal", function () {
+    window.location = "/django/index.html";
+});
+$("#modalHomepage").on("click", function () {
+    window.location = "/django/index.html";
+});
+</script><noscript><style>main {display:none;visibility:hidden}</style>  <div style="position: fixed;top: 0;left: 0;width: 100%;text-align: center;background-color:#FF5252;color:#fff;font-size:large;padding:10px;z-index:5000;"><b>You're trying to read free content, which is ad supported. This requires you to enable JavaScript, please enable JavaScript to continue viewing or consider a <a href="/django/subscription.html">paid subscription</a> for an ad-free experience</b></div></noscript>
+ 
+
+<iframe src="./Django class-based views with models_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body><iframe id="google_esf" name="google_esf" src="./Django class-based views with models_files/zrt_lookup.html" style="display: none;"></iframe><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background: transparent !important;" aria-hidden="true" data-ad-status="filled" data-vignette-loaded="true"><div id="aswift_2_host" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none !important; height: 100vh !important; width: 100vw !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: inline-block !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><iframe id="aswift_2" name="aswift_2" style="width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; position: absolute !important; clear: none !important; display: inline !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; vertical-align: baseline !important; visibility: visible !important; z-index: auto !important;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="" height="" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Django class-based views with models_files/zrt_lookup(1).html" data-google-container-id="a!3" data-google-query-id="CMz83ZyIu_4CFcESwQod_D4IKg" data-load-complete="true"></iframe></div></ins></html>

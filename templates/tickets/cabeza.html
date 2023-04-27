@@ -74,11 +74,12 @@
 
 </head>
 
+
 <body>
 
 <!-- desde AQUI SI SEÑORES                      -->
 
-<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
+<input type="text" class="form-control" id="username" name="username" value={{Username}}>
 <input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
 <input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
 <input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
@@ -109,27 +110,16 @@
                                     Proceso
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item"  href="creacionTickets/{{Username}},{{SedeSeleccionada}},{{NombreUsuario}},{{NombreSede}},{{EmpleadoId}}">Creacion Tickets</a>
+                                    <a class="dropdown-item"  href="/creacionTickets/{{Username}},{{SedeSeleccionada}},{{NombreUsuario}},{{NombreSede}},{{EmpleadoId}}">Creacion Tickets</a>
                                    <!--    <a class="dropdown-item"  href="/creacionTickets/">Creacion Tickets</a> -->
-                                    <a class="dropdown-item"  href="/asignacionTurnos/{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Gestion Coordinadores</a>
-                                    <a class="dropdown-item"  href="/asignacionTurnos/{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Gestion Talento Humano</a>
+                                    <a class="dropdown-item"  href="/asignacionTickets/0,{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Asignacion de tickets</a>
+                                    <a class="dropdown-item"  href="/gestionCoord/{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Coordinadores</a>
+                                    <a class="dropdown-item"  href="/tHumano/0,{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Talento Humano</a>
                                 </div>
                             </div>
                         </li>
 
-                    <li class="nav-item dropdown">
-                        <div>
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #e3f2fd;">
-                                Reportes
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item"
-                                   href="/tickets/{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Tickets</a>
 
-                            </div>
-                        </div>
-                    </li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -138,13 +128,13 @@
                             </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="/tickets/{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}}">Tickets</a>
+                                    <a class="dropdown-item" href="/ticketsMalla/{{Username}},{{SedeSeleccionada}},{{NombreUsuario}},{{NombreSede}},{{EmpleadoId}}">Tickets-Malla</a>
 
                                     </div>
 
                             </div>
                         </li>
-                        <a class="nav-link " href="/contrasena/{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}"  style="color: #e3f2fd;">Contraseña</a>
+                        <a class="nav-link " href="/contrasena/{{EmpleadoId}},{{Username}} , {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}"  style="color: #e3f2fd;">Contraseña</a>
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                        <a class="nav-link" href="/salir" style="color: #e3f2fd;">Salir</a>
 
@@ -173,13 +163,7 @@
     <div class="col-lg-5"></div>
     <div class="col-lg-3">
 
-        <figure class="figure">
-            <img src="{% static '/img/MEDICALFINAL.JPG' %}" class="figure-img img-fluid rounded"
-                 style="height:30px;"
-                 alt="...">
-            <figcaption class="figure-caption text-right">CLINICA MEDICAL
-            </figcaption>
-        </figure>
+
     </div>
     <div class="col-lg-4"></div>
 </div>
@@ -189,7 +173,7 @@
 
 
 
-</div> <!-- Deberia terminar el row-->
+</div> <!-- Deberia terminar el row es igual a deberia cerrar el row inicial -->
 
 
  <!-- Deberia terminar el container -->

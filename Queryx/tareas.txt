@@ -1,23 +1,71 @@
 Tareas: thtickets
 
-1. Recuerda 1 mes comenzo en MArzo - 03
-2. Como es la autenticacion, con la cedula ?
-3. Que menus deben existir
-4. Que reportes
-5. que consultas
-6. crear un menu diferente al de ComprasTable
-7. cuales son los tipos de turno
-8. Archivo empleados
-
+1. Recuerda 1 mes comenzo en Marzo - 03
 
 Proceso.
-A. Un usuario crea un ticket.
-B. Un coordinador consulta y procesa el ticket (Respuesta)
-C. Consultas de tickets, gestion
-D. Reportes de gection tickets
-E. Cabecear malla de turnos
-F. Rutinas : Creacion tiocke usuarios, respuetsa ticket coordinador, rta ticket talento humano, rta ticket dueñp
-F. Crear resumen de cuanto esta cubierto cuianfo nop
+
+1, para hacer campos readOnly de select ver: ticketsForm3. actualizar tordas las formas que requeiran estop, son algunas bastanticas diria yop
+D. Reportes de gection tickets, es como meter la rutina de cmreporyteador en el programa de tickets
+2. ojo hay un poco de arreglos la resolucion de thumano tickets y en otras partes el listview ,recuerde el queryset no tra los campos nombre ...
+   el tipo de letra a mostrar span success UNIFICAR..
+3. Hacer prtograma tickets_ticketsmalla, o sea movimientos d ela malla de acuerto a tickets, es la Auditoria ...
+4. perfil para el acceso a los menus
+5. Ponerle tabla  a la parte inferior consulta de CREACION DE TICKETS
+
+
+El lunes comenzar
+
+
+
+
+<!-- COPIO DESDE AQUIP -->
+             </div>  <!-- Deberia terminar el COL11-->
+            <div class="col-lg-1"></div>
+  </div> <!-- Deberia terminar el Row-->
+
+        <div class="row">
+
+
+            <div class="col-lg-7"></div>
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-2">
+                 <figure class="figure">
+                     <br>
+                     <br>
+                     <br>
+                     <br>
+                     <br>
+                     <br>
+                    <img src="{% static '/img/MEDICALFINAL.JPG' %}" class="figure-img img-fluid rounded"
+                         style="height:30px;"
+                         alt="...">
+                    <figcaption class="figure-caption text-right">{{NombreUsuario}}
+
+                    </figcaption>
+                </figure>
+                <!--
+                           {{ Perfil }}
+                           {% if Perfil == '1' %}
+                           Coordinador!
+                           {% endif %}
+                           {% if Perfil == '2' %}
+                           Empleado!
+                           {% endif %}
+                           {% if Perfil == '3' %}
+                             Talento Humano!
+                           {% endif %}
+
+                -->
+            </div>
+        </div>
+
+<!-- COPIO HASTA AQUIP -->
+
+
+	
+
+
 
 
 

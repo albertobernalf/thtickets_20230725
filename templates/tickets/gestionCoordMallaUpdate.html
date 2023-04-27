@@ -1,0 +1,137 @@
+{%extends 'Tickets/cabeza.html'%}
+{% load static %}
+
+
+{%block content%}
+<script>
+	function cancelar()
+	{
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+		window.location = "/gestionCoord/" + apasar;
+	}
+</script>
+
+
+<div class="center">
+
+	<div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+						<center>
+		<h2>{% if gestionCoordMallaUpdate %} Actualizacion {%else %} Crea {%endif%} Malla</h2>
+			</center>
+
+                    </div>
+                    <div class="card-body">
+                        {{form.errors}}
+
+	<form method="post" novalidate class="card" class="form-inline">
+
+		<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
+		<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada"
+			   value={{SedeSeleccionada}}>
+		<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
+		<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
+		<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+
+
+
+		{% if form.errors %}
+		<small class="error">{{ form.errors|striptags }}</small>
+		{% endif %}
+
+		<br>
+		<div class="form-group mx-sm-12">
+
+			Ticket: <span class="text-primary">
+				 <select  id="ticket" name="ticket" style=" width:50px; " size="1" >
+                                        {% for ticket in Ticket %}
+                                            <option value="{{ticket.id}}"> {{ticket.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+
+
+		</span>
+
+			Año: <span class="text-primary">{{form.ano}}</span>
+			Mes: <span class="text-primary">{{form.mes}}</span>
+			Empleado: <span class="text-primary">{{form.empleado}}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;Area: <span class="text-primary">{{form.area}}</span>
+		</div>
+		<br>
+		<div class="form-group mx-sm-1 ">
+			1: <span class="text-primary">{{form.dia1}}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;2: <span class="text-primary">{{form.dia2}}</span>
+			3: <span class="text-primary">{{form.dia3}}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;4: <span class="text-primary">{{form.dia4}}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;5: <span class="text-primary">{{form.dia5}}</span>
+			6: <span class="text-primary">{{form.dia6}}</span>
+		</div>
+		<div class="form-group mx-sm-1 ">
+			7: <span class="text-primary">{{form.dia7}}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;8: <span class="text-primary">{{form.dia8}}</span>
+			9: <span class="text-primary">{{form.dia9}}</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;10: <span class="text-primary">{{form.dia10}}</span>
+			11: <span class="text-primary">{{form.dia11}}</span>
+			12: <span class="text-primary">{{form.dia12}}</span>
+		</div>
+		<div class="form-group mx-sm-1 ">
+			13: <span class="text-primary">{{form.dia13}}</span>
+			14: <span class="text-primary">{{form.dia14}}</span>
+			15: <span class="text-primary">{{form.dia15}}</span>
+			&nbsp;&nbsp;&nbsp;16: <span class="text-primary">{{form.dia16}}</span>
+			17: <span class="text-primary">{{form.dia17}}</span>
+			18: <span class="text-primary">{{form.dia18}}</span>
+		</div>
+		<div class="form-group mx-sm-1 ">
+			19: <span class="text-primary">{{form.dia19}}</span>
+			20: <span class="text-primary">{{form.dia20}}</span>
+			21: <span class="text-primary">{{form.dia21}}</span>
+			&nbsp;&nbsp;&nbsp;22: <span class="text-primary">{{form.dia22}}</span>
+			23: <span class="text-primary">{{form.dia23}}</span>
+			24: <span class="text-primary">{{form.dia24}}</span>
+		</div>
+		<div class="form-group mx-sm-1 ">
+			25: <span class="text-primary">{{form.dia25}}</span>
+			26: <span class="text-primary">{{form.dia26}}</span>
+			27: <span class="text-primary">{{form.dia27}}</span>
+			&nbsp;&nbsp;&nbsp;28: <span class="text-primary">{{form.dia28}}</span>
+			29: <span class="text-primary">{{form.dia29}}</span>
+			30: <span class="text-primary">{{form.dia30}}</span>
+		</div>
+		<center>
+		<div class="form-group mx-sm-1 ">
+			31: <span class="text-primary">{{form.dia31}}</span>
+		</div>
+			</center>
+		<div class="form-buttons">
+			<input type="submit" value="Grabar" class="btn btn-primary"/>
+			<a class="btn btn-outline" id="cancelar" name="cancelar" onclick="cancelar()">Cancel</a>
+		</div>
+	</form>
+                    </div>
+                    <div class="card-footer"  >
+	                    <div class="row"  >
+        	                <div class="col-md-12" >
+		       	        </div>
+	                   </div>
+	            </div>
+           </div>
+	</div>
+</div>
+
+
+
+</div>
+
+
+{%endblock content%}
+{% block final %}
+final
+{% endblock %}

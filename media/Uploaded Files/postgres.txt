@@ -1,0 +1,37 @@
+#!/bin/bash/
+
+#mkdir /disco/pgsql/esclavo;
+#chown -R postgres:postgres  /disco/pgsql/esclavo;
+
+
+su - postgres -c "initdb -D /disco/pgsql/data";
+
+su - postgres -c "pg_ctl start -w -D /disco/pgsql/data  -l /disco/pgsql/data/errores.txt -o \"-i -p 5432 \"";
+
+psql -p 5432 -U postgres 
+
+#\password
+#\q
+
+nano /disco/pgsql/data/postgresql.conf;
+#listen_addresses = '*'
+
+nano /disco/pgsql/data/pg_hba.conf;
+#host    all             postgres         all                    md5
+
+
+
+su - postgres -c "initdb -D /disco/pgsql/esclavo";
+
+su - postgres -c "pg_ctl start -w -D /disco/pgsql/esclavo  -l /disco/pgsql/esclavo/errores.txt -o \"-i -p 5433 \"";
+
+psql -p 5433 -U postgres ;
+
+#\password
+#\q
+
+nano /disco/pgsql/esclavo/postgresql.conf;
+#listen_addresses = '*'
+
+nano /disco/pgsql/esclavo/pg_hba.conf;
+#host    all             postgres         all                    md5

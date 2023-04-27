@@ -1,0 +1,380 @@
+{%extends 'Tickets/cabeza.html'%}
+{% load static %}
+
+
+{%block content%}
+
+
+
+<script>
+	function golpe1(id)
+	{
+
+
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+
+		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+
+		 $(location).attr('href',  '/gestionCoord/update/' + apasar);
+
+	}
+
+
+	function crearMalla()
+	{
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+		window.location = "/crearMalla/" + apasar;
+	}
+
+</script>
+
+<style>
+  .table.dataTable  {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+     font-size: 1em;
+    width: 1%;
+}
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*------------------------------------------
+        --------------------------------------------
+        Post Listing Page
+        --------------------------------------------
+        --------------------------------------------*/
+
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+
+         var data =  {}   ;
+
+         data['username'] = username;
+         data['sedeSeleccionada'] = sedeSeleccionada;
+         data['nombreUsuario'] = nombreUsuario;
+         data['nombreSede'] = nombreSede;
+         data['empleadoId'] = empleadoId;
+         data = JSON.stringify(data);
+
+
+
+        var table = $('.tablaCoordTickets').DataTable({
+         "language": {
+                  "lengthMenu": "Display _MENU_ registros",
+                   "search": "Filtrar registros:",
+                    "paginate": {
+                         "first": "Primera pag",
+                         "previous": "Anterior",
+                         "next": "Siguiente",
+                        }
+                    },
+
+            processing: true,
+            serverSide: false,
+            columnDefs: [
+                {
+                    "render": function ( data, type, row ) {
+                        var btn = '';
+
+                        btn = btn + " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
+
+                        return btn;
+                    },
+                   "targets": 36,
+
+                }
+            ],
+            ajax: {
+
+                 url:"/load_dataCoordTickets/" +  data,
+                 type: "POST",
+
+                dataSrc: ""
+            },
+
+            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
+
+            columns: [
+                  { data: "fields.id"},
+
+                { data: "fields.empleado_id"},
+                { data: "fields.area_id"},
+                { data: "fields.ano"},
+                { data: "fields.mes"},
+                { data: "fields.dia1"},
+                { data: "fields.dia2"},
+                { data: "fields.dia3"},
+                { data: "fields.dia4"},
+                { data: "fields.dia5"},
+                { data: "fields.dia6"},
+                { data: "fields.dia7"},
+                { data: "fields.dia8"},
+                { data: "fields.dia9"},
+                { data: "fields.dia10"},
+                { data: "fields.dia11"},
+                { data: "fields.dia12"},
+                { data: "fields.dia13"},
+                { data: "fields.dia14"},
+                { data: "fields.dia15"},
+                { data: "fields.dia16"},
+                { data: "fields.dia17"},
+                { data: "fields.dia18"},
+                { data: "fields.dia19"},
+                { data: "fields.dia20"},
+                { data: "fields.dia21"},
+                { data: "fields.dia22"},
+                { data: "fields.dia23"},
+                { data: "fields.dia24"},
+                { data: "fields.dia25"},
+                { data: "fields.dia26"},
+                { data: "fields.dia27"},
+                { data: "fields.dia28"},
+                { data: "fields.dia29"},
+                { data: "fields.dia30"},
+                { data: "fields.dia31"},
+
+
+
+            ]
+
+        });
+
+
+
+
+           // table.columns.adjust().draw();
+       /*--------------------------------------------
+        Click to Edit Button
+        --------------------------------------------
+        --------------------------------------------*/
+        $('body').on('click', '.editPost', function () {
+
+
+          var username = document.getElementById("username").value;
+          var empleadoId = document.getElementById("empleadoId").value;
+          var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+          var nombreUsuario = document.getElementById("nombreUsuario").value;
+          var nombreSede = document.getElementById("nombreSede").value;
+          var post_id = $(this).data('pk');
+
+        var apasar = post_id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+		window.location = "/gestionCoordMalla/update/" + apasar;
+
+        });
+
+        /*------------------------------------------
+        --------------------------------------------
+        Print Error Msg
+        --------------------------------------------
+        --------------------------------------------*/
+        function printErrorMsg(msg) {
+            $('.error-msg').find('ul').html('');
+            $('.error-msg').css('display','block');
+            $.each( msg, function( key, value ) {
+                $(".error-msg").find("ul").append('<li>'+value+'</li>');
+            });
+        }
+
+
+   });
+</script>
+
+
+
+<div class="center">
+
+	<center><h4>Mis Tickets Asignados</h4> </center>
+
+	<nav aria-label="Page navigation example">
+      {% if is_paginated %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{page_obj.previous_page_number}}"
+            >&laquo;</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">&laquo;</a>
+        </li>
+        {% endif %}
+		  {% for i in paginator.page_range %} {% if page_obj.number == i %}
+        <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+        {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+        {% endif %} {% endfor %} {% if page_obj.has_next %}
+        <li class="page-item">
+          <a href="?page={{page_obj.next_page_number}}" class="page-link"
+            >&raquo;</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link">&raquo;</a>
+        </li>
+        {% endif %}
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		Ticket No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text"  id="idTicket" name="idTicket" size="15px" placeholder="Busqueda" values="0">
+		<span size="150px"></span>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button"  id="buttonTicket" name="buttonTicket" value="BUSCAR" onclick="buscar()">
+      </ul>
+      {% endif %}
+
+    </nav>
+
+	<div class="form-group mx-sm-12 ">
+	<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
+	<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
+	<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
+	<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
+	<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+
+	{% if GestionCoord %}
+
+	<ul class="tasks">
+		<div id="noTomar1" class="scrollable2" align="center">
+		<div class="alert alert-success success-msg" style="display:none"></div>
+		<table class="table table-bordered tablaAsignacionTickets">
+			<thead>
+			<tr>
+				<th>id</th>
+				<th>Tipo</th>
+				<th>TipoNom</th>
+				<th>empleado_id</th>
+				<th>empleadoNom</th>
+				<th>fecha</th>
+				<th>desde Ini</th>
+				<th>hasta Ini</th>
+				<th> </th>
+				<th>Editar </th>
+			</tr>
+			</thead>
+
+			<tbody>
+
+
+
+			{% for gestionCoord in GestionCoord %}
+			<a href="#" class="{% if gestionCoord.completed%}completed{%endif%}"></a>
+			<div class="task-controls">
+				<tr>
+					<td>{{ gestionCoord.id }}</td>
+					<td>{{ gestionCoord.tiposTicket_id }}</td>
+					<td>{{gestionCoord.nombreTipo}}</td>
+					<td>{{ gestionCoord.empleado_id }}</td>
+					<td>{{gestionCoord.empleado_id.empleados.nombre}}</td>
+					<td>{{ gestionCoord.fecha }}</td>
+					<td>{{ gestionCoord.desdeInicial }}</td>
+					<td>{{ gestionCoord.hastaInicial }}</td>
+					<td><a href="#"><i class="fa fa-trash"></i></a></td>
+					<!-- <td><a href="#"><i class="fa fa-pencil"></i></a> </td>  -->
+					<td><a id="golpe" name="golpe" onclick="golpe1({{gestionCoord.id}})"><i
+							class="fa fa-pencil"></i></a></td>
+
+				</tr>
+			</div>
+
+			{% endfor %}
+
+			</tbody>
+		</table>
+		</div>
+
+		{% else %}
+		<p>🎉 Yay, you have no pending tasks!</p>
+	{% endif %}
+	</ul>
+			<center><h6>M A L L A   &nbsp;&nbsp;&nbsp;  D E  &nbsp;&nbsp;&nbsp;    T U R N O S  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                	<input type="button" value="Crear Malla" class="btn btn-primary" onclick="crearMalla()"/>
+                </h6>
+            </center>
+
+
+ <div class="row" >
+        <div class="col-md-12">
+            <div class="card"   >
+                <div class="card-header">
+                    <div class="row">
+                        <div class="row">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row" >
+                        <div class="col-md-12" >
+                            <div class="alert alert-success success-msg" style="display:none"></div>
+                            <table class="table table-bordered tablaCoordTickets" >
+                                <thead style="font-size: 10px">
+                                <tr>
+                                    <th>id </th>
+                                    <th>Emp</th>
+                                    <th>Area</th>
+                                    <th>Año</th>
+                                    <th>Mes</th>
+                                    <th>1</th>
+                                    <th>2</th>
+                                    <th>3</th>
+                                    <th>4</th>
+                                    <th>5</th>
+                                    <th>6</th>
+                                    <th>7</th>
+                                    <th>8</th>
+                                    <th>9</th>
+                                    <th>10</th>
+                                    <th>11</th>
+                                    <th>12</th>
+                                    <th>13</th>
+                                    <th>14</th>
+                                    <th>15</th>
+                                    <th>16</th>
+                                    <th>17</th>
+                                    <th>18</th>
+                                    <th>19</th>
+                                    <th>20</th>
+                                    <th>21</th>
+                                    <th>22</th>
+                                    <th>23</th>
+                                    <th>24</th>
+                                    <th>25</th>
+                                    <th>26</th>
+                                    <th>27</th>
+                                    <th>28</th>
+                                    <th>29</th>
+                                    <th>30</th>
+                                    <th>31</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{%endblock content%}
+{% block final %}
+
+{% endblock %}

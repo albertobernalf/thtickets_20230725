@@ -104,3 +104,34 @@ ul.tabs li a .tab-text{
     height: 250px;
     overflow:scroll;
 }
+
+.scrollable2
+{
+    width: 1300px;
+    height: 180px;
+    overflow:scroll;
+}
+
+.scrollable3
+{
+    width: 1300px;
+    height: 350px;
+    overflow:scroll;
+}
+
+.scrollable4
+{
+    width: 1300px;
+    height: 500px;
+    overflow:scroll;
+}
+
+
+.scrollable5
+{
+    width: 1300px;
+    height: 250px;
+    overflow:scroll;
+}
+
+

@@ -1,0 +1,120 @@
+{%extends 'Tickets/cabeza.html'%}
+{% load static %}
+
+
+{%block content%}
+<script>
+	function cancelar()
+	{
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+		window.location = "/gestionCoord/" + apasar;
+	}
+</script>
+
+<div class="center">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<center>
+					<h2>{% if gestionCoordUpdate %} Responder {%else %} Crea {%endif%} Tickets</h2>
+						</center>
+				</div>
+				<div class="card-body">
+					{{form.errors}}
+					<div class="row">
+						<div class="col-md-12">
+							<form method="post" novalidate class="card" class="form-inline">
+
+								<input type="hidden" class="form-control" id="username" name="username"
+									   value={{Username}}>
+								<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada"
+									   value={{SedeSeleccionada}}>
+								<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario"
+									   value={{NombreUsuario}}>
+								<input type="hidden" class="form-control" id="nombreSede" name="nombreSede"
+									   value={{NombreSede}}>
+								<input type="hidden" class="form-control" id="empleadoId" name="empleadoId"
+									   value={{EmpleadoId}}>
+
+								{% if form.errors %}
+								<small class="error">{{ form.errors|striptags }}</small>
+								{% endif %}
+								<br>
+								<h6>INFORMACION TICKET :</h6>
+								<br>
+								<div class="form-group mx-sm-12">
+
+									tipo Ticket: <span class="text-primary">{{form.tiposTicket}}</span>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fecha: <span class="text-primary">{{form.fecha}}</span>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Empleado: <span class="text-primary">{{form.empleado}}</span>
+								</div>
+								<div class="form-group mx-sm-1 ">
+									Sede inicial: <span class="text-primary">{{form.sedeInicial}}</span>
+									Turno inicial: <span class="text-primary">{{form.tiposTurnoInicial}}</span>
+									desdeInicial: <span class="text-primary">{{form.desdeInicial}}</span>
+									hastaInicial: <span class="text-primary">{{form.hastaInicial}}</span>
+								</div>
+
+								<div class="form-group mx-sm-1 ">
+									Sede final: <span class="text-primary">{{form.sedeFinal}}</span>
+									&nbsp;&nbsp;&nbsp;Turno final: <span class="text-primary">{{form.tiposTurnoFinal}}</span>
+
+									&nbsp;&nbsp;desdeFinal: <span class="text-primary">{{form.desdeFinal}}</span>
+									&nbsp;&nbsp;&nbsp;hastaFinal: <span class="text-primary">{{form.hastaFinal}}</span>
+								</div>
+
+								<div class="form-group mx-sm-1 ">
+									Sede reemplazo: <span class="text-primary">{{form.sedeReemplazo}}</span>
+									Reemplazo: <span class="text-primary">{{form.reemplazo}}</span>
+									Asignado: <span class="text-primary">{{form.asignado}}</span>
+								</div>
+
+
+								<br>
+								<h6> COORDINACION :</h6>
+								<br>
+
+								<div class="form-group mx-sm-1 ">
+									Coordinador : <span
+										class="text-primary">{{form.respuestaEmpleadoCoordinador}}</span>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Respuesta: <span class="text-primary">{{form.textoRespuestaCoordinador}}</span>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Estado Respuesta: <span
+										class="text-primary">{{form.estadoRespuestaCoordinador}}</span>
+								</div>
+
+
+								<div class="form-buttons">
+									<input type="submit" value="Grabar" class="btn btn-primary"/>
+									<a class="btn btn-outline" id="cancelar" name="cancelar"
+									   onclick="cancelar()">Cancel</a>
+								</div>
+
+
+							</form>
+
+
+						</div>
+					</div>
+				</div>
+				<div class="card-footer">
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--	de en adelante el tabla del datatable  -->
+
+</div>
+
+
+{%endblock content%}
+{% block final %}
+final
+{% endblock %}

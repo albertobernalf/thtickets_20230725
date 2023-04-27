@@ -1,0 +1,2251 @@
+<!DOCTYPE html>
+<!-- saved from url=(0070)https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l -->
+<html lang="en" class="js-focus-visible" data-js-focus-visible=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Django class-based views with pagination - DEV Community</title>
+      <meta name="last-updated" content="2023-03-31 19:33:03 UTC">
+      <meta name="user-signed-in" content="false">
+      <meta name="head-cached-at" content="1680291183">
+        <!-- Experimental web monetization payment pointer for micropayments -->
+        <!-- It lets readers make micropayments to websites they visit. -->
+        <!-- This is step 1: Get live in production to test for platform-wide payment pointer. -->
+        <!-- Step 2: Allow authors to set their payment pointer so they can directly monetize their content based on visitors. -->
+        <!-- Step 3: Enable further functionality based on what we learn from this experimentation and how the ecosystem evolves. -->
+        <meta name="monetization" content="$ilp.uphold.com/24HhrUGG7ekn">
+      <meta name="environment" content="production">
+      <link rel="stylesheet" href="./Django class-based views with pagination - DEV Community_files/minimal-2c667aea90bcfdf7cbbaa64adb374d442dedce4719e29eb54ecdb44c3513e4f2.css" media="all" id="main-minimal-stylesheet">
+<link rel="stylesheet" href="./Django class-based views with pagination - DEV Community_files/views-a822a802b110caff2437290482aeedca5d29bff583c46097cf90718fa4c61d71.css" media="all" id="main-views-stylesheet">
+<link rel="stylesheet" href="./Django class-based views with pagination - DEV Community_files/crayons-c3fc53b3b8180e47c2d711b1b897c01f424c015290ed93770e6ccf89a6e17a2d.css" media="all" id="main-crayons-stylesheet">
+
+      <script async="" src="./Django class-based views with pagination - DEV Community_files/analytics.js.descarga"></script><script src="./Django class-based views with pagination - DEV Community_files/base-9367e1923af849f8b2501fbc3dbb112ec2a9c13b7b7095d2a6c9fa25064774e4.js.descarga" defer="defer"></script>
+        <script src="./Django class-based views with pagination - DEV Community_files/runtime_base-c78c7355d34f41bec100.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/base-e69699ee885daf54b5a1.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_baseInitializers-7a38b172739b7a0a786e.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/baseInitializers-0ba6397385ff736f6ff2.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_Search-2e8b6ed1bf333f6c34a2.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/0-6bf46cb11ef27e3ebc1f.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/1-0a11659385a997393010.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/Search-6d9c97d8168e857db884.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_runtimeBanner-35cec1afb628bb702e98.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/runtimeBanner-4263577aecba891aae2b.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_baseTracking-8719f4a10d2d9dfc794e.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/baseTracking-a774e284b8c194499865.chunk.js.descarga" defer="defer"></script>
+      
+    <link rel="canonical" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l">
+    <meta name="description" content="Django class-based views with pagination. Tagged with django, cbv, python.">
+    <meta name="keywords" content="django, cbv, python, software, coding, development, engineering, inclusive, community">
+
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l">
+    <meta property="og:title" content="Django class-based views with pagination">
+    <meta property="og:description" content="Django class-based views with pagination">
+    <meta property="og:site_name" content="DEV Community">
+    <meta name="twitter:site" content="@thepracticaldev">
+    <meta name="twitter:creator" content="@xarala221">
+    <meta name="twitter:title" content="Django class-based views with pagination">
+    <meta name="twitter:description" content="Django class-based views with pagination">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+      <meta property="og:image" content="https://res.cloudinary.com/practicaldev/image/fetch/s--KHmWKnnZ--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://images.unsplash.com/photo-1587845323226-bad89242c735%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60">
+      <meta name="twitter:image:src" content="https://res.cloudinary.com/practicaldev/image/fetch/s--KHmWKnnZ--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://images.unsplash.com/photo-1587845323226-bad89242c735%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+      <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/practicaldev/image/fetch/s--E8ak4Hr1--/c_limit,f_auto,fl_progressive,q_auto,w_32/https://dev-to.s3.us-east-2.amazonaws.com/favicon.ico">
+      <link rel="apple-touch-icon" href="https://res.cloudinary.com/practicaldev/image/fetch/s--gDM0_LTS--/c_limit,f_png,fl_progressive,q_80,w_180/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="https://res.cloudinary.com/practicaldev/image/fetch/s--l0c3Kmql--/c_limit,f_png,fl_progressive,q_80,w_152/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/practicaldev/image/fetch/s--gDM0_LTS--/c_limit,f_png,fl_progressive,q_80,w_180/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png">
+      <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/practicaldev/image/fetch/s--2ecYCSjC--/c_limit,f_png,fl_progressive,q_80,w_167/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png">
+      <link href="https://res.cloudinary.com/practicaldev/image/fetch/s--t7tVouP9--/c_limit,f_png,fl_progressive,q_80,w_192/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png" rel="icon" sizes="192x192">
+      <link href="https://res.cloudinary.com/practicaldev/image/fetch/s--lrmEcD2H--/c_limit,f_png,fl_progressive,q_80,w_128/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png" rel="icon" sizes="128x128">
+      <meta name="apple-mobile-web-app-title" content="dev.to">
+      <meta name="application-name" content="dev.to">
+      <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+      <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+      <link rel="search" href="https://dev.to/open-search.xml" type="application/opensearchdescription+xml" title="DEV Community">
+
+      <meta property="forem:name" content="DEV Community">
+      <meta property="forem:logo" content="https://res.cloudinary.com/practicaldev/image/fetch/s--PFPhV65b--/c_limit,f_png,fl_progressive,q_80,w_512/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png">
+      <meta property="forem:domain" content="dev.to">
+  <script charset="utf-8" src="./Django class-based views with pagination - DEV Community_files/160-5bcdcb4b2a95531c209b.chunk.js.descarga"></script><script src="./Django class-based views with pagination - DEV Community_files/js" async=""></script><meta name="csrf-param" content="authenticity_token"><meta name="csrf-token" content="0BPlaqIkHusrivHCW-3XIVNJhiLQbBHJtYnItEOc9YliPwSRx11EW-Lands6Im9OUK22n4FoKtTANuog-UVP1Q"><script charset="utf-8" src="./Django class-based views with pagination - DEV Community_files/154-6932183fdea768c8f16d.chunk.js.descarga"></script><style>.osSwitch{position:relative;display:inline-block;width:34px;height:15.3px}.osSwitch input{opacity:0;width:0;height:0}.osSlider{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:34px;background-color:#93a0b5;transition:0.4s}.osSlider:before{position:absolute;content:'';height:13px;width:13px;left:2px;bottom:1px;border-radius:50%;background-color:white;transition:0.4s}input:checked+.sliderGreen{background-color:#04d289}input:checked+.sliderRed{background-color:#ff3b30}input:not(:checked)+.defaultGreen{background-color:#04d289}input:checked+.osSlider:before{transform:translateX(17px)}
+</style><style>
+    @font-face {
+      font-family: 'SegoeUI_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui.woff);
+    }
+
+    @font-face {
+      font-family: 'SegoeUI_bold_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui-bold.woff);
+    }
+</style></head>
+      <body class="sans-serif-article-body default-header" data-user-status="logged-out" data-community-name="DEV Community" data-locale="en" data-honeybadger-key="a45862f6" data-deployed-at="2023-03-31T15:21:28Z" data-latest-commit-id="2346d22fe9cc2a7ada687c3ec465faeb20f2447b" data-ga-tracking="UA-71991109-1" data-ga4-tracking-id="G-TYEM8Y3JN3" data-runtime="Browser-Windows" data-loaded="true">
+        <link rel="stylesheet" href="./Django class-based views with pagination - DEV Community_files/minimal-2c667aea90bcfdf7cbbaa64adb374d442dedce4719e29eb54ecdb44c3513e4f2.css" media="all" id="secondary-minimal-stylesheet">
+<link rel="stylesheet" href="./Django class-based views with pagination - DEV Community_files/views-a822a802b110caff2437290482aeedca5d29bff583c46097cf90718fa4c61d71.css" media="all" id="secondary-views-stylesheet">
+<link rel="stylesheet" href="./Django class-based views with pagination - DEV Community_files/crayons-c3fc53b3b8180e47c2d711b1b897c01f424c015290ed93770e6ccf89a6e17a2d.css" media="all" id="secondary-crayons-stylesheet">
+
+        <div id="body-styles">
+          <style>
+            :root {
+              --accent-brand-lighter-rgb: 80, 99, 301;
+              --accent-brand-rgb: 59, 73, 223;
+              --accent-brand-darker-rgb: 47, 58, 178;
+            }
+          </style>
+        </div>
+        <div id="audiocontent" data-podcast="">
+          
+        </div>
+        <div class="navigation-progress" id="navigation-progress"></div>
+<header class="crayons-header print-hidden">
+  <span id="route-change-target" tabindex="-1"></span>
+  <a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#main-content" class="skip-content-link">Skip to content</a>
+  <div class="crayons-header__container">
+    <span class="inline-block m:hidden ">
+      <button class="c-btn c-btn--icon-alone js-hamburger-trigger mx-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a9gsjjjfj40zs71ve1ol5yj6rx4isjvx" class="crayons-icon"><title id="a9gsjjjfj40zs71ve1ol5yj6rx4isjvx">Navigation menu</title>
+    <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z"></path>
+</svg>
+
+      </button>
+    </span>
+    <a href="https://dev.to/" class="site-logo" aria-label="DEV Community Home">
+    <img class="site-logo__img" src="./Django class-based views with pagination - DEV Community_files/resized_logo_UQww2soKuUsjaOGNB38o.png" alt="DEV Community">
+</a>
+
+
+    <div class="crayons-header--search js-search-form" id="header-search"><form method="get" action="https://dev.to/search" role="search" accept-charset="UTF-8"><input name="utf8" type="hidden" value="✓"><div class="crayons-fields crayons-fields--horizontal"><div class="crayons-field flex-1 relative"><input class="crayons-header--search-input crayons-textfield" type="text" id="" name="q" placeholder="Search..." autocomplete="off" aria-label="Search term"><button type="submit" aria-label="Search" class="c-btn c-btn--icon-alone absolute inset-px left-auto mt-0 py-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="crayons-icon c-btn__icon" focusable="false"><path d="m18.031 16.617 4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z"></path></svg></button></div></div></form>
+      
+    </div>
+
+    <div class="flex items-center h-100 ml-auto">
+      <a class="c-link c-link--icon-alone c-link--block m:hidden mx-1" id="search-link" aria-label="Search" href="https://dev.to/search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="areuc1v1io6yzioxvrlmrlpiyb0esj0p" class="crayons-icon"><title id="areuc1v1io6yzioxvrlmrlpiyb0esj0p">Search</title>
+    <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0111 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 01-1.969 5.617zm-2.006-.742A6.977 6.977 0 0018 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 004.875-1.975l.15-.15z"></path>
+</svg>
+
+      </a>
+        <div class="flex" id="authentication-top-nav-actions">
+          <span class="hidden m:block">
+            <a href="https://dev.to/enter" class="c-link c-link--block mr-2 whitespace-nowrap ml-auto" data-no-instant="">
+              Log in
+            </a>
+          </span>
+
+          <a href="https://dev.to/enter?state=new-user" data-tracking-id="ca_top_nav" data-tracking-source="top_navbar" class="c-cta c-cta--branded whitespace-nowrap mr-2" data-no-instant="">
+            Create account
+          </a>
+        </div>
+    </div>
+  </div>
+</header>
+
+<div class="hamburger">
+  <div class="hamburger__content">
+    <header class="hamburger__content__header">
+      <h2 class="fs-l fw-bold flex-1 break-word lh-tight">DEV Community</h2>
+
+      <button class="c-btn c-btn--icon-alone js-hamburger-trigger shrink-0" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="ac1u1nj5ytov01i39e7oodtuamxl0qhq" aria-hidden="true" class="crayons-icon c-btn__icon"><title id="ac1u1nj5ytov01i39e7oodtuamxl0qhq">Close</title><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636l4.95 4.95z"></path></svg>
+
+      </button>
+    </header>
+
+    <div class="p-2 js-navigation-links-container" id="authentication-hamburger-actions">
+    </div>
+  </div>
+  <div class="hamburger__overlay js-hamburger-trigger"></div>
+</div>
+
+
+        <div id="active-broadcast" class="broadcast-wrapper"></div>
+  <div id="base-payment-pointer" data-payment-pointer="$ilp.uphold.com/24HhrUGG7ekn"></div>
+<div id="page-content" class="wrapper stories stories-show" data-current-page="stories-show">
+  <div id="page-content-inner" data-follow-clicks-initialized="true">
+    <div id="page-route-change" class="screen-reader-only" aria-live="polite" aria-atomic="true"></div>
+    
+
+
+<style>
+  .html-variant-wrapper { display: none}
+</style>
+
+<script src="./Django class-based views with pagination - DEV Community_files/webcomponents-loader.js.descarga" integrity="sha384-3HK5hxQbkFqOIxMbpROlRmRtYl2LBZ52t+tqcjzsmr9NJuOWQxl8RgQSyFvq2lhy" crossorigin="anonymous" defer=""></script>
+
+  <script src="./Django class-based views with pagination - DEV Community_files/runtime_webShare-7453f2c5038b6f8709c0.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/webShare-da771b62f52682b7ace0.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_articlePage-51763968b51ee1187abe.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/0-6bf46cb11ef27e3ebc1f.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/1-0a11659385a997393010.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/articlePage-81dea6f892d5f0d31b6d.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_commentDropdowns-b9f7408d47a74ece0fa5.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/commentDropdowns-103b2e9cda88ab083838.chunk.js.descarga" defer="defer"></script>
+
+    <script type="application/ld+json">
+      {"@context":"http://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l"},"url":"https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l","image":["https://res.cloudinary.com/practicaldev/image/fetch/s--TxEOrBO7--/c_imagga_scale,f_auto,fl_progressive,h_1080,q_auto,w_1080/https://images.unsplash.com/photo-1587845323226-bad89242c735%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60","https://res.cloudinary.com/practicaldev/image/fetch/s--CgaMZous--/c_imagga_scale,f_auto,fl_progressive,h_720,q_auto,w_1280/https://images.unsplash.com/photo-1587845323226-bad89242c735%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60","https://res.cloudinary.com/practicaldev/image/fetch/s--uX5f8iRz--/c_imagga_scale,f_auto,fl_progressive,h_900,q_auto,w_1600/https://images.unsplash.com/photo-1587845323226-bad89242c735%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60"],"publisher":{"@context":"http://schema.org","@type":"Organization","name":"DEV Community","logo":{"@context":"http://schema.org","@type":"ImageObject","url":"https://res.cloudinary.com/practicaldev/image/fetch/s--t7tVouP9--/c_limit,f_png,fl_progressive,q_80,w_192/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png","width":"192","height":"192"}},"headline":"Django class-based views with pagination","author":{"@context":"http://schema.org","@type":"Person","url":"https://dev.to/xarala221","name":"Ousseynou Diop"},"datePublished":"2020-05-04T11:56:53Z","dateModified":"2020-06-24T20:12:11Z"}
+    </script>
+
+  
+<div class="crayons-layout crayons-layout--3-cols crayons-layout--article">
+  <aside class="crayons-layout__sidebar-left" aria-label="Article actions">
+    <div class="crayons-article-actions print-hidden">
+  <div class="crayons-article-actions__inner">
+        
+<div class="reaction-drawer__outer hoverdown" style="">
+  <button id="reaction-drawer-trigger" aria-label="reaction-drawer-trigger" aria-pressed="false" class="hoverdown-trigger crayons-reaction pseudo-reaction crayons-tooltip__activator relative">
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction--like crayons-reaction__icon--inactive" style="width: 40px; height: 40px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon">
+    <g clip-path="url(#clip0_988_3276)">
+        <path d="M19 14V17H22V19H18.999L19 22H17L16.999 19H14V17H17V14H19ZM20.243 4.75698C22.505 7.02498 22.583 10.637 20.479 12.992L19.059 11.574C20.39 10.05 20.32 7.65998 18.827 6.16998C17.324 4.67098 14.907 4.60698 13.337 6.01698L12.002 7.21498L10.666 6.01798C9.09103 4.60598 6.67503 4.66798 5.17203 6.17198C3.68203 7.66198 3.60703 10.047 4.98003 11.623L13.412 20.069L12 21.485L3.52003 12.993C1.41603 10.637 1.49503 7.01898 3.75603 4.75698C6.02103 2.49298 9.64403 2.41698 12 4.52898C14.349 2.41998 17.979 2.48998 20.242 4.75698H20.243Z" fill="#525252"></path>
+    </g>
+    <defs>
+        <clippath id="clip0_988_3276">
+        <rect width="24" height="24" fill="white"></rect>
+        </clippath>
+    </defs>
+</svg>
+
+      </span>
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--active" style="width: 40px; height: 40px">
+        <img aria_hidden="true" height="24" width="24" src="./Django class-based views with pagination - DEV Community_files/heart-plus-active-9ea3b22f2bc311281db911d416166c5f430636e76b15cd5df6b3b841d830eefa.svg">
+      </span>
+      <span class="crayons-reaction__count" id="reaction_total_count">10</span>
+      <span class="crayons-tooltip__content">
+        Add reaction
+      </span>
+  </button>
+
+  <div class="reaction-drawer" aria-expanded="false">
+    <div class="reaction-drawer__container">
+        <button id="reaction-butt-like" aria-label="Like" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2 activated" data-category="like">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="./Django class-based views with pagination - DEV Community_files/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-like">8</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+</button>
+
+        <button id="reaction-butt-unicorn" aria-label="Unicorn" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2 activated" data-category="unicorn">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="./Django class-based views with pagination - DEV Community_files/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-unicorn">2</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Unicorn
+    </span>
+</button>
+
+        <button id="reaction-butt-exploding_head" aria-label="Exploding Head" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="exploding_head">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="./Django class-based views with pagination - DEV Community_files/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-exploding_head">0</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Exploding Head
+    </span>
+</button>
+
+        <button id="reaction-butt-raised_hands" aria-label="Raised Hands" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="raised_hands">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="./Django class-based views with pagination - DEV Community_files/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-raised_hands">0</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Raised Hands
+    </span>
+</button>
+
+        <button id="reaction-butt-fire" aria-label="Fire" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="fire">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="./Django class-based views with pagination - DEV Community_files/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-fire">0</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Fire
+    </span>
+</button>
+
+    </div>
+  </div>
+</div>
+
+<button id="reaction-butt-comment" aria-label="Jump to Comments" aria-pressed="false" class="crayons-reaction crayons-reaction--comment crayons-tooltip__activator relative" data-category="comment">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M10 3h4a8 8 0 010 16v3.5c-5-2-12-5-12-11.5a8 8 0 018-8zm2 14h2a6 6 0 000-12h-4a6 6 0 00-6 6c0 3.61 2.462 5.966 8 8.48V17z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-comment" data-count="3">3</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Jump to Comments
+    </span>
+</button>
+
+<button id="reaction-butt-readinglist" aria-label="Add to reading list" aria-pressed="false" class="crayons-reaction crayons-reaction--readinglist crayons-tooltip__activator relative activated" data-category="readinglist">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-readinglist">9</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Save
+    </span>
+</button>
+
+
+    <div id="mod-actions-menu-btn-area" class="print-hidden hidden align-center"></div>
+    <div class="align-center m:relative">
+      <button id="article-show-more-button" aria-controls="article-show-more-dropdown" aria-expanded="false" aria-haspopup="true" class="dropbtn crayons-btn crayons-btn--ghost-dimmed crayons-btn--icon-rounded" aria-label="Share post options" data-initialized="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="ao6n5q59u2ij0xq3sk9hpuwd7m92fs4r" aria-hidden="true" class="crayons-icon dropdown-icon"><title id="ao6n5q59u2ij0xq3sk9hpuwd7m92fs4r">More...</title><path fill-rule="evenodd" clip-rule="evenodd" d="M7 12a2 2 0 11-4 0 2 2 0 014 0zm7 0a2 2 0 11-4 0 2 2 0 014 0zm5 2a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+
+      </button>
+
+      <div id="article-show-more-dropdown" class="crayons-dropdown side-bar left-2 right-2 m:right-auto m:left-100 s:left-auto mb-1 m:mb-0 top-unset bottom-100 m:top-0 m:bottom-unset">
+        <div>
+          <button id="copy-post-url-button" class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0" data-posturl="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l">
+            <span class="fw-bold">Copy link</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="article-copy-icon" role="img" aria-labelledby="abnoukpyt5srv86ftah3vhn9zocc26yq" aria-hidden="true" class="crayons-icon mx-2 shrink-0"><title id="abnoukpyt5srv86ftah3vhn9zocc26yq">Copy link</title>
+    <path d="M7 6V3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1 1 0 013 21l.003-14c0-.552.45-1 1.007-1H7zm2 0h8v10h2V4H9v2zm-2 5v2h6v-2H7zm0 4v2h6v-2H7z"></path>
+</svg>
+
+          </button>
+          <div id="article-copy-link-announcer" aria-live="polite" class="crayons-notice crayons-notice--success my-2 p-1" hidden="">Copied to Clipboard</div>
+        </div>
+
+        <div class="Desktop-only">
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://twitter.com/intent/tweet?text=%22Django%20class-based%20views%20with%20pagination%22%20by%20%40xarala221%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Fxarala221%2Fdjango-class-based-views-with-pagination-2n8l">
+            Share to Twitter
+          </a>
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fdev.to%2Fxarala221%2Fdjango-class-based-views-with-pagination-2n8l&amp;title=Django%20class-based%20views%20with%20pagination&amp;summary=Django%20class-based%20views%20with%20pagination&amp;source=DEV%20Community">
+            Share to LinkedIn
+          </a>
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.reddit.com/submit?url=https%3A%2F%2Fdev.to%2Fxarala221%2Fdjango-class-based-views-with-pagination-2n8l&amp;title=Django%20class-based%20views%20with%20pagination">
+            Share to Reddit
+          </a>
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fdev.to%2Fxarala221%2Fdjango-class-based-views-with-pagination-2n8l&amp;t=Django%20class-based%20views%20with%20pagination">
+            Share to Hacker News
+          </a>
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Fxarala221%2Fdjango-class-based-views-with-pagination-2n8l">
+            Share to Facebook
+          </a>
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://toot.kytta.dev/?text=https%3A%2F%2Fdev.to%2Fxarala221%2Fdjango-class-based-views-with-pagination-2n8l">
+            Share to Mastodon
+          </a>
+        </div>
+
+        <web-share-wrapper shareurl="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l" sharetitle="Django class-based views with pagination" sharetext="Django class-based views with pagination" template="web-share-button">
+          <a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#" class="dropdown-link-row crayons-link crayons-link--block">Share Post via...</a>
+        </web-share-wrapper>
+        <template id="web-share-button"></template>
+
+        <a href="https://dev.to/report-abuse" class="crayons-link crayons-link--block">Report Abuse</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </aside>
+
+  <main id="main-content" class="crayons-layout__content grid gap-4">
+    <div class="article-wrapper">
+
+
+      <article class="crayons-card crayons-article mb-4" id="article-show-container" data-article-id="326933" data-article-slug="django-class-based-views-with-pagination-2n8l" data-author-id="71161" data-author-name="Ousseynou Diop" data-author-username="xarala221" data-co-author-ids="" data-path="/xarala221/django-class-based-views-with-pagination-2n8l" data-pin-path="/stories/feed/pinned_article" data-pinned-article-id="" data-published="true" data-scheduled="false">
+        <header class="crayons-article__header" id="main-title">
+            <div class="crayons-article__cover">
+              <img src="./Django class-based views with pagination - DEV Community_files/photo-1587845323226-bad89242c735_ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=500&amp;q=60" width="1000" height="420" style="background-color:#dddddd;" class="crayons-article__cover__image" alt="Cover image for Django class-based views with pagination">
+            </div>
+
+          <div class="crayons-article__header__meta">
+            <div class="flex s:items-start flex-col s:flex-row">
+              <div id="action-space" class="crayons-article__actions mb-4 s:mb-0 s:order-last"></div>
+              <div class="flex flex-1 mb-5 items-start">
+                <div class="relative">
+                    <a href="https://dev.to/xarala221"><img class="radius-full align-middle" src="./Django class-based views with pagination - DEV Community_files/4199abaf-454f-406d-a3d9-7bd573c75472.png" width="40" height="40" alt="Ousseynou Diop"></a>
+                </div>
+                <div class="pl-3 flex-1">
+                  <a href="https://dev.to/xarala221" class="crayons-link fw-bold">Ousseynou Diop</a>
+                  <p class="fs-xs color-base-60">
+                      Posted on <time datetime="2020-05-04T11:56:53Z" class="date" title="lunes, 4 de mayo de 2020, 6:56:53">4 may 2020</time>
+
+                      • Updated on <time datetime="2020-06-24T20:12:11Z" class="date" title="miércoles, 24 de junio de 2020, 15:12:11">24 jun 2020</time>
+
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="multiple_reactions_engagement">
+    <span class="reaction_engagement_like">
+      <img src="./Django class-based views with pagination - DEV Community_files/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" width="24" height="24">
+      <span id="reaction_engagement_like_count">8</span>
+    </span>
+    <span class="reaction_engagement_unicorn">
+      <img src="./Django class-based views with pagination - DEV Community_files/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" width="24" height="24">
+      <span id="reaction_engagement_unicorn_count">2</span>
+    </span>
+    <span class="reaction_engagement_exploding_head hidden">
+      <img src="./Django class-based views with pagination - DEV Community_files/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" width="24" height="24">
+      <span id="reaction_engagement_exploding_head_count">&nbsp;</span>
+    </span>
+    <span class="reaction_engagement_raised_hands hidden">
+      <img src="./Django class-based views with pagination - DEV Community_files/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" width="24" height="24">
+      <span id="reaction_engagement_raised_hands_count">&nbsp;</span>
+    </span>
+    <span class="reaction_engagement_fire hidden">
+      <img src="./Django class-based views with pagination - DEV Community_files/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" width="24" height="24">
+      <span id="reaction_engagement_fire_count">&nbsp;</span>
+    </span>
+
+  <span class="placeholder" style="width: 24px; height: 24px;">&nbsp;</span>
+</div>
+
+
+            <h1 class="fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 medium">
+              Django class-based views with pagination
+            </h1>
+
+              <div class="spec__tags flex flex-wrap">
+                  <a class="crayons-tag   " style="
+        --tag-bg: rgba(16, 62, 46, 0.10);
+        --tag-prefix: #103e2e;
+        --tag-bg-hover: rgba(16, 62, 46, 0.10);
+        --tag-prefix-hover: #103e2e;
+      " href="https://dev.to/t/django"><span class="crayons-tag__prefix">#</span>django</a>
+                  <a class="crayons-tag   " style="
+        --tag-bg: rgba(59, 73, 223, 0.10);
+        --tag-prefix: #3b49df;
+        --tag-bg-hover: rgba(59, 73, 223, 0.10);
+        --tag-prefix-hover: #3b49df;
+      " href="https://dev.to/t/cbv"><span class="crayons-tag__prefix">#</span>cbv</a>
+                  <a class="crayons-tag   " style="
+        --tag-bg: rgba(30, 56, 187, 0.10);
+        --tag-prefix: #1E38BB;
+        --tag-bg-hover: rgba(30, 56, 187, 0.10);
+        --tag-prefix-hover: #1E38BB;
+      " href="https://dev.to/t/python"><span class="crayons-tag__prefix">#</span>python</a>
+              </div>
+          </div>
+        </header>
+
+        <div class="crayons-article__main">
+
+          <div class="crayons-article__body text-styles spec__body" data-article-id="326933" id="article-body">
+            <p>Originally posted on <a href="https://rapidpython.com/django-class-based-views-with-pagination/">my blog</a></p>
+
+<h2>
+  <a name="introduction" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#introduction" class="anchor">
+  </a>
+  Introduction
+</h2>
+
+<p>The final project, I am using a phonebook application – <a href="https://github.com/xarala221/django-phonebook">Github repo</a></p>
+
+<p>Applications grow in terms of complexity and we will end up repeating certain functions or patterns again and again.</p>
+
+<p>Django tries to take away some of that monotonous at the model and template layers, but Web developers also experience this boredom at the view level.</p>
+
+<h2>
+  <a name="builtin-classbased-generic-views" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#builtin-classbased-generic-views" class="anchor">
+  </a>
+  Built-in class-based generic views
+</h2>
+
+<p>Django’s generic views were developed to ease that pain. They take certain common idioms and patterns found in view development and abstract them so that you can quickly write common views of data without having to write too much code.</p>
+
+<p>We can recognize certain common tasks, like displaying a list of objects and write code that displays a list of any object. Then the model in question can be passed as an extra argument to the URLconf.</p>
+
+<p>Django ships with generic views to do the following:</p>
+
+<ul>
+<li>Display list and detail pages for a single object. If we were creating an application to manage conferences then a <strong>TalkListView</strong> and a <strong>RegisteredUserListView</strong> would be examples of list views. A single talk page is an example of what we call a « detail » view.</li>
+<li>Present date-based objects in year/month/day archive pages, associated detail, and « latest » pages.</li>
+<li>Allow users to create, update, and delete objects – with or without authorization.</li>
+</ul>
+
+<p>Taken together, these views provide easy interfaces to perform the most common tasks developers encounter.</p>
+
+<h2>
+  <a name="generic-views-of-objects" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#generic-views-of-objects" class="anchor">
+  </a>
+  Generic views of objects
+</h2>
+
+<p><a href="https://docs.djangoproject.com/en/2.2/ref/class-based-views/base/#django.views.generic.base.TemplateView">TemplateView</a> certainly is useful, but Django’s generic views really shine when it comes to presenting views of your database content. Because it’s such a common task, Django comes with a handful of built-in generic views that make generating list and detail views of objects incredibly easy.</p>
+
+<p>Let’s start by looking at some examples of showing a list of objects or an individual object.</p>
+
+<p>Here is our models:<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight python"><code><span class="c1"># models.py
+</span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="c1"># Create your models here.
+</span>
+
+<span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">models</span><span class="p">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">phone</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="p">.</span><span class="n">SET_NULL</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">created_at</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">phone</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Here are our function-based views, we'll change it later<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight python"><code><span class="c1"># views.py
+</span><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Contact</span>
+
+
+<span class="c1"># Contact list
+</span>
+
+<span class="k">def</span> <span class="nf">contact_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">user</span>
+    <span class="n">contacts</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">created_by</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+        <span class="n">contacts</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">created_by</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">"contact/contact_list.html"</span><span class="p">,</span> <span class="p">{</span><span class="s">"contacts"</span><span class="p">:</span> <span class="n">contacts</span><span class="p">})</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>You see that these views do one thing display a list of <strong>Phonebook</strong></p>
+
+<p>To change this into a class-based views, add this<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight python"><code><span class="c1"># views.py
+</span><span class="p">...</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span>
+
+
+<span class="c1"># Contact list
+</span>
+<span class="k">class</span> <span class="nc">ContactList</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+<span class="p">...</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>You don't need to change the template name.<br>
+To display the data we need to loop throught a viraibale called <strong>object_list</strong>.<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight html"><code><span class="c">&lt;!-- contact-list.html --&gt;</span>
+...
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-6 m-auto"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card card-body"</span><span class="nt">&gt;</span>
+      {% if object_list %}
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"list-group list-group-flush"</span><span class="nt">&gt;</span>
+        {% for contact in object_list %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"list-group-item"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{% url 'details' contact.id %}"</span><span class="nt">&gt;</span> {{ contact.email }}<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        {% endfor %}
+      <span class="nt">&lt;/ul&gt;</span>
+      {% else %}
+      <span class="nt">&lt;p&gt;</span>No contact<span class="nt">&lt;/p&gt;</span>
+      {% endif %}
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<h2>
+  <a name="making-friendly-template-contexts" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#making-friendly-template-contexts" class="anchor">
+  </a>
+  Making « friendly » template contexts
+</h2>
+
+<p>Instead to use the variable <strong>object_list</strong> we can use a friendly name <strong>contacts</strong>.<br>
+The <strong>context_object_name</strong> attribute on a generic view specifies the context variable to use:<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight python"><code><span class="c1"># views.py
+</span><span class="k">class</span> <span class="nc">ContactList</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s">"contacts"</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+
+
+<div class="highlight js-code-highlight">
+<pre class="highlight html"><code><span class="c">&lt;!-- contact-list.html --&gt;</span>
+...
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-6 m-auto"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card card-body"</span><span class="nt">&gt;</span>
+      {% if contacts %}
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"list-group list-group-flush"</span><span class="nt">&gt;</span>
+        {% for contact in contacts %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"list-group-item"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{% url 'details' contact.id %}"</span><span class="nt">&gt;</span> {{ contact.email }}<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        {% endfor %}
+      <span class="nt">&lt;/ul&gt;</span>
+      {% else %}
+      <span class="nt">&lt;p&gt;</span>No contact<span class="nt">&lt;/p&gt;</span>
+      {% endif %}
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Providing a useful context_object_name is always a good idea. Your coworkers who design templates will thank you.</p>
+
+<h2>
+  <a name="filtering" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#filtering" class="anchor">
+  </a>
+  Filtering
+</h2>
+
+<p>Another common need is filtering, if we wanted, we could use self.request.user to filter using the current user, or other more complex logic.<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight python"><code><span class="c1"># views.py
+</span><span class="p">...</span>
+<span class="k">class</span> <span class="nc">ContactList</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s">"contacts"</span>
+
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">user</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Contact</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Contact</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">created_by</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="p">...</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<h2>
+  <a name="adding-pagination" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#adding-pagination" class="anchor">
+  </a>
+  Adding pagination
+</h2>
+
+<p>For some performance reason, we need to paginate our app, that will make it load faster.<br>
+Fortunately, Django comes with built-in pagination classes for managing paginating data of your application.<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight python"><code><span class="c1"># views.py
+</span><span class="p">...</span>
+<span class="k">class</span> <span class="nc">ContactList</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s">"contacts"</span>
+    <span class="n">paginate_by</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># add this
+</span>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">user</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Contact</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Contact</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">created_by</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="p">...</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Our template<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight html"><code><span class="c">&lt;!-- contact-list.html --&gt;</span>
+...
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-6 m-auto"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card card-body"</span><span class="nt">&gt;</span>
+      {% if contacts %}
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"list-group list-group-flush"</span><span class="nt">&gt;</span>
+        {% for contact in contacts %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"list-group-item"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{% url 'details' contact.id %}"</span><span class="nt">&gt;</span> {{ contact.email }}<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        {% endfor %}
+      <span class="nt">&lt;/ul&gt;</span>
+      {% else %}
+      <span class="nt">&lt;p&gt;</span>No contact<span class="nt">&lt;/p&gt;</span>
+      {% endif %}
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;nav</span> <span class="na">aria-label=</span><span class="s">"Page navigation example"</span><span class="nt">&gt;</span>
+      {% if is_paginated %}
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"pagination"</span><span class="nt">&gt;</span>
+        {% if page_obj.has_previous %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"page-item"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"page-link"</span> <span class="na">href=</span><span class="s">"?page={{page_obj.previous_page_number}}"</span>
+            <span class="nt">&gt;</span><span class="ni">&amp;laquo;</span><span class="nt">&lt;/a</span>
+          <span class="nt">&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        {% else %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"page-item disabled"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"page-link"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span><span class="ni">&amp;laquo;</span><span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        {% endif %} {% for i in paginator.page_range %} {% if page_obj.number ==
+        i %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"page-item"</span><span class="nt">&gt;&lt;a</span> <span class="na">class=</span><span class="s">"page-link active"</span><span class="nt">&gt;</span>{{ i }}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        {% else %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"page-item"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"page-link"</span> <span class="na">href=</span><span class="s">"?page={{ i }}"</span><span class="nt">&gt;</span>{{ i }}<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        {% endif %} {% endfor %} {% if page_obj.has_next %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"page-item"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"?page={{page_obj.next_page_number}}"</span> <span class="na">class=</span><span class="s">"page-link"</span>
+            <span class="nt">&gt;</span><span class="ni">&amp;raquo;</span><span class="nt">&lt;/a</span>
+          <span class="nt">&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        {% else %}
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"page-item disabled"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"page-link"</span><span class="nt">&gt;</span><span class="ni">&amp;raquo;</span><span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        {% endif %}
+      <span class="nt">&lt;/ul&gt;</span>
+      {% endif %}
+    <span class="nt">&lt;/nav&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<p>Now run the server and visit <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> you should see the page navigation buttons below the contacts.<br>
+</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight shell"><code>python manage.py runserver
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+
+
+<h2>
+  <a name="conclusion" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#conclusion" class="anchor">
+  </a>
+  Conclusion
+</h2>
+
+<p>In this tutorial, we've learned how to work with django class-based views.<br>
+You can do more stuff with like <strong>Form</strong> submitting, we'll cover them next.</p>
+
+<p>Thanks for reading, see you next.</p>
+
+
+          </div>
+
+        </div>
+          <section id="comments" data-follow-button-container="true" data-updated-at="2023-03-31 19:33:03 UTC" class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10">
+      <header class="relative flex justify-between items-center mb-6">
+        <div class="flex items-center">
+          <h2 class="crayons-subtitle-1">
+            Top comments <span class="js-comments-count" data-comments-count="3">(3)</span>
+          </h2>
+          <button class="c-btn c-btn--ghost crayons-btn--icon-left" id="toggle-comments-sort-dropdown" aria-controls="comments-sort-dropdown-container" aria-expanded="false" aria-label="Sort comments" aria-haspopup="true" data-initialized="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="mt-2"><title>Crown</title>
+    <path d="M12 18l-4-3.771 1-.943 3 2.829 3-2.829 1 .943L12 18zm0-10.115l-3 2.829-1-.943L12 6l4 3.771-1 .942-3-2.828z"></path>
+</svg>
+
+          </button>
+        </div>
+
+        <nav class="crayons-dropdown p-4" id="comments-sort-dropdown-container" aria-labelledby="comments-sort-title">
+            <h3 id="comments-sort-title" class="mb-3">Sort discussion: </h3>
+            <ul class="comments-sort-dropdown__list">
+              <li class="comment-sort-option">
+  <a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l?comments_sort=top#toggle-comments-sort-dropdown" class="comment-sort-option__header pl-7 pb-0 crayons-link--block block" aria-describedby="top-description-text" aria-current="page">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="a84wflsekk9agqs7s4fho2pqchhasoks" aria-hidden="true" class="crayons-icon"><title id="a84wflsekk9agqs7s4fho2pqchhasoks">Selected Sort Option</title>
+    <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414 4.95 4.95z"></path>
+</svg>
+
+       Top
+    </div>
+     <div id="top-description-text" class="crayons-field__description">
+      Most upvoted and relevant comments will be first
+    </div>
+  </a>
+</li>
+
+              <li class="comment-sort-option">
+  <a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l?comments_sort=latest#toggle-comments-sort-dropdown" class="comment-sort-option__header pl-7 pb-0 crayons-link--block block" aria-describedby="latest-description-text" aria-current="">
+    <div>
+      
+       Latest
+    </div>
+     <div id="latest-description-text" class="crayons-field__description">
+      Most recent comments will be first
+    </div>
+  </a>
+</li>
+
+              <li class="comment-sort-option">
+  <a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l?comments_sort=oldest#toggle-comments-sort-dropdown" class="comment-sort-option__header pl-7 pb-0 crayons-link--block block" aria-describedby="oldest-description-text" aria-current="">
+    <div>
+      
+       Oldest
+    </div>
+     <div id="oldest-description-text" class="crayons-field__description">
+      The oldest comments will be first
+    </div>
+  </a>
+</li>
+
+            </ul>
+        </nav>
+
+        <div id="comment-subscription" class="print-hidden"><div class="static"><div role="group" aria-label="Comment subscription options" class="crayons-btn-group"><button class="crayons-btn crayons-btn--outlined" type="button" data-tracking-name="comment_subscription_toggle">Subscribe</button></div></div>
+          
+        </div>
+      </header>
+
+      <div id="comments-container" data-testid="comments-container" data-commentable-id="326933" data-commentable-type="Article" data-has-recent-comment-activity="false">
+
+          <div id="response-templates-data" class="hidden"></div>
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_validateFileInputs-6f6f79168b31561b7c74.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/0-6bf46cb11ef27e3ebc1f.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/1-0a11659385a997393010.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/validateFileInputs-f7fc1ddb14414e6c1b6f.chunk.js.descarga" defer="defer"></script>
+
+
+<form class="comment-form print-hidden" id="new_comment" action="https://dev.to/comments" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓" autocomplete="off">
+
+  <input type="hidden" name="authenticity_token" value="NOTHING" id="new_comment_authenticity_token">
+
+    <input value="326933" autocomplete="off" type="hidden" name="comment[commentable_id]" id="comment_commentable_id">
+    <input value="Article" autocomplete="off" type="hidden" name="comment[commentable_type]" id="comment_commentable_type">
+    
+
+  <span class="crayons-avatar m:crayons-avatar--l mr-2 shrink-0">
+    <img src="./Django class-based views with pagination - DEV Community_files/devlogo-pwa-512.png" width="32" height="32" alt="pic" class="crayons-avatar__image overflow-hidden" id="comment-primary-user-profile--avatar" loading="lazy">
+  </span>
+  <div class="comment-form__inner">
+    <div class="comment-form__field" data-tracking-name="comment_form_textfield">
+      <textarea placeholder="Add to the discussion" onfocus="handleFocus(event)" onkeyup="handleKeyUp(event)" onkeydown="handleKeyDown(event)" oninput="handleChange(event)" id="text-area" required="required" class="crayons-textfield comment-textarea crayons-textfield--ghost" aria-label="Add a comment to the discussion" name="comment[body_markdown]"></textarea>
+
+    </div>
+
+    <div class="response-templates-container crayons-card crayons-card--secondary p-4 mb-4 comment-form__templates fs-base hidden">
+      <header class="mb-3">
+        <button type="button" class="crayons-btn personal-template-button active" data-target-type="personal" data-form-id="new_comment">Personal</button>
+        <button type="button" class="crayons-btn moderator-template-button hidden" data-target-type="moderator" data-form-id="new_comment">Trusted User</button>
+      </header>
+
+      <img class="loading-img hidden" src="./Django class-based views with pagination - DEV Community_files/loading-ellipsis-b714cf681fd66c853ff6f03dd161b77aa3c80e03cdc06f478b695f42770421e9.svg" alt="loading" loading="lazy">
+
+      <div class="personal-responses-container">
+      </div>
+      <div class="moderator-responses-container hidden">
+      </div>
+
+      <a target="_blank" rel="noopener nofollow" href="https://dev.to/settings/response-templates">
+        Create template
+      </a>
+      <p>Templates let you quickly answer FAQs or store snippets for re-use.</p>
+    </div>
+
+    <div class="comment-form__preview text-styles text-styles--secondary" id="preview-div"></div>
+
+    <div class="comment-form__buttons mb-4">
+      <button type="submit" class="crayons-btn mr-2 js-btn-enable" onclick="validateField(event)" data-tracking-name="comment_submit_button" disabled="">Submit</button>
+      <button type="button" class="preview-toggle crayons-btn crayons-btn--secondary comment-action-preview js-btn-enable mr-2" data-tracking-name="comment_preview_button" disabled="">Preview</button>
+      <a href="https://dev.to/404.html" class="dismiss-edit-comment crayons-btn crayons-btn--ghost js-btn-dismiss hidden">Dismiss</a>
+    </div>
+  </div>
+
+  <div class="code-of-conduct" id="toggle-code-of-conduct-checkbox"></div>
+</form>
+
+
+        <div class="comments" id="comment-trees-container">
+                <details class="comment-wrapper js-comment-wrapper comment-wrapper--deep-0
+                    root
+                    " open="">
+      <summary aria-label="Toggle this comment (and replies)" data-tracking-name="expand_comment_toggle">
+        <span class="m:mx-1 inline-block align-middle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="ajy89g0a2ihpxvv8yydn3ygrtkr62km9" class="crayons-icon expanded"><title id="ajy89g0a2ihpxvv8yydn3ygrtkr62km9">Collapse</title>
+    <path d="M12 10.677L8 6.935 9 6l3 2.807L15 6l1 .935-4 3.742zm0 4.517L9 18l-1-.935 4-3.742 4 3.742-1 .934-3-2.805z"></path>
+</svg>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="aaam44xwhro7dpsvlrq72y8u26dxnzw" class="crayons-icon collapsed"><title id="aaam44xwhro7dpsvlrq72y8u26dxnzw">Expand</title>
+    <path d="M12 18l-4-3.771 1-.943 3 2.829 3-2.829 1 .943L12 18zm0-10.115l-3 2.829-1-.943L12 6l4 3.771-1 .942-3-2.828z"></path>
+</svg>
+
+        </span>
+        <span class="js-collapse-comment-content inline-block align-middle"></span>
+      </summary>
+  <div id="comment-node-741941" class="
+      comment single-comment-node
+      
+      root
+      comment--deep-0
+      
+    " data-comment-id="741941" data-path="/xarala221/django-class-based-views-with-pagination-2n8l/comments/1g5e5" data-comment-author-id="664041" data-content-user-id="664041">
+    <a name="comment-1g5e5" style="position: absolute; top: -8px;">&nbsp;</a>
+    
+<div class="comment__inner">
+    <a href="https://dev.to/xenonrazels" class="shrink-0 crayons-avatar m:crayons-avatar--l mt-4 m:mt-3">
+    <img class="crayons-avatar__image" width="32" height="32" src="./Django class-based views with pagination - DEV Community_files/b59c6fee-cdb5-441d-8461-4305e9154874.jpeg" alt="xenonrazels profile image" loading="lazy">
+  </a>
+
+
+  <div class="inner-comment comment__details">
+    <div class="comment__content crayons-card">
+        
+
+
+        <div class="comment__header">
+  <a href="https://dev.to/xenonrazels" class="crayons-link crayons-link--secondary flex items-center fw-medium m:hidden">
+    <span class="js-comment-username">Sudhan Regmi</span>
+  </a>
+  <div class="profile-preview-card relative mb-4 s:mb-0 fw-medium hidden m:block">
+    <button id="comment-profile-preview-trigger-741941" aria-controls="comment-profile-preview-content-741941" class="profile-preview-card__trigger p-1 -my-1 -ml-1 crayons-btn crayons-btn--ghost" aria-label="Sudhan Regmi profile details" aria-expanded="false" aria-haspopup="true" data-initialized="true">
+      Sudhan Regmi
+    </button>
+    <div id="comment-profile-preview-content-741941" class="profile-preview-card__content p-4 pt-0 branded-7 crayons-dropdown reverse" style="--card-color: #000000; border-top-color: var(--card-color);" data-testid="profile-preview-card" data-repositioning-dropdown="true">
+    <div class="gap-4 grid">
+        <div class="-mt-4">
+  <a href="https://dev.to/xenonrazels" class="flex">
+    <span class="crayons-avatar crayons-avatar--xl  mr-2 shrink-0">
+      <img src="./Django class-based views with pagination - DEV Community_files/b59c6fee-cdb5-441d-8461-4305e9154874(1).jpeg" class="crayons-avatar__image" alt="" loading="lazy">
+    </span>
+    <span class="crayons-link crayons-subtitle-2 mt-5">Sudhan Regmi</span>
+  </a>
+</div>
+
+<div class="print-hidden">
+  <button name="button" type="button" data-info="{&quot;className&quot;:&quot;User&quot;,&quot;style&quot;:&quot;&quot;,&quot;id&quot;:664041,&quot;name&quot;:&quot;Sudhan Regmi&quot;}" class="crayons-btn follow-action-button whitespace-nowrap w-100 follow-user" aria-label="Follow user: Sudhan Regmi" aria-pressed="false" data-fetched="fetched">Follow</button>
+</div>
+
+  <div class="user-metadata-details">
+    <ul class="user-metadata-details-inner">
+      <li>
+        <div class="key">
+          Joined
+        </div>
+        <div class="value">
+          <time datetime="2021-07-09T05:37:05Z" class="date" title="viernes, 9 de julio de 2021, 0:37:05">9 jul 2021</time>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+    </div>
+</div>
+
+  </div>
+
+  <span class="color-base-30 px-2 m:pl-0" role="presentation">•</span>
+
+<a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#comment-1g5e5" class="comment-date crayons-link crayons-link--secondary fs-s">
+  <time datetime="2021-07-09T05:39:16Z" class="date-short-year" title="viernes, 9 de julio de 2021, 0:39:16">9 jul 21</time>
+
+</a>
+
+
+  <div class="comment__dropdown" data-tracking-name="comment_dropdown">
+    <button id="comment-dropdown-trigger-741941" aria-controls="comment-dropdown-741941" aria-expanded="false" class="dropbtn comment__dropdown-trigger crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon " aria-label="Toggle dropdown menu" aria-haspopup="true" data-initialized="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="apoitc3uhb1su2fn9mjdd3y10bg5pa58" class="crayons-icon pointer-events-none"><title id="apoitc3uhb1su2fn9mjdd3y10bg5pa58">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+    </button>
+    <div id="comment-dropdown-741941" class="crayons-dropdown right-1 s:right-0 s:left-auto fs-base dropdown">
+      <ul class="m-0">
+        <li><a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#comment-1g5e5" class="crayons-link crayons-link--block permalink-copybtn" aria-label="Copy link to Sudhan Regmi&#39;s comment" data-no-instant="">Copy link</a></li>
+        <li class="comment-actions hidden" data-user-id="664041" data-action="settings-button" data-path="https://dev.to/xenonrazels/comment/1g5e5/settings" aria-label="Go to Sudhan Regmi&#39;s comment settings"></li>
+        <li class="comment-actions hidden" data-action="hide-button" data-commentable-user-id="71161" data-user-id="664041">
+            <button class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0 hide-comment" data-hide-type="hide" data-comment-id="741941" data-comment-url="https://dev.to/xenonrazels/comment/1g5e5" aria-label="Hide Sudhan Regmi&#39;s comment">
+              Hide
+            </button>
+        </li>
+        <li class="mod-actions hidden mod-actions-comment-button" data-path="https://dev.to/xenonrazels/comment/1g5e5/mod" aria-label="Moderate Sudhan Regmi&#39;s comment"></li>
+        <li class="report-abuse-link-wrapper" data-path="/report-abuse?url=https://dev.to/xenonrazels/comment/1g5e5" aria-label="Report Sudhan Regmi&#39;s comment as abusive or violating our code of conduct and/or terms and conditions"><a href="https://dev.to/report-abuse?url=https://dev.to/xenonrazels/comment/1g5e5" class="crayons-link crayons-link--block">Report abuse</a></li>
+        <li class="current-user-actions"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+        <div class="
+            comment__body
+            text-styles
+            text-styles--secondary
+            body
+            
+            
+          ">
+          <p>nice</p>
+
+
+        </div>
+
+    </div>
+
+    <footer class="comment__footer print-hidden">
+  <button class="crayons-tooltip__activator crayons-btn crayons-btn--ghost crayons-btn--icon-left crayons-btn--s mr-1 reaction-like inline-flex reaction-button" id="button-for-comment-741941" data-comment-id="741941" aria-label="like" data-tracking-name="comment_heart_button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="aqos7hzx7knvmcgtog5bt0uwswgu7g7j" class="crayons-icon reaction-icon not-reacted"><title id="aqos7hzx7knvmcgtog5bt0uwswgu7g7j">Like comment: </title><path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path></svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a3uxs5g80nnyice5ak8lcrwx0mj5qbpu" class="crayons-icon crayons-icon reaction-icon--like reaction-icon reacted"><title id="a3uxs5g80nnyice5ak8lcrwx0mj5qbpu">Like comment: </title>
+    <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
+</svg>
+
+    <span class="reactions-count">1</span><span class="reactions-label hidden m:inline-block">&nbsp;like</span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+  </button>
+
+      <a class="actions crayons-btn crayons-btn--ghost crayons-btn--s crayons-btn--icon-left toggle-reply-form mr-1 inline-flex" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#/xarala221/django-class-based-views-with-pagination-2n8l/comments/new/1g5e5" data-comment-id="741941" data-path="/xarala221/django-class-based-views-with-pagination-2n8l/comments/1g5e5" data-tracking-name="comment_reply_button" data-testid="reply-button-741941" rel="nofollow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a1iqirvo1wr9yu6gmggnojf7lfhq8c1a" class="crayons-icon reaction-icon not-reacted"><title id="a1iqirvo1wr9yu6gmggnojf7lfhq8c1a">Comment button</title><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>
+
+        <span class="hidden m:inline-block">Reply</span>
+      </a>
+
+</footer>
+
+  </div>
+</div>
+    <details class="comment-wrapper js-comment-wrapper comment-wrapper--deep-1
+                    child
+                    " open="">
+      <summary aria-label="Toggle this comment (and replies)" data-tracking-name="expand_comment_toggle">
+        <span class="mx-0 inline-block align-middle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="aoyvybuluhj7l2ka72venos1zbs1xl2y" class="crayons-icon expanded"><title id="aoyvybuluhj7l2ka72venos1zbs1xl2y">Collapse</title>
+    <path d="M12 10.677L8 6.935 9 6l3 2.807L15 6l1 .935-4 3.742zm0 4.517L9 18l-1-.935 4-3.742 4 3.742-1 .934-3-2.805z"></path>
+</svg>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a8xboc1ai1tguyfx5rnotb3uajjvx6vx" class="crayons-icon collapsed"><title id="a8xboc1ai1tguyfx5rnotb3uajjvx6vx">Expand</title>
+    <path d="M12 18l-4-3.771 1-.943 3 2.829 3-2.829 1 .943L12 18zm0-10.115l-3 2.829-1-.943L12 6l4 3.771-1 .942-3-2.828z"></path>
+</svg>
+
+        </span>
+        <span class="js-collapse-comment-content inline-block align-middle"></span>
+      </summary>
+  <div id="comment-node-741943" class="
+      comment single-comment-node
+      
+      child
+      comment--deep-1
+      
+    " data-comment-id="741943" data-path="/xarala221/django-class-based-views-with-pagination-2n8l/comments/1g5e7" data-comment-author-id="664041" data-content-user-id="664041">
+    <a name="comment-1g5e7" style="position: absolute; top: -8px;">&nbsp;</a>
+    
+<div class="comment__inner">
+    <a href="https://dev.to/xenonrazels" class="shrink-0 crayons-avatar mt-4">
+    <img class="crayons-avatar__image" width="32" height="32" src="./Django class-based views with pagination - DEV Community_files/b59c6fee-cdb5-441d-8461-4305e9154874.jpeg" alt="xenonrazels profile image" loading="lazy">
+  </a>
+
+
+  <div class="inner-comment comment__details">
+    <div class="comment__content crayons-card">
+        
+
+
+        <div class="comment__header">
+  <a href="https://dev.to/xenonrazels" class="crayons-link crayons-link--secondary flex items-center fw-medium m:hidden">
+    <span class="js-comment-username">Sudhan Regmi</span>
+  </a>
+  <div class="profile-preview-card relative mb-4 s:mb-0 fw-medium hidden m:block">
+    <button id="comment-profile-preview-trigger-741943" aria-controls="comment-profile-preview-content-741943" class="profile-preview-card__trigger p-1 -my-1 -ml-1 crayons-btn crayons-btn--ghost" aria-label="Sudhan Regmi profile details" aria-expanded="false" aria-haspopup="true" data-initialized="true">
+      Sudhan Regmi
+    </button>
+    <div id="comment-profile-preview-content-741943" class="profile-preview-card__content p-4 pt-0 branded-7 crayons-dropdown reverse" style="--card-color: #000000; border-top-color: var(--card-color);" data-testid="profile-preview-card" data-repositioning-dropdown="true">
+    <div class="gap-4 grid">
+        <div class="-mt-4">
+  <a href="https://dev.to/xenonrazels" class="flex">
+    <span class="crayons-avatar crayons-avatar--xl  mr-2 shrink-0">
+      <img src="./Django class-based views with pagination - DEV Community_files/b59c6fee-cdb5-441d-8461-4305e9154874(1).jpeg" class="crayons-avatar__image" alt="" loading="lazy">
+    </span>
+    <span class="crayons-link crayons-subtitle-2 mt-5">Sudhan Regmi</span>
+  </a>
+</div>
+
+<div class="print-hidden">
+  <button name="button" type="button" data-info="{&quot;className&quot;:&quot;User&quot;,&quot;style&quot;:&quot;&quot;,&quot;id&quot;:664041,&quot;name&quot;:&quot;Sudhan Regmi&quot;}" class="crayons-btn follow-action-button whitespace-nowrap w-100 follow-user" aria-label="Follow user: Sudhan Regmi" aria-pressed="false" data-fetched="fetched">Follow</button>
+</div>
+
+  <div class="user-metadata-details">
+    <ul class="user-metadata-details-inner">
+      <li>
+        <div class="key">
+          Joined
+        </div>
+        <div class="value">
+          <time datetime="2021-07-09T05:37:05Z" class="date" title="viernes, 9 de julio de 2021, 0:37:05">9 jul 2021</time>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+    </div>
+</div>
+
+  </div>
+
+  <span class="color-base-30 px-2 m:pl-0" role="presentation">•</span>
+
+<a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#comment-1g5e7" class="comment-date crayons-link crayons-link--secondary fs-s">
+  <time datetime="2021-07-09T05:39:46Z" class="date-short-year" title="viernes, 9 de julio de 2021, 0:39:46">9 jul 21</time>
+
+</a>
+
+
+  <div class="comment__dropdown" data-tracking-name="comment_dropdown">
+    <button id="comment-dropdown-trigger-741943" aria-controls="comment-dropdown-741943" aria-expanded="false" class="dropbtn comment__dropdown-trigger crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon " aria-label="Toggle dropdown menu" aria-haspopup="true" data-initialized="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="ajg87p0zbbnnhz4xkrxest3yj0awigbo" class="crayons-icon pointer-events-none"><title id="ajg87p0zbbnnhz4xkrxest3yj0awigbo">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+    </button>
+    <div id="comment-dropdown-741943" class="crayons-dropdown right-1 s:right-0 s:left-auto fs-base dropdown">
+      <ul class="m-0">
+        <li><a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#comment-1g5e7" class="crayons-link crayons-link--block permalink-copybtn" aria-label="Copy link to Sudhan Regmi&#39;s comment" data-no-instant="">Copy link</a></li>
+        <li class="comment-actions hidden" data-user-id="664041" data-action="settings-button" data-path="https://dev.to/xenonrazels/comment/1g5e7/settings" aria-label="Go to Sudhan Regmi&#39;s comment settings"></li>
+        <li class="comment-actions hidden" data-action="hide-button" data-commentable-user-id="71161" data-user-id="664041">
+            <button class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0 hide-comment" data-hide-type="hide" data-comment-id="741943" data-comment-url="https://dev.to/xenonrazels/comment/1g5e7" aria-label="Hide Sudhan Regmi&#39;s comment">
+              Hide
+            </button>
+        </li>
+        <li class="mod-actions hidden mod-actions-comment-button" data-path="https://dev.to/xenonrazels/comment/1g5e7/mod" aria-label="Moderate Sudhan Regmi&#39;s comment"></li>
+        <li class="report-abuse-link-wrapper" data-path="/report-abuse?url=https://dev.to/xenonrazels/comment/1g5e7" aria-label="Report Sudhan Regmi&#39;s comment as abusive or violating our code of conduct and/or terms and conditions"><a href="https://dev.to/report-abuse?url=https://dev.to/xenonrazels/comment/1g5e7" class="crayons-link crayons-link--block">Report abuse</a></li>
+        <li class="current-user-actions"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+        <div class="
+            comment__body
+            text-styles
+            text-styles--secondary
+            body
+            
+            
+          ">
+          <p>kjnkn</p>
+
+
+        </div>
+
+    </div>
+
+    <footer class="comment__footer print-hidden">
+  <button class="crayons-tooltip__activator crayons-btn crayons-btn--ghost crayons-btn--icon-left crayons-btn--s mr-1 reaction-like inline-flex reaction-button" id="button-for-comment-741943" data-comment-id="741943" aria-label="like" data-tracking-name="comment_heart_button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a5i39pz592zdg98ew0ngvg14ws9sk2yw" class="crayons-icon reaction-icon not-reacted"><title id="a5i39pz592zdg98ew0ngvg14ws9sk2yw">Like comment: </title><path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path></svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a5fbcz9n4oij9729zl1btyhtb2vv9p6" class="crayons-icon crayons-icon reaction-icon--like reaction-icon reacted"><title id="a5fbcz9n4oij9729zl1btyhtb2vv9p6">Like comment: </title>
+    <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
+</svg>
+
+    <span class="reactions-count">1</span><span class="reactions-label hidden m:inline-block">&nbsp;like</span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+  </button>
+
+      <a class="actions crayons-btn crayons-btn--ghost crayons-btn--s crayons-btn--icon-left toggle-reply-form mr-1 inline-flex" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#/xarala221/django-class-based-views-with-pagination-2n8l/comments/new/1g5e7" data-comment-id="741943" data-path="/xarala221/django-class-based-views-with-pagination-2n8l/comments/1g5e7" data-tracking-name="comment_reply_button" data-testid="reply-button-741943" rel="nofollow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="aj1880cpo4twckas3eas8f1rlqjpfevk" class="crayons-icon reaction-icon not-reacted"><title id="aj1880cpo4twckas3eas8f1rlqjpfevk">Comment button</title><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>
+
+        <span class="hidden m:inline-block">Reply</span>
+      </a>
+
+</footer>
+
+  </div>
+</div>
+
+
+  </div>
+    </details>
+
+
+  </div>
+    </details>
+
+    <details class="comment-wrapper js-comment-wrapper comment-wrapper--deep-0
+                    root
+                    " open="">
+      <summary aria-label="Toggle this comment (and replies)" data-tracking-name="expand_comment_toggle">
+        <span class="m:mx-1 inline-block align-middle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a312tcquv2ppm30gzwagvu9ua11lozb4" class="crayons-icon expanded"><title id="a312tcquv2ppm30gzwagvu9ua11lozb4">Collapse</title>
+    <path d="M12 10.677L8 6.935 9 6l3 2.807L15 6l1 .935-4 3.742zm0 4.517L9 18l-1-.935 4-3.742 4 3.742-1 .934-3-2.805z"></path>
+</svg>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a62hf89fxu2w4rhux3awtl00dv6jvvur" class="crayons-icon collapsed"><title id="a62hf89fxu2w4rhux3awtl00dv6jvvur">Expand</title>
+    <path d="M12 18l-4-3.771 1-.943 3 2.829 3-2.829 1 .943L12 18zm0-10.115l-3 2.829-1-.943L12 6l4 3.771-1 .942-3-2.828z"></path>
+</svg>
+
+        </span>
+        <span class="js-collapse-comment-content inline-block align-middle"></span>
+      </summary>
+  <div id="comment-node-782874" class="
+      comment single-comment-node
+      
+      root
+      comment--deep-0
+      
+    " data-comment-id="782874" data-path="/xarala221/django-class-based-views-with-pagination-2n8l/comments/1ie2e" data-comment-author-id="511308" data-content-user-id="511308">
+    <a name="comment-1ie2e" style="position: absolute; top: -8px;">&nbsp;</a>
+    
+<div class="comment__inner">
+    <a href="https://dev.to/rakibulislamdigonto" class="shrink-0 crayons-avatar m:crayons-avatar--l mt-4 m:mt-3">
+    <img class="crayons-avatar__image" width="32" height="32" src="./Django class-based views with pagination - DEV Community_files/2d90fd83-11c3-4e09-b0b9-61e048f0ec2a.png" alt="rakibulislamdigonto profile image" loading="lazy">
+  </a>
+
+
+  <div class="inner-comment comment__details">
+    <div class="comment__content crayons-card">
+        
+
+
+        <div class="comment__header">
+  <a href="https://dev.to/rakibulislamdigonto" class="crayons-link crayons-link--secondary flex items-center fw-medium m:hidden">
+    <span class="js-comment-username">RakibulIslamDigonto</span>
+  </a>
+  <div class="profile-preview-card relative mb-4 s:mb-0 fw-medium hidden m:block">
+    <button id="comment-profile-preview-trigger-782874" aria-controls="comment-profile-preview-content-782874" class="profile-preview-card__trigger p-1 -my-1 -ml-1 crayons-btn crayons-btn--ghost" aria-label="RakibulIslamDigonto profile details" aria-expanded="false" aria-haspopup="true" data-initialized="true">
+      RakibulIslamDigonto
+    </button>
+    <div id="comment-profile-preview-content-782874" class="profile-preview-card__content p-4 pt-0 branded-7 crayons-dropdown reverse" style="--card-color: #280331; border-top-color: var(--card-color);" data-testid="profile-preview-card" data-repositioning-dropdown="true">
+    <div class="gap-4 grid">
+        <div class="-mt-4">
+  <a href="https://dev.to/rakibulislamdigonto" class="flex">
+    <span class="crayons-avatar crayons-avatar--xl  mr-2 shrink-0">
+      <img src="./Django class-based views with pagination - DEV Community_files/2d90fd83-11c3-4e09-b0b9-61e048f0ec2a(1).png" class="crayons-avatar__image" alt="" loading="lazy">
+    </span>
+    <span class="crayons-link crayons-subtitle-2 mt-5">RakibulIslamDigonto</span>
+  </a>
+</div>
+
+<div class="print-hidden">
+  <button name="button" type="button" data-info="{&quot;className&quot;:&quot;User&quot;,&quot;style&quot;:&quot;&quot;,&quot;id&quot;:511308,&quot;name&quot;:&quot;RakibulIslamDigonto&quot;}" class="crayons-btn follow-action-button whitespace-nowrap w-100 follow-user" aria-label="Follow user: RakibulIslamDigonto" aria-pressed="false" data-fetched="fetched">Follow</button>
+</div>
+  <div class="color-base-70">
+    Love in code
+  </div>
+
+  <div class="user-metadata-details">
+    <ul class="user-metadata-details-inner">
+        <li>
+          <div class="key">
+            Location
+          </div>
+          <div class="value">
+            Bangladesh
+          </div>
+        </li>
+          <li>
+            <div class="key">
+              Work
+            </div>
+            <div class="value">
+              Web Developer at self-employed
+            </div>
+          </li>
+      <li>
+        <div class="key">
+          Joined
+        </div>
+        <div class="value">
+          <time datetime="2020-11-10T02:53:52Z" class="date" title="lunes, 9 de noviembre de 2020, 21:53:52">9 nov 2020</time>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+    </div>
+</div>
+
+  </div>
+
+  <span class="color-base-30 px-2 m:pl-0" role="presentation">•</span>
+
+<a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#comment-1ie2e" class="comment-date crayons-link crayons-link--secondary fs-s">
+  <time datetime="2021-09-29T04:19:49Z" class="date-short-year" title="martes, 28 de septiembre de 2021, 23:19:49">28 sept 21</time>
+
+</a>
+
+
+  <div class="comment__dropdown" data-tracking-name="comment_dropdown">
+    <button id="comment-dropdown-trigger-782874" aria-controls="comment-dropdown-782874" aria-expanded="false" class="dropbtn comment__dropdown-trigger crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon " aria-label="Toggle dropdown menu" aria-haspopup="true" data-initialized="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a1833kq2n3grkmqpsis12dzg0l1qwxyu" class="crayons-icon pointer-events-none"><title id="a1833kq2n3grkmqpsis12dzg0l1qwxyu">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+    </button>
+    <div id="comment-dropdown-782874" class="crayons-dropdown right-1 s:right-0 s:left-auto fs-base dropdown">
+      <ul class="m-0">
+        <li><a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#comment-1ie2e" class="crayons-link crayons-link--block permalink-copybtn" aria-label="Copy link to RakibulIslamDigonto&#39;s comment" data-no-instant="">Copy link</a></li>
+        <li class="comment-actions hidden" data-user-id="511308" data-action="settings-button" data-path="https://dev.to/rakibulislamdigonto/comment/1ie2e/settings" aria-label="Go to RakibulIslamDigonto&#39;s comment settings"></li>
+        <li class="comment-actions hidden" data-action="hide-button" data-commentable-user-id="71161" data-user-id="511308">
+            <button class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0 hide-comment" data-hide-type="hide" data-comment-id="782874" data-comment-url="https://dev.to/rakibulislamdigonto/comment/1ie2e" aria-label="Hide RakibulIslamDigonto&#39;s comment">
+              Hide
+            </button>
+        </li>
+        <li class="mod-actions hidden mod-actions-comment-button" data-path="https://dev.to/rakibulislamdigonto/comment/1ie2e/mod" aria-label="Moderate RakibulIslamDigonto&#39;s comment"></li>
+        <li class="report-abuse-link-wrapper" data-path="/report-abuse?url=https://dev.to/rakibulislamdigonto/comment/1ie2e" aria-label="Report RakibulIslamDigonto&#39;s comment as abusive or violating our code of conduct and/or terms and conditions"><a href="https://dev.to/report-abuse?url=https://dev.to/rakibulislamdigonto/comment/1ie2e" class="crayons-link crayons-link--block">Report abuse</a></li>
+        <li class="current-user-actions"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+        <div class="
+            comment__body
+            text-styles
+            text-styles--secondary
+            body
+            
+            
+          ">
+          <p>oh, it's good for me</p>
+
+
+        </div>
+
+    </div>
+
+    <footer class="comment__footer print-hidden">
+  <button class="crayons-tooltip__activator crayons-btn crayons-btn--ghost crayons-btn--icon crayons-btn--s mr-1 reaction-like inline-flex reaction-button" id="button-for-comment-782874" data-comment-id="782874" aria-label="like" data-tracking-name="comment_heart_button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="apfpcyjo4t8yx2y3rbavd4sa40xmiaxj" class="crayons-icon reaction-icon not-reacted"><title id="apfpcyjo4t8yx2y3rbavd4sa40xmiaxj">Like comment: </title><path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path></svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="amc7p7xpyrdjwd5zhs1odcrxrlv0aig8" class="crayons-icon crayons-icon reaction-icon--like reaction-icon reacted"><title id="amc7p7xpyrdjwd5zhs1odcrxrlv0aig8">Like comment: </title>
+    <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
+</svg>
+
+    <span class="reactions-count"></span><span class="reactions-label hidden m:inline-block"></span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+  </button>
+
+      <a class="actions crayons-btn crayons-btn--ghost crayons-btn--s crayons-btn--icon-left toggle-reply-form mr-1 inline-flex" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#/xarala221/django-class-based-views-with-pagination-2n8l/comments/new/1ie2e" data-comment-id="782874" data-path="/xarala221/django-class-based-views-with-pagination-2n8l/comments/1ie2e" data-tracking-name="comment_reply_button" data-testid="reply-button-782874" rel="nofollow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a9bzwz6xkh2lx66gfd8sqsswb8iid8pf" class="crayons-icon reaction-icon not-reacted"><title id="a9bzwz6xkh2lx66gfd8sqsswb8iid8pf">Comment button</title><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>
+
+        <span class="hidden m:inline-block">Reply</span>
+      </a>
+
+</footer>
+
+  </div>
+</div>
+
+
+  </div>
+    </details>
+
+
+        </div>
+      </div>
+
+      <div class="align-center">
+
+
+  <nav class="fs-s align-center block" aria-label="Conduct controls">
+  <a href="https://dev.to/code-of-conduct" class="crayons-link crayons-link--secondary">Code of Conduct</a>
+  <span class="opacity-25 px-2" role="presentation">•</span>
+  <a href="https://dev.to/report-abuse" class="crayons-link crayons-link--secondary">Report abuse</a>
+</nav>
+
+</div>
+
+  </section>
+  <div id="hide-comments-modal" class="hidden">
+  <form id="hide-comments-modal__form" class="hide-comments-modal__form" data-type="json" action="https://dev.to/comments/hide" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓" autocomplete="off"><input type="hidden" name="_method" value="patch" autocomplete="off"><input type="hidden" name="authenticity_token" value="1lGVxa_wsHN-BkJ75SQ9u5ZqEa0zkcbmG1BBXvNhcjxqkNKkCG2w0DhbavuU6DnPcaNFDNVqOlAzasPaatxTtQ" autocomplete="off">
+    <div class="hide-comments-modal__content">
+      <p class="pb-2">
+        Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's <a id="hide-comments-modal__comment-permalink" href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#">permalink</a>.
+      </p>
+      <label class="crayons-field crayons-field--checkbox my-2">
+        <input name="hide_children" type="hidden" value="0" autocomplete="off"><input class="hide_children crayons-checkbox" type="checkbox" value="1" name="hide_children" id="hide_children">
+        <p class="crayons-field__label">Hide child comments as well</p>
+      </label>
+      <p class="pb-4 pt-2">
+        <button type="submit" class="crayons-btn">
+          Confirm
+        </button>
+      </p>
+    </div>
+</form>  <p class="fs-s color-base-60">For further actions, you may consider blocking this person and/or <a id="hide-comments-modal__report-link" href="https://dev.to/report-abuse">reporting abuse</a></p>
+</div>
+
+
+
+      </article>
+
+          <div class="pb-4 crayons-layout__comments-display-ad">
+            <div class="crayons-card crayons-card--secondary crayons-sponsorship" data-display-unit="" data-id="882" data-category-click="click" data-category-impression="impression" data-context-type="article" data-type-of="in_house">
+  <div class="crayons-sponsorship__header relative">
+      <div class="crayons-sponsorship__title">DEV Community</div>
+
+    <button id="sponsorship-dropdown-trigger-882" aria-controls="sponsorship-dropdown-882" aria-expanded="false" aria-haspopup="true" class="dropBtn crayons-sponsorship__dropdown crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon" aria-label="Toggle dropdown menu" data-initialized="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="al26k49v7x42saegtz9cjgcalxprm6ze" class="crayons-icon pointer-events-none"><title id="al26k49v7x42saegtz9cjgcalxprm6ze">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+    </button>
+
+    <div id="sponsorship-dropdown-882" class="crayons-dropdown right-0">
+      <ul class="list-none m-0">
+          <li>
+            <a class="crayons-link crayons-link--block" href="https://dev.to/billboards">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
+</svg>
+
+              What's a billboard?
+            </a>
+          </li>
+        <li>
+          <a class="crayons-link crayons-link--block" href="https://dev.to/settings/customization#sponsors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M3.34 16.9999C2.91727 16.2689 2.58866 15.4874 2.362 14.6739C2.85531 14.423 3.26959 14.0406 3.55903 13.5688C3.84846 13.0971 4.00176 12.5545 4.00197 12.0011C4.00218 11.4476 3.84928 10.9049 3.5602 10.4329C3.27112 9.961 2.85712 9.57821 2.364 9.32694C2.81604 7.69243 3.67673 6.1999 4.865 4.98994C5.32909 5.29167 5.86762 5.45911 6.42098 5.47373C6.97434 5.48834 7.52095 5.34958 8.00033 5.07278C8.47971 4.79598 8.87315 4.39194 9.13713 3.90539C9.4011 3.41883 9.52531 2.86872 9.496 2.31594C11.1381 1.89157 12.8612 1.89226 14.503 2.31795C14.474 2.87071 14.5984 3.42073 14.8626 3.90715C15.1268 4.39357 15.5204 4.79742 15.9998 5.07401C16.4793 5.35059 17.0259 5.48913 17.5793 5.4743C18.1326 5.45946 18.671 5.29183 19.135 4.98994C19.714 5.57994 20.228 6.25095 20.66 6.99995C21.093 7.74895 21.417 8.52995 21.638 9.32595C21.1447 9.57685 20.7304 9.95932 20.441 10.4311C20.1515 10.9028 19.9982 11.4454 19.998 11.9988C19.9978 12.5523 20.1507 13.095 20.4398 13.5669C20.7289 14.0389 21.1429 14.4217 21.636 14.6729C21.184 16.3075 20.3233 17.8 19.135 19.0099C18.6709 18.7082 18.1324 18.5408 17.579 18.5262C17.0257 18.5115 16.479 18.6503 15.9997 18.9271C15.5203 19.2039 15.1268 19.6079 14.8629 20.0945C14.5989 20.5811 14.4747 21.1312 14.504 21.6839C12.8619 22.1083 11.1388 22.1076 9.497 21.6819C9.52605 21.1292 9.4016 20.5792 9.13742 20.0927C8.87324 19.6063 8.47964 19.2025 8.00017 18.9259C7.5207 18.6493 6.97405 18.5108 6.42073 18.5256C5.8674 18.5404 5.32896 18.7081 4.865 19.0099C4.27399 18.4069 3.76159 17.7315 3.34 16.9999ZM9 17.1959C10.0656 17.8106 10.8668 18.797 11.25 19.9659C11.749 20.0129 12.25 20.0139 12.749 19.9669C13.1324 18.7978 13.934 17.8114 15 17.1969C16.0652 16.5806 17.3205 16.3794 18.525 16.6319C18.815 16.2239 19.065 15.7889 19.273 15.3339C18.4524 14.4174 17.9991 13.2302 18 11.9999C18 10.7399 18.47 9.56295 19.273 8.66595C19.0635 8.21109 18.8125 7.77658 18.523 7.36795C17.3193 7.62025 16.0648 7.41942 15 6.80395C13.9344 6.18932 13.1332 5.20293 12.75 4.03394C12.251 3.98694 11.75 3.98594 11.251 4.03294C10.8676 5.20209 10.066 6.1885 9 6.80295C7.93478 7.41926 6.67948 7.62046 5.475 7.36795C5.18556 7.77623 4.93513 8.21081 4.727 8.66595C5.54757 9.5825 6.00088 10.7697 6 11.9999C6 13.2599 5.53 14.4369 4.727 15.3339C4.93647 15.7888 5.18754 16.2233 5.477 16.6319C6.68072 16.3796 7.93521 16.5805 9 17.1959ZM12 14.9999C11.2044 14.9999 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 11.9999C9 11.2043 9.31607 10.4412 9.87868 9.87862C10.4413 9.31602 11.2044 8.99995 12 8.99995C12.7956 8.99995 13.5587 9.31602 14.1213 9.87862C14.6839 10.4412 15 11.2043 15 11.9999C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 14.9999 12 14.9999ZM12 12.9999C12.2652 12.9999 12.5196 12.8946 12.7071 12.7071C12.8946 12.5195 13 12.2652 13 11.9999C13 11.7347 12.8946 11.4804 12.7071 11.2928C12.5196 11.1053 12.2652 10.9999 12 10.9999C11.7348 10.9999 11.4804 11.1053 11.2929 11.2928C11.1054 11.4804 11 11.7347 11 11.9999C11 12.2652 11.1054 12.5195 11.2929 12.7071C11.4804 12.8946 11.7348 12.9999 12 12.9999Z" fill="black"></path>
+</svg>
+
+            Manage preferences
+          </a>
+        </li>
+        <hr>
+        <li>
+          <a class="crayons-link crayons-link--block" href="https://dev.to/report-abuse?billboard=882">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 17" fill="none" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+  <path d="M2.16667 11.3333V16.3333H0.5V0.5H8.31833C8.47305 0.500083 8.62469 0.543236 8.75627 0.624627C8.88785 0.706018 8.99417 0.822433 9.06333 0.960833L9.66667 2.16667H14.6667C14.8877 2.16667 15.0996 2.25446 15.2559 2.41074C15.4122 2.56703 15.5 2.77899 15.5 3V12.1667C15.5 12.3877 15.4122 12.5996 15.2559 12.7559C15.0996 12.9122 14.8877 13 14.6667 13H9.34833C9.19361 12.9999 9.04197 12.9568 8.91039 12.8754C8.77882 12.794 8.67249 12.6776 8.60333 12.5392L8 11.3333H2.16667ZM2.16667 2.16667V9.66667H9.03L9.86333 11.3333H13.8333V3.83333H8.63667L7.80333 2.16667H2.16667Z" fill="#404040"></path>
+</svg>
+
+            Report billboard
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="p-1 pt-3 text-styles text-styles--display-ad">
+    <p><a href="https://dev.to/enter?state=new-user"><img src="./Django class-based views with pagination - DEV Community_files/fqggw1eu8hqpyzsykzg3.jpg" alt="Create An Account!" width="1200" height="450" loading="lazy"></a></p>
+  </div>
+</div>
+
+          </div>
+
+          <section class="crayons-card crayons-card--secondary text-padding mb-4 print-hidden" id="bottom-content-read-next">
+    <h2 class="crayons-subtitle-1">Read next</h2>
+      <a href="https://dev.to/chukhraiartur/scrape-google-hotels-with-python-n6f" data-preload-image="" class="crayons-link mt-6 block">
+        <div class="flex items-center">
+          <span class="crayons-avatar crayons-avatar--xl m:crayons-avatar--2xl mr-4 shrink-0">
+              <img loading="lazy" alt="chukhraiartur profile image" class="crayons-avatar__image" width="100" height="100" src="./Django class-based views with pagination - DEV Community_files/bfd46d81-b0d2-4489-b70f-cf9250345a23.jpg">
+          </span>
+          <div>
+            <h3 class="fs-xl mb-0 lh-tight">Scrape Google Hotels with Python</h3>
+            <p class="opacity-75 pt-1">
+              Artur Chukhrai - <time datetime="2023-03-02T20:34:43Z">Mar 2</time>
+            </p>
+          </div>
+        </div>
+      </a>
+      <a href="https://dev.to/lavary/how-to-fix-syntaxerror-missing-parentheses-in-call-to-print-3l4f" data-preload-image="https://res.cloudinary.com/practicaldev/image/fetch/s--RizgNwaT--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s522kybv02p398xddmly.jpg" class="crayons-link mt-6 block">
+        <div class="flex items-center">
+          <span class="crayons-avatar crayons-avatar--xl m:crayons-avatar--2xl mr-4 shrink-0">
+              <img loading="lazy" alt="lavary profile image" class="crayons-avatar__image" width="100" height="100" src="./Django class-based views with pagination - DEV Community_files/ced64cbd-afe9-4f24-b694-1916f83722de.jpg">
+          </span>
+          <div>
+            <h3 class="fs-xl mb-0 lh-tight">How to fix "SyntaxError: Missing parentheses in call to ‘print’" in Python</h3>
+            <p class="opacity-75 pt-1">
+              Reza Lavarian - <time datetime="2023-02-01T19:31:33Z">Feb 1</time>
+            </p>
+          </div>
+        </div>
+      </a>
+      <a href="https://dev.to/secure_bug/free-online-courses-by-google-3kb" data-preload-image="https://res.cloudinary.com/practicaldev/image/fetch/s--sVO2MCgl--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/otfdpwne90qptzb64ygj.jpg" class="crayons-link mt-6 block">
+        <div class="flex items-center">
+          <span class="crayons-avatar crayons-avatar--xl m:crayons-avatar--2xl mr-4 shrink-0">
+              <img loading="lazy" alt="secure_bug profile image" class="crayons-avatar__image" width="100" height="100" src="./Django class-based views with pagination - DEV Community_files/add9722d-c3f6-446c-9c8a-b84013972e25.jpeg">
+          </span>
+          <div>
+            <h3 class="fs-xl mb-0 lh-tight">Free Online Courses By Google</h3>
+            <p class="opacity-75 pt-1">
+              Jyoti Bhasin - <time datetime="2023-03-02T18:57:52Z">Mar 2</time>
+            </p>
+          </div>
+        </div>
+      </a>
+      <a href="https://dev.to/openhacking/python-chatgpt-api-development-based-on-gpt-35-turbo-model-51j5" data-preload-image="https://res.cloudinary.com/practicaldev/image/fetch/s--Xsz_DADO--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9rk9o3a01o4i4n0l78ze.jpg" class="crayons-link mt-6 block">
+        <div class="flex items-center">
+          <span class="crayons-avatar crayons-avatar--xl m:crayons-avatar--2xl mr-4 shrink-0">
+              <img loading="lazy" alt="openhacking profile image" class="crayons-avatar__image" width="100" height="100" src="./Django class-based views with pagination - DEV Community_files/bad0e78b-e85b-463b-8e78-f4f10a6cdd24.png">
+          </span>
+          <div>
+            <h3 class="fs-xl mb-0 lh-tight">Python + ChatGPT API Development | Based on gpt-3.5-turbo model</h3>
+            <p class="opacity-75 pt-1">
+              openHacking - <time datetime="2023-03-02T06:58:01Z">Mar 2</time>
+            </p>
+          </div>
+        </div>
+      </a>
+  </section>
+
+    </div>
+  </main>
+
+  <aside class="crayons-layout__sidebar-right" aria-label="Author details">
+    <div class="crayons-article-sticky grid gap-4 break-word" id="article-show-primary-sticky-nav">
+  <div class="crayons-card crayons-card--secondary branded-7 p-4 pt-0 gap-4 grid" style="border-top-color: #160533;">
+    <div class="-mt-4">
+  <a href="https://dev.to/xarala221" class="flex">
+    <span class="crayons-avatar crayons-avatar--xl  mr-2 shrink-0">
+      <img src="./Django class-based views with pagination - DEV Community_files/4199abaf-454f-406d-a3d9-7bd573c75472(1).png" class="crayons-avatar__image" alt="" loading="lazy">
+    </span>
+    <span class="crayons-link crayons-subtitle-2 mt-5">Ousseynou Diop</span>
+  </a>
+</div>
+
+<div class="print-hidden">
+  <button name="button" type="button" data-info="{&quot;className&quot;:&quot;User&quot;,&quot;style&quot;:&quot;&quot;,&quot;id&quot;:71161,&quot;name&quot;:&quot;Ousseynou Diop&quot;}" class="crayons-btn follow-action-button whitespace-nowrap w-100 follow-user" aria-label="Follow user: Ousseynou Diop" aria-pressed="false" data-fetched="fetched">Follow</button>
+</div>
+  <div class="color-base-70">
+    Freelance ❯ Fullstack Dev ❯ Python Lover ❯ Django ❯Js ❯ Node ❯ React ❯ GraphQL🔥
+  </div>
+
+  <div class="user-metadata-details">
+    <ul class="user-metadata-details-inner">
+        <li>
+          <div class="key">
+            Location
+          </div>
+          <div class="value">
+            Senegal
+          </div>
+        </li>
+          <li>
+            <div class="key">
+              Education
+            </div>
+            <div class="value">
+              Software engineering
+            </div>
+          </li>
+          <li>
+            <div class="key">
+              Work
+            </div>
+            <div class="value">
+              Freelance consultant at Xarala
+            </div>
+          </li>
+      <li>
+        <div class="key">
+          Joined
+        </div>
+        <div class="value">
+          <time datetime="2018-05-04T18:54:29Z" class="date">4 may 2018</time>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  </div>
+
+      <div class="crayons-card crayons-card--secondary">
+        <header class="crayons-card__header">
+          <h3 class="crayons-subtitle-2">
+            More from <a href="https://dev.to/xarala221">Ousseynou Diop</a>
+          </h3>
+        </header>
+        <div>
+            <a class="crayons-link crayons-link--contentful" href="https://dev.to/xarala221/python-rest-apis-with-fastapi-crud-application-9kc">
+              Python REST APIs with FastAPI, CRUD application
+              <div class="crayons-link__secondary -ml-1">
+                  <span class="mr-1"><span class="opacity-50">#</span>python</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>fastapi</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>rest</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>crud</span>
+              </div>
+            </a>
+            <a class="crayons-link crayons-link--contentful" href="https://dev.to/xarala221/how-to-become-more-productive-using-makefile-579b">
+              How to become more productive using Makefile
+              <div class="crayons-link__secondary -ml-1">
+                  <span class="mr-1"><span class="opacity-50">#</span>make</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>python</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>django</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>productivity</span>
+              </div>
+            </a>
+            <a class="crayons-link crayons-link--contentful" href="https://dev.to/xarala221/django-testing-using-pytest-1pak">
+              Django testing using pytest
+              <div class="crayons-link__secondary -ml-1">
+                  <span class="mr-1"><span class="opacity-50">#</span>django</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>tests</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>pytest</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>python</span>
+              </div>
+            </a>
+        </div>
+      </div>
+</div>
+
+    <div class="crayons-article-sticky grid gap-4 break-word pt-4">
+      <div class="crayons-card crayons-card--secondary crayons-sponsorship" data-display-unit="" data-id="919" data-category-click="click" data-category-impression="impression" data-context-type="article" data-type-of="in_house" data-impression-recorded="true">
+  <div class="crayons-sponsorship__header relative">
+      <div class="crayons-sponsorship__title">DEV Community</div>
+
+    <button id="sponsorship-dropdown-trigger-919" aria-controls="sponsorship-dropdown-919" aria-expanded="false" aria-haspopup="true" class="dropBtn crayons-sponsorship__dropdown crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon" aria-label="Toggle dropdown menu" data-initialized="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="akwkojrrn303jaic4wqkqnlsez272hyn" class="crayons-icon pointer-events-none"><title id="akwkojrrn303jaic4wqkqnlsez272hyn">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+    </button>
+
+    <div id="sponsorship-dropdown-919" class="crayons-dropdown right-0">
+      <ul class="list-none m-0">
+          <li>
+            <a class="crayons-link crayons-link--block" href="https://dev.to/billboards">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
+</svg>
+
+              What's a billboard?
+            </a>
+          </li>
+        <li>
+          <a class="crayons-link crayons-link--block" href="https://dev.to/settings/customization#sponsors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M3.34 16.9999C2.91727 16.2689 2.58866 15.4874 2.362 14.6739C2.85531 14.423 3.26959 14.0406 3.55903 13.5688C3.84846 13.0971 4.00176 12.5545 4.00197 12.0011C4.00218 11.4476 3.84928 10.9049 3.5602 10.4329C3.27112 9.961 2.85712 9.57821 2.364 9.32694C2.81604 7.69243 3.67673 6.1999 4.865 4.98994C5.32909 5.29167 5.86762 5.45911 6.42098 5.47373C6.97434 5.48834 7.52095 5.34958 8.00033 5.07278C8.47971 4.79598 8.87315 4.39194 9.13713 3.90539C9.4011 3.41883 9.52531 2.86872 9.496 2.31594C11.1381 1.89157 12.8612 1.89226 14.503 2.31795C14.474 2.87071 14.5984 3.42073 14.8626 3.90715C15.1268 4.39357 15.5204 4.79742 15.9998 5.07401C16.4793 5.35059 17.0259 5.48913 17.5793 5.4743C18.1326 5.45946 18.671 5.29183 19.135 4.98994C19.714 5.57994 20.228 6.25095 20.66 6.99995C21.093 7.74895 21.417 8.52995 21.638 9.32595C21.1447 9.57685 20.7304 9.95932 20.441 10.4311C20.1515 10.9028 19.9982 11.4454 19.998 11.9988C19.9978 12.5523 20.1507 13.095 20.4398 13.5669C20.7289 14.0389 21.1429 14.4217 21.636 14.6729C21.184 16.3075 20.3233 17.8 19.135 19.0099C18.6709 18.7082 18.1324 18.5408 17.579 18.5262C17.0257 18.5115 16.479 18.6503 15.9997 18.9271C15.5203 19.2039 15.1268 19.6079 14.8629 20.0945C14.5989 20.5811 14.4747 21.1312 14.504 21.6839C12.8619 22.1083 11.1388 22.1076 9.497 21.6819C9.52605 21.1292 9.4016 20.5792 9.13742 20.0927C8.87324 19.6063 8.47964 19.2025 8.00017 18.9259C7.5207 18.6493 6.97405 18.5108 6.42073 18.5256C5.8674 18.5404 5.32896 18.7081 4.865 19.0099C4.27399 18.4069 3.76159 17.7315 3.34 16.9999ZM9 17.1959C10.0656 17.8106 10.8668 18.797 11.25 19.9659C11.749 20.0129 12.25 20.0139 12.749 19.9669C13.1324 18.7978 13.934 17.8114 15 17.1969C16.0652 16.5806 17.3205 16.3794 18.525 16.6319C18.815 16.2239 19.065 15.7889 19.273 15.3339C18.4524 14.4174 17.9991 13.2302 18 11.9999C18 10.7399 18.47 9.56295 19.273 8.66595C19.0635 8.21109 18.8125 7.77658 18.523 7.36795C17.3193 7.62025 16.0648 7.41942 15 6.80395C13.9344 6.18932 13.1332 5.20293 12.75 4.03394C12.251 3.98694 11.75 3.98594 11.251 4.03294C10.8676 5.20209 10.066 6.1885 9 6.80295C7.93478 7.41926 6.67948 7.62046 5.475 7.36795C5.18556 7.77623 4.93513 8.21081 4.727 8.66595C5.54757 9.5825 6.00088 10.7697 6 11.9999C6 13.2599 5.53 14.4369 4.727 15.3339C4.93647 15.7888 5.18754 16.2233 5.477 16.6319C6.68072 16.3796 7.93521 16.5805 9 17.1959ZM12 14.9999C11.2044 14.9999 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 11.9999C9 11.2043 9.31607 10.4412 9.87868 9.87862C10.4413 9.31602 11.2044 8.99995 12 8.99995C12.7956 8.99995 13.5587 9.31602 14.1213 9.87862C14.6839 10.4412 15 11.2043 15 11.9999C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 14.9999 12 14.9999ZM12 12.9999C12.2652 12.9999 12.5196 12.8946 12.7071 12.7071C12.8946 12.5195 13 12.2652 13 11.9999C13 11.7347 12.8946 11.4804 12.7071 11.2928C12.5196 11.1053 12.2652 10.9999 12 10.9999C11.7348 10.9999 11.4804 11.1053 11.2929 11.2928C11.1054 11.4804 11 11.7347 11 11.9999C11 12.2652 11.1054 12.5195 11.2929 12.7071C11.4804 12.8946 11.7348 12.9999 12 12.9999Z" fill="black"></path>
+</svg>
+
+            Manage preferences
+          </a>
+        </li>
+        <hr>
+        <li>
+          <a class="crayons-link crayons-link--block" href="https://dev.to/report-abuse?billboard=919">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 17" fill="none" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+  <path d="M2.16667 11.3333V16.3333H0.5V0.5H8.31833C8.47305 0.500083 8.62469 0.543236 8.75627 0.624627C8.88785 0.706018 8.99417 0.822433 9.06333 0.960833L9.66667 2.16667H14.6667C14.8877 2.16667 15.0996 2.25446 15.2559 2.41074C15.4122 2.56703 15.5 2.77899 15.5 3V12.1667C15.5 12.3877 15.4122 12.5996 15.2559 12.7559C15.0996 12.9122 14.8877 13 14.6667 13H9.34833C9.19361 12.9999 9.04197 12.9568 8.91039 12.8754C8.77882 12.794 8.67249 12.6776 8.60333 12.5392L8 11.3333H2.16667ZM2.16667 2.16667V9.66667H9.03L9.86333 11.3333H13.8333V3.83333H8.63667L7.80333 2.16667H2.16667Z" fill="#404040"></path>
+</svg>
+
+            Report billboard
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="p-1 pt-3 text-styles text-styles--display-ad">
+    <h2>  <a href="https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l#life-is-too-short-to-browse-without-dark-mode" class="anchor">  </a>  🌚 Life is too short to browse without <a href="https://dev.to/settings/customization">dark mode</a>
+</h2><p>You can customize your theme, font, and more by <a href="https://dev.to/enter?state=new-user">creating your DEV account</a>.</p>
+  </div>
+</div>
+
+    </div>
+
+  </aside>
+</div>
+
+
+<div class="mod-actions-menu print-hidden"></div>
+<div data-testid="unpublish-post-modal-container" class="unpublish-post-modal-container hidden"></div>
+<div id="suspend-modal-content" class="hidden">
+  <p>
+    Once suspended, xarala221 will not be able to comment or publish posts until their suspension is removed.
+  </p>
+
+  <div class="crayons-field mt-4">
+    <label for="suspend-reason-userid-71161" class="crayons-field__label">
+      Note:
+    </label>
+    <textarea id="suspend-reason-userid-71161" rows="4" cols="70" placeholder="Reason for suspension" class="crayons-textfield" aria-describedby="suspension-reason-error" required=""></textarea>
+    <p id="suspension-reason-error" data-testid="suspension-reason-error" class="suspend-reason-error crayons-field__description" style="color: red;" aria-live="assertive">
+    </p>
+  </div>
+  <div class="mt-4">
+    <button id="submit-user-suspend-btn" class="c-btn c-btn--primary c-btn--destructive" data-btn-action="suspend" data-reason-selector="#suspend-reason-userid-71161" data-user-id="71161" data-username="xarala221">
+      Submit &amp; Suspend
+    </button>
+  </div>
+</div>
+
+<div id="unsuspend-modal-content" class="hidden">
+  <p>
+    Once unsuspended, xarala221 will be able to comment and publish posts again.
+  </p>
+
+  <div class="crayons-field mt-4">
+    <label for="unsuspend-reason-userid-71161" class="crayons-field__label">
+      Note:
+    </label>
+    <textarea id="unsuspend-reason-userid-71161" rows="4" cols="70" placeholder="Reason for unsuspension" class="crayons-textfield" aria-describedby="unsuspension-reason-error" required=""></textarea>
+    <p id="unsuspension-reason-error" data-testid="unsuspension-reason-error" class="unsuspend-reason-error crayons-field__description" style="color: red;" aria-live="assertive">
+    </p>
+  </div>
+  <div class="mt-4">
+    <button id="submit-user-unsuspend-btn" class="c-btn c-btn--primary" data-btn-action="unsuspend" data-reason-selector="#unsuspend-reason-userid-71161" data-user-id="71161" data-username="xarala221">
+      Submit &amp; Unsuspend
+    </button>
+  </div>
+</div>
+
+<div id="unpublish-all-posts" class="hidden">
+  <p>
+    Once unpublished, all posts by xarala221 will become hidden and only accessible to themselves.
+  </p>
+  <p class="mt-2">
+    If xarala221 is not suspended, they can still re-publish their posts from their dashboard.
+  </p>
+  <p class="mt-2"><label for="note_content">Note:</label><textarea name="note[content]" id="note_content" class="crayons-textfield note_content" placeholder="Note text"></textarea></p>
+  <div class="mt-4">
+    <button id="unpublish-all-posts-submit-btn" class="c-btn c-btn--destructive c-btn--primary" data-user-id="71161">
+      Unpublish all posts
+    </button>
+  </div>
+</div>
+
+<div id="unpublish-post-modal" class="hidden">
+  <p>
+    Once unpublished, this post will become invisible to the public and only accessible to Ousseynou Diop.
+  </p>
+  <p>They can still re-publish the post if they are not suspended.</p>
+  <div class="mt-4">
+    <button destructive="" variant="primary" class="c-btn c-btn--primary c-btn--destructive" id="confirm-unpublish-post-action">
+      Unpublish Post
+    </button>
+  </div>
+</div>
+
+<div id="flag-user-modal-content" class="hidden">
+  <p>
+    Thanks for keeping DEV Community safe. Here is what you can do to flag xarala221:
+  </p>
+
+  <div class="crayons-field crayons-field--radio mt-4">
+    <input type="radio" id="flag-user-radio-input" name="flag-user-radio-input" class="crayons-radio" data-reactable-id="71161" data-category="vomit" data-reactable-type="User">
+    <label for="flag-user-radio-input" class="crayons-field__label">
+      Make all posts by xarala221 less visible
+      <p class="crayons-field__description">
+        xarala221 consistently posts content that violates DEV Community's
+        code of conduct because it is harassing, offensive or spammy.
+      </p>
+    </label>
+  </div>
+
+  <div class="mt-4">
+    <a href="javascript:void(0);" id="report-inappropriate-content" data-report-abuse-link="/report-abuse?url=https://dev.to/xarala221/django-class-based-views-with-pagination-2n8l">
+      Report other inappropriate conduct
+    </a>
+  </div>
+
+  <div class="mt-6">
+    <p id="unselected-radio-error" data-testid="unselected-radio-error" class="crayons-field__description mb-4" style="color: red;" aria-live="assertive">
+    </p>
+    <button id="confirm-flag-user-action" class="c-btn c-btn--primary c-btn--destructive" data-category="vomit" data-reactable-type="User" data-user-id="71161" data-username="xarala221">
+      Confirm Flag
+    </button>
+  </div>
+</div>
+
+<div id="unflag-user-modal-content" class="hidden">
+  <p>
+    Unflagging xarala221 will restore default visibility to their posts.
+  </p>
+
+  <div class="mt-6">
+    <button id="confirm-unflag-user-action" class="c-btn c-btn--primary" data-category="vomit" data-reactable-type="User" data-user-id="71161" data-username="xarala221">
+      Confirm Unflag
+    </button>
+  </div>
+</div>
+
+
+<div class="fullscreen-code js-fullscreen-code"></div>
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_followButtons-728c603f2dc8755ce211.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/6-b93c1529963bca9369db.chunk.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/followButtons-b70c2c080f62af0daafb.chunk.js.descarga" defer="defer"></script>
+
+  <script>
+    var waitingOnPodcast = setInterval(function() {
+  if (typeof initializePodcastPlayback !== 'undefined') {
+    initializePodcastPlayback();
+    clearInterval(waitingOnPodcast);
+  }
+}, 1);
+
+    if (document.head.querySelector('meta[name="user-signed-in"][content="true"]')) {
+  function displayPollResults(json) {
+    var totalVotes = json.voting_data.votes_count;
+    json.voting_data.votes_distribution.forEach(function(point) {
+      var pollOptionItem = document.getElementById('poll_option_list_item_'+point[0]);
+      var optionText = document.getElementById('poll_option_label_'+point[0]).textContent;
+      if (json.user_vote_poll_option_id === point[0]) {
+        var votedClass = 'optionvotedfor'
+      } else {
+        var votedClass = 'optionnotvotedfor'
+      }
+      if (totalVotes === 0) {
+        var percent = 0;
+      } else {
+        var percent = (point[1]/totalVotes)*100;
+      }
+      var roundedPercent = Math.round( percent * 10 ) / 10
+      var percentFromRight = (100-roundedPercent)
+      var html = '<span><span class="ltag-votepercent ltag-'+votedClass+'" style="right:'+percentFromRight+'%"></span>        <span class="ltag-votepercenttext">'+optionText+' — '+roundedPercent+'%</span></span>';
+      pollOptionItem.innerHTML = html;
+      pollOptionItem.classList.add('already-voted')
+      document.getElementById('showmethemoney-'+json.poll_id).innerHTML = '<span class="ltag-voting-results-count">'+totalVotes+' total votes</span>';
+    })
+  }
+
+  var polls = document.getElementsByClassName('ltag-poll');
+  for (var i = 0; i < polls.length; i += 1) {
+    var poll = polls[i]
+    var pollId = poll.dataset.pollId
+    window.fetch('/poll_votes/'+pollId)
+    .then(function(response){
+      response.json().then(
+        function(json) {
+          if (json.voted) {
+            displayPollResults(json)
+          } else {
+            var els = document.getElementById('poll_'+json.poll_id).getElementsByClassName('ltag-polloption');
+
+            for (i = 0; i < els.length; i += 1) {
+              els[i].addEventListener('click', function(e) {
+                var tokenMeta = document.querySelector("meta[name='csrf-token']")
+                if (!tokenMeta) {
+                  alert('Whoops. There was an error. Your vote was not counted. Try refreshing the page.')
+                  return
+                }
+                var csrfToken = tokenMeta.getAttribute('content')
+                var optionId = e.target.dataset.optionId
+                window.fetch('/poll_votes', {
+                  method: 'POST',
+                  headers: {
+                    'X-CSRF-Token': csrfToken,
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({poll_vote: { poll_option_id: optionId } }),
+                  credentials: 'same-origin',
+                }).then(function(response){
+                  response.json().then(function(j){displayPollResults(j)})
+                })
+              });
+            }
+
+            document.getElementById('showmethemoney-'+json.poll_id).addEventListener('click', function() {
+              pollId = this.dataset.pollId
+              window.fetch('/poll_skips', {
+                method: 'POST',
+                headers: {
+                  'X-CSRF-Token': csrfToken,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({poll_skip: {poll_id: pollId }}),
+                credentials: 'same-origin',
+              }).then(function(response){
+                response.json().then(function(j){displayPollResults(j)})
+              })
+            });
+          }
+        }
+      )
+    })
+  }
+} else {
+    var els = document.getElementsByClassName('ltag-poll')
+    for (i = 0; i < els.length; i += 1) {
+      els[i].onclick = function(e) {
+        if (typeof showLoginModal !== "undefined") {
+          showLoginModal();
+        }
+      }
+    }
+}
+
+    function activateRunkitTags() {
+  if (!areAnyRunkitTagsPresent())
+    return
+
+  var checkRunkit = setInterval(function() {
+    try {
+      dynamicallyLoadRunkitLibrary()
+
+      if (typeof(RunKit) === 'undefined') {
+        return
+      }
+
+      replaceTagContentsWithRunkitWidget()
+      clearInterval(checkRunkit);
+    } catch(e) {
+      console.error(e);
+      clearInterval(checkRunkit);
+    }
+  }, 200);
+}
+
+function isRunkitTagAlreadyActive(runkitTag) {
+  return runkitTag.querySelector("iframe") !== null;
+};
+
+function areAnyRunkitTagsPresent() {
+  var presentRunkitTags = document.getElementsByClassName("runkit-element");
+
+  return presentRunkitTags.length > 0
+}
+
+function replaceTagContentsWithRunkitWidget() {
+  var targets = document.getElementsByClassName("runkit-element");
+  for (var i = 0; i < targets.length; i++) {
+    if (isRunkitTagAlreadyActive(targets[i])) {
+      continue;
+    }
+
+    var wrapperContent = targets[i].textContent;
+    if (/^(<iframe src)/.test(wrapperContent) === false) {
+      if (targets[i].children.length > 0) {
+        var preamble = targets[i].children[0].textContent;
+        var content = targets[i].children[1].textContent;
+        targets[i].innerHTML = "";
+        var notebook = RunKit.createNotebook({
+          element: targets[i],
+          source: content,
+          preamble: preamble
+        });
+      }
+    }
+  }
+};
+
+function dynamicallyLoadRunkitLibrary() {
+  if (typeof(dynamicallyLoadScript) === "undefined")
+    return
+
+  dynamicallyLoadScript("//embed.runkit.com")
+}
+
+activateRunkitTags();
+
+    var videoPreviews = document.getElementsByClassName("ltag__twitter-tweet__media__video-wrapper");
+[].forEach.call(videoPreviews, function(el) {
+  el.onclick = function(e) {
+    var divHeight = el.offsetHeight;
+    el.style.maxHeight = divHeight + "px";
+    el.getElementsByClassName("ltag__twitter-tweet__media--video-preview")[0].style.display = "none";
+    el.getElementsByClassName("ltag__twitter-tweet__video")[0].style.display = "block";
+    el.getElementsByTagName("video")[0].play();
+  }
+});
+var tweets = document.getElementsByClassName("ltag__twitter-tweet__main");
+[].forEach.call(tweets, function(tweet){
+  tweet.onclick = function(e) {
+    if (e.target.nodeName == "A" || e.target.parentElement.nodeName == "A") {
+      return;
+    }
+    window.open(tweet.dataset.url,"_blank");
+  }
+});
+
+  </script>
+
+    
+  </div>
+</div>
+    
+<footer class="crayons-footer print-hidden">
+  <div id="footer-container" class="crayons-footer__container">
+    <p class="fs-s crayons-footer__description">
+      <a class="c-link c-link--branded fw-medium" aria-label="DEV Community Home" href="https://dev.to/">DEV Community</a> — A constructive and inclusive social network for software developers. With you every step of your journey.
+    </p>
+
+    <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="">
+        <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/">
+      Home
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/listings">
+      Listings
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/pod">
+      Podcasts
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/videos">
+      Videos
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/tags">
+      Tags
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/faq">
+      FAQ
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://shop.forem.com/">
+      Forem Shop
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/sponsorships">
+      Sponsors
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/about">
+      About
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/contact">
+      Contact
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/guides">
+      Guides
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/software-comparisons">
+      Software comparisons
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+
+    </ul>
+
+    <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="">
+        <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/code-of-conduct">
+      Code of Conduct
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/privacy">
+      Privacy Policy
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/terms">
+      Terms of use
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+
+    </ul>
+
+    <div class="fs-s">
+      <p>Built on <a class="c-link c-link--branded" target="_blank" rel="noopener" href="https://www.forem.com/">Forem</a> — the <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/opensource">open source</a> software that powers <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/">DEV</a> and other inclusive communities.</p>
+      <p>Made with love and <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/rails">Ruby on Rails</a>. DEV Community <span title="copyright">©</span> 2016 - 2023.</p>
+    </div>
+  </div>
+</footer>
+<div id="snack-zone"><div class="hidden"></div></div>
+
+    <div id="global-signup-modal" class="authentication-modal hidden">
+  <div class="authentication-modal__container">
+    <figure class="authentication-modal__image-container">
+      <img class="authentication-modal__image" src="./Django class-based views with pagination - DEV Community_files/devlogo-pwa-512(1).png" alt="DEV Community" loading="lazy">
+    </figure>
+    <div class="authentication-modal__content">
+      <p class="authentication-modal__description">
+          We're a place where coders share, stay up-to-date and grow their careers.
+      </p>
+    </div>
+    <div class="authentication-modal__actions">
+      <a href="https://dev.to/enter" class="crayons-btn" aria-label="Log in" data-no-instant="">
+        Log in
+      </a>
+      <a href="https://dev.to/enter?state=new-user" class="crayons-btn crayons-btn--ghost-brand js-global-signup-modal__create-account" aria-label="Create new account" data-no-instant="">
+        Create account
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="./Django class-based views with pagination - DEV Community_files/runtime_signupModalShortcuts-93dab95136372be7ac28.js.descarga" defer="defer"></script>
+<script src="./Django class-based views with pagination - DEV Community_files/signupModalShortcuts-2f61c6fb1d0fe5e0e012.chunk.js.descarga" defer="defer"></script>
+
+  <div id="i18n-translations" data-translations="{&quot;en&quot;:{&quot;core&quot;:{&quot;add_comment&quot;:&quot;Add comment&quot;,&quot;beta&quot;:&quot;beta&quot;,&quot;comment&quot;:&quot;Comment&quot;,&quot;copy_link&quot;:&quot;Copy link&quot;,&quot;edit_profile&quot;:&quot;Edit profile&quot;,&quot;follow&quot;:&quot;Follow&quot;,&quot;follow_back&quot;:&quot;Follow back&quot;,&quot;following&quot;:&quot;Following&quot;,&quot;like&quot;:&quot;Like&quot;,&quot;loading&quot;:&quot;loading...&quot;,&quot;reaction&quot;:&quot;Reaction&quot;,&quot;report_abuse&quot;:&quot;Report abuse&quot;,&quot;search&quot;:&quot;Search&quot;,&quot;success_settings&quot;:&quot;Successfully updated settings.&quot;}}}"></div>
+  
+  
+</body></html>

@@ -1,0 +1,120 @@
+﻿.migrateAnnouncement {
+  width: 100%;
+  background-color: #E2DAF1;
+  font-size: 16px;
+  color: #000;
+  font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif;
+}
+
+.migrateAnnouncement .announcementContainer  {
+  margin: 0 auto;
+  max-width: 998px;
+  min-width: 998px;
+}
+
+.migrateAnnouncement .announcementContent {
+  width: 800px;
+  position: relative;
+  padding: 3px 0;
+  line-height:20px;
+}
+
+.migrateAnnouncement a.learnMore {
+  background-color: transparent;
+  border: 1px solid #8763c5;
+  border-radius: 2px;
+  text-decoration: none!important;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  padding: .375em .75em;
+  color: #000;
+  position: absolute;
+  bottom: 15px;
+  right: -198px;
+}
+
+.migrateAnnouncement p {
+  margin: 0.5em 0;
+}
+
+.migrateAnnouncement a.QAlink {
+  color: #006899;
+  text-decoration: underline;
+}
+
+/* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/181888/ */
+.migrateAnnouncement a.QAlink:focus, .migrateAnnouncement a.learnMore:focus {
+  border: 2px dotted #fff;
+}
+
+#boxes #migrateAnnouncementPopup {
+  width: 500px;
+  height: 400px;
+  background-color: #FFF;
+  padding: 15px;
+  font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif;
+}
+
+#migrateAnnouncementPopup #closeMigratePopup {
+  float: right;
+  color: #000;
+  font-family: cursive;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#migrateAnnouncementPopup #closeMigratePopup:hover, 
+#migrateAnnouncementPopup #closeMigratePopup:focus {
+  text-decoration: none;
+}
+
+#migrateAnnouncementPopup .popupMain {
+  margin-top: 30px;
+}
+
+#migrateAnnouncementPopup .popupMain .title {
+  font-size: 25px;
+  line-height: 45px
+}
+
+#migrateAnnouncementPopup .popupMain .content {
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+#migrateAnnouncementPopup .popupMain .content a {
+  color: rgb(14,105,195);
+  text-decoration: underline;
+}
+
+#migrateAnnouncementPopup .popupMain .footer {
+  margin-top: 60px;
+  float: right;
+}
+
+#migrateAnnouncementPopup .footer a#closeButton {
+  padding: 5px 30px;
+  border: 1px solid #bbb;
+  color: #000;
+  background-color: rgb(242,242,242);
+  border-radius: 8px;
+  display: inline-block;
+}
+
+#migrateAnnouncementPopup .footer a.QAlink {
+  padding: 5px;
+  color: #FFF;
+  background-color: rgb(55,98,196);
+  border-radius: 5px;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+#cookie-banner button{
+  margin:0;
+}
+
+#msccBannerV2 button {
+    margin: 0
+}

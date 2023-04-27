@@ -1,0 +1,3333 @@
+﻿//********************************************************************************
+//* Forums Namespace
+//********************************************************************************
+var Forums = {};
+
+//********************************************************************************
+//* Forums Constants
+//********************************************************************************
+Forums.Constants =
+{
+    // fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/102847
+    ExpandCollapseImage: "<img src=\"" + ForumsRes.url_transGif + "\" class=\"expcol\" alt=\"" + ForumsRes.rte_reportAbuseText + "\"/>",
+    ExpandCollapseLink: "<a class=\"expcol\" href=\"javascript:void(0);\"/>",
+    ExpandCollapseImageRef: "img.expcol",
+    ExpandCollapseLinkRef: "a.expcol",
+    ThreadPageDwellTimeInSecs: 30
+};
+
+//********************************************************************************
+//* Forums.Rte (rich text editor)
+//********************************************************************************
+Forums.Rte =
+{
+    IsOpen: false,
+
+    IsReady: false,
+
+    canShow: function (showAlert) {
+
+        if (Forums.Rte.IsOpen === false) {
+            return true;
+        }
+
+        if (showAlert === true) {
+            alert(ForumsRes.rte_alreadyOpen);
+        }
+
+        return false;
+    },
+
+    isRtl: function () {
+        return $('div#BodyBackground').hasClass('rtl');
+    },
+
+    show: function () {
+
+        if (Forums.Rte.IsOpen === true) {
+            return false;
+        }
+
+        setTimeout(function () { Forums.Rte.IsReady = true; }, ForumsRes.rte_readyDelay);
+
+        Forums.Rte.IsOpen = true;
+
+        return true;
+    },
+    hide: function () {
+        Forums.Rte.IsOpen = false;
+        Forums.Rte.IsReady = false;
+    },
+
+    isBodyLengthValid: function (body) {
+        var bodyLength = 0;
+        if (body !== null && Forums.Rte.trimString(body) !== "") {
+            bodyLength = body.length;
+        }
+
+        if (bodyLength < 4 || bodyLength > 60000) {
+            alert(ForumsRes.rte_msgBodyLength);
+            return false;
+        }
+        else {
+            return true;
+        }
+    },
+
+    trimString: function (value) {
+        var _ret = value.replace(/(\&nbsp\;)+/g, ' ');
+        return _ret.replace(/^\s+|\s+$/g, '');
+    },
+
+    isUnTrustedUserPostValid: function (body) {
+        var imagesInBody = Forums.Rte.getImageCount(body);
+        var linksInBody = Forums.Rte.getLinkCount(body);
+        return (imagesInBody == 0 && linksInBody == 0);
+    },
+
+    getImageCount: function (body) {
+        var tagExp = new RegExp("<img+.*?((/>)|(</img>))", "ig");
+        var imagesInBody = (body === null || Forums.Rte.trimString(body) === "") ? 0 : body.match(tagExp);
+        if (imagesInBody == null) imagesInBody = 0;
+        return imagesInBody;
+    },
+
+    getLinkCount: function (body) {
+        var tagExp = new RegExp("<a+.*?((/>)|)", "ig");
+        var linksInBody = (body === null || Forums.Rte.trimString(body) === "") ? 0 : body.match(tagExp);
+        if (linksInBody == null) linksInBody = 0;
+        return linksInBody;
+    },
+
+    isBodyImageCountValid: function (body) {
+        var imageCount = 0;
+        var idExp = new RegExp("Forums/getfile/?[0-9]*", "ig");
+        var imagesInBody = Forums.Rte.getImageCount(body);
+        if (imagesInBody !== null && imagesInBody.length > 0) {
+            for (var i = 0; i < imagesInBody.length; i++) {
+                var src = imagesInBody[i].match(idExp);
+                if (src !== null && src.length > 0) {
+                    imageCount++;
+                }
+            }
+        }
+
+        if (imageCount > ForumsRes.rte_MaxAttachments) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    },
+
+    UnPrettifyCodeBlocks: function (body) {
+        $("pre.prettyprint", body).each(function () {
+            $(this).removeClass('prettyprinted');
+            $('span', $(this)).each(function () {
+                $(this).replaceWith(function () {
+                    return $(this).contents();
+                });
+
+                // html encode
+                $(this).html($('<div/>').text($(this).html()).html());
+            });
+        });
+    }
+};
+
+//********************************************************************************
+//* Forums.Filters
+//********************************************************************************
+
+Forums.Filters =
+{
+    decorateFilters: function () {
+        var filterBar = $(this);
+        $("h6", this).prepend(Forums.Constants.ExpandCollapseLink);
+        $("h6", this).click(function (evt) {
+            $(filterBar).children("div.content").children("div.advanced").slideToggle("fast");
+            $(filterBar).toggleClass("expanded");
+        });
+
+        $("h6", this).mouseover(function () {
+            $(filterBar).addClass("hover");
+        });
+
+        $("h6", this).mouseout(function () {
+            $(filterBar).removeClass("hover");
+        });
+
+        if ($("div.advanced li a", this).hasClass("selected"))
+            $("h6", this).click();
+    }
+};
+
+//********************************************************************************
+//* Forums.Message
+//********************************************************************************
+Forums.Message =
+{
+    autoSubscribeValue: function (message) {
+        var autoSubscribe = false;
+        try {
+            autoSubscribe = pageData.autoSubscribe;
+            if (!autoSubscribe) {
+                var thread = $(message).parents("li.thread");
+                if (thread != null && thread.length > 0) {
+                    //Are we in thread list
+                    if ($("h3 > img", thread).hasClass("alert")) {
+                        autoSubscribe = true;
+                    }
+                } else {
+                    //Then we're in a thread
+                    var link = $("ul.thread.menu > li > a[name='unsubscribe']");
+                    if (link != null && link.length > 0) {
+                        autoSubscribe = true;
+                    }
+                }
+            }
+        } catch (ex) {
+        }
+
+        if (autoSubscribe)
+            return "checked='checked'";
+        else
+            return "";
+    },
+
+    edit: function () {
+        var msg = $(this).parents("li.message");
+        //Setup Reply
+        $(this).click(function () {
+
+            if (!Forums.Rte.canShow(true)) {
+                return false;
+            }
+            var msgId = Forums.Common.GetMessageId(msg);
+            var editorName = msgId + "body";
+            var editorHtml = "<textarea class='rte' id='" + editorName + "'></textarea>";
+            var body = $("div.body", msg);
+
+            Forums.Rte.UnPrettifyCodeBlocks(body);
+
+            var attachments = $("#" + $(msg).attr("id") + "_attachments").attr("value");
+            $("div.quote", body).wrap("<blockquote/>");
+            var html = $(body).html() + "<br/>";
+
+            $.ajax(
+                {
+                    type: "POST",
+                    async: false,
+                    url: ForumsRes.get_editorUrl,
+                    data: { Id: msgId, body: html, "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken() },
+                    success: function (results) {
+                        editorHtml = results;
+                    }
+                });
+
+
+            $(body).hide();
+            $("div.helpful, ul.history, div.abusive, div.menu, div.votingouterbox, div.voting,span.votinglabel", msg).hide();
+            var container = "<div class='editor" + (Forums.Rte.isRtl() ? " t-rtl" : "") + "'><form>" + editorHtml + "<input type='hidden' name='attachmentIds' value='" + attachments + "'/></form><div class='commands'><button name='submit'>" + ForumsRes.rte_submitText + "</button><button name='cancel'>" + ForumsRes.rte_cancelText + "</button>&nbsp;<label>" + ForumsRes.rte_reasonLabel + "</label><input type='text' name='reason'/></div><div class='ajaxError submitEditError'></div></div>";
+            $(body).after(container);
+
+            Forums.Rte.show();
+            $("button[name='submit']", msg).click(Forums.Message.submitEdit(msg, $(this).attr("url")));
+
+            $("button[name='cancel']", msg).click(function () {
+                Forums.Rte.hide();
+                if ($('#' + editorName).data('tEditor') !== undefined)
+                    $('#' + editorName).data('tEditor').window.focus();
+                $("div.editor", msg).remove();
+                $(body).show();
+                $("div.helpful, ul.history, div.abusive, div.menu,div.votingouterbox, div.voting,span.votinglabel", msg).show();
+                prettyPrint();
+
+                /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85269 */
+                Forums.Common.FocusOnFirstElementByXPath("li#" + $(msg).attr("id") + " .messageContentContainer .messageContent .messageFooter .actions .menu a[name='edit']");
+            });
+
+            $("button[name='submit']", msg).get(0).scrollIntoView(false);
+
+
+            return false;
+        });
+    },
+
+    reply: function () {
+        var msg = $(this).parents("li.message");
+        //Setup Reply
+        $(this).click(function () {
+
+            if (!Forums.Rte.canShow(true)) {
+                return false;
+            }
+
+            var msgId = Forums.Common.GetMessageId(msg);
+            var editorName = msgId + "body";
+            var editorHtml = "<textarea class='rte' id='" + editorName + "'></textarea>";
+
+            $.ajax(
+                {
+                    type: "POST",
+                    async: false,
+                    url: ForumsRes.get_editorUrl,
+                    data: { Id: msgId, "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken() },
+                    success: function (results) {
+                        editorHtml = results;
+                    }
+                });
+
+
+            //Telerik handles IE versions less than 8 differently but forgot to handle docmodes less than 7. The line below adds that functionality.
+            editorHtml = editorHtml.replace("if (!$.browser.msie || ($.browser.msie && $.browser.version >= 9))", "if (!$.browser.msie || ($.browser.msie && $.browser.version >= 9 && document.documentMode >= 9))");
+
+
+
+            var container = "<div class='editor" + (Forums.Rte.isRtl() ? " t-rtl" : "") + "'><form>" + editorHtml + "<input type='hidden' name='attachmentIds'/></form><div class='commands'><button name='submit'>" + ForumsRes.rte_submitText + "</button><button name='cancel'>" + ForumsRes.rte_cancelText + "</button>";
+            //fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/586588/
+            if (userEmailConfigured)
+                container = container + "&nbsp;<input type='checkbox' name='subscribe' aria-label='" + ForumsRes.rte_subscribeText.replace("<b>", "").replace("</b>", "") + "' " + Forums.Message.autoSubscribeValue(msg) + "/><label>" + ForumsRes.rte_subscribeText + "</label>";
+            container += "<div><div class='submitReplyError ajaxerror'></div></div>";
+            container = container + "</div></div>";
+            $(msg).append(container);
+
+            Forums.Rte.show();
+            $("button[name='submit']", msg).click(Forums.Message.submitReply(msg, $(this).attr("url"), "reply"));
+
+            $("button[name='cancel']", msg).click(function () {
+                Forums.Rte.hide();
+                if ($('#' + editorName).data('tEditor') !== undefined)
+                    $('#' + editorName).data('tEditor').window.focus();
+                $("div.editor", msg).remove();
+
+                /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85269 */
+                Forums.Common.FocusOnFirstElementByXPath("li#" + $(msg).attr("id") + " .messageContentContainer .messageContent .messageFooter .actions .menu a[name='reply']");
+            });
+
+            $("button[name='submit']", msg).get(0).scrollIntoView(false);
+
+            return false;
+        });
+    },
+
+    quote: function () {
+        var msg = $(this).parents("li.message");
+        //Setup Reply
+        $(this).click(function () {
+
+            if (!Forums.Rte.canShow(true)) {
+                return false;
+            }
+
+            var msgId = Forums.Common.GetMessageId(msg);
+            var editorName = msgId + "body";
+            var editorHtml = "<textarea class='rte' id='" + editorName + "'></textarea>";
+            var body = $("div.body", msg);
+            body = body.clone();
+
+            Forums.Rte.UnPrettifyCodeBlocks(body);
+
+            var html = $(body).html();
+            var startQuoteTag = "<blockquote>";
+            var endQuoteTag = "</blockquote>";
+
+            if (html.substring(0, startQuoteTag.length) === startQuoteTag) {
+                html = html.replace(startQuoteTag, "<p>");
+                var blockQuoteEndTagIndex = html.lastIndexOf(endQuoteTag);
+                html = html.substring(0, blockQuoteEndTagIndex) + "</p>" + html.substring(blockQuoteEndTagIndex + endQuoteTag.length);
+            }
+            html = startQuoteTag + html + endQuoteTag + "<br/>";
+
+            $.ajax(
+                {
+                    type: "POST",
+                    async: false,
+                    url: ForumsRes.get_editorUrl,
+                    data: { Id: msgId, body: html, "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken() },
+                    success: function (results) {
+                        editorHtml = results;
+                    }
+                });
+
+
+            var helpful = $("div.helpful", msg);
+            var container = "<div class='editor" + (Forums.Rte.isRtl() ? " t-rtl" : "") + "'><form>" + editorHtml + "<input type='hidden' name='attachmentIds' value='' /></form><div class='commands'><button name='submit'>" + ForumsRes.rte_submitText + "</button><button name='cancel'>" + ForumsRes.rte_cancelText + "</button>"
+            if (userEmailConfigured)
+                container = container + "&nbsp;<input type='checkbox' name='subscribe' aria-label='" + ForumsRes.rte_subscribeText.replace("<b>", "").replace("</b>", "") + "' " + Forums.Message.autoSubscribeValue(msg) + "/><label>" + ForumsRes.rte_subscribeText + "</label>";
+            container = container + "</div></div>";
+
+            $(msg).append(container);
+
+            Forums.Rte.show();
+            $("button[name='submit']", msg).click(Forums.Message.submitReply(msg, $(this).attr("url"), "quote"));
+
+            $("button[name='cancel']", msg).click(function () {
+                Forums.Rte.hide();
+                if ($('#' + editorName).data('tEditor') !== undefined)
+                    $('#' + editorName).data('tEditor').window.focus();
+                $("div.editor", msg).remove();
+
+                /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85269 */
+                Forums.Common.FocusOnFirstElementByXPath("li#" + $(msg).attr("id") + " .messageContentContainer .messageContent .messageFooter .actions .menu a[name='quote']");
+            });
+
+            $("button[name='submit']", msg).get(0).scrollIntoView(false);
+
+            return false;
+        });
+    },
+
+    submitEdit: function (msg, url) {
+        return function () {
+
+            var editor = $("div.editor", msg);
+
+            var msgId = Forums.Common.GetMessageId(msg);
+            var editorName = msgId + "body";
+            var editorNode = $('#' + editorName);
+            var editorNodeName = editorNode[0].nodeName.toLowerCase();
+            if (editorNodeName === "table" && editorNode.data('tEditor') === undefined)
+                return false;
+            $("div.editor button", msg).attr("disabled", "disabled");
+            var text = editorNodeName === "table" ? editorNode.data('tEditor').value() : editorNode.val();
+
+            if (($("#trustedU").val().toLowerCase() === "false") && ($("#isTrustedCheckEnabled").val().toLowerCase() === "true") && (!Forums.Rte.isUnTrustedUserPostValid(text))) {
+                alert(ForumsRes.MessageBodyUnTrustedUser);
+                $("button[name='submit']", msg).attr("disabled", false);
+                $("button[name='cancel']", msg).attr("disabled", false);
+                return false;
+            }
+
+            if (!Forums.Rte.isBodyLengthValid(text)) {
+                $("button[name='submit']", msg).attr("disabled", false);
+                $("button[name='cancel']", msg).attr("disabled", false);
+                return false;
+            }
+
+            $(editor).append("<div class=\"submitting\"></div>");
+            $(editor).addClass("submitting");
+
+            var reason = $("div.editor > div.commands > input[name='reason']", msg).val();
+            var attachmentIds = $("div.editor input[name='attachmentIds']", msg).attr("value");
+            $.ajax(
+                {
+                    type: "POST",
+                    url: url,
+                    data: { "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken(), body: text, reason: reason, attachmentIds: attachmentIds },
+                    success: function (results) {
+                        if (typeof results == "object" && results.StatusCode == "500") {
+                            Forums.Common.ShowPrompt(results.Message, results.Confirm, results.Redirect);
+                        } else {
+                            Forums.Rte.hide();
+                            if (editorNodeName === "table")
+                                editorNode.data('tEditor').window.focus();
+                            $("div.editor", msg).remove();
+                            $(msg).after(results).next().hide().fadeIn("fast").each(Forums.Message.decorateMessage);
+                            prettyPrint();
+                            $(msg).remove();
+
+                            /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85269 */
+                            Forums.Common.FocusOnFirstElementByXPath("li#" + $(msg).attr("id") + " .messageContentContainer .messageContent .messageFooter .actions .menu a[name='edit']");
+                        }
+                    },
+                    error: function (results) {
+                        $("div.submitting", editor).remove();
+                        $("div.editor button", msg).removeAttr("disabled");
+                        alert(results.responseText);
+                    }
+                });
+        };
+    },
+
+    submitReply: function (msg, url, type) {
+        return function () {
+
+            var editor = $("div.editor", msg);
+
+            var msgId = Forums.Common.GetMessageId(msg);
+            var editorName = msgId + "body";
+            var editorNode = $('#' + editorName);
+            var editorNodeName = editorNode[0].nodeName.toLowerCase();
+            if (editorNodeName === "table" && editorNode.data('tEditor') === undefined)
+                return false;
+            $("div.editor button", msg).attr("disabled", "disabled");
+            var text = editorNodeName === "table" ? editorNode.data('tEditor').value() : editorNode.val();
+
+            if (($("#trustedU").val().toLowerCase() === "false") && ($("#isTrustedCheckEnabled").val().toLowerCase() === "true") && (!Forums.Rte.isUnTrustedUserPostValid(text))) {
+                alert(ForumsRes.MessageBodyUnTrustedUser);
+                $("button[name='submit']", msg).attr("disabled", false);
+                $("button[name='cancel']", msg).attr("disabled", false);
+                return false;
+            }
+
+            if (!Forums.Rte.isBodyLengthValid(text)) {
+                $("button[name='submit']", msg).attr("disabled", false);
+                $("button[name='cancel']", msg).attr("disabled", false);
+                return false;
+            }
+
+            $(editor).append("<div class=\"submitting\"></div>");
+            $(editor).addClass("submitting");
+
+            var attachmentIds = $("div.editor input[name='attachmentIds']", msg).attr("value");
+            var subscribe = $("div.editor > div.commands > input[name='subscribe']", msg).is(':checked');
+            $.ajax(
+                {
+                    type: "POST",
+                    url: url,
+                    data: { "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken(), body: text, attachmentIds: attachmentIds, subscribe: subscribe },
+                    success: function (results) {
+                        if (typeof results == "object" && results.StatusCode == "500") {
+                            Forums.Common.ShowPrompt(results.Message, results.Confirm, results.Redirect);
+                        } else {
+                            Forums.Rte.hide();
+                            if (editorNodeName === "table")
+                                editorNode.data('tEditor').window.focus();
+                            $("div.editor", msg).remove();
+                            $(msg).after(results).next().hide().fadeIn("fast").addClass("new").each(Forums.Message.decorateMessage);
+                            prettyPrint();
+
+                            /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85269 */
+                            if (type) {
+                                // fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85832
+                                var altText = ForumsRes.rte_SumbitReplyText;
+                                $("#messageAlert").text(altText);
+                                $("#messageAlert").show();
+                                setTimeout(function () {
+                                    Forums.Common.FocusOnFirstElementByXPath("li#" + $(msg).attr("id") + " .messageContentContainer .messageContent .messageFooter .actions .menu a[name='" + type + "']");
+                                    $("#messageAlert").hide();
+                                }, 1000);
+                            }
+                        }
+                    },
+                    error: function (results) {
+                        $("div.submitting", editor).remove();
+                        $("div.editor button", msg).removeAttr("disabled");
+                        $("div.submitReplyError").text(results.responseText).show();
+                    }
+                });
+        };
+    },
+
+    messageAction: function (link, data) {
+        return function () {
+            var msg = $(link).parents("li.message");
+            var id = $(msg).attr("id");
+            $(msg).append("<div class=\"submitting\"></div>");
+            $(msg).addClass("submitting");
+            data.__RequestVerificationToken = Forums.Message.AddAntiForgeryToken();
+            if ($(link).attr("url")) {
+                url = $(link).attr("url");
+            } else {
+                url = $(link).attr("href");
+            }
+            $.ajax(
+                {
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (results) {
+                        if ($(messageListItem).find('.messageContentContainer').length == 0) { //existing view
+                            $("li.message[id='" + id + "']").replaceWith(results);
+                            $("li.message[id='" + id + "']").each(Forums.Message.decorateMessage);
+                        }
+                        else {
+                            var messageListItem = $("li.message[id='" + id + "']");
+                            var returnContent = $(results).find('.messageContentContainer').html();
+                            var messageClass = $(results).closest("li.message[id='" + id + "']").attr("class");
+                            $(messageListItem).find('.messageContentContainer').html(returnContent);
+                            $(messageListItem).each(Forums.Message.decorateMessage);
+                            messageClass && $(messageListItem).attr("class", messageClass);
+                            $(msg).removeClass("submitting");
+                        }
+
+                        if ($(link).attr("name") === "voteup")
+                        {
+                            /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85827 */
+                            var alreadyVotedText = $("li#" + id + " .messageContentContainer .messageSidebar .votingouterbox .votinglabel .votinglabel.type").text();
+                            $("#messageAlert").text(alreadyVotedText)
+                            $("#messageAlert").show();
+                            setTimeout(function () {
+                                /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85252/ */
+                                Forums.Common.FocusToOriginalElement(link, " .messageContentContainer .messageContent a");
+                                $("#messageAlert").hide();
+                            }, 1000);
+
+                        }
+
+                        /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85262/ */
+                        if ($(link).attr("name") == "reportAbuse" || $(link).attr("name") == "clearAbuse")
+                        {
+                            Forums.Common.FocusToOriginalElement(link, " .messageContentContainer .messageContent .messageFooter .actions .menu a:last");
+                        }
+                    },
+                    error: function (results) {
+                        $("div.submitting", msg).remove();
+                        alert(results.responseText);
+                    }
+                });
+
+            return false;
+        };
+    },
+
+    promptAction: function (link, label, data) {
+        return function () {
+            Forums.HTML.createPopup(label);
+            $('#okButton').click(function () {
+                data.reason = $('#reason').attr("value");
+                Forums.Message.messageAction(link, data)();
+                var msg = $(link).parents("li.message");
+                $(".menu.message", msg).get(0).scrollIntoView(false);
+                $('#mask, .window').hide();
+            });
+
+            $('#reason').keypress(function (event) {
+                if (event.which == 13) {
+                    $('#okButton').click();
+                }
+            });
+
+            $('#cancelButton').click(function () {
+                var msg = $(link).parents("li.message");
+                $(".menu.message", msg).get(0).scrollIntoView(false);
+                $('#mask, .window').hide();
+
+                /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85262/ */
+                Forums.Common.FocusToOriginalElement(link, " .messageContentContainer .messageContent .messageFooter .actions .abusive a");
+            });
+
+            $('#closeButton').click(function () {
+                var msg = $(link).parents("li.message");
+                $(".menu.message", msg).get(0).scrollIntoView(false);
+                $('#mask, .window').hide();
+            });
+            return false;
+        };
+    },
+
+    answer: function () {
+        $(this).click(Forums.Message.messageAction($(this), { isAnswer: true }));
+    },
+
+    unanswer: function () {
+        $(this).click(Forums.Message.messageAction($(this), { isAnswer: false }));
+    },
+
+    proposeAnswer: function () {
+        $(this).click(Forums.Message.messageAction($(this), { isProposed: true }));
+    },
+
+    unproposeAnswer: function () {
+        $(this).click(Forums.Message.messageAction($(this), { isProposed: false }));
+    },
+
+    clearAbuse: function () {
+        $(this).click(Forums.Message.promptAction(this, ForumsRes.prompt_clearAbuseReason, { isAbuse: false }));
+    },
+
+    reportAbuse: function () {
+        $(this).click(Forums.Message.promptAction(this, ForumsRes.prompt_reportAbuseReason, { isAbuse: true }));
+    },
+
+    deleteMessage: function () {
+        $(this).click(Forums.Message.promptAction(this, ForumsRes.prompt_deleteReason, { isDeleted: true }));
+    },
+
+    undeleteMessage: function () {
+        $(this).click(Forums.Message.promptAction(this, ForumsRes.prompt_undeleteReason, { isDeleted: false }));
+    },
+
+    gotoUrl: function () {
+        $(this).click(function () {
+            window.location = $(this).attr("url");
+        });
+        return false;
+    },
+
+    voteHelpful: function () {
+        var link = $(this);
+        $(this).click(function () {
+            $(link).fadeOut("fast");
+            var msg = $(link).parents("li.message");
+            $("div.helpful > span > img", msg).addClass("submitting");
+            $.ajax(
+                {
+                    type: "POST",
+                    url: $(link).attr("href"),
+                    data: { "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken(), isHelpful: true },
+                    dataType: "json",
+                    success: function (results) {
+                        $("div.helpful > span > span", msg).text(results.Votes);
+                        $("div.helpful > span > img", msg).removeClass("submitting");
+                    },
+                    error: function (results) {
+                        $("div.helpful > span > img", msg).removeClass("submitting");
+                        alert(results.responseText);
+                    }
+                });
+
+            return false;
+        });
+    },
+
+    voteUp: function () {
+        $(this).click(Forums.Message.messageAction($(this), { isHelpful: true }));
+    },
+
+    voteDown: function () {
+        $(this).click(Forums.Message.messageAction($(this), { isHelpful: false }));
+    },
+
+    decorateMessage: function () {
+        if (typeof (pageData) == "undefined" || pageData == null || pageData.validUser == false) {
+            var menuMsg = $("div.menu.message", this);
+            $("a[name='reply']", menuMsg).each(Forums.Message.gotoUrl);
+            $("a[name='quote']", menuMsg).each(Forums.Message.gotoUrl);
+            $("div.helpful a.vote", this).each(Forums.Message.gotoUrl);
+            return;
+        }
+
+        $("a[name='reportAbuse']", this).each(Forums.Message.reportAbuse);
+        $("a[name='clearAbuse']", this).each(Forums.Message.clearAbuse);
+        $("div.helpful a.vote", this).each(Forums.Message.voteHelpful);
+
+        $("a[name='voteup']", this).each(Forums.Message.voteUp);
+        $("a[name='votedown']", this).each(Forums.Message.voteDown);
+
+        var menu = $("div.menu.message", this);
+        $("a[name='setAnswer']", menu).each(Forums.Message.answer);
+        $("a[name='unsetAnswer']", menu).each(Forums.Message.unanswer);
+        $("a[name='proposeAnswer']", menu).each(Forums.Message.proposeAnswer);
+        $("a[name='unproposeAnswer']", menu).each(Forums.Message.unproposeAnswer);
+        $("a[name='reply']", menu).each(Forums.Message.reply);
+        $("a[name='quote']", menu).each(Forums.Message.quote);
+        $("a[name='edit']", menu).each(Forums.Message.edit);
+        $("a[name='delete']", menu).each(Forums.Message.deleteMessage);
+        $("a[name='undelete']", menu).each(Forums.Message.undeleteMessage);
+        $("a[name='split']", menu).each(Forums.Message.gotoUrl);
+        $("a.popup", this).popup();
+
+        /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85210 */
+        var msgId = $(this).attr("id");
+        var sortFilterItemIds = Forums.Homepage.getChildIdList('#ReportAbusePopup' + msgId, "li");
+        $('#ReportAbuse' + msgId).attr('aria-owns', sortFilterItemIds);
+    },
+
+    AddAntiForgeryToken: function () {
+        return $("#__AjaxAntiForgeryForm input[name='__RequestVerificationToken']").attr("value");
+    }
+};
+//********************************************************************************
+//*
+//********************************************************************************
+Forums.HTML =
+{
+    createPopup: function (label) {
+        if ($("#boxes").length > 0) {
+            $('#mask').remove();
+            $('#dialog').remove();
+            $('#boxes').remove();
+        }
+
+        var postSpam = "";
+        if (label === ForumsRes.prompt_deleteReason) {
+            postSpam = "<div style='padding: 0px 5px 10px 5px;margin-top: 15px;'><label for='cbox'>Report spam or advertising</label><input type='checkbox' id='cbox' value='checkbox'></div>";
+        }
+
+        /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86169 */
+        var container = "<div id='boxes'><div id='dialog' class='window'>"
+            + "<div class='poupTitle'>"
+            + "<label id='resonLabel'>" + label + "</label><img title='Close' id='closeButton' class='icon delete' src=\"" + ForumsRes.url_transGif + "\" complete='complete' ></img>"
+            + "</div><div style='padding:0px 5px 10px 5px;'>"
+            + "<span class='textSpan'><input type='text' id='reason' name='reason' value='' aria-label='" + ForumsRes.rte_reasonLabel + "' /></span>"
+            + "<span class='buttonSpan'><button id='okButton' name='ok' >" + ForumsRes.rte_OKText + "</button>"
+            + "<button id='cancelButton' name='cancel' > " + ForumsRes.rte_cancelText + "</button></span></div>"
+            + postSpam
+            + "</div>"
+            + "<div id='mask'></div></div>";
+        $("body").append(container);
+        var dialog = '#dialog';
+        var mask = '#mask';
+        $('#reason').select();
+        $('#reason').focus();
+        var top = ($(window).height() - $(dialog).height()) / 2 + $(window).scrollTop();
+        var left = ($(window).width() - $(dialog).width()) / 2 + $(window).scrollLeft();
+        $(dialog).css({ 'top': top, 'left': left > 0 ? left : 0, 'display': 'block' });
+        this.addAnimation(dialog);
+        $(mask).css({ 'top': 0, 'left': 0, 'width': $(document).width(), 'height': $(document).height() });
+        $(mask).fadeTo("fast", 0.5);
+    },
+
+    addAnimation: function (obj) {
+        $(window).resize(function () {
+            var top = (($(window).height() - $(obj).height()) / 2) + $(window).scrollTop();
+            var left = (($(window).width() - $(obj).width()) / 2) + $(window).scrollLeft();
+            $(obj).css({ 'top': top, 'left': left > 0 ? left : 0 });
+        });
+
+        $(window).scroll(function () {
+            var top = (($(window).height() - $(obj).height()) / 2) + $(window).scrollTop();
+            var left = (($(window).width() - $(obj).width()) / 2) + $(window).scrollLeft();
+            $(obj).css({ 'top': top, 'left': left > 0 ? left : 0 });
+        });
+    }
+};
+
+//********************************************************************************
+//* Forums.Thread
+//********************************************************************************
+Forums.Thread =
+{
+    threadAction: function (link, data) {
+        return function () {
+            $("img.icon", link).addClass("submitting");
+            data.__RequestVerificationToken = Forums.Message.AddAntiForgeryToken();
+            if ($(link).attr("url")) {
+                url = $(link).attr("url");
+            } else {
+                url = $(link).attr("href");
+            }
+            $.ajax(
+                {
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    dataType: "json",
+                    success: function (results) {
+                        window.location = results.url;
+                    },
+                    error: function (results) {
+                        $("img.icon", link).removeClass("submitting");
+                        alert(results.responseText);
+                    }
+                });
+            return false;
+        };
+    },
+
+    promptAction: function (link, label, data) {
+        return function () {
+            Forums.HTML.createPopup(label);
+            $('#okButton').click(function () {
+                if (data.stickyDate == "") {
+                    var dateInput = $('#reason').attr("value");
+                    if (Forums.Thread.isStickyDateValid(dateInput)) {
+                        data.stickyDate = $('#reason').attr("value");
+                    } else {
+                        $('#reason').val("");
+                        alert(ForumsRes.StickyDateInValid);
+                        return false;
+                    }
+                } else {
+                    data.reason = $('#reason').attr("value");
+                }
+
+                if ($('#cbox').attr("checked") === "checked") {
+                    data.reason += "[SpamOrAdvertising]";
+                }
+
+                Forums.Thread.threadAction(link, data)();
+                var msg = $(link).parents("li.message.root");
+                $(".menu.thread", msg).get(0).scrollIntoView(false);
+                $('#mask, .window').hide();
+            });
+
+            $('#reason').keypress(function (event) {
+                if (event.which == 13) {
+                    $('#okButton').click();
+                }
+            });
+
+            $('#cancelButton').click(function () {
+                var msg = $(link).parents("li.message.root");
+                $(".menu.thread", msg).get(0).scrollIntoView(false);
+                $('#mask, .window').hide();
+            });
+
+            $('#closeButton').click(function () {
+                var msg = $(link).parents("li.message.root");
+                $(".menu.thread", msg).get(0).scrollIntoView(false);
+                $('#mask, .window').hide();
+            });
+            return false;
+        };
+    },
+
+    AddAntiForgeryToken: function () {
+        return $("#__AjaxAntiForgeryForm input[name='__RequestVerificationToken']").attr("value");
+    },
+
+    editThread: function () {
+        var msg = $(this).parents("li.message");
+        //Setup Reply
+        $(this).click(function () {
+            if (!Forums.Rte.canShow(true)) {
+                return false;
+            }
+            var editorName = $(msg).attr("id") + "body";
+            var editorHtml = "<textarea class='rte' id='" + editorName + "'></textarea>";
+            var subject = $("#content h1 span[name='subject']").text();
+            var body = $("div.body", msg);
+
+            Forums.Rte.UnPrettifyCodeBlocks(body);
+
+            var attachments = $("#" + $(msg).attr("id") + "_attachments").attr("value");
+            var html = $(body).html() + "<br/>";
+            $.ajax(
+                {
+                    type: "POST",
+                    async: false,
+                    url: ForumsRes.get_editorUrl,
+                    data: { Id: $(msg).attr("id"), body: html, "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken() },
+                    success: function (results) {
+                        editorHtml = results;
+                    }
+                });
+
+            $(body).hide();
+            $("div.helpful, ul.history, div.abusive, div.menu,div.votingouterbox, div.voting,span.votinglabel", msg).hide();
+            var container = "<div class='editor" + (Forums.Rte.isRtl() ? " t-rtl" : "") + "'><label>"
+                + ForumsRes.rte_subjectLabel + "</label> <input type='text' id='subject' size='60' /><form>" + editorHtml + "<input type='hidden' name='attachmentIds' value='" + attachments + "'/></form><div class='commands'><button id='submit'>" + ForumsRes.rte_submitText
+                + "</button><button id='cancel'>" + ForumsRes.rte_cancelText + "</button>&nbsp;<label>" + ForumsRes.rte_reasonLabel
+                + "</label><input type='text' id='reason'/></div><div><div class='submitEditError ajaxerror'></div></div></div>";
+
+            $(body).after(container);
+
+            $("#subject", msg).val(subject);
+            Forums.Rte.show();
+            $("#submit", msg).click(Forums.Thread.submitEdit(msg, $(this).attr("url")));
+
+            $("#cancel", msg).click(function () {
+                Forums.Rte.hide();
+                if ($('#' + editorName).data('tEditor') !== undefined)
+                    $('#' + editorName).data('tEditor').window.focus();
+                $("div.editor", msg).remove();
+                $(body).show();
+                $("div.helpful, ul.history, div.abusive, div.menu,div.votingouterbox, div.voting,span.votinglabel", msg).show();
+                prettyPrint();
+            });
+
+            $("#submit", msg).get(0).scrollIntoView(false);
+
+
+            return false;
+        });
+    },
+
+    submitEdit: function (msg, url) {
+        return function () {
+            var editor = $("div.editor");
+
+            var msgEditor = $("div.editor", msg);
+
+            var editorName = $(msg).attr("id") + "body";
+            var editorNode = $('#' + editorName);
+            var editorNodeName = editorNode[0].nodeName.toLowerCase();
+            if (editorNodeName === "table" && editorNode.data('tEditor') === undefined)
+                return false;
+            editor.find("button").attr("disabled", "disabled");
+            var text = editorNodeName === "table" ? editorNode.data('tEditor').value() : editorNode.val();
+
+            if (($("#trustedU").val().toLowerCase() === "false") && ($("#isTrustedCheckEnabled").val().toLowerCase() === "true") && (!Forums.Rte.isUnTrustedUserPostValid(text))) {
+                alert(ForumsRes.MessageBodyUnTrustedUser);
+                $("#submit", msg).attr("disabled", false);
+                $("#cancel", msg).attr("disabled", false);
+                return false;
+            }
+
+            if (!Forums.Rte.isBodyLengthValid(text)) {
+                $("#submit", msg).attr("disabled", false);
+                $("#cancel", msg).attr("disabled", false);
+                return false;
+            }
+
+            if (!Forums.Rte.isBodyImageCountValid(text)) {
+                alert(ForumsRes.rte_MaxAttachmentsErrMsg);
+                $("#submit", msg).attr("disabled", false);
+                $("#cancel", msg).attr("disabled", false);
+                return false;
+            }
+
+            $(msgEditor).append("<div class=\"submitting\"></div>");
+            $(msgEditor).addClass("submitting");
+
+            var reason = editor.find("#reason").val();
+            var subject = editor.find("#subject").val();
+            var attachmentIds = $("div.editor input[name='attachmentIds']", msg).attr("value");
+            $.ajax(
+                {
+                    type: "POST",
+                    url: url,
+                    data: { "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken(), subject: subject, body: text, reason: reason, attachmentIds: attachmentIds },
+                    dataType: "json",
+                    success: function (results) {
+                        if (typeof results == "object" && results.StatusCode && results.StatusCode == "500") {
+                            Forums.Common.ShowPrompt(results.Message, results.Confirm, results.Redirect);
+                        } else {
+                            if (editorNodeName === "table")
+                                editorNode.data('tEditor').window.focus();
+                            $("div.editor", msg).remove();
+                            window.location = results.url;
+                        }
+                    },
+                    error: function (results) {
+                        $("div.submitting", msgEditor).remove();
+                        $("div.editor button", msg).removeAttr("disabled");
+                        $("div.submitEditError").html(results.responseText).show();
+                    }
+                });
+        };
+    },
+
+    clearSticky: function () {
+        $(this).click(Forums.Thread.threadAction(this, { stickyDate: "" }));
+    },
+
+    deleteThread: function () {
+        $(this).click(Forums.Thread.promptAction(this, ForumsRes.prompt_deleteReason, { isDeleted: true }));
+    },
+
+    lock: function () {
+        $(this).click(Forums.Thread.threadAction(this, { isLocked: true }));
+    },
+
+    makeSticky: function () {
+        $(this).click(Forums.Thread.promptAction(this, ForumsRes.prompt_stickyUntil, { stickyDate: "" }));
+    },
+
+    subscribe: function () {
+        $(this).click(Forums.Thread.threadAction(this, { isSubscribed: true }));
+    },
+
+    undeleteThread: function () {
+        $(this).click(Forums.Thread.promptAction(this, ForumsRes.prompt_undeleteReason, { isDeleted: false }));
+    },
+
+    unlock: function () {
+        $(this).click(Forums.Thread.threadAction(this, { isLocked: false }));
+    },
+
+    unsubscribe: function () {
+        $(this).click(Forums.Thread.threadAction(this, { isSubscribed: false }));
+    },
+
+    join: function () {
+        $(this).click(Forums.Thread.threadAction($(this), { isJoined: true }));
+    },
+
+    unjoin: function () {
+        $(this).click(Forums.Thread.threadAction($(this), { isJoined: false }));
+    },
+
+    decorateThreadMenu: function () {
+        $("a[name='delete']", this).each(Forums.Thread.deleteThread);
+        $("a[name='undelete']", this).each(Forums.Thread.undeleteThread);
+        $("a[name='editThread']", this).each(Forums.Thread.editThread);
+        $("a[name='lock']", this).each(Forums.Thread.lock);
+        $("a[name='unlock']", this).each(Forums.Thread.unlock);
+        $("a[name='sticky']", this).each(Forums.Thread.makeSticky);
+        $("a[name='clearSticky']", this).each(Forums.Thread.clearSticky);
+        $("a[name='subscribe']", this).each(Forums.Thread.subscribe);
+        $("a[name='unsubscribe']", this).each(Forums.Thread.unsubscribe);
+        $("a[name='joinQuestion']").each(Forums.Thread.join);
+        $("a[name='unJoinQuestion']").each(Forums.Thread.unjoin);
+
+        $("a[name='move']").each(Forums.Message.gotoUrl);
+        $("a[name='merge']").each(Forums.Message.gotoUrl);
+        $("a[name='assign']").each(Forums.Message.gotoUrl);
+        $("a[name='changeType']").each(Forums.Message.gotoUrl);
+    },
+
+    messagesLoaded: function (thread) {
+        $(thread).removeClass("loading");
+        $(thread).removeClass("hasUnread");
+        $(thread).removeClass("new");
+        $(thread).addClass("loaded");
+        $(thread).addClass("viewed");
+        $("div.preview", thread).append("<div class=\"links\"></div>");
+
+        var links = $("div.links", thread);
+        $(links).append("<a name=\"view\"></a>");
+
+        var viewLink = $("a[name='view']", links);
+        var viewHref = $("h3 a:eq(1)", thread).attr("href");
+        $(viewLink).text(ForumsRes.thread_viewThreadText).attr("href", viewHref).attr("title", ForumsRes.thread_viewThreadText);
+
+        $(links).append("<a name=\"close\"></a>");
+
+        var closeLink = $("a[name='close']", links);
+        $(closeLink).text(ForumsRes.thread_closePreviewText).attr("href", "javascript:void(0)").attr("title", ForumsRes.thread_closePreviewText);
+        $(closeLink).click(function () { $("h3", thread).click(); });
+
+
+        $("div.preview", thread).slideToggle("fast");
+        $("li.message", thread).each(Forums.Message.decorateMessage);
+        prettyPrint();
+    },
+
+    decorateThread: function () {
+        var thread = $(this);
+        $("h3 > a", this).before(Forums.Constants.ExpandCollapseLink);
+        $(this).append("<div class=\"preview\"></div>");
+        $("h3", this).click(function (evt) {
+            if (evt.target.nodeName.toLowerCase() === "a") {
+                if (evt.target.className !== "expcol") {
+                    return;
+                }
+            }
+
+
+            $(thread).toggleClass("expanded");
+
+            if ($(thread).hasClass("loading"))
+                return;
+
+            if ($(thread).hasClass("loaded")) {
+                $("div.editor button[name='cancel']", thread).click();
+                $("div.preview", thread).slideToggle("fast");
+                return;
+            }
+
+            $(thread).addClass("loading");
+            var url = $("h3:first > a:eq(1)", thread).attr("href") + "/messages?time=" + new Date().getTime();
+            url = url.substring(7);
+            url = url.substring(url.indexOf('/'));
+            $("div.preview", thread).load(url, null, function () {
+                Forums.Thread.messagesLoaded(thread);
+                $("li.message", this).profileWidgitize();
+            });
+        });
+
+        $("h3", this).mouseover(function () {
+            $(thread).addClass("hover");
+        });
+
+        $("h3", this).mouseout(function () {
+            $(thread).removeClass("hover");
+        });
+    },
+
+    isStickyDateValid: function (date) {
+        if (date.length != 10)
+            return false;
+        var dateSegments = date.split('-');
+        if (dateSegments.length != 3)
+            return false;
+        //verify for integers
+        var regExInt = "^[0-9]+$";
+        for (i = 0; i < 3; i++) {
+            if (!dateSegments[i].match(regExInt))
+                return false;
+        }
+        //verify for valid date
+        var inputDate = new Date(dateSegments[0], dateSegments[1] - 1, dateSegments[2]);
+        if (inputDate.getFullYear() != dateSegments[0] || inputDate.getMonth() != dateSegments[1] - 1 || inputDate.getDate() != dateSegments[2])
+            return false;
+        //verify for only future dates
+        var currentDate = new Date();
+        if (inputDate < currentDate)
+            return false;
+        return true;
+    }
+};
+
+//********************************************************************************
+//* Forums.QuickLinks
+//********************************************************************************
+Forums.QuickLinks = {
+    wire: function () {
+        $('#quickLinks').click(function (evt) {
+            Forums.Common.SubmitMetricsToAI('Homepage.QuickAccessExpanded');
+            Forums.Homepage.toggleDropDown($(this), evt);
+        });
+
+        $('ul.popup li > a', '#quickLinks').click(function (e) {
+            return Forums.Common.SubmitMetricsToAIAndRedirect('Homepage.QuickAccesLinkClicked', { linkId: $(this).attr('Id') }, $(this).attr('href'), e.ctrlKey);
+        });
+
+        $('#quickLinks').keypress(function (e) {
+            if (e.which == 13) {
+                $('#quickLinks').click();
+            }
+        });
+
+        var sortFilterItemIds = Forums.Homepage.getChildIdList('#quickAccessPopup', "li");
+        $('#quickLinks').attr('aria-owns', sortFilterItemIds);
+    }
+};
+
+//********************************************************************************
+//* Forums.MyActivityWidget
+//********************************************************************************
+Forums.MyActivityWidget = {
+    wire: function () {
+        $('#myThreadAllLink').live('click', function (e) {
+            return Forums.Common.SubmitMetricsToAIAndRedirect('MyActivity.MyThreadClicked', null, $(this).attr('href'), e.ctrlKey);
+        });
+        $('#myThreadAnsweredLink').live('click', function (e) {
+            return Forums.Common.SubmitMetricsToAIAndRedirect('MyActivity.MyThreadAnsweredClicked', null, $(this).attr('href'), e.ctrlKey);
+        });
+        $('#myThreadUnansweredLink').live('click', function (e) {
+            return Forums.Common.SubmitMetricsToAIAndRedirect('MyActivity.MyThreadUnansweredClicked', null, $(this).attr('href'), e.ctrlKey);
+        });
+        $('#myThreadUnreadLink').live('click', function (e) {
+            return Forums.Common.SubmitMetricsToAIAndRedirect('MyActivity.MyThreadUnreadClicked', null, $(this).attr('href'), e.ctrlKey);
+        });
+    }
+};
+
+//********************************************************************************
+//* Forums.Homepage
+//********************************************************************************
+Forums.Homepage =
+{
+    Actions: {
+        Category: 0,
+        CategoryAll: 1,
+        CategoryViewAll: 2,
+        Filter: 5,
+        Sort: 6,
+        Search: 7,
+        Clear: 8,
+        FilterWithAllLanguages: 9
+    },
+
+    wireTopBar: function (searchQuestionswatermark) {
+        Forums.Homepage.searchWatermark = searchQuestionswatermark;
+        Forums.Homepage.wireFilterBar(searchQuestionswatermark);
+        Forums.ThreadPage.wireSearchBar(searchQuestionswatermark);
+        Forums.QuickLinks.wire();
+        Forums.MyActivityWidget.wire();
+    },
+
+    wirePageElements: function (searchCategoriesWatermark, searchQuestionswatermark) {
+        Forums.Homepage.wireThreadListView();
+        Forums.Homepage.wireCategoryList();
+        Forums.Homepage.wireTagsList();
+        Forums.ForumDetails.wireForumDetailLinks();
+        Forums.Homepage.wireAnnouncements();
+        Forums.Homepage.wireActivitySidebarSection();
+        Forums.ThreadPage.attachTooltipHandler();
+        Forums.Homepage.categoriesWatermark = searchCategoriesWatermark;
+        $.addToRail(railItems);
+        Forums.Homepage.loadAllCategories();
+        $('.btn.askQuestionLink').click(function (e) {
+            Forums.Common.SubmitMetricsToAIAndRedirect('Homepage.AskAQuestionClicked', { linkhref: $(this).attr('href') }, $(this).attr('href'), e.ctrlKey);
+            return false;
+        });
+    },
+
+    rewirePageElements: function () {
+        Forums.Toggler.setup();
+        Forums.Homepage.wirePageElements(Forums.Homepage.categoriesWatermark, Forums.Homepage.searchWatermark);
+    },
+
+    rewireSearchElements: function () {
+        Forums.Toggler.wireToggleButton();
+        Forums.Homepage.wireFilterBar(Forums.Homepage.searchWatermark);
+        Forums.Homepage.wireTagsList(Forums.Homepage.searchQuestionswatermark);
+        Forums.ForumDetails.wireForumDetailLinks();
+        Forums.Homepage.replaceSearchUrl();
+        Forums.Homepage.replaceAnnouncements();
+        Forums.Homepage.wireAnnouncements();
+        Forums.Homepage.wireThreadListView();
+        Forums.Homepage.addSelectedClassToSelectedCategoryHeaders();
+        Forums.ThreadPage.attachTooltipHandler();
+    },
+
+    replaceAnnouncements: function () {
+        $('#topBarImportantInfoContainer').html($('#searchAnnouncmentContainer').html());
+    },
+
+    replaceSearchUrl: function () {
+        $('#homesearchform').attr('action', $('#hdnSearchUrl').val());
+    },
+
+    loadAllCategories: function () {
+
+        var container = $("#allCategoryPopupContainer");
+
+        var left = ($(window).width() - container.width()) / 2;
+        $(container).css('left', left);
+
+        if ($('#allCategoryListContainer', $(container)).length == 0) {
+            var url = $(container).data("url");
+            url = Forums.AppendQuestionOrAmpersandToUrl(url) + 'time=' + new Date().getTime();
+            //Fetch content
+            $.ajax({
+                url: url
+            }).done(function (html) {
+                $("#allCategoryPopupContainer").html(html);
+                Forums.Homepage.wireGetAllCategories();
+                Forums.Homepage.setAllCategoryContainerSize();
+
+                Forums.Homepage.setAllCategoriesSelectedItems();
+            });
+        } else {
+            Forums.Homepage.setAllCategoriesSelectedItems();
+        }
+    },
+
+    setAllCategoryContainerSize: function () {
+        var container = $("#allCategoryPopupContainer");
+        var containerHeight = $(window).height() * 0.65;
+        var popupHeight = ($(window).height() * 0.8) - 160;
+        if ($(window).height() < 400) {            
+            $(container).css('margin-top', 0);
+            popupHeight = containerHeight * 0.7;
+
+            var forumDetailsContainerHeight = containerHeight - 30;
+            $('#forumDetailsContainer').css('height', forumDetailsContainerHeight);
+            $('#forumDetailsContainerBanner').css('height', forumDetailsContainerHeight - 50);
+        }
+
+        $('#categoriesListing').children('ul').height(popupHeight < 400 ? popupHeight : 400);
+        var top = ($(window).height() - containerHeight) / 2;
+        var left = ($(window).width() - container.width()) / 2;
+        $(container).css('top', top);
+        $(container).css('left', left);
+        $(container).css('height', containerHeight);
+    },
+
+    wireGetAllCategories: function () {
+
+        Forums.Homepage.wireAllCategoriesBox(Forums.Homepage.categoriesWatermark);
+        wireSearchBox();
+        $('#submitAllCategories').click(function (e) {
+            Forums.Common.SubmitMetricsToAI('Homepage.AllForumsPopupSubmitClicked');
+            submitAllCategoriesPopup(e);
+        });
+
+        $('#closeAllCategoryPopup').click(function (e) {
+            Forums.Common.SubmitMetricsToAI('Homepage.AllForumsPopupCloseLinkClicked');
+            closeAllCategoriesPopup(e);
+        });
+
+        $("#closeAllCategoryPopup").keydown(function (e) {
+            if (e.keyCode == 13) {
+                $("#viewallCategoriesContainer").trigger('click');
+            }
+        });
+
+        Forums.Homepage.wireCategoryListElements($('#allCategoryPopupContainer'));
+        Forums.Homepage.setAllCategoriesSelectedItems();
+
+        $('#allCategoryListContainer').find('.selectallcheckbox').change(function () {
+            Forums.Homepage.selectAllForums($(this));
+            Forums.Homepage.updateSelectedForumsCount();
+        });
+
+        $('#allCategoryListContainer').find('input[type="checkbox"]').change(function () {
+            $('#allCategoriesListChanged').val(true);
+            Forums.Homepage.updateSelectedForumsCount();
+        });
+
+        Forums.Homepage.updateSelectedForumsCount();
+
+        function wireSearchBox() {
+            /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86192 */
+            $('#categorysearchbox', '#allCategoriesSearchContainer').click(function () {
+                Forums.Common.SubmitMetricsToAI('Homepage.AllForumsPopupSearchBoxClicked');
+            });
+
+            $('#allCategoriesSearchContainer').find('#categorysearchbox').bind("input keyup", function () {
+                Forums.Homepage.handleSearchBoxChanged(this, findCategory);
+            });
+        }
+
+        function submitAllCategoriesPopup(e) {
+            if ($('#allCategoriesListChanged').val() == "true") {
+                Forums.Homepage.redirectHomePage($('#allCategoryListContainer'), $('#homePageFilterBarContainer'), Forums.Homepage.searchWatermark, Forums.Homepage.Actions.CategoryViewAll);
+            } else {
+                closeAllCategoriesPopup(e);
+            }
+        };
+
+        function closeAllCategoriesPopup(e) {
+            Forums.Homepage.hideDropDown(e);
+            $('#viewallCategoriesContainer').find('.arrowdown').addClass('invisible').removeClass('visible');
+            $("#allCategoryPopupText").hide();
+            e.stopPropagation();
+        };
+
+        function findCategory(searchTerm) {
+            if (Forums.Rte.trimString(searchTerm) !== '') {
+                //For each category
+                $('#allCategoryPopupContainer').find('.categoryArea').each(function () {
+                    var forumList = $(this).find('.forumFilter');
+                    var categoryDisplayName = $(this).find('.categoryHeaderText:first').text();
+                    var categoryMatches = categoryDisplayName.toUpperCase().indexOf(searchTerm.toUpperCase()) !== -1;
+                    var matchingForums = $(this).find(".checkboxText:Contains('" + searchTerm + "')");
+                    if (categoryMatches) {
+                        $(forumList).find('.forumItem').show();
+                        $(this).show();
+                    }
+                    else { //Category doesn't match
+                        $(matchingForums).each(function () {
+                            $(this).parents('.forumItem:first').show();
+                        });
+                        $(this).find(".checkboxText:not(:Contains('" + searchTerm + "'))").each(function () {
+                            $(this).parents('.forumItem:first').hide();
+                        });
+
+                        $(this).toggle(matchingForums.length > 0);
+                    }
+
+                    if (matchingForums.length > 0) {
+                        Forums.Homepage.showForumList(forumList);
+                    }
+                    else {
+                        Forums.Homepage.hideForumList(forumList);
+                    }
+                });
+            }
+            else {
+                $('#allCategoryPopupContainer').find('.categoryArea').show();
+                $('#allCategoryPopupContainer').find(".forumFilter").each(function () {
+                    Forums.Homepage.hideForumList($(this));
+                });
+                $('#allCategoryPopupContainer').find(".forumFilter:has(.chkForumSelector:checked)").each(function () {
+                    Forums.Homepage.showForumList($(this));
+                });
+                $('#allCategoryPopupContainer').find('.forumItem').show();
+            }
+        };
+    },
+
+    handleSearchBoxChanged: function (searchBox, refreshHandler) {
+        searchBox = $(searchBox);
+        window.clearTimeout(searchBox.data('refresh_timer'));
+
+        var searchTerm = '';
+        if (!searchBox.hasClass('watermark'))
+            searchTerm = searchBox.val();
+
+        searchBox.data('refresh_timer', setTimeout(function () { refreshHandler(searchTerm); }, 500));
+        return false;
+    },
+
+    setAllCategoriesSelectedItems: function () {
+        Forums.Homepage.setCategoryScopingState('#allCategoryListContainer');
+        Forums.Homepage.updateSelectedForumsCount();
+    },
+
+    wireAskAQuestion: function (selectedForums) {
+        var askQuestionButton = $('.btn.askQuestionLink', '#msdn-technet-en-home');
+        var askAQuestionCategory = '';
+        var askAQuestionForum = '';
+        var baseNewThreadUrl = $(askQuestionButton).data('askurlbase');
+
+        if (selectedForums.length === 1) {
+            askAQuestionForum = selectedForums[0];
+            askAQuestionCategory = $('.categoryHeader.selected:first').parents('li.categoryArea:first').data('categoryname');
+        }
+
+        var newNewThreadUrl = baseNewThreadUrl + '?category=' + askAQuestionCategory + '&forum=' + askAQuestionForum;
+        $(askQuestionButton).attr('href', newNewThreadUrl);
+    },
+
+    wireThreadListView: function () {
+        $('.pager a', '#threadList').click(function (e) {
+            Forums.ScrollWindowToTop();
+            Forums.Common.SubmitMetricsToAIAndRedirect('Homepage.ClickedThreadListPagerLink', { linkid: $(this).attr('id') }, $(this).attr('href'), e.ctrlKey);
+            return false;
+        });
+
+        $('a.arrowdown', '.threadsnippet').click(function () {
+            Forums.Common.SubmitMetricsToAI('Homepage.ThreadSnippetExpanded');
+            Forums.Homepage.expandThread($(this));
+        });
+
+        $('.statefilter a').click(function () {
+            var stateText = $(this).text();
+            Forums.Common.SubmitMetricsToAI('Homepage.ThreadMetadataStateFilterClicked', { state: stateText });
+
+            var stateMap = {};
+            stateMap["Answered"] = "Answered";
+            stateMap["Unanswered"] = "Unanswered";
+            stateMap["Proposed"] = "Proposed answers";
+            stateMap["Discussion"] = "General discussion";
+
+            $(".radioButtonText").filter(function () {
+                return $(this).text() == stateMap[stateText];
+            }).click();
+        });
+
+        var selectedThreads = $('a.arrowdown', '.threadsnippet.selected');
+        if ($(selectedThreads).length > 0) {
+            $(selectedThreads).click();
+        }
+    },
+
+    wireAllCategoriesBox: function (searchCategoriesWatermark) {
+        $('#allCategoryListContainer').find('.forumItem').mouseover(function () {
+            var catName = $(this).parents('.categoryArea:first').data('categoryname');
+            Forums.Homepage.loadForumDetails(catName, $(this).data('forumname'));
+        });
+        // fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/183367
+        $('#allCategoryListContainer').find('.chkForumSelector').focus(function () {
+            var catName = $(this).parents('.categoryArea:first').data('categoryname');
+            Forums.Homepage.loadForumDetails(catName, $(this).parents('.forumItem:first').data('forumname'));
+        });
+        $('#allCategoryListContainer').find('.selectallcheckbox').focus(function () {
+            var catName = $(this).parents('.categoryArea:first').data('categoryname');
+            Forums.Homepage.loadForumDetails(catName, $(this).parents('.forumItem:first').data('forumname'));
+        });
+        /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86192 */
+        $("#allCategoriesSearchContainer table.searchboxinnercontainer #categorysearchbox").watermark(searchCategoriesWatermark);
+        $("#allCategoriesSearchContainer table.searchboxinnercontainer #categorysearchbox").attr("aria-label", searchCategoriesWatermark);
+        $("#allCategoriesSearchContainer table.searchboxinnercontainer #categorysearchimage").attr("aria-label", searchCategoriesWatermark);
+    },
+
+    wireCategoryListElements: function (container) {
+        var arrowExpandedClass = 'expanded';
+
+        $(".categoryHeader", container).click(function () {
+            Forums.Common.SubmitMetricsToAI('Homepage.CategoryExpanded');
+            var arrow = $('a.arrowdown', $(this));
+            toggleCategory($(arrow));
+            return false;
+        });
+
+        /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85243 
+        remove .categoryHeader keydown event, it was bind in other place, 
+        and $(".categoryHeader").trigger('click'); would trigger other element event wihch class is also 'categoryHeader' */
+
+        $('.forumFilter .checkboxText', container).click(function (e) {
+            var associatedCheckBox = $(this).siblings('.checkboxContainer').children("input[type='checkbox']");
+            $(associatedCheckBox).attr("checked", !$(associatedCheckBox).attr("checked")).change();
+        });
+
+        function toggleCategory(arrow) {
+            var forumsList = $(arrow).parents('.categoryHeader', container).siblings(".forumFilter");
+            var categoryHeaderText = $(arrow).parents('.arrowoutercontainer', container).first().next();
+            var categoryExpanded = $(arrow).hasClass(arrowExpandedClass);
+            $(forumsList).toggle(!categoryExpanded);
+            $(arrow).toggleClass(arrowExpandedClass);
+            if (categoryExpanded) {
+                $(categoryHeaderText).attr("aria-expanded", "false");
+            } else {
+                $(categoryHeaderText).attr("aria-expanded", "true");
+            }
+        };
+    },
+
+    wireCategoryList: function () {
+        $("#viewallCategoriesContainer").keydown(function (e) {
+            if (e.keyCode == 13) {
+                $("#viewallCategoriesContainer").trigger('click');
+            }
+        });
+
+        $('#viewallCategoriesContainer').click(function (evt) {
+            Forums.Common.SubmitMetricsToAI('Homepage.ViewAllForumsLinkClicked');
+            var allCategoryContainer = $('#allCategoryPopupContainer');
+            if ($("#categoryOverlay").length <= 0 && !($.browser.msie && (parseInt($.browser.version, 10) <= 7))) {
+                var overlay = $('<div id="categoryOverlay" class="popupOverlay"/>');
+                overlay.css('height', $(document.body).height());
+                $('body').append(overlay);
+            }
+
+            $('#allCategoriesListChanged').val(false);
+            Forums.Homepage.loadAllCategories();
+
+            allCategoryContainer.data("overlay", "#categoryOverlay");
+            allCategoryContainer.data("isModal", true);
+            Forums.Homepage.toggleDropDown($(allCategoryContainer).parent(), evt);
+            // fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/183252
+            $("#closeAllCategoryPopup").focus();
+            var tip = $("input[name='searchTerm']:eq(1)").attr("watermark");
+            $("input[name='searchTerm']:eq(1)").attr("aria-label", tip);
+            $("#allCategoryPopupText").show();
+        });
+
+        $(".categoryArea").has(".chkForumSelector:checked").each(function () {
+            $(this).find('.categoryHeader').addClass('selected');
+        });
+
+        Forums.Homepage.addSelectedClassToSelectedCategoryHeaders();
+    },
+
+    addSelectedClassToSelectedCategoryHeaders: function () {
+        $('.categoryHeader').removeClass('selected');
+        $(".categoryArea").has(".chkForumSelector:checked").each(function () {
+            $(this).find('.categoryHeader').addClass('selected');
+        });
+    },
+
+    setCategoryScopingState: function (container) {
+
+        $("input[type='checkbox']", container).attr('checked', false);
+        collapseAllForumLists();
+        checkSelectedForums();
+
+
+        function setSelectAllState(forumList) {
+            var allSelected = $('.chkForumSelector:not(:checked)', forumList).length == 0;
+            $('.selectallcheckbox', $($(forumList))).attr('checked', allSelected);
+        }
+
+
+        function checkSelectedForums() {
+            var selectedforums = Forums.Homepage.getCurrentForums();
+            $(selectedforums).each(function () {
+
+                var forumItem = $("div[data-forumname='" + this + "'].forumItem:first", container);
+                $('.chkForumSelector', forumItem).attr('checked', true);
+                var forumList = $(forumItem).parents('.forumFilter');
+                if (!$(forumList).is(':visible')) {
+                    Forums.Homepage.showForumList(forumList);
+                }
+                else
+                    setSelectAllState(forumList);
+            });
+        }
+
+
+        function collapseAllForumLists() {
+            $('.forumFilter', '#allCategoryListContainer').each(function () {
+                Forums.Homepage.hideForumList($(this));
+            });
+
+        }
+    },
+
+    showForumList: function (forumsList) {
+        Forums.Homepage.hideorShowForumList(forumsList, true);
+    },
+
+    hideForumList: function (forumsList) {
+        Forums.Homepage.hideorShowForumList(forumsList, false);
+    },
+
+    hideorShowForumList: function (forumsList, show) {
+        $(forumsList).toggle(show);
+        var arrow = $(forumsList).siblings('.categoryHeader').find('.arrowdown');
+        $(arrow).toggleClass('expanded', show);
+    },
+
+    updateSelectedForumsCount: function () {
+        $("#totalselectedForums").text(" " + $("#categoriesListing input:checked").not(".selectallcheckbox").length + " ");
+        //fix bug https://dev.azure.com/ceapex/Engineering/_workitems/edit/183253
+        $("#totalselectedForumsAlert").text($("#categoriesListing input:checked").not(".selectallcheckbox").length);
+        $("#forumsSelectedAlert").show();
+        setTimeout(function () {
+            $("#forumsSelectedAlert").hide();
+        }, 1000);
+    },
+
+    wireTagsList: function () {
+        $(".forumremove").unbind('click').click(function () {
+            var forumItem = $(this).parents('.forumItem:first');
+
+            if (forumItem.next().length > 0) {
+                Forums.Homepage.currentForumItemId = forumItem.next().attr("id");
+            } else if (forumItem.prev().length > 0) {
+                Forums.Homepage.currentForumItemId = forumItem.prev().attr("id");
+            } else {
+                Forums.Homepage.currentForumItemId = "clearSelectedTags";
+            }
+
+            $($(".chkForumSelector[data-forumId='" + $(forumItem).data('forumid') + "']")).each(function () {
+                $(this).attr("checked", false);
+            });
+            Forums.Common.SubmitMetricsToAI('Homepage.ForumListRemoveLinkClicked', { forum: $(forumItem).data('forumname') });
+            $(forumItem).remove();
+            Forums.Homepage.redirectHomePageForTags(Forums.Homepage.Actions.Category);
+            return false;
+        });
+
+        $('#clearSelectedTags').unbind('click').click(function () {
+            Forums.Common.SubmitMetricsToAI('Homepage.ClearSelectedTagsLinkClicked');
+            $('.forumItem', '#selectedTags').remove();
+            $('#viewMoreTags').remove();
+            $(".chkForumSelector").attr("checked", false);
+            $('#selectedTags').hide();
+            Forums.Homepage.redirectHomePageForTags(Forums.Homepage.Actions.Category);
+            return false;
+        });
+
+        $(".forumtag").unbind('click').on('click', function (e) {
+            var selectedTagContainer = $(this).parent('.tagcontainer');
+            if ($(selectedTagContainer).hasClass('singledout')) {
+                $('.tagcontainer').removeClass('dim').removeClass('singledout');
+                Forums.Homepage.redirectHomePageForTags(Forums.Homepage.Actions.Category);
+            } else {
+                $('.tagcontainer').addClass('dim').removeClass('singledout');
+                $(selectedTagContainer).removeClass('dim').addClass('singledout');
+                Forums.ClientRefresh.Controller.get($(this).attr('href'), Forums.Homepage.Actions.Category);
+            }
+            return false;
+        });
+
+        $("#inputTagSearch").click(function (e) {
+            Forums.Common.SubmitMetricsToAI('Homepage.SearchForumsClicked');
+        });
+
+        $('#viewMoreTags a').click(function () {
+            Forums.Common.SubmitMetricsToAI('Homepage.ViewMoreTagsClicked', { text: $(this).text() });
+            $(this).remove();
+            $('.forumItem.hiddenItem').removeClass('hiddenItem');
+            return false;
+        });
+    },
+
+    selectTag: function (categoryName, forumId, forumName, forumDisplayName, forumDetailsUrl, forumUrl) {
+        $('#selectedTags').show();
+        if ($("#forumItem_" + forumId).length == 0) {
+            $('.tags', '#selectedTags').append(
+                "<div id='forumItem_" + forumId + "' class='forumItem' data-categoryname='" + categoryName + "' data-forumname='" + forumName + "' data-forumid='" + forumId + "' data-forumdetailsurl='" + forumDetailsUrl + "'>" +
+                "<div class='tagcontainer defaultColor'>" +
+                "<a href='" + forumUrl + "' class='forumtag'>" + forumDisplayName + "</a>" +
+                "<div class='forumremove'>" +
+                "<a href='#' class='removeTag' title='" + ForumsRes.SideBar_RemoveText + "'>x</a>" +
+                "</div>" +
+                "</div>" +
+                "<div class='forumDetailsTip'></div>" +
+                "</div>");
+        }
+        $('#inputTagSearch').val('');
+        $($(".chkForumSelector[data-forumId='" + forumId + "']")).each(function () {
+            $(this).attr("checked", true);
+        });
+
+        Forums.Common.SubmitMetricsToAI('Homepage.ForumSelectedFromForumsDropDown', { forum: forumDisplayName, forumId: forumId });
+        Forums.Homepage.redirectHomePageForTags(Forums.Homepage.Actions.Category);
+    },
+
+    wireFilterBar: function () {
+        $('.filterdropdown', '#filterBar').click(function (evt) {
+            Forums.Homepage.toggleFilterDropDown($(this), evt);
+        });
+
+        $('.threadFilterItem').find(".chkFilterSelector").change(function () {
+            if ($(this).parents('.threadFilterItem:first').data('filter') == "alllanguages") {
+                Forums.Common.SubmitMetricsToAI('Homepage.AllLanguagesSelected');
+                Forums.Homepage.redirectHomePageForTags(Forums.Homepage.Actions.FilterWithAllLanguages);
+            } else {
+                Forums.Common.SubmitMetricsToAI('Homepage.NewFilterSelected', { filter: $(this).attr('id') });
+                Forums.Homepage.redirectHomePageForTags(Forums.Homepage.Actions.Filter);
+            }
+        });
+        $('.threadFilterItem').keypress(function (e) {
+            if (e.which == 13) {
+                Forums.Homepage.currentFilteredItemId = $(this).attr("id");
+                var node = $(this).find("input");
+                if (node.attr('checked') != null) {
+                    node.removeAttr('checked');
+                }
+                else {
+                    node.attr('checked', 'checked');
+                }
+                $('.threadFilterItem').find(".chkFilterSelector").change();
+                $(this).parent().click();
+            }
+        });
+
+        $('#threadFilter').find('.checkboxText').click(function (e) {
+            var associatedCheckBox = $(this).siblings("input[type='checkbox']");
+            $(associatedCheckBox).attr("checked", !$(associatedCheckBox).attr("checked")).change();
+        });
+        $('#threadFilter').keypress(function (e) {
+            if (e.which == 13) {
+                $('#threadFilter').click();
+            }
+        });
+
+        $('.radioButtonText').click(function (e) {
+            var associatedRadioButton = $(this).siblings('input[type="radio"]');
+            $(associatedRadioButton).attr("checked", !$(associatedRadioButton).attr("checked")).change();
+        });
+
+        $('li.sortSelector').click(function () {
+            $('#sortFilter').find('.selectedSort').each(function () {
+                $(this).removeClass("selectedSort").addClass("unselectedSort");
+            });
+            $(this).removeClass("unselectedSort").addClass("selectedSort");
+
+            Forums.Common.SubmitMetricsToAI('Homepage.SortSelected', { sort: $(this).attr('id') });
+            Forums.Homepage.redirectHomePageForTags(Forums.Homepage.Actions.Sort);
+        });
+
+        $('#sortFilter').keypress(function (e) {
+            if (e.which == 13) {
+                $('#sortFilter').click();
+            }
+        });
+        $('li.sortSelector').keypress(function (e) {
+            if (e.which == 13) {
+                Forums.Homepage.currentSortedItemId = $(this).attr("id");
+                $(this).find("input").attr('checked', 'checked');
+                $('li.sortSelector').click();
+                $('#sortFilter').click();
+            }
+        });
+
+        var threadFilterItemIds = Forums.Homepage.getChildIdList('#ThreadFilterPopup', ".threadFilterItem");
+        $('#threadFilter').attr('aria-owns', threadFilterItemIds);
+        var sortFilterItemIds = Forums.Homepage.getChildIdList('#SortFilterPopup', ".unselectedSort.sortSelector");
+        $('#sortFilter').attr('aria-owns', sortFilterItemIds);
+    },
+
+    getChildIdList: function (parent, child) {
+        var owns = "";
+        $(parent).find(child).each(function () {
+            owns += $(this).attr('id') + " ";
+        });
+        return owns.trim();
+    },
+
+    wireActivitySidebarSection: function () {
+        var leaderboardcontainer = $('#homepageLeaderboard');
+        var myActivityWidgetContainer = $('#myActivityWidget');
+        if (myActivityWidgetContainer.length === 1) {
+            Forums.Homepage.loadMyActivityWidget(myActivityWidgetContainer);
+        }
+        else if (leaderboardcontainer.length === 1) {
+            Forums.Homepage.loadLeaderBoard(leaderboardcontainer, 1);
+        }
+
+    },
+
+    wireAnnouncements: function () {
+        /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86193 */
+        $('.seeAnnouncementsLinkBox').click(function (evt) {
+            Forums.Homepage.toggleDropDown($(this).parent(), evt);
+        });
+
+        $('li.announcement .announcementContainer').click(function (evt) {
+            Forums.Common.SubmitMetricsToAI('Homepage.AnnouncementsClicked');
+            $(this).find('a.arrowdown').toggleClass('expanded');
+            $(this).siblings('.announcementDetails').toggle();
+        });
+
+        $('li.announcement .linkAnnouncement').click(function (e) {
+            e.preventDefault();
+            var announcement = $(this).parents("li.announcement");
+            var linkContent = $('div.linkContent', $(announcement));
+
+            if (linkContent.length > 0) {
+                linkContent.remove();
+            } else {
+                linkContent = "<div class='linkContent'> <div style='margin-right: 4px;'><label>" + ForumsRes.Announcement_LinkToAnnouncement + "</label><a class='close' href='javascript:void(0)' style='float:right;'>" + ForumsRes.Announcement_CloseText + "</a></div>  <div><input type='text' class='announcementUrl' readonly='readonly' value='" + $(this).attr('href') + "' /></div>  </div>";
+                $(linkContent).insertBefore($('div.announcementDetails', $(announcement)));
+
+                $("a.close", announcement).click(function (e2) {
+                    e2.stopPropagation();
+                    $('div.linkContent', announcement).remove();
+                });
+
+                $("input[type='text']", announcement).click(function (e2) {
+                    e2.stopPropagation();
+                }).focus();
+            }
+        });
+
+        $('li.announcement .deleteAnnouncement').click(function (e) {
+            e.preventDefault();
+            var announcementBlock = $(this).parents('.announcement:first');
+
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("href"),
+                data: { "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken(), isDeleted: true },
+                success: function (results) {
+                    $(announcementBlock).remove();
+                }
+            });
+
+        });
+
+
+
+        var selectedAnnouncements = $('#topBarImportantInfoContainer .announcementContainer.selected');
+        if ($(selectedAnnouncements).length > 0) {
+            /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/86193 */
+            $('.seeAnnouncementsLinkBox').click();
+            $(selectedAnnouncements).click();
+        }
+    },
+
+    getCurrentForums: function () {
+        var selectedForums = [];
+        $('.forumItem', '#selectedTags').each(function () {
+            selectedForums.push($(this).data('forumname'));
+        });
+        return Forums.GetJSONArray(JSON.stringify(selectedForums));
+    },
+
+    getCurrentCategories: function () {
+        return Forums.GetJSONArray($('#hdnCategories').val());
+    },
+
+    selectAllForums: function (selectAllCheckBox) {
+        var categoryId = $(selectAllCheckBox).parents('li.categoryArea:first').data('categoryid');
+        var selectAllNewValue = $(selectAllCheckBox).is(':checked');
+        $('.allForumItems_' + categoryId).find('.chkForumSelector').attr('checked', selectAllNewValue);
+        Forums.Common.SubmitMetricsToAI('Homepage.SelectAllChanged', { categoryId: categoryId, selectedValue: selectAllNewValue });
+    },
+
+    getSelectedForums: function (forumContainer) {
+        var forums = new Array();
+        $(forumContainer).find(".chkForumSelector:checked").each(function () {
+            forums.push($(this).parents('.forumItem:first').data('forumname'));
+        });
+        return forums;
+    },
+
+    ForumCounts: null,
+
+    setForumCounts: function (forumCounts) {
+        Forums.Homepage.ForumCounts = forumCounts;
+    },
+
+    ForumsAll: null,
+
+    setForumsAll: function (forumsAll) {
+        Forums.Homepage.ForumsAll = forumsAll;
+    },
+
+    getSelectedForumsAndCategoriesFromTags: function () {
+        var selectedforums = new Array();
+        var selectedCategories = new Array();
+        var irootForums = new Array();
+        var useDefaultIrootForums = false;
+
+        var categoryAndForumCounts = {};
+        $('.forumItem', '#selectedTags').each(function () {
+            var cName = $(this).attr('data-categoryName');
+            if ($(categoryAndForumCounts[cName]).length == 0)
+                categoryAndForumCounts[cName] = 1;
+            else {
+                categoryAndForumCounts[cName] = categoryAndForumCounts[cName] + 1;
+            }
+            selectedforums.push($(this).data('forumname'));
+        });
+
+        // reset selected forums/category, if it's same as listed by iroot
+        this.ForumsAll && $(this.ForumsAll).each(function (e) { if (e.isIrootForum) irootForums.push(e.forumName); });
+        if ($(irootForums).not(selectedforums).length == 0 && $(selectedforums).not(irootForums).length == 0) {
+            selectedforums = new Array();
+            selectedCategories = new Array();
+            useDefaultIrootForums = true;
+        } else {
+            for (var i in categoryAndForumCounts) {
+                if (categoryAndForumCounts[i] == Forums.Homepage.ForumCounts[i]) {
+                    selectedCategories.push(i);
+
+                    //Remove all forums under that category from the selected list. The category covers them now.Forum
+
+                    $(".forumItem[data-categoryname='" + i + "']", "#selectedTags").each(function () {
+                        Forums.Common.RemoveFromArray(selectedforums, $(this).data('forumname'));
+                    });
+                }
+            }
+        }
+
+        return {
+            selectedForums: selectedforums,
+            selectedCategories: selectedCategories,
+            useDefaultIrootForums: useDefaultIrootForums
+        };
+    },
+
+
+    getSelectedForumsWithCategories: function (forumContainer) {
+        var selectedList = {};
+        $(forumContainer).find('li.categoryArea').each(function () {
+            var selectedForums = $(this).find(".chkForumSelector:checked");
+            if (selectedForums.length > 0) {
+                //Total Forums Count
+                var totalForums = $(this).find(".chkForumSelector").length;
+                var forums = [];
+                selectedForums.each(function () {
+                    forums.push($(this).parents('.forumItem:first').data('forumname'));
+                });
+                var categoryName = $(this).data('categoryname');
+                selectedList[categoryName] = { totalForums: totalForums, forums: forums };
+            }
+        });
+
+        return selectedList;
+    },
+
+    redirectHomePageForTags: function (action) {
+        var selectedItems = Forums.Homepage.getSelectedForumsAndCategoriesFromTags();
+
+        Forums.Homepage.wireAskAQuestion(selectedItems.selectedForums);
+
+        var filters = new Array();
+        var filterContainer = $('#homePageFilterBarContainer');
+        $(filterContainer).find(".chkFilterSelector:checked").each(function () {
+            var filter = $(this).parents('.threadFilterItem:first').data('filter');
+            filters.push(filter);
+        });
+
+        var sort = new Array();
+        $(filterContainer).find("li.selectedSort").each(function () {
+            sort.push($(this).data("sort"));
+        });
+
+        var searchTerm = encodeURIComponent($("#threadsearchbarContainer input#searchbox").val());
+
+        var userName = $("#hdnUserName").val();
+
+        var baseUrl = Forums.BaseUrl();
+        var url = baseUrl;
+
+        if (userName) {
+            url = Forums.AppendQuestionOrAmpersandToUrl(url);
+            url += "user=" + userName;
+        }
+
+        if (selectedItems.selectedCategories.length > 0) {
+            url = Forums.CommaSeparateAndAddListToUrl(url, "category", selectedItems.selectedCategories);
+        }
+
+        if (selectedItems.selectedForums.length > 0) {
+            url = Forums.CommaSeparateAndAddListToUrl(url, "forum", selectedItems.selectedForums);
+        }
+
+        url = Forums.CommaSeparateAndAddListToUrl(url, "filter", filters);
+        url = Forums.CommaSeparateAndAddListToUrl(url, "sort", sort);
+        if (searchTerm && searchTerm != encodeURIComponent(Forums.Homepage.searchWatermark)) {
+            url = Forums.AppendQuestionOrAmpersandToUrl(url);
+            url += "searchTerm=" + searchTerm;
+        }
+
+        if (!selectedItems.useDefaultIrootForums && selectedItems.selectedForums.length == 0 && selectedItems.selectedCategories.length == 0) {
+            url = Forums.AppendQuestionOrAmpersandToUrl(url);
+            url += "brandIgnore=true";
+            $('#selectedTags').hide();
+        }
+
+        Forums.Homepage.updateSignInOutLink(baseUrl, url);
+
+        if (action == Forums.Homepage.Actions.Category) {
+            window.location.href = url;
+        } else {
+            Forums.ClientRefresh.Controller.get(url, action);
+        }
+    },
+
+    redirectHomePage: function (forumContainer, filterContainer, watermark, action) {
+        Forums.Homepage.addSelectedClassToSelectedCategoryHeaders();
+        selectedForums = Forums.Homepage.getSelectedForums($('#categoriesListing'));
+        Forums.Homepage.wireAskAQuestion(selectedForums);
+
+        var selectedList = Forums.Homepage.getSelectedForumsWithCategories(forumContainer);
+        var selectedForums = [];
+        var selectedCategories = [];
+        for (var categoryName in selectedList) {
+            var category = selectedList[categoryName];
+            if (category.totalForums == category.forums.length) {
+                selectedCategories.push(categoryName);
+            }
+            else {
+                selectedForums.push.apply(selectedForums, category.forums);
+            }
+        }
+
+        var filters = new Array();
+        $(filterContainer).find(".chkFilterSelector:checked").each(function () {
+            var filter = $(this).parents('.threadFilterItem:first').data('filter');
+            filters.push(filter);
+        });
+
+
+        if (action == Forums.Homepage.Actions.FilterWithAllLanguages) {
+            selectedForums = Forums.Homepage.getCurrentForums();
+            selectedCategories = Forums.Homepage.getCurrentCategories();
+        }
+
+        var sort = new Array();
+        $(filterContainer).find("li.selectedSort").each(function () {
+            sort.push($(this).data("sort"));
+        });
+
+        var searchTerm = encodeURIComponent($("#threadsearchbarContainer input#searchbox").val());
+
+        var userName = $("#hdnUserName").val();
+
+        var baseUrl = Forums.BaseUrl();
+        var url = baseUrl;
+
+        if (userName) {
+            url += ((url.indexOf("?") > -1) ? "&" : "?") + "user=" + userName;
+        }
+
+        if (selectedCategories.length > 0) {
+            url = Forums.CommaSeparateAndAddListToUrl(url, "category", selectedCategories);
+        }
+
+        if (selectedForums.length > 0) {
+            url = Forums.CommaSeparateAndAddListToUrl(url, "forum", selectedForums);
+        }
+
+        url = Forums.CommaSeparateAndAddListToUrl(url, "filter", filters);
+        url = Forums.CommaSeparateAndAddListToUrl(url, "sort", sort);
+        if (searchTerm && searchTerm != encodeURIComponent(watermark)) {
+            url += ((url.indexOf("?") > -1) ? "&" : "?") + "searchTerm=" + searchTerm;
+        }
+
+        if (selectedForums.length == 0 && selectedCategories.length == 0) {
+            url += ((url.indexOf("?") > -1) ? "&" : "?") + "brandIgnore=true";
+        }
+
+        Forums.Homepage.updateSignInOutLink(baseUrl, url);
+
+        if (action == Forums.Homepage.Actions.CategoryViewAll) {
+            window.location.href = url;
+        } else {
+            Forums.ClientRefresh.Controller.get(url, action);
+        }
+    },
+
+    updateSignInOutLink: function (baseUrl, url) {
+        var domPathForSignInHref = $('.scarabLink');
+        var signInHref = domPathForSignInHref.attr('href');
+        var myRegexp = /ReturnUrl=(.+)/gim;
+        var match = myRegexp.exec(signInHref);
+        if (match != null) {
+            var newRedirectUrl = encodeURIComponent(url);
+            domPathForSignInHref.attr('href', signInHref.replace(match[1], newRedirectUrl));
+        }
+    },
+
+    expandThread: function (arrow) {
+        var expandedThreadContainer = $(arrow).parents("div.threadsnippet:first").find('div.expandedThreadContainer');
+        var threadUrlLink = $(arrow).parent().data('threadmessagesurl');
+
+        $(arrow).toggleClass('expanded');
+        $(expandedThreadContainer).toggle($(arrow).hasClass('expanded'));
+
+        if ($(arrow).hasClass('expanded')) {
+            Forums.Homepage.loadThreadPreview(expandedThreadContainer, threadUrlLink);
+            $(arrow).attr("aria-expanded", true);
+        }
+        else {
+            //fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/182531
+            $(arrow).attr("aria-expanded", false);
+        }
+    },
+
+    hideDropDown: function (evt) {
+        $('.popup').each(function () {
+            if (!$(this).find(evt.target).length || $(evt.target).hasClass('closePopup')) {
+                $(this).hide();
+                // fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85253
+                $(this).parent().attr("aria-expanded", "false")
+                $(this).data("overlay") && $($(this).data("overlay")).hide();
+                if ($(this).data("isModal")) {
+                    var body = $("body");
+                    body.removeClass("no-vertical-scrolling");
+                    if (typeof $(this).data("originalBodyWidthStyle") != "undefined") {
+                        document.body.style.width = $(this).data("originalBodyWidthStyle");
+                    }
+                }
+            }
+        });
+    },
+
+    toggleDropDown: function (box, evt) {
+        var popup = box.children(".popup");
+        var openPopup = !$(popup).is(':visible');
+        Forums.Homepage.hideDropDown(evt);
+        if (openPopup) {
+            // fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85253
+            box.attr("aria-expanded", "true");
+            popup.data("overlay") && $(popup.data("overlay")).toggle();
+            popup.toggle();
+            if (popup.data("isModal")) {
+                var body = $("body");
+                popup.data("originalBodyWidthStyle", document.body.style.width);
+                body.css("width", body.width() + 'px');
+                body.addClass("no-vertical-scrolling");
+            }
+            evt.stopPropagation();
+            $("body").click(function (evt) {
+                Forums.Homepage.hideDropDown(evt);
+            });
+        }
+    },
+
+    toggleFilterDropDown: function (box, evt) {
+        $('.filterdropdown', '#filterBar').each(function () {
+            if ($(box).attr('id') != $(this).attr('id'))
+                $(this).children(".popup").hide();
+        });
+        Forums.Homepage.toggleDropDown(box, evt);
+    },
+
+    loadThreadPreview: function (expandedThreadContainer, url) {
+        url = Forums.AppendQuestionOrAmpersandToUrl(url) + "time=" + new Date().getTime();
+
+        $.ajax(
+            {
+                type: "GET",
+                beforeSend: function (xhr) {
+                    $(expandedThreadContainer).show();
+                },
+                url: url,
+                success: function (results) {
+                    $(expandedThreadContainer).html(results);
+                    $('#threadList').addClass('nowhitespace');
+                    prettyPrint();
+                    $("li.message", expandedThreadContainer).each(Forums.Message.decorateMessage);
+
+                    $(expandedThreadContainer).find("a[name='reply']").click(function () {
+                        Forums.Common.SubmitMetricsToAI('Homepage.ExpandedThreadReplyClicked');
+                    });
+
+                    $(expandedThreadContainer).find("a.voteuphreflink").click(function () {
+                        Forums.Common.SubmitMetricsToAI('Homepage.ExpandedThreadVoteLinkClicked');
+                    });
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $(expandedThreadContainer).html("<div class=\"links\"></div>");
+
+                    var links = $("div.links", expandedThreadContainer);
+
+                    $(links).append("<a class='view'></a>");
+                    var viewHref = $(expandedThreadContainer).parent().find('h3 a.threadUrl').attr("href");
+                    $("a.view", links).text(ForumsRes.thread_viewThreadText).attr("href", viewHref).attr("title", ForumsRes.thread_viewThreadText);
+
+                    $(links).append("<a class='close'></a>");
+                    $("a.close", links)
+                        .text(ForumsRes.thread_closePreviewText)
+                        .attr("href", "javascript:void(0)").attr("title", ForumsRes.thread_closePreviewText)
+                        .click(function () { $(expandedThreadContainer).hide(); });
+                }
+            });
+    },
+
+    loadLeaderBoard: function (container, index) {
+        var url = $(container).data('leaderboardurl');
+        index++;
+        if (index > 4 || index < 2) {
+            index = 2;
+        }
+
+        $(container).addClass("submitting").load(url, "leaderBoard=" + index + "&rnd=" + Math.random(), function () {
+            $(container).removeClass("submitting");
+            $("a[name='seeMore']").click(function () {
+                Forums.Common.SubmitMetricsToAI('Homepage.LeaderboardNextLinkClicked');
+                Forums.Homepage.loadLeaderBoard($(this).data('nextindex'));
+            });
+        });
+    },
+
+    loadMyActivityWidget: function (container) {
+        var url = $(container).data('contenturl');
+        $(container).addClass("submitting").load(url, "rnd=" + Math.random(), function () {
+            $(container).removeClass("submitting");
+        });
+    },
+
+    loadForumDetails: function (categoryName, selectedForumName) {
+        var categoryContainerId = 'categoryDetails_' + categoryName;
+        if (!$('#' + categoryContainerId).length) {
+            var categoryDetailscontainer = document.createElement("div");
+            $(categoryDetailscontainer).attr('id', categoryContainerId);
+
+            /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85258 */
+            $('#forumDetailsContainer').children('div').first().after(categoryDetailscontainer);
+
+            var forumDetailsUrl = $('#category_' + categoryName).children('.categoryHeader').data('forumdetailsurl');
+            $.getJSON(forumDetailsUrl,
+               function (data) {
+                   Forums.Homepage.loadForumDetailsForCategory(data, categoryDetailscontainer, selectedForumName);
+               })
+           .fail(
+               function (jqXHR, textStatus, err) {
+                   $('#forumDetailsContainer').text('Error: ' + err);
+               });
+        }
+        else {
+            $('.singleforumdetails').hide();
+            $("#forumDetailsContainerBanner").hide();
+            $('#forumdetails_' + selectedForumName).show();
+        }
+    },
+
+    loadForumDetailsForCategory: function (data, categoryDetailscontainer, selectedForumName) {
+        $.each(data, function (key, val) {
+            var singleForumDetails = $('#forumDetailsTemplate').clone().hide();
+            $(singleForumDetails).attr('id', 'forumdetails_' + val.Name).attr('class', 'singleforumdetails');
+            $(singleForumDetails).children('h3.header').prepend(val.DisplayName);
+            $(singleForumDetails).children('div.content').text(val.Description);
+            $(singleForumDetails).find('img.rss').parent().attr('href', val.RSSUrl);
+
+            // fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85262
+            if (val.ShowManageForums) {
+                var manageForumsSection = $(singleForumDetails).find('.manageForumSection');
+                $(manageForumsSection).find('.manageForumLink').attr('href', val.ManageForumUrl).attr("tabindex", "0").text(val.ManageForumsText);
+                $(manageForumsSection).find('.manageRolesLink').attr('href', val.ManageRolesUrl).attr("tabindex", "0").text(val.ManageRolesText);
+                $(manageForumsSection).show();
+            }
+
+            var favoriteUnfavoriteLink = $(singleForumDetails).find('a.addRemoveForum');
+            $(favoriteUnfavoriteLink).attr('href', val.FavoriteUrl);
+            if (val.HasFavoritePermission) {
+                $(favoriteUnfavoriteLink).attr('title', val.AddToMyForumsText).attr('name', 'favorite').attr('data-reverseText', val.RemoveFromMyForumsText).attr('data-reversename', 'unfavorite').text(val.AddToMyForumsText);
+            }
+            else if (val.HasUnFavoritePermission === true) {
+                $(favoriteUnfavoriteLink).attr('title', val.RemoveFromMyForumsText).attr('name', 'unfavorite').attr('data-reverseText', val.AddToMyForumsText).attr('data-reversename', 'favorite').text(val.RemoveFromMyForumsText);
+            }
+            $(categoryDetailscontainer).append(singleForumDetails);
+
+            var favoriteUnfavoriteLinkName = $(favoriteUnfavoriteLink).attr('name');
+            if (typeof favoriteUnfavoriteLinkName !== 'undefined' && favoriteUnfavoriteLinkName !== false) {
+                $(favoriteUnfavoriteLink).attr("tabindex", "0");
+                $(favoriteUnfavoriteLink).show();
+            }
+        });
+
+        $('.singleforumdetails').hide();
+        $('#forumdetails_' + selectedForumName).show();
+        $("#forumDetailsContainerBanner").hide();
+        $(categoryDetailscontainer).find("a.addRemoveForum").click(function (evt) {
+            var isFavorite = $(this).attr('name') === 'favorite';
+            var link = $(this);
+
+            $.post($(link).attr("href"), { isFavorited: isFavorite, "__RequestVerificationToken": Forums.Message.AddAntiForgeryToken() }, function (results) {
+                if (results.success) {
+                    var currentText = $(link).text();
+                    var currentName = $(link).attr('name');
+                    var reverseText = $(link).attr('data-reverseText');
+                    var reverseName = $(link).attr('data-reversename');
+                    $(link).attr('title', reverseText).attr('name', reverseName).attr('data-reverseText', currentText).attr('data-reversename', currentName);
+                    $(link).text(reverseText);
+                }
+            }, "json");
+            return false;
+        });
+    },
+
+    logClick: function () {
+
+        var $queryId = $(document).find('#hdnQueryId').val();
+        var $page = $(document).find('#hdnPage').val();
+        var $threadId = $(this).data('threadid');
+        var $block = $(this).data('block');
+        var $position = $(this).data('position');
+
+        if ($queryId && $page) {
+            var $customMetricObj = {
+                queryId: $queryId,
+                page: $page,
+                threadId: $threadId,
+                block: $block,
+                position: $position
+            };
+
+            Forums.Common.SubmitMetricsToAIAndRedirect('Homepage.SearchResultClick', $customMetricObj, $(this).attr('href'), event.ctrlKey);
+        }
+    },
+
+    wireSearchResultEvents: function () {
+        $('.threadUrl').click(Forums.Homepage.logClick);
+
+        $(".threadstatus").click(function () {
+            Forums.Common.SubmitMetricsToAI('Homepage.ThreadIconClick', { threadId: $(this).parents(".threadblock").data("threadid") });
+        });
+
+        var timeout = {};
+        $(".threadstatus").hover(
+            function () {
+                var $this = $(this);
+                timeout = setTimeout(function () {
+                    Forums.Common.SubmitMetricsToAI('Homepage.ThreadIconHover', {
+                        threadId: $this.parents(".threadblock").data("threadid"),
+                        state: $this.attr("title")
+                    });
+                }, 500);
+            },
+            function () {
+                clearTimeout(timeout);
+            }
+        );
+    },
+
+    logSerp: function () {
+
+        var $page = $(document).find('#hdnPage').val();
+        var $queryId = $(document).find('#hdnQueryId').val();
+        var $query = $(document).find('#hdnQuery').val();
+
+        if ($page && $queryId && $query) {
+
+            var $customMetricObj = {
+                queryId: $queryId,
+                query: $query,
+                page: $page
+            };
+
+            Forums.Common.SubmitMetricsToAI('Homepage.SearchResultPageView', $customMetricObj);
+        }
+    },
+
+    currentFilteredItemId: null,
+
+    currentSortedItemId: null,
+
+    currentForumItemId: null
+};
+
+//********************************************************************************
+//* Forums.ThreadPage
+//********************************************************************************
+Forums.ThreadPage =
+{
+    wirePageElements: function (watermark) {
+        this.attachTooltipHandler();
+        this.getRelatedThreads();
+        Forums.ForumDetails.wireForumDetailLinks();
+    },
+
+    wireSearchBar: function (watermark) {
+        $("#threadsearchbarContainer table.searchboxinnercontainer #searchimage").click(function (e) {
+            var searchBox = $(this).parents('.searchboxinnercontainer:first').find('#searchbox').not(".watermark");
+            var searchValue = $(searchBox).length == 1 ? $(searchBox).val() : '';
+            Forums.Common.SubmitMetricsToAI('Homepage.MainSearchBoxSearchIconClicked', { searchTerm: searchValue });
+        });
+
+        $("#threadsearchbarContainer table.searchboxinnercontainer #searchbox").watermark(watermark);
+        /* fix bug https://ceapex.visualstudio.com/Engineering/_workitems/edit/85229 */
+        $("#threadsearchbarContainer table.searchboxinnercontainer #searchbox").attr("aria-label", watermark);
+        $("#threadsearchbarContainer table.searchboxinnercontainer #searchimage").attr("aria-label", watermark);
+
+        $("#threadsearchbarContainer table.searchboxinnercontainer #searchbox").keypress(function (event) {
+            var n = window.mscc;
+            n && !n.hasConsent() && n.setConsent();
+
+            if (event.which == 13) {
+                Forums.Common.SubmitMetricsToAI('Homepage.EnterPressedOnSearchBox');
+                $(this).submit();
+            }
+        }).click(function () {
+            Forums.Common.SubmitMetricsToAI('Homepage.MainSearchBoxSelected');
+        });
+    },
+
+    getRelatedThreads: function () {
+        var url = $("#relatedThreads").data("url");
+        //Fetch content
+        url && $.ajax({
+            url: url
+        }).done(function (html) {
+            $("#relatedThreads").html(html);
+            Forums.ThreadPage.wireRelatedThreadLinks();
+        });
+    },
+
+    attachTooltipHandler: function () {
+        $('.forumBreadcrumb').each(function (index) {
+            $(this).hover(function () {
+                var tooltip = $(this).children('.breadcrumbTip');
+                if (tooltip) {
+                    tooltip.css('top', '20px');
+                    tooltip.css('left', '0px');
+                    tooltip.show();
+                }
+            }, function () {
+                var tooltip = $(this).children('.breadcrumbTip');
+                tooltip && tooltip.hide();
+            });
+        });
+    },
+
+    wireRelatedThreadLinks: function () {
+        $('#relatedThreads a').click(function (e) {
+            var customMetricObj = {
+                linkTitle: $(this).text(),
+                linkHref: $(this).attr('href'),
+                question: $('#threadPageContainer > h1 > span[name="subject"]').text(),
+                questionId: $('#rootMessage > li.message.root').attr('id'),
+                isQuestionAnswered: $('img.icon.question.answered').length > 0
+            };
+            Forums.Common.SubmitMetricsToAIAndRedirect('relatedThreadsLink', customMetricObj, $(this).attr('href'), e.ctrlKey);
+            return false;
+        });
+    },
+
+    logThreadPageEnter: function () {
+
+        var $threadId = $('#rootMessage>li.message:first').attr('id');
+        var $customMetricObj = {
+            threadId: $threadId
+        };
+
+        Forums.Common.SubmitMetricsToAI('Thread.PageEnter', $customMetricObj);
+    },
+
+    logThreadPageDwell: function () {
+
+        setTimeout(function () {
+            var $threadId = $('#rootMessage>li.message:first').attr('id');
+            var $customMetricObj = {
+                threadId: $threadId,
+                dwellTimeInSecs: Forums.Constants.ThreadPageDwellTimeInSecs
+            };
+
+            Forums.Common.SubmitMetricsToAI('Thread.PageDwell', $customMetricObj);
+        }, Forums.Constants.ThreadPageDwellTimeInSecs * 1000);
+    }
+};
+
+Forums.NewThreadPage = {
+    wire: function () {
+        if ($('#forumNameLine').is(':visible')) {
+            $('#Subject').focus();
+        }
+    }
+};
+
+//********************************************************************************
+//* Forums.Toggler
+//********************************************************************************
+Forums.Toggler = (function () {
+
+    var sidebarlocalName = "ShowSidebar";
+    var threadSidebarbuttonId = "#threadPageContentContainer #toggleSidebar";
+    var homeSidebarbuttonId = "#allThreadsContainer #toggleSidebar";
+    var threadSidebarId = "#threadPageSidebarContainer";
+    var threadContentId = "#threadPageContentContainer";
+    var threadMessageId = "#threadPageContainer .messageContent";
+    var homeSidebarId = "#homePageSidebarContainer";
+    var homeContentId = "#homePageContentContainer";
+    var contentWidth = -1;
+
+    function setup() {
+
+        if (!Modernizr.localstorage) {
+            localStorage = {};
+        }
+
+        if ($(threadSidebarbuttonId).length > 0 || $(homeSidebarbuttonId).length > 0) {
+            wireToggleButton();
+        }
+    }
+
+    function toggle(sidebarButton, sidebar, content, message, page) {
+        if (localStorage[sidebarlocalName] === "1" || typeof localStorage[sidebarlocalName] === "undefined") {
+            hideSidebar(sidebarButton, sidebar, content, message, page);
+            $(sidebarButton).attr("aria-expanded", "false");
+            localStorage[sidebarlocalName] = 0;
+        }
+        else {
+            showSideBar(sidebarButton, sidebar, content, message, page);
+            $(sidebarButton).attr("aria-expanded", "true");
+            localStorage[sidebarlocalName] = 1;
+        }
+    }
+
+    function hideSidebar(sidebarButton, sidebar, content, message, page) {
+        sidebarButton.removeClass("toggleOpen").addClass("toggleClose");
+        if (page === "home") {
+            $('#homePageFilterBarContainer').addClass("expandedFilterBar");
+        }
+        sidebar.css("display", "none");
+
+        if ($(content).length == 1 && contentWidth == -1) {
+            contentWidth = $(content).width();
+        }
+
+        content.addClass("expandedContent");
+        content.css("width", "100%");
+        message && message.addClass("expandedContent");
+    }
+
+    function showSideBar(sidebarButton, sidebar, content, message, page) {
+        sidebarButton.removeClass("toggleClose").addClass("toggleOpen");
+        if (page === "home") {
+            $('#homePageFilterBarContainer').removeClass("expandedFilterBar");
+        }
+        sidebar.css("display", "block");
+
+        if ($(content).length == 1 && contentWidth == -1) {
+            contentWidth = $(content).width();
+        }
+
+        content.removeClass("expandedContent");
+        content.css('width', contentWidth + 'px');
+        if ($(window).width() < 1000)
+        {
+            content.css('width', '76%');
+        }
+        message && message.removeClass("expandedContent");
+
+        //Width of profile image in sidebar has 0 width if sidebar was hidden which makes it invisible
+        //This code fixes that issue
+        var profileSidebarImageContainer = $('.profile-userimage-large');
+        var profileImage = $(profileSidebarImageContainer).children('img:first');
+        if ($(profileImage).length === 1) {
+            if ($(profileImage).width() === 0) {
+                $(profileImage).width($(profileSidebarImageContainer).width());
+            }
+        }
+    }
+
+    function wireToggleButton() {
+        wireHomeToggleButton();
+        wireThreadPageToggleButton();
+    }
+
+    function wireHomeToggleButton() {
+        $(homeSidebarbuttonId).click(function () {
+            toggle($(this), $(homeSidebarId), $(homeContentId), null, "home");
+        });
+
+        if (typeof localStorage[sidebarlocalName] !== "undefined") {
+            if (localStorage[sidebarlocalName] === "0") {
+                hideSidebar($(homeSidebarbuttonId), $(homeSidebarId), $(homeContentId), null, "home");
+            }
+            else {
+                showSideBar($(homeSidebarbuttonId), $(homeSidebarId), $(homeContentId), null, "home");
+            }
+        }
+    }
+
+    function wireThreadPageToggleButton() {
+        $(threadSidebarbuttonId).click(function () {
+            toggle($(this), $(threadSidebarId), $(threadContentId), $(threadMessageId), "thread");
+        });
+
+        if (typeof localStorage[sidebarlocalName] !== "undefined") {
+            if (localStorage[sidebarlocalName] === "0") {
+                hideSidebar($(threadSidebarbuttonId), $(threadSidebarId), $(threadContentId), $(threadMessageId));
+            }
+            else {
+                showSideBar($(threadSidebarbuttonId), $(threadSidebarId), $(threadContentId), $(threadMessageId));
+            }
+        }
+    }
+
+    $(function () {
+        setup();
+    });
+
+    return {
+        setup: setup,
+        wireToggleButton: wireToggleButton
+    };
+
+
+
+})();
+
+
+
+//********************************************************************************
+//* Forums.Leaderboards
+//********************************************************************************
+Forums.Leaderboards =
+{
+    seeMore: function (index) {
+        var container = $("#rail div.leaderboards");
+        index++;
+        if (index > 4) {
+            index = 0;
+        }
+        var url = window.leaderBoardUrl + "&leaderBoard=" + index;
+        container.fadeTo("slow", 0.5);
+        container.addClass("submitting");
+        container.parent("div").load(url);
+    }
+};
+
+//********************************************************************************
+//* Forums.Users
+//********************************************************************************
+Forums.Users =
+{
+    usersAction: function (link, data, operation) {
+
+        return function () {
+
+            $("img.icon", link).addClass("submitting");
+            $.post($(link).attr("href"), data, function (results) {
+                $(link).remove();
+            }, "json");
+            return false;
+        };
+    },
+
+    blockAvatar: function () {
+        var link = $(this);
+        $(this).click(Forums.Users.usersAction(link, { blockAvatar: true }));
+    },
+
+    unblockAvatar: function () {
+        var link = $(this);
+        $(this).click(Forums.Users.usersAction(link, { blockAvatar: false }));
+    },
+
+    decorateUsers: function () {
+
+        $("a[name='blockUnblockAvatar']", this).each(Forums.Users.blockAvatar);
+        //        $("a[name='unblockavatar']", this).each(Forums.Users.unblockAvatar);
+    }
+};
+
+//********************************************************************************
+//* Forums.Common
+//********************************************************************************
+Forums.Common =
+{
+    // context - tab name, search etc.
+    // link type - 1 for hyperlinks, 0 for non hyper links
+    TrackCustomClick: function (context, destinationUrl, linkType, altText) {
+        if (typeof t_omni_utils !== 'undefined' && t_omni_utils && t_omni_utils.omniModTracking) {
+            t_omni_utils.omniModTracking(true, context, "", destinationUrl, linkType, altText);
+        }
+    },
+
+    FixPartnerForumContextUrls: function (container) {
+        var applicationUrl = $("#p_ApplicationUrl");
+        if (typeof applicationUrl !== 'undefined' && applicationUrl) {
+            var appLink = $("#connect-context .home-link-container a", container);
+            if (typeof appLink !== 'undefined' && appLink) {
+                appLink.attr('href', applicationUrl.attr('value'));
+            }
+        }
+
+        var applicationForumContextUrl = $("#p_ApplicationForumContextUrl");
+        if (typeof applicationForumContextUrl !== 'undefined' && applicationForumContextUrl) {
+            var appForumContextLink = $("#connect-context .connection-link-container a", container);
+            if (typeof appForumContextLink !== 'undefined' && appForumContextLink) {
+                if (applicationForumContextUrl.attr('value'))
+                    appForumContextLink.attr('href', applicationForumContextUrl.attr('value'));
+                else
+                    appForumContextLink.remove();
+            }
+        }
+    },
+
+    ShowPrompt: function (message, closeButton, redirectUrl) {
+        this.clicked = true;
+        $.prompt(message, {
+            prefix: 'spWarning',
+            top: '40%',
+            buttons: { closeButton: { title: closeButton, value: true } },
+            submit: function (v) {
+                window.location.replace(redirectUrl);
+            }
+        });
+    },
+
+    SubmitMetricsToAIAndRedirect: function (eventName, customMetricObj, redirectUrl, isCtrlClick) {
+        if (!isCtrlClick) {
+            Forums.Common.SubmitMetricsToAI(eventName, customMetricObj);
+            setTimeout(function () { Forums.Redirect(redirectUrl); }, 500);
+            return false;
+        }
+        return true;
+    },
+
+    SubmitMetricsToAI: function (eventName, customMetricObj) {
+        /*
+		if (window.appInsights) {
+            var metricObj = Forums.Common.GetBaseMetricObject();
+            if (customMetricObj) {
+                for (var attr in customMetricObj) {
+                    metricObj[attr] = customMetricObj[attr];
+                }
+            }
+            appInsights.logEvent(eventName, metricObj);
+        }
+		*/
+    },
+
+    MetricsSubmittedCallback: function (json) { },
+
+    RemoveFromArray: function (arr, val) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == val) {
+                arr.splice(i, 1);
+                break;
+            }
+        }
+    },
+
+    GetBaseMetricObject: function () {
+        var usernameLink = $('a.createProfileLink:first', 'div.profileName');
+        var username = "anonymous";
+        if (usernameLink.is(':visible')) { username = $(usernameLink).text(); }
+
+        return {
+            username: username,
+            referrer: document.referrer,
+            currentUrl: document.URL
+        };
+    },
+
+    FocusToOriginalElement: function (link, target) {
+        var messageLi = $(link).parents("li.message").first();
+        if (messageLi.length > 0) {
+            var messageId = messageLi.attr("id");
+            Forums.Common.FocusOnFirstElementByXPath("li#" + messageId + target);
+        }
+    },
+
+    FocusOnFirstElementByXPath: function (elementXPath) {
+        if ($(elementXPath).length > 0) {
+            $(elementXPath).first().focus();
+        }
+    },
+
+    GetMessageId: function (element) {
+        return $(element).attr("id").replace("-isAnswer", "");
+    }
+
+};
+
+//********************************************************************************
+//* 
+//********************************************************************************
+$.addToRail = function (urls, callback) {
+    var rail = $("#rail");
+    for (var i = 0; i < urls.length; i++) {
+        var container = document.createElement("div");
+        rail.append(container);
+        var d = urls[i].indexOf("?") != -1 ? "&" : "?";
+        if (urls[i].indexOf("rightrailannouncement") != -1) {
+            $(container).load(urls[i] + d + "rnd=" + Math.random(), null, function (data) { Forums.Common.FixPartnerForumContextUrls(rail); });
+        } else {
+            $(container).load(urls[i] + d + "rnd=" + Math.random(), null, callback);
+        }
+
+        if (urls[i].indexOf("leaderboards") != -1) {
+            window.leaderBoardUrl = urls[i] + d + "rnd=" + Math.random();
+        }
+    }
+    rail.append($(".help", rail));
+};
+
+//********************************************************************************
+//* 
+//********************************************************************************
+$.fn.popup = function () {
+    $(this).each(function () {
+        var name = "a[name='" + $(this).attr("name") + "']";
+        var pname = "ul[name='" + $(this).attr("name") + "Popup']";
+        $(this).find(Forums.Constants.ExpandCollapseImageRef).detach();
+        $(this).append(Forums.Constants.ExpandCollapseImage);
+
+        var hide = function hidePopup() {
+            $("ul.popup").hide();
+            $("body").unbind("click.popup");
+        };
+
+        $(this).click(function (evt) {
+            $("ul.popup").hide();
+            var pWidth = $(pname).width();
+            var position = $(name).position();
+            if ($(pname).attr("popupAlign") === "right") {
+                $(pname).css("left", position.left + ($(evt.target).width() / 2) - pWidth);
+            }
+            else if ($(pname).attr("popupAlign") === "rightRail") {
+                $(pname).css("right", $(name).offsetParent().width() - position.left);
+            }
+            else {
+                $(pname).css("left", position.left);
+            }
+            var sender = evt.target.className == "expcol" ? evt.target.parentElement : evt.target;
+            $(pname).css("top", position.top + ($(sender).height() * 1.5));
+            $(pname).show();
+            $(pname).prev().attr("aria-expanded", "true");
+            evt.stopPropagation();
+            $("body").bind("click.popup", hide);
+        });
+    });
+};
+
+//********************************************************************************
+//*
+//********************************************************************************
+Forums.ManageRoles =
+{
+    selectAll: function () {
+        if ($("#selectAll").attr('checked')) {
+            $("input[name='userId']").attr('checked', 'checked');
+        } else {
+            $("input[name='userId']").attr('checked', false);
+        }
+    }
+};
+//********************************************************************************
+//*
+//********************************************************************************
+$.fn.removeWatermark = function () {
+    $(this).each(function () {
+        if ($(this).hasClass("watermark")) {
+            $(this).val("");
+            $(this).removeClass("watermark");
+        }
+    });
+};
+
+$.removeAllWatermarks = function () {
+    $(".watermark").each(function () {
+        $(this).removeWatermark();
+    });
+};
+
+$.fn.watermark = function (watermarkText) {
+    $(this).each(function () {
+        $(this).removeWatermark();
+
+        $(this).bind("click", function (evt) {
+            if ($(this).hasClass("watermark")) {
+                $(this).val("");
+                $(this).removeClass("watermark");
+            }
+        });
+
+        $(this).bind("blur", function (evt) {
+            if ($(this).val() == "" || $(this).val() == watermarkText) {
+                $(this).addClass("watermark");
+                $(this).val(watermarkText);
+            }
+        });
+
+        $(this).blur();
+    });
+};
+
+$.fn.watermarkVal = function () {
+    if ($(this).hasClass("watermark")) {
+        return "";
+    } else {
+        return $(this).val();
+    }
+};
+
+$.fn.toggleVisibility = function () {
+    var visibleClass = 'visible';
+    var inVisibleClass = 'invisible';
+    if ($(this).hasClass(visibleClass)) {
+        $(this).removeClass(visibleClass).addClass(inVisibleClass);
+    } else {
+        $(this).removeClass(inVisibleClass).addClass(visibleClass);
+    }
+};
+
+$("input#ErrorSearchButton").on("click", function () {
+    var query = $("input#ErrorSearchBox").val();
+    if (!query) {
+        return;
+    }
+
+    var searchUri = $("input#SearchUri").val();
+    if (!searchUri) {
+        return;
+    }
+
+    window.location.href = searchUri.replace("{0}", escape(query));
+});
+
+Forums.Redirect = function (url) {
+    window.location.href = url;
+};
+
+Forums.CommaSeparateAndAddListToUrl = function (url, queryparamname, list) {
+    if ($(list).length > 0) {
+        url += ((url.indexOf("?") > -1) ? "&" : "?") + queryparamname + "=" + encodeURIComponent(list.join(","));
+    }
+    return url;
+};
+
+Forums.BaseUrl = function () {
+    return window.location.href.split('#')[0].split('?')[0];
+};
+
+Forums.GetJSONArray = function (jsonString) {
+    if (jsonString != '') {
+        try {
+            return window.JSON ? JSON.parse(jsonString) : $.parseJSON(jsonString);
+        } catch (e) { }
+    }
+    return [];
+};
+
+Forums.AppendQuestionOrAmpersandToUrl = function (url) {
+    if (url) {
+        url += url.indexOf("?") != -1 ? "&" : "?";
+    }
+    return url;
+
+};
+
+Forums.ScrollWindowToTop = function () {
+    window.scrollTo(0, 0);
+};
+
+//********************************************************************************
+//* Forums ScriptLoader
+//********************************************************************************
+Forums.loadScript = function (url) {
+    $(document).ready(function () {
+        $.ajax({
+            async: true,
+            type: "GET",
+            url: url,
+            data: null,
+            dataType: "script",
+            cache: true
+        });
+    });
+};
+
+jQuery.expr[':'].Contains = function (a, i, m) {
+    return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+};
+
+$(document).ready(function(){
+    $(window).resize(function () {
+        Forums.Homepage.setAllCategoryContainerSize();
+    });
+});
+// SIG // Begin signature block
+// SIG // MIIreQYJKoZIhvcNAQcCoIIrajCCK2YCAQExDzANBglg
+// SIG // hkgBZQMEAgEFADB3BgorBgEEAYI3AgEEoGkwZzAyBgor
+// SIG // BgEEAYI3AgEeMCQCAQEEEBDgyQbOONQRoqMAEEvTUJAC
+// SIG // AQACAQACAQACAQACAQAwMTANBglghkgBZQMEAgEFAAQg
+// SIG // U98/D2jZVsZUTwwKjQwQ8JUA62LlB2v8ZP0kts6oavCg
+// SIG // ghFuMIIIfjCCB2agAwIBAgITNgAAAahTK9ZQq6y5UwAC
+// SIG // AAABqDANBgkqhkiG9w0BAQsFADBBMRMwEQYKCZImiZPy
+// SIG // LGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRUw
+// SIG // EwYDVQQDEwxBTUUgQ1MgQ0EgMDEwHhcNMjIwNjEwMTgy
+// SIG // NzAzWhcNMjMwNjEwMTgyNzAzWjAkMSIwIAYDVQQDExlN
+// SIG // aWNyb3NvZnQgQXp1cmUgQ29kZSBTaWduMIIBIjANBgkq
+// SIG // hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnEdeHxP889b7
+// SIG // mrwL0Z0koWl4LoJ+zeHJ7UDmhaQAxyRIIw9tXSK910U/
+// SIG // pTle2lfbvL9vZR1U8zyRwy6WaVNT/rh+wOm9AKqrsbaB
+// SIG // qlCsTRliD/TIgibyDuKIf/aV+Aok1yvoWVg2eNn/06XE
+// SIG // bXA/k554/MzRFwxHJNnO9dGc8hke+UZxb94AZB6JWfXQ
+// SIG // 3xzYYQtPQmVsTI2iQ/aDYkkS+nIgs/IjbConhB93V4oc
+// SIG // 4rL8r9C5D29kDOZRQ2Y2/1eqXV5wb7QSdahpxk3457cf
+// SIG // caTGsmz6nPQq7DqO9RqDO5dYD22V5bGQkf5wMhC0jlQq
+// SIG // 1qFAhbD3nkXka5eErruzcwIDAQABo4IFijCCBYYwKQYJ
+// SIG // KwYBBAGCNxUKBBwwGjAMBgorBgEEAYI3WwEBMAoGCCsG
+// SIG // AQUFBwMDMD0GCSsGAQQBgjcVBwQwMC4GJisGAQQBgjcV
+// SIG // CIaQ4w2E1bR4hPGLPoWb3RbOnRKBYIPdzWaGlIwyAgFk
+// SIG // AgEMMIICdgYIKwYBBQUHAQEEggJoMIICZDBiBggrBgEF
+// SIG // BQcwAoZWaHR0cDovL2NybC5taWNyb3NvZnQuY29tL3Br
+// SIG // aWluZnJhL0NlcnRzL0JZMlBLSUNTQ0EwMS5BTUUuR0JM
+// SIG // X0FNRSUyMENTJTIwQ0ElMjAwMSgyKS5jcnQwUgYIKwYB
+// SIG // BQUHMAKGRmh0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JZ
+// SIG // MlBLSUNTQ0EwMS5BTUUuR0JMX0FNRSUyMENTJTIwQ0El
+// SIG // MjAwMSgyKS5jcnQwUgYIKwYBBQUHMAKGRmh0dHA6Ly9j
+// SIG // cmwyLmFtZS5nYmwvYWlhL0JZMlBLSUNTQ0EwMS5BTUUu
+// SIG // R0JMX0FNRSUyMENTJTIwQ0ElMjAwMSgyKS5jcnQwUgYI
+// SIG // KwYBBQUHMAKGRmh0dHA6Ly9jcmwzLmFtZS5nYmwvYWlh
+// SIG // L0JZMlBLSUNTQ0EwMS5BTUUuR0JMX0FNRSUyMENTJTIw
+// SIG // Q0ElMjAwMSgyKS5jcnQwUgYIKwYBBQUHMAKGRmh0dHA6
+// SIG // Ly9jcmw0LmFtZS5nYmwvYWlhL0JZMlBLSUNTQ0EwMS5B
+// SIG // TUUuR0JMX0FNRSUyMENTJTIwQ0ElMjAwMSgyKS5jcnQw
+// SIG // ga0GCCsGAQUFBzAChoGgbGRhcDovLy9DTj1BTUUlMjBD
+// SIG // UyUyMENBJTIwMDEsQ049QUlBLENOPVB1YmxpYyUyMEtl
+// SIG // eSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZp
+// SIG // Z3VyYXRpb24sREM9QU1FLERDPUdCTD9jQUNlcnRpZmlj
+// SIG // YXRlP2Jhc2U/b2JqZWN0Q2xhc3M9Y2VydGlmaWNhdGlv
+// SIG // bkF1dGhvcml0eTAdBgNVHQ4EFgQUUchb+1j7hxhVLQdr
+// SIG // TBwsRVxqi/IwDgYDVR0PAQH/BAQDAgeAMEUGA1UdEQQ+
+// SIG // MDykOjA4MR4wHAYDVQQLExVNaWNyb3NvZnQgQ29ycG9y
+// SIG // YXRpb24xFjAUBgNVBAUTDTIzNjE2Nys0NzA4NjAwggHm
+// SIG // BgNVHR8EggHdMIIB2TCCAdWgggHRoIIBzYY/aHR0cDov
+// SIG // L2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9B
+// SIG // TUUlMjBDUyUyMENBJTIwMDEoMikuY3JshjFodHRwOi8v
+// SIG // Y3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBDUyUyMENBJTIw
+// SIG // MDEoMikuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2Ny
+// SIG // bC9BTUUlMjBDUyUyMENBJTIwMDEoMikuY3JshjFodHRw
+// SIG // Oi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBDUyUyMENB
+// SIG // JTIwMDEoMikuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2Js
+// SIG // L2NybC9BTUUlMjBDUyUyMENBJTIwMDEoMikuY3JshoG9
+// SIG // bGRhcDovLy9DTj1BTUUlMjBDUyUyMENBJTIwMDEoMiks
+// SIG // Q049QlkyUEtJQ1NDQTAxLENOPUNEUCxDTj1QdWJsaWMl
+// SIG // MjBLZXklMjBTZXJ2aWNlcyxDTj1TZXJ2aWNlcyxDTj1D
+// SIG // b25maWd1cmF0aW9uLERDPUFNRSxEQz1HQkw/Y2VydGlm
+// SIG // aWNhdGVSZXZvY2F0aW9uTGlzdD9iYXNlP29iamVjdENs
+// SIG // YXNzPWNSTERpc3RyaWJ1dGlvblBvaW50MB8GA1UdIwQY
+// SIG // MBaAFJZRhOBrb3v+2Aarw/KF5imuavnUMB8GA1UdJQQY
+// SIG // MBYGCisGAQQBgjdbAQEGCCsGAQUFBwMDMA0GCSqGSIb3
+// SIG // DQEBCwUAA4IBAQAOoFAbE6qv+1RAKHjMn56sREYNiKvh
+// SIG // i11baGKOgpeVXuKztX5x9fQ2/DpXdUOkVe0w6cVoute2
+// SIG // 4WQACXKU+8ANjEMqaJq5DqsR52Q86V6LvjUQwMSfNgnj
+// SIG // nb+mktUX1s8gNAQ2NUWsqG+Q0cmKbEGNFjnbsFvCKgDH
+// SIG // OFHVJaYb5tNCU0nkWkMn1aA0y78u2wLvaQhSSx3I2A8O
+// SIG // WLXWXahlAhV8ZEF04UatM/QwA5DubCgiUwK/TCXfRohY
+// SIG // IouOD4h4MQ533o0sC3kVzvhSXdk2DXmgyBqzHrP+tJPQ
+// SIG // A8IK5AJweyeJrKpdN39ZxV961rru4GXgQMfZ4L6+5v09
+// SIG // zP/7MIII6DCCBtCgAwIBAgITHwAAAFHqj/accwyoOwAA
+// SIG // AAAAUTANBgkqhkiG9w0BAQsFADA8MRMwEQYKCZImiZPy
+// SIG // LGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRAw
+// SIG // DgYDVQQDEwdhbWVyb290MB4XDTIxMDUyMTE4NDQxNFoX
+// SIG // DTI2MDUyMTE4NTQxNFowQTETMBEGCgmSJomT8ixkARkW
+// SIG // A0dCTDETMBEGCgmSJomT8ixkARkWA0FNRTEVMBMGA1UE
+// SIG // AxMMQU1FIENTIENBIDAxMIIBIjANBgkqhkiG9w0BAQEF
+// SIG // AAOCAQ8AMIIBCgKCAQEAyZpSCX0Bno1W1yqXMhT6BUlJ
+// SIG // ZWpa4p3xFeiTHO4vm2Q6C/azR5xwxnyYHrkSGDtS2P9X
+// SIG // +KDE64V20mmEQkubxnPNeOVnE2RvdPGxgwlq+BhS3ONd
+// SIG // VsQPj79q7XgHM9HhzB9+qk0PC9KN1zm9p/seyiRS6JF1
+// SIG // dbOqRf1pUl7FAVxmgiCFgV8hHIb/rDPXig7FDi3S0yEx
+// SIG // 2CUDVpIq8jEhG8anUFE1WYxM+ni0S5KHwwKPKV4qyGDo
+// SIG // DO+9AmDoma3Chyu5WDlW5cdtqXTWsGPE3umtnX6Amlld
+// SIG // UFLms4OVR4guKf+n5LIBCC6bTiocfXPomqYjYTKx7AGM
+// SIG // faVLaaXmhQIDAQABo4IE3DCCBNgwEgYJKwYBBAGCNxUB
+// SIG // BAUCAwIAAjAjBgkrBgEEAYI3FQIEFgQUEmgkQiFHy9Rr
+// SIG // vjHPIKTACyN/P0cwHQYDVR0OBBYEFJZRhOBrb3v+2Aar
+// SIG // w/KF5imuavnUMIIBBAYDVR0lBIH8MIH5BgcrBgEFAgMF
+// SIG // BggrBgEFBQcDAQYIKwYBBQUHAwIGCisGAQQBgjcUAgEG
+// SIG // CSsGAQQBgjcVBgYKKwYBBAGCNwoDDAYJKwYBBAGCNxUG
+// SIG // BggrBgEFBQcDCQYIKwYBBQUIAgIGCisGAQQBgjdAAQEG
+// SIG // CysGAQQBgjcKAwQBBgorBgEEAYI3CgMEBgkrBgEEAYI3
+// SIG // FQUGCisGAQQBgjcUAgIGCisGAQQBgjcUAgMGCCsGAQUF
+// SIG // BwMDBgorBgEEAYI3WwEBBgorBgEEAYI3WwIBBgorBgEE
+// SIG // AYI3WwMBBgorBgEEAYI3WwUBBgorBgEEAYI3WwQBBgor
+// SIG // BgEEAYI3WwQCMBkGCSsGAQQBgjcUAgQMHgoAUwB1AGIA
+// SIG // QwBBMAsGA1UdDwQEAwIBhjASBgNVHRMBAf8ECDAGAQH/
+// SIG // AgEAMB8GA1UdIwQYMBaAFCleUV5krjS566ycDaeMdQHR
+// SIG // CQsoMIIBaAYDVR0fBIIBXzCCAVswggFXoIIBU6CCAU+G
+// SIG // MWh0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2lpbmZy
+// SIG // YS9jcmwvYW1lcm9vdC5jcmyGI2h0dHA6Ly9jcmwyLmFt
+// SIG // ZS5nYmwvY3JsL2FtZXJvb3QuY3JshiNodHRwOi8vY3Js
+// SIG // My5hbWUuZ2JsL2NybC9hbWVyb290LmNybIYjaHR0cDov
+// SIG // L2NybDEuYW1lLmdibC9jcmwvYW1lcm9vdC5jcmyGgaps
+// SIG // ZGFwOi8vL0NOPWFtZXJvb3QsQ049QU1FUm9vdCxDTj1D
+// SIG // RFAsQ049UHVibGljJTIwS2V5JTIwU2VydmljZXMsQ049
+// SIG // U2VydmljZXMsQ049Q29uZmlndXJhdGlvbixEQz1BTUUs
+// SIG // REM9R0JMP2NlcnRpZmljYXRlUmV2b2NhdGlvbkxpc3Q/
+// SIG // YmFzZT9vYmplY3RDbGFzcz1jUkxEaXN0cmlidXRpb25Q
+// SIG // b2ludDCCAasGCCsGAQUFBwEBBIIBnTCCAZkwRwYIKwYB
+// SIG // BQUHMAKGO2h0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9w
+// SIG // a2lpbmZyYS9jZXJ0cy9BTUVSb290X2FtZXJvb3QuY3J0
+// SIG // MDcGCCsGAQUFBzAChitodHRwOi8vY3JsMi5hbWUuZ2Js
+// SIG // L2FpYS9BTUVSb290X2FtZXJvb3QuY3J0MDcGCCsGAQUF
+// SIG // BzAChitodHRwOi8vY3JsMy5hbWUuZ2JsL2FpYS9BTUVS
+// SIG // b290X2FtZXJvb3QuY3J0MDcGCCsGAQUFBzAChitodHRw
+// SIG // Oi8vY3JsMS5hbWUuZ2JsL2FpYS9BTUVSb290X2FtZXJv
+// SIG // b3QuY3J0MIGiBggrBgEFBQcwAoaBlWxkYXA6Ly8vQ049
+// SIG // YW1lcm9vdCxDTj1BSUEsQ049UHVibGljJTIwS2V5JTIw
+// SIG // U2VydmljZXMsQ049U2VydmljZXMsQ049Q29uZmlndXJh
+// SIG // dGlvbixEQz1BTUUsREM9R0JMP2NBQ2VydGlmaWNhdGU/
+// SIG // YmFzZT9vYmplY3RDbGFzcz1jZXJ0aWZpY2F0aW9uQXV0
+// SIG // aG9yaXR5MA0GCSqGSIb3DQEBCwUAA4ICAQBQECO3Tw/o
+// SIG // 317Rrd7yadqcswPx1LvIYymkaTN6KcmuRt6HKa0Xe73U
+// SIG // x2/AQ30TfgA9GBJngweRykKBusRzyOU17iIubJvy3gA2
+// SIG // 1dwtqtB0DsoEv1U/ptVu2v++doTCJ/i+GbssVXkgaX8H
+// SIG // +6EOGEmT4evp4GbwR4HwWlc+Dvf8HH8PdUA2Z04CvcwI
+// SIG // fckSipbNm84jxJ8XjmTFTWscldL9edj2NsY6iGnyJFIy
+// SIG // ur2PS7VRYyV3p1VAJp91gj1jRQtWEyCB8P5g9nE3z8u0
+// SIG // ANaU/hjwEQCrdGyravWgnf2JtG+bT26YAokbc8m+32zU
+// SIG // tXRO+NK3tAjhOu2FdsG3qNrF4sc7y37R/C+7Pcb/cFfh
+// SIG // ttqsirepZii4xStcjMODYuXzGm3IJs0b0owHG6oKd7ZO
+// SIG // GvHpmmh9K8/DLriD/sq8bURD10qi/wuW8zM7IpLg1vcR
+// SIG // 9dIK2mc0pj44pc6UX0XbttP/VEJgu3lT2eI9VjWtaKjx
+// SIG // 38xE9woSMyekPRtzTwgfuysF9DkJisr+yA4po/FPxpbB
+// SIG // w9c/hBf32DH/GFxteS2pmjgKIbMP8sDukmEq3lVvuWNJ
+// SIG // sybrZwQvQpvaM49fv+JKpLK5YWYEfwksYRR9wU8Hh/ID
+// SIG // 9hRCEkbUoQ2W7mMpsp2Nbp/kcn4ivfolUy3Q9Yf0scsQ
+// SIG // 6WTLYpm+AoCUJTGCGWMwghlfAgEBMFgwQTETMBEGCgmS
+// SIG // JomT8ixkARkWA0dCTDETMBEGCgmSJomT8ixkARkWA0FN
+// SIG // RTEVMBMGA1UEAxMMQU1FIENTIENBIDAxAhM2AAABqFMr
+// SIG // 1lCrrLlTAAIAAAGoMA0GCWCGSAFlAwQCAQUAoIGuMBkG
+// SIG // CSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQB
+// SIG // gjcCAQsxDjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJ
+// SIG // BDEiBCDnV8n0UAy9wALYEw1WapmKvm5Ff8EelAGK1p6Y
+// SIG // 7KJXLzBCBgorBgEEAYI3AgEMMTQwMqAUgBIATQBpAGMA
+// SIG // cgBvAHMAbwBmAHShGoAYaHR0cDovL3d3dy5taWNyb3Nv
+// SIG // ZnQuY29tMA0GCSqGSIb3DQEBAQUABIIBAFFSmgde87/y
+// SIG // ocBViUgVEnqqFSYpqcceWDy+tPo1K7cuDkLM7DqBGRbs
+// SIG // Kn3UphHzHW7EfeuFRkIkBZQ6G8kL3IZLw+zYZoqOS6gK
+// SIG // yTwCHc4zGw81K0rXEQ+9qSwBdPlloWr7Ggp/CS+f7J7j
+// SIG // RXOpROMjt05ReQF1rFttsF4VLjX95nVuC2vzaH5Fqc4L
+// SIG // HaqSM3aCg+gidlLwNPhsolYbtdhdxaiaO3/hJAnZUeJh
+// SIG // LLTV30EL5SQdOyEjtOdPlRDTTvUGtddLY3WeSsfZJfc9
+// SIG // RaLaRwYQcgJn7wJoI1MIqCLmcEbzTQMX9gshANiaOTpA
+// SIG // hYG+YUe6jJBqilVm1ItUhl6hghcrMIIXJwYKKwYBBAGC
+// SIG // NwMDATGCFxcwghcTBgkqhkiG9w0BBwKgghcEMIIXAAIB
+// SIG // AzEPMA0GCWCGSAFlAwQCAQUAMIIBWQYLKoZIhvcNAQkQ
+// SIG // AQSgggFIBIIBRDCCAUACAQEGCisGAQQBhFkKAwEwMTAN
+// SIG // BglghkgBZQMEAgEFAAQgLcvo1sH/IiITKuiLI2JsgoFw
+// SIG // dZPUeUPQ4ysJ/7VhL58CBmQa/6draRgTMjAyMzAzMjcw
+// SIG // MjQ3MTQuMjE0WjAEgAIB9KCB2KSB1TCB0jELMAkGA1UE
+// SIG // BhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNV
+// SIG // BAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBD
+// SIG // b3Jwb3JhdGlvbjEtMCsGA1UECxMkTWljcm9zb2Z0IEly
+// SIG // ZWxhbmQgT3BlcmF0aW9ucyBMaW1pdGVkMSYwJAYDVQQL
+// SIG // Ex1UaGFsZXMgVFNTIEVTTjo4RDQxLTRCRjctQjNCNzEl
+// SIG // MCMGA1UEAxMcTWljcm9zb2Z0IFRpbWUtU3RhbXAgU2Vy
+// SIG // dmljZaCCEXowggcnMIIFD6ADAgECAhMzAAABs/4lzikb
+// SIG // G4ocAAEAAAGzMA0GCSqGSIb3DQEBCwUAMHwxCzAJBgNV
+// SIG // BAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYD
+// SIG // VQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQg
+// SIG // Q29ycG9yYXRpb24xJjAkBgNVBAMTHU1pY3Jvc29mdCBU
+// SIG // aW1lLVN0YW1wIFBDQSAyMDEwMB4XDTIyMDkyMDIwMjIw
+// SIG // M1oXDTIzMTIxNDIwMjIwM1owgdIxCzAJBgNVBAYTAlVT
+// SIG // MRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdS
+// SIG // ZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9y
+// SIG // YXRpb24xLTArBgNVBAsTJE1pY3Jvc29mdCBJcmVsYW5k
+// SIG // IE9wZXJhdGlvbnMgTGltaXRlZDEmMCQGA1UECxMdVGhh
+// SIG // bGVzIFRTUyBFU046OEQ0MS00QkY3LUIzQjcxJTAjBgNV
+// SIG // BAMTHE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2Uw
+// SIG // ggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC0
+// SIG // fA+65hiAriywYIKyvY3t4SUqXPQk8G62v+Cm9nruQ2Ue
+// SIG // qAoBbQm4oDLjHGN9UJR6/95LloRydOZ+Prd++zx6J3Qw
+// SIG // 28/3VPqvzX10iq9acFNji8pWNLMOd9VWdbFgHcg9hEAh
+// SIG // M03Sw+CiWwusJgAqJ4iQQKr4Q8l8SdDbr5ZO+K3VRL64
+// SIG // m7A2ccwpVhGuL+thDY/x8oglF9zGRp2PwIQ8ms36XIQ1
+// SIG // qD+nCYDQkl5h1fV7CYFyeJfgGAIGqgLzfDfhKTftExKw
+// SIG // oBTn8GVdtXIO74HpzlePIJhvxDH9C70QHoq8T1LvozQd
+// SIG // yUhW1tVlPGecbCxKDZXt+YnHRE/ht8AzZnEl5UGLOLfe
+// SIG // CFkeeNfj7FE5KtJJnT+P9TuBg+eGbCeXlJy2msFzscU9
+// SIG // X4G1m/VUYNWeGrKVqbi+YBcB2vFDTEcbCn36K+qq11VU
+// SIG // NTnSTktSZXr4aWZbLEglQ6HTHN9CN31ns58urTTqH6X2
+// SIG // j67cCdLpF3Cw9ck/vPbuLkAf66lCuiex6ZDbtH0eTOcR
+// SIG // rTnIfZ8p3DvWpaK8Q34hHW+s3qrQn3G6OOrvv637LJXB
+// SIG // kriRc5cBDZ1Pr0PiSeoyUVKwfpq+dc1lDIlkyw1ZoS3e
+// SIG // uv/w2v2AYwNAYtIXGLjv1nLX1pP98fOwC27ahwG5OotX
+// SIG // CfGtnKInro/vQQEko7l5AQIDAQABo4IBSTCCAUUwHQYD
+// SIG // VR0OBBYEFNAaXcJRZ1IMGIs4SCH/XgXcn8ONMB8GA1Ud
+// SIG // IwQYMBaAFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMF8GA1Ud
+// SIG // HwRYMFYwVKBSoFCGTmh0dHA6Ly93d3cubWljcm9zb2Z0
+// SIG // LmNvbS9wa2lvcHMvY3JsL01pY3Jvc29mdCUyMFRpbWUt
+// SIG // U3RhbXAlMjBQQ0ElMjAyMDEwKDEpLmNybDBsBggrBgEF
+// SIG // BQcBAQRgMF4wXAYIKwYBBQUHMAKGUGh0dHA6Ly93d3cu
+// SIG // bWljcm9zb2Z0LmNvbS9wa2lvcHMvY2VydHMvTWljcm9z
+// SIG // b2Z0JTIwVGltZS1TdGFtcCUyMFBDQSUyMDIwMTAoMSku
+// SIG // Y3J0MAwGA1UdEwEB/wQCMAAwFgYDVR0lAQH/BAwwCgYI
+// SIG // KwYBBQUHAwgwDgYDVR0PAQH/BAQDAgeAMA0GCSqGSIb3
+// SIG // DQEBCwUAA4ICAQBahrs3zrAJuMACXxEZiYFltLTSyz5O
+// SIG // lWI+d/oQZlCArKhoI/aFzTWrYAqvox7dNxIk81YcbXil
+// SIG // ji6EzMd/XAnFCYAzkCB/ho7so2FVXTgmvRcepSOvdPzg
+// SIG // WRZc9gw7i6VAbqP/793uCp7ONdpjtwOpg0JJ3cXiUrHQ
+// SIG // Um5CqnHAe0wv5rhToc4N/Zn4oxiAnNZGc4iRP+h3Sghf
+// SIG // Kffr7NchlEebs5CKPuvKv5+ZDbd94XWkNt+FRIdMD0hP
+// SIG // nQoKSkan8YGLAU/+bV2t3vE18iZVaBvY8Fwayp0kG+Pp
+// SIG // NfYx1Qd8FVH5Z7gDSUSPWs1sKmBSg22VpH0PLaTaBXyi
+// SIG // hUR21qJnKHT9W1Z+5CllAkwPGBtkZUwbb67NwqmN5gA0
+// SIG // yVIoOHJDfzBugCK/EPgApigRJuDhaTnGTF9HMWrKKXYM
+// SIG // TPWknQbrGiX2dyLZd7wuQt0RPe7lEbFQdqbwvgp4xbbf
+// SIG // z5GO9ZfVEx81AjvvjOIUhks5H7vsgYVzBngWai15fXH3
+// SIG // 4GD3J0RY0E/exm/24OLLCyBbjSTTQCbm/iL8YaJka7Vr
+// SIG // geEjfd+aDH7xuXBHme3smKQWeA25LzeOGbxEdBB0WpC9
+// SIG // sW9a67I+3PCPmrhKmM7VKQ57qugcaQSFAJRd1AydEjBu
+// SIG // calv/YSzFp2iQryHqxFkxZuuI7YQItAQzMJwsDCCB3Ew
+// SIG // ggVZoAMCAQICEzMAAAAVxedrngKbSZkAAAAAABUwDQYJ
+// SIG // KoZIhvcNAQELBQAwgYgxCzAJBgNVBAYTAlVTMRMwEQYD
+// SIG // VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25k
+// SIG // MR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24x
+// SIG // MjAwBgNVBAMTKU1pY3Jvc29mdCBSb290IENlcnRpZmlj
+// SIG // YXRlIEF1dGhvcml0eSAyMDEwMB4XDTIxMDkzMDE4MjIy
+// SIG // NVoXDTMwMDkzMDE4MzIyNVowfDELMAkGA1UEBhMCVVMx
+// SIG // EzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1Jl
+// SIG // ZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3Jh
+// SIG // dGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0IFRpbWUtU3Rh
+// SIG // bXAgUENBIDIwMTAwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+// SIG // DwAwggIKAoICAQDk4aZM57RyIQt5osvXJHm9DtWC0/3u
+// SIG // nAcH0qlsTnXIyjVX9gF/bErg4r25PhdgM/9cT8dm95VT
+// SIG // cVrifkpa/rg2Z4VGIwy1jRPPdzLAEBjoYH1qUoNEt6aO
+// SIG // RmsHFPPFdvWGUNzBRMhxXFExN6AKOG6N7dcP2CZTfDlh
+// SIG // AnrEqv1yaa8dq6z2Nr41JmTamDu6GnszrYBbfowQHJ1S
+// SIG // /rboYiXcag/PXfT+jlPP1uyFVk3v3byNpOORj7I5LFGc
+// SIG // 6XBpDco2LXCOMcg1KL3jtIckw+DJj361VI/c+gVVmG1o
+// SIG // O5pGve2krnopN6zL64NF50ZuyjLVwIYwXE8s4mKyzbni
+// SIG // jYjklqwBSru+cakXW2dg3viSkR4dPf0gz3N9QZpGdc3E
+// SIG // XzTdEonW/aUgfX782Z5F37ZyL9t9X4C626p+Nuw2TPYr
+// SIG // bqgSUei/BQOj0XOmTTd0lBw0gg/wEPK3Rxjtp+iZfD9M
+// SIG // 269ewvPV2HM9Q07BMzlMjgK8QmguEOqEUUbi0b1qGFph
+// SIG // AXPKZ6Je1yh2AuIzGHLXpyDwwvoSCtdjbwzJNmSLW6Cm
+// SIG // gyFdXzB0kZSU2LlQ+QuJYfM2BjUYhEfb3BvR/bLUHMVr
+// SIG // 9lxSUV0S2yW6r1AFemzFER1y7435UsSFF5PAPBXbGjfH
+// SIG // CBUYP3irRbb1Hode2o+eFnJpxq57t7c+auIurQIDAQAB
+// SIG // o4IB3TCCAdkwEgYJKwYBBAGCNxUBBAUCAwEAATAjBgkr
+// SIG // BgEEAYI3FQIEFgQUKqdS/mTEmr6CkTxGNSnPEP8vBO4w
+// SIG // HQYDVR0OBBYEFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMFwG
+// SIG // A1UdIARVMFMwUQYMKwYBBAGCN0yDfQEBMEEwPwYIKwYB
+// SIG // BQUHAgEWM2h0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9w
+// SIG // a2lvcHMvRG9jcy9SZXBvc2l0b3J5Lmh0bTATBgNVHSUE
+// SIG // DDAKBggrBgEFBQcDCDAZBgkrBgEEAYI3FAIEDB4KAFMA
+// SIG // dQBiAEMAQTALBgNVHQ8EBAMCAYYwDwYDVR0TAQH/BAUw
+// SIG // AwEB/zAfBgNVHSMEGDAWgBTV9lbLj+iiXGJo0T2UkFvX
+// SIG // zpoYxDBWBgNVHR8ETzBNMEugSaBHhkVodHRwOi8vY3Js
+// SIG // Lm1pY3Jvc29mdC5jb20vcGtpL2NybC9wcm9kdWN0cy9N
+// SIG // aWNSb29DZXJBdXRfMjAxMC0wNi0yMy5jcmwwWgYIKwYB
+// SIG // BQUHAQEETjBMMEoGCCsGAQUFBzAChj5odHRwOi8vd3d3
+// SIG // Lm1pY3Jvc29mdC5jb20vcGtpL2NlcnRzL01pY1Jvb0Nl
+// SIG // ckF1dF8yMDEwLTA2LTIzLmNydDANBgkqhkiG9w0BAQsF
+// SIG // AAOCAgEAnVV9/Cqt4SwfZwExJFvhnnJL/Klv6lwUtj5O
+// SIG // R2R4sQaTlz0xM7U518JxNj/aZGx80HU5bbsPMeTCj/ts
+// SIG // 0aGUGCLu6WZnOlNN3Zi6th542DYunKmCVgADsAW+iehp
+// SIG // 4LoJ7nvfam++Kctu2D9IdQHZGN5tggz1bSNU5HhTdSRX
+// SIG // ud2f8449xvNo32X2pFaq95W2KFUn0CS9QKC/GbYSEhFd
+// SIG // PSfgQJY4rPf5KYnDvBewVIVCs/wMnosZiefwC2qBwoEZ
+// SIG // QhlSdYo2wh3DYXMuLGt7bj8sCXgU6ZGyqVvfSaN0DLzs
+// SIG // kYDSPeZKPmY7T7uG+jIa2Zb0j/aRAfbOxnT99kxybxCr
+// SIG // dTDFNLB62FD+CljdQDzHVG2dY3RILLFORy3BFARxv2T5
+// SIG // JL5zbcqOCb2zAVdJVGTZc9d/HltEAY5aGZFrDZ+kKNxn
+// SIG // GSgkujhLmm77IVRrakURR6nxt67I6IleT53S0Ex2tVdU
+// SIG // CbFpAUR+fKFhbHP+CrvsQWY9af3LwUFJfn6Tvsv4O+S3
+// SIG // Fb+0zj6lMVGEvL8CwYKiexcdFYmNcP7ntdAoGokLjzba
+// SIG // ukz5m/8K6TT4JDVnK+ANuOaMmdbhIurwJ0I9JZTmdHRb
+// SIG // atGePu1+oDEzfbzL6Xu/OHBE0ZDxyKs6ijoIYn/ZcGNT
+// SIG // TY3ugm2lBRDBcQZqELQdVTNYs6FwZvKhggLWMIICPwIB
+// SIG // ATCCAQChgdikgdUwgdIxCzAJBgNVBAYTAlVTMRMwEQYD
+// SIG // VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25k
+// SIG // MR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24x
+// SIG // LTArBgNVBAsTJE1pY3Jvc29mdCBJcmVsYW5kIE9wZXJh
+// SIG // dGlvbnMgTGltaXRlZDEmMCQGA1UECxMdVGhhbGVzIFRT
+// SIG // UyBFU046OEQ0MS00QkY3LUIzQjcxJTAjBgNVBAMTHE1p
+// SIG // Y3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2WiIwoBATAH
+// SIG // BgUrDgMCGgMVAHGLROiW3R4SpcJCXiqAldSSJA5hoIGD
+// SIG // MIGApH4wfDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldh
+// SIG // c2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNV
+// SIG // BAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEmMCQGA1UE
+// SIG // AxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAgUENBIDIwMTAw
+// SIG // DQYJKoZIhvcNAQEFBQACBQDny2wbMCIYDzIwMjMwMzI3
+// SIG // MDkxMjU5WhgPMjAyMzAzMjgwOTEyNTlaMHYwPAYKKwYB
+// SIG // BAGEWQoEATEuMCwwCgIFAOfLbBsCAQAwCAIBAAIDAILY
+// SIG // MAgCAQACAwEscjAKAgUA58y9mwIBADA2BgorBgEEAYRZ
+// SIG // CgQCMSgwJjAMBgorBgEEAYRZCgMCoAowCAIBAAIDB6Eg
+// SIG // oQowCAIBAAIDAYagMA0GCSqGSIb3DQEBBQUAA4GBAAbB
+// SIG // 80e3JsvTzZJE61qGPZ0BaGUZDBVjVo5wNiKNOc5s8zWm
+// SIG // cy90PYny/uSpqdIvf3HtLi5LAgGAyoOxswfOcD2w6ebS
+// SIG // QR22mWBK039+rIlajPDBjYf8b4S6QPIk1dL9VEepLHRU
+// SIG // dhS/e+O82qj8zvSt1ORFT3PyrbwE3hCY69kUMYIEDTCC
+// SIG // BAkCAQEwgZMwfDELMAkGA1UEBhMCVVMxEzARBgNVBAgT
+// SIG // Cldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAc
+// SIG // BgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEmMCQG
+// SIG // A1UEAxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAgUENBIDIw
+// SIG // MTACEzMAAAGz/iXOKRsbihwAAQAAAbMwDQYJYIZIAWUD
+// SIG // BAIBBQCgggFKMBoGCSqGSIb3DQEJAzENBgsqhkiG9w0B
+// SIG // CRABBDAvBgkqhkiG9w0BCQQxIgQgFScirkHz5aUdH4o8
+// SIG // OJ4ZNDUjCtqIDN7hildwshIiTAgwgfoGCyqGSIb3DQEJ
+// SIG // EAIvMYHqMIHnMIHkMIG9BCCGoTPVKhDSB7ZG0zJQZUM2
+// SIG // jk/ll1zJGh6KOhn76k+/QjCBmDCBgKR+MHwxCzAJBgNV
+// SIG // BAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYD
+// SIG // VQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQg
+// SIG // Q29ycG9yYXRpb24xJjAkBgNVBAMTHU1pY3Jvc29mdCBU
+// SIG // aW1lLVN0YW1wIFBDQSAyMDEwAhMzAAABs/4lzikbG4oc
+// SIG // AAEAAAGzMCIEIEWUIqbCjVBXWj7wCj/LOn46ctWebMv0
+// SIG // g2lFIBTlxlkSMA0GCSqGSIb3DQEBCwUABIICAIa/u3ca
+// SIG // u7DyCV2l4eEgmCcyydhVVlbtM/L3SvtgrmrsngizfNgX
+// SIG // c69VyDQfREdUW90CZyI+6ZGFNClH8Tt8vRZBDA565x8Z
+// SIG // 6bN4de/zt+ssU3+zKBb1xP7hlsypYHUvKhts/D5RC8YD
+// SIG // cijeOQKQWxTWPgQ2RkDhK2VMmz+Td08NT/XSHo6DNH6x
+// SIG // VOL9cr1maaSFKCAN76o0Gxn0ZHM+58co6l+B4YwtY2ja
+// SIG // VCw2HlJ9jHr43id3BE2v6CUDU20EFCHn+C1KHuNMdW/R
+// SIG // 6mrufVpS/MJyFPQjYj8bH1WZ/8aBIGxoyOF7O5xkkyEm
+// SIG // GUT/3Y+7sca4T/kn0j/tY2a0sUsLrvr/n0KMHDebgNz7
+// SIG // 2ORPi8iFs6qYn2GZmAuAkH/KvROiSQPHRgu+E8axI2VX
+// SIG // m40CA+9uldinjUeH/NqFg0pmZ/T/GYsIBI19RAQK2KKC
+// SIG // ZU/YA2vvvNbjVsBPZKoCqPCAGKWFZCIRbkcRrSeU0quw
+// SIG // H8Wr+2Wf0FIaanFTPLiySfy4U7g6s4ms5lwmrj1Mz/AA
+// SIG // U+jpLEIiIpxC5Db6jDE4q7GxSIrwQkKIFBvvvJ4kpMjB
+// SIG // BYhJu+gYqSRqxM6VuSLHzn/c5BSH1VAdv5fPgCz781OZ
+// SIG // ecv37qdiZkiG0t0VNu2GQ3yD57LnsixA8O6ijN4oiCHj
+// SIG // He0OGtYjOs5VGTCs
+// SIG // End signature block
