@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf  import settings
 from tickets import  views
-from tickets.views import  CreacionTickets, AsignacionTickets, AsignacionTicketsUpdate, Contrasena, GestionCoord, GestionCoordUpdate, GestionCoordMallaUpdate, CrearMalla, THumano, THumanoUpdate
+from tickets.views import  CreacionTickets, AsignacionTickets, AsignacionTicketsUpdate, Contrasena, GestionCoord, GestionCoordUpdate, GestionCoordMallaUpdate, CrearMalla, THumano, THumanoUpdate, GestionCoordDelete
 from django.conf.urls.static import  static
 
 
@@ -31,41 +31,44 @@ urlpatterns = [
     path('salir/', views.salir),
     # Tickets
     path('validaAcceso/creacionTickets/', CreacionTickets.as_view(),name='creacion_ticketsA'),
-    path('validaAcceso/creacionTickets/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>', CreacionTickets.as_view(),name='creacion_ticketsA'),
-    path('creacionTickets/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>', CreacionTickets.as_view(),name='creacion_ticketsA'),
+    path('validaAcceso/creacionTickets/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', CreacionTickets.as_view(),name='creacion_ticketsA'),
+    path('creacionTickets/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', CreacionTickets.as_view(),name='creacion_ticketsA'),
     #path('asignacionTickets/creacionTickets/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>', CreacionTickets.as_view(),name='creacion_ticketsA'),
     path('validaAcceso/creacionTickets/<int:pk>/', CreacionTickets.as_view(),name='creacion_ticketsB'),
     path('detail/', views.DetailTicket, name='detail'),
     path('load_dataTickets/<str:data>', views.load_dataTickets, name='loaddataTickets'),
-    path('creacionTickets/postConsultaTicket/<str:id>,<str:username>,<str:empleadoId>/edit/', views.PostConsultaTicket,name='Post_editTicket'),
+    path('creacionTickets/postConsultaTicket/<str:id>,<str:username>,<str:empleadoId>, {{Perfil}}/edit/', views.PostConsultaTicket,name='Post_editTicket'),
     path('load_asignacionTickets/<str:data>', views.load_asignacionTickets, name='loadasignacionTickets'),
 
     path('asignacionTickets/', AsignacionTickets.as_view(),name='asignacion_ticketsA'),
-    path('asignacionTickets/<str:ticketId>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>', AsignacionTickets.as_view(),name='asignacion_ticketsA'),
+    path('asignacionTickets/<str:ticketId>,<str:nombre>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', AsignacionTickets.as_view(),name='asignacion_ticketsA'),
 
     path('asignacionTickets1/', AsignacionTickets.as_view(),name='asignacion_ticketsC'),
-    path('asignacionTickets1/<str:ticketId>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>', AsignacionTickets.as_view(),name='asignacion_ticketsC'),
+    path('asignacionTickets1/<str:ticketId>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', AsignacionTickets.as_view(),name='asignacion_ticketsC'),
 
     #path('asignacionTickets/update/<int:pk>/', AsignacionTicketsUpdate.as_view(),name='asignacionTickets-update'),
-    path('asignacionTickets/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>/', AsignacionTicketsUpdate.as_view(),name='asignacionTickets-update'),
+    path('asignacionTickets/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/', AsignacionTicketsUpdate.as_view(),name='asignacionTickets-update'),
 
     path('contrasena/', Contrasena.as_view(),name='contrasena'),
-    path('contrasena/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>', Contrasena.as_view(),name='contrasena'),
+    path('contrasena/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', Contrasena.as_view(),name='contrasena'),
 
     path('gestionCoord/',GestionCoord.as_view(), name='gestionCoord_A'),
-    path('gestionCoord/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>', GestionCoord.as_view(),name='gestionCoord'),
-    path('gestionCoord/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>/', GestionCoordUpdate.as_view(),name='gestionCoord-update'),
+    path('gestionCoord/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', GestionCoord.as_view(),name='gestionCoord'),
+    path('gestionCoord/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/', GestionCoordUpdate.as_view(),name='gestionCoord-update'),
+    path('gestionCoord/post/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/delete/', GestionCoordDelete,name='gestionCoord-delete'),
+
+
     path('load_dataCoordTickets/<str:data>', views.load_dataCoordTickets, name='loaddataCoordTickets'),
     #path('load_dataCoordTickets/', views.load_dataCoordTickets, name='loaddataCoordTickets'),
-    path('gestionCoordMalla/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>/', GestionCoordMallaUpdate.as_view(),name='gestionCoordMalla-update'),
+    path('gestionCoordMalla/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/', GestionCoordMallaUpdate.as_view(),name='gestionCoordMalla-update'),
 
-    path('crearMalla/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>/', CrearMalla.as_view(),name='crearMalla'),
+    path('crearMalla/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/', CrearMalla.as_view(),name='crearMalla'),
 
     path('tHumano/', THumano.as_view(), name='tHumano'),
-    path('tHumano/<str:ticketId>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>',THumano.as_view(), name='tHumano'),
-    path('tHumano/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>/', THumanoUpdate.as_view(),name='tHumano-Update'),
+    path('tHumano/<str:ticketId>,<str:nombre>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>',THumano.as_view(), name='tHumano'),
+    path('tHumano/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/', THumanoUpdate.as_view(),name='tHumano-Update'),
 
-    path('ticketsMalla/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>', views.TicketsMalla1.as_view(), name = "ticketsMalla_a"),
+    path('ticketsMalla/<str:ticketId>,<str:nombre>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', views.TicketsMalla1.as_view(), name = "ticketsMalla_a"),
 ]
 
 
