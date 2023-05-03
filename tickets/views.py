@@ -15,7 +15,7 @@ from django.contrib import messages
 from tickets.forms import ticketsForm, ticketsForm2, mallaTurnosForm, ticketsForm3, ticketsAsignacionForm
 from datetime import date
 from datetime import datetime
-
+from calendar import monthrange
 
 def menuAcceso(request):
     print ("Ingreso al Menu TH")
@@ -153,14 +153,14 @@ def validaAcceso(request):
             cur = miConexion.cursor()
             cur.execute("set client_encoding='LATIN1';")
 
-            comando = 'SELECT cedula cedula,nom_sede nom_sede  FROM public.tickets_empleados usu, public.tickets_sedes sedes WHERE usu.sede_id = sedes.id and usu."estadoReg" = ' + "'A" + "'" + " and usu.cedula = '" + username + "' and sedes.codreg_sede =  '" + sedeSeleccionada + "'"
+            comando = 'SELECT cedula cedula,nom_sede nom_sede , perf.nombre perfil FROM public.tickets_empleados usu, public.tickets_sedes sedes, public.tickets_tiposempleadosperfil perf WHERE usu.sede_id = sedes.id and usu."estadoReg" = ' + "'A" + "'" + " and  usu.cedula = '" + username + "' and sedes.codreg_sede =  '" + sedeSeleccionada + "'" + ' AND usu."tiposEmpleadoPerfil_id"=perf.id '
             print(comando)
             cur.execute(comando)
 
             permitido = []
 
-            for cedula, nom_sede in cur.fetchall():
-                permitido.append({'cedula': cedula, 'nom_sede': nom_sede})
+            for cedula, nom_sede, perfil in cur.fetchall():
+                permitido.append({'cedula': cedula, 'nom_sede': nom_sede, 'perfil':perfil})
 
             miConexion.close()
 
@@ -174,6 +174,7 @@ def validaAcceso(request):
             else:
                 pass
                 print("Paso Autenticacion")
+                context['Perfil'] = permitido[0]['perfil']
 
     print("Asi quedo el nombre del usuario", context['NombreUsuario'])
     return render(request, "tickets/cabeza.html", context)
@@ -238,6 +239,7 @@ class CreacionTickets(  CreateView ):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
 
         print ("context en el get_context_data = ", context)
         print(context["Username"])
@@ -245,6 +247,7 @@ class CreacionTickets(  CreateView ):
         print(context["NombreSede"])
         print(context["EmpleadoId"])
         print(context["SedeSeleccionada"])
+        print(context["Perfil"])
 
         return context
 
@@ -532,19 +535,25 @@ class AsignacionTickets(ListView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
-
+        context["Perfil"] = self.kwargs['perfil']
 
         print(context["Username"])
         print(context["NombreUsuario"])
         print(context["NombreSede"])
         print(context["EmpleadoId"])
         print(context["SedeSeleccionada"])
+        print('Perfilll = ', context["Perfil"])
 
         return context
 
     def get_queryset(self):
 
         ticketId = self.kwargs['ticketId']
+        empleadoNom = self.kwargs['nombre']
+        perfil = self.kwargs['perfil']
+        print ("perfil=", perfil)
+
+        print ("empleadoNom =", empleadoNom)
         print ("kwargs de queryset",  self.kwargs)
 
         print ("CONCLUSION ticketId = ", ticketId)
@@ -553,21 +562,43 @@ class AsignacionTickets(ListView):
         print("nombreSede",nombreSede )
 
         try:
-            if (ticketId == '0'):
 
-                print ("Entre ticket Cero= ",ticketId )
+            if (perfil != 'TALENTO HUMANO'):
+                return Tickets.objects.none()
+
+            if (ticketId == '0' and empleadoNom == 'null'):
+                # busqueda general
+                print ("Entre todos los ticket= ",ticketId )
                 #queryset = Tickets.objects.filter(asignado_id__isnull=True).order_by('id')
-                queryset = Tickets.objects.filter(asignado_id__isnull=True).select_related('tiposTicket', 'empleado').order_by('id')
+                queryset = Tickets.objects.filter(asignado_id__isnull=True).select_related('tiposTicket', 'empleado').order_by('-fecha','empleado_id')
 
-            else:
-                print("Entre ticket No cero = ", ticketId)
-                queryset = Tickets.objects.filter(asignado_id__isnull=True, id=ticketId).order_by('id')
+
+            if (ticketId != '0' and empleadoNom == 'null'):
+                # busqueda por ticket
+
+                print("Entre por ticket = ", ticketId)
+                queryset = Tickets.objects.filter(asignado_id__isnull=True, id=ticketId).order_by('-fecha','empleado_id')
                 print("queryset = ", queryset)
+
+            if (ticketId == '0' and empleadoNom != 'null'):
+                ## busqueda por nombre
+                print("Entre  por nombre = ", empleadoNom)
+                #queryset = Tickets.objects.filter(asignado_id__isnull=True, empleado_id__contains=empleadoNom).select_related('empleado').order_by('id')
+                queryset = Tickets.objects.select_related('empleado').filter(asignado_id__isnull=True,empleado_id__nombre__icontains=empleadoNom).order_by('-fecha','empleado_id')
+                print("queryset = ", queryset)
+
+            if (ticketId != '0' and empleadoNom != 'null'):
+                ## busqueda por ticket, nombre
+                print("Entre por ticket y por nombre = ", empleadoNom)
+                queryset = Tickets.objects.select_related('empleado').filter(asignado_id__isnull=True, id=ticketId, empleado_id__nombre__icontains=empleadoNom).order_by('-fecha','empleado_id')
+                print("queryset = ", queryset)
+
+
             return queryset.all()
 
         except Tickets.DoesNotExist:
             print ("sali posr exception")
-            return Empleados.objects.none()
+            return Tickets.objects.none()
 
 
 class AsignacionTicketsUpdate(UpdateView):
@@ -600,6 +631,7 @@ class AsignacionTicketsUpdate(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
         #self.get_context_data(   context=context )
 
         messages.success(self.request, "La asignacion fue satisfactoria.")
@@ -618,6 +650,7 @@ class AsignacionTicketsUpdate(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
 
         print("context en el get_context_data AsignacionUpdated = ", context)
         print(context["Username"])
@@ -625,6 +658,8 @@ class AsignacionTicketsUpdate(UpdateView):
         print(context["NombreSede"])
         print(context["EmpleadoId"])
         print(context["SedeSeleccionada"])
+
+        print('Perfil = ', context["Perfil"])
 
         return context
 
@@ -639,8 +674,9 @@ class AsignacionTicketsUpdate(UpdateView):
         nombreSede = self.kwargs['nombreSede']
         empleadoId = self.kwargs['empleadoId']
         sedeSeleccionada = self.kwargs['sedeSeleccionada']
+        perfil = self.kwargs['perfil']
 
-        return reverse_lazy('asignacion_ticketsA', kwargs={'ticketId':0,'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada})
+        return reverse_lazy('asignacion_ticketsA', kwargs={'ticketId':0,'nombre':'null', 'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil})
 
 class Contrasena(UpdateView):
     print ("Entre Contrasena")
@@ -660,6 +696,7 @@ class Contrasena(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
 
         print("context en el get_context_data AsignacionUpdated = ", context)
         print(context["Username"])
@@ -683,6 +720,7 @@ class Contrasena(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
         #self.get_context_data(   context=context )
 
         messages.success(self.request, "La asignacion fue satisfactoria.")
@@ -729,6 +767,8 @@ class GestionCoord(ListView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
+
         sedeSeleccionada = self.kwargs['sedeSeleccionada']
         empleadoId = self.kwargs['empleadoId']
         sedeSeleccionada=sedeSeleccionada.replace(' ','')
@@ -788,6 +828,31 @@ class GestionCoord(ListView):
 
         context['Areas'] = areas
 
+        # Consigo Sedes
+
+        miConexion = psycopg2.connect(host="192.168.0.237", database="thtickets", port="5432", user="postgres",
+                                      password="BD_m3d1c4l")
+        miConexion.set_client_encoding('LATIN1')
+        cur = miConexion.cursor()
+        cur.execute("set client_encoding='LATIN1';")
+
+        comando = 'SELECT sedes.id id, sedes.nom_sede nombre FROM public.tickets_sedes sedes WHERE "estadoReg" = ' + "'A'"
+
+        cur.execute(comando)
+        print(comando)
+
+        sedes = []
+        #sedes.append({'id': '', 'nombre': ' '})
+
+        for id, nombre in cur.fetchall():
+            sedes.append({'id': id, 'nombre': nombre})
+
+        miConexion.close()
+
+        context['Sedes'] = sedes
+
+        # Fin consigo sede
+
         # Día actual
         today = date.today()
 
@@ -800,23 +865,152 @@ class GestionCoord(ListView):
         context['Ano'] = today.year
         context['Mes'] = today.month
 
+        ## Aqui conformo el calendario
+
+        miConexion = psycopg2.connect(host="192.168.0.237", database="thtickets", port="5432", user="postgres",
+                                      password="BD_m3d1c4l")
+        miConexion.set_client_encoding('LATIN1')
+        cur = miConexion.cursor()
+        cur.execute("set client_encoding='LATIN1';")
+
+        comando = "SELECT dia dia, nombre nombre FROM public.tickets_calendario WHERE ano =" + str(context['Ano']) + ' AND mes = ' + str(context['Mes']) + ' ORDER BY dia  '
+
+        cur.execute(comando)
+        print(comando)
+
+        calendario = []
+
+
+        for dia, nombre in cur.fetchall():
+            calendario.append({'dia': dia, 'nombre': nombre})
+
+        miConexion.close()
+
+        for x in range(0, len(calendario)):
+            print(calendario[x])
+            campo = calendario[x]
+            #print ("campo1 = ", campo1)
+            #campo = json.loads(campo1)
+            print("campo = ", campo)
+            print(campo['dia'])
+            print(campo['nombre'])
+            if (x==0):
+                context['uno'] = campo['nombre']
+            if (x==1):
+                context['dos'] = campo['nombre']
+            if (x == 2):
+                context['tres'] = campo['nombre']
+            if (x==3):
+                context['cuatro'] = campo['nombre']
+            if (x==4):
+                context['cinco'] = campo['nombre']
+            if (x==5):
+                context['seis'] = campo['nombre']
+            if (x==6):
+                context['siete'] = campo['nombre']
+            if (x==7):
+                context['ocho'] = campo['nombre']
+            if (x==8):
+                context['nueve'] = campo['nombre']
+            if (x==9):
+                context['diez'] = campo['nombre']
+            if (x==10):
+                context['once'] = campo['nombre']
+            if (x==11):
+                context['doce'] = campo['nombre']
+            if (x==12):
+                context['trece'] = campo['nombre']
+
+            if (x==13):
+                context['catorce'] = campo['nombre']
+
+            if (x==14):
+                context['quince'] = campo['nombre']
+            if (x==15):
+                context['diezyseis'] = campo['nombre']
+            if (x==16):
+                context['diezysiete'] = campo['nombre']
+            if (x==17):
+                context['diezyocho'] = campo['nombre']
+            if (x==18):
+                context['diezynueve'] = campo['nombre']
+            if (x==19):
+                context['veinte'] = campo['nombre']
+            if (x==20):
+                context['veintiuno'] = campo['nombre']
+            if (x==21):
+                context['veintidos'] = campo['nombre']
+            if (x==22):
+                context['veintitres'] = campo['nombre']
+            if (x==23):
+                context['veinticuatro'] = campo['nombre']
+            if (x==24):
+                context['veinticinco'] = campo['nombre']
+            if (x==25):
+                context['veintiseis'] = campo['nombre']
+            if (x==26):
+                context['veintisiete'] = campo['nombre']
+            if (x==27):
+                context['veintiocho'] = campo['nombre']
+            if (x == 28):
+                    context['veintinueve'] = campo['nombre']
+            if (x==29):
+                context['treinta'] = campo['nombre']
+            if (x==30):
+                context['treintayuno'] = campo['nombre']
+            if (x==31):
+                context['treintaydos'] = campo['nombre']
+
+        ## Fin conformo em calendario
+
+
+
 
         return context
 
     def get_queryset(self):
         empleadoId = self.kwargs['empleadoId']
+        perfil = self.kwargs['perfil']
         print ("Entre querySet de GestionCoord  ")
         print ("empleadoId", empleadoId)
+        print("perfil DEL COORINADOR ES : ", perfil)
         try:
+
+            if (perfil == 'COLABORADOR'):
+                print ("Entre NO ENTREGO PAGINA A COLABORADOR")
+                return Tickets.objects.none()
+
             print("ANTES DE OJOOO queryset = ")
             #queryset = Tickets.objects.filter(asignado_id=empleadoId, estadoRespuestaCoordinador='Pendiente', tickets__empleados_set__id=empleado).order_by('id')
 
-            queryset =Tickets.objects.filter(asignado_id=empleadoId, estadoRespuestaCoordinador='Pendiente').select_related('tiposTicket', 'empleado').order_by('id')
+            queryset =Tickets.objects.filter(asignado_id=empleadoId, estadoRespuestaCoordinador='Pendiente').select_related('tiposTicket', 'empleado').order_by('-fecha','empleado_id')
 
             print ("OJOOO queryset = ",queryset )
             return queryset.all()
         except Tickets.DoesNotExist:
             return Empleados.objects.none()
+
+
+
+def GestionCoordDelete(request, pk,username,sedeSeleccionada,nombreUsuario, nombreSede,empleadoId,perfil):
+    print ("Entre a BORRAR la malla")
+    mallaturnos = MallaTurnos.objects.get(id=pk)
+    try:
+        mallaturnos.delete()
+
+    except :
+        print("sali posr exception")
+        return HttpResponse('Im Soory no se puede borrar')
+
+    # Ademas de que aquip hay que ingresar la auditoria de ticketsmalla diciendo quien borro la malla
+
+    ## Fin auditoria quien creo malla
+    envio = username + ',' + sedeSeleccionada + ',' + nombreUsuario + ',' + nombreSede + ',' + empleadoId + ',' + perfil
+    redirect_url = reverse('gestionCoord' + '/' + envio + '/')
+    #redirect_url = reverse('gestionCoord')
+    print ("redirect_url = ",redirect_url )
+    return redirect(f'{redirect_url}{envio}')
+    #return HttpResponseRedirect(reverse('gestionCoord'))
 
 
 class GestionCoordUpdate(UpdateView):
@@ -854,6 +1048,8 @@ class GestionCoordUpdate(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
+
         #self.get_context_data(   context=context )
 
         messages.success(self.request, "La asignacion fue satisfactoria.")
@@ -873,6 +1069,7 @@ class GestionCoordUpdate(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
 
         print("context en el get_context_data AsignacionUpdated = ", context)
         print(context["Username"])
@@ -902,8 +1099,9 @@ class GestionCoordUpdate(UpdateView):
         nombreSede = self.kwargs['nombreSede']
         empleadoId = self.kwargs['empleadoId']
         sedeSeleccionada = self.kwargs['sedeSeleccionada']
+        perfil = self.kwargs['perfil']
 
-        return reverse_lazy('gestionCoord', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada})
+        return reverse_lazy('gestionCoord', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil})
 
 
 # Create your views here.
@@ -923,9 +1121,25 @@ def load_dataCoordTickets(request, data):
 
     nombreSede = d['nombreSede']
     empleadoId = d['empleadoId']
+    nombreEmp  = d['nombreEmp']
+
+    sede = d['sede']
     area = d['area']
     ano = d['ano']
     mes = d['mes']
+    perfil = d['perfil']
+
+    print("llega nombreEmp ORIGINA =", nombreEmp)
+
+    nombreEmp1=''
+
+
+    if (nombreEmp == "" or nombreEmp=="0"):
+        print ("Entre a cambiar nombreEmp1")
+        nombreEmp1 = '0'
+
+    if (sede == ''):
+        sede = 0
 
     if (area==''):
         area=0
@@ -936,10 +1150,11 @@ def load_dataCoordTickets(request, data):
     if (ano==''):
         ano=0
 
-
+    print("llega sede=", sede)
     print("llega area=", area)
     print("llega ano=", ano)
     print("llega mes=", mes)
+    print("llega nombreEmp1=", nombreEmp1   )
 
     #print("data = ", request.GET('data'))
 
@@ -954,24 +1169,42 @@ def load_dataCoordTickets(request, data):
 
     #comando = 'select malla.id  id, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_areas area on (area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where malla.ano = 2023'
 
-    if (area==0):
-        comando = 'select malla.id  id, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_areas area on (area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where malla.ano = ' + str(ano)  + ' AND malla.mes = ' + str(mes) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
-        if (mes == 0):
-            comando = 'select malla.id  id, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_areas area on (area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where malla.ano = ' + str(ano) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+    if (nombreEmp1 != "0"):
+        print ("Entre POR nombre1 <> 0 =", nombreEmp1)
+        comando = 'select  malla.id  id,sedes.nom_sede nom_sede,  empleado_id  empleado_id,emp.nombre nombreEmpleado  ,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla   INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_sedes sedes on (1=1) INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id)  LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where  sedes.id = ' + str(sede) + " AND emp.nombre like ('%" + str(nombreEmp) + "%')" + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+
+    if (nombreEmp1=="0"):
+        print("Entre POR nombre1 IGUAL A 0 = ", nombreEmp1)
+        if (sede != 0):
+
+            if (area==0):
+                comando = 'select  malla.id  id,sedes.nom_sede nom_sede,  empleado_id  empleado_id,emp.nombre nombreEmpleado  ,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla   INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1) INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id)  LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where  sedes.id = ' + str(sede) + ' AND malla.ano = ' + str(ano)  + ' AND malla.mes = ' + str(mes) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+                if (ano == 0):
+                    comando = 'select malla.id  id,sedes.nom_sede nom_sede, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1)   INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where sedes.id = ' + str(sede) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+                    if (mes == 0):
+                        comando = 'select malla.id  id,sedes.nom_sede nom_sede, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1) INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id)   LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where sedes.id = ' + str(sede) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+                else:
+                    if (mes == 0):
+                        comando = 'select malla.id  id,sedes.nom_sede nom_sede, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1)  INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id)  LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where sedes.id = ' + str(sede) + ' AND malla.ano = ' + str(ano)  + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+
+                    if (mes != 0):
+                        comando = 'select malla.id  id,sedes.nom_sede nom_sede, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_sedes sedes on (1=1)  INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id)  LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where sedes.id = ' + str(sede) + ' AND malla.ano = ' + str(ano) + ' AND malla.mes = ' + str(mes) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
 
 
-    if (area!=0):
-        comando = 'select malla.id  id, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_areas area on (area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where malla.ano = ' + str(ano)  + ' AND malla.mes = ' + str(mes) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
-        if (ano == 0):
-            comando = 'select malla.id  id, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_areas area on (area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where malla.mes = ' + str(mes) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
-            if (mes == 0):
-                 comando = 'select malla.id  id, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_areas area on (area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
-        else:
-            if (mes != 0):
-                comando = 'select malla.id  id, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_areas area on (area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where malla.ano = ' + str(ano) + ' AND malla.mes = ' + str(mes) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
 
-            if (mes == 0):
-                 comando = 'select malla.id  id, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id) INNER JOIN tickets_areas area on (area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where malla.ano = ' + str(ano) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+
+            if (area!=0):
+                comando =          'select malla.id  id,sedes.nom_sede nom_sede,  empleado_id  empleado_id,emp.nombre nombreEmpleado,   malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1)  INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id)  LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4     ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where sedes.id = ' + str(sede) + ' AND malla.ano = ' + str(ano)  + ' AND malla.mes = ' + str(mes) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+                if (ano == 0):
+                    comando =      'select malla.id  id,sedes.nom_sede nom_sede,  empleado_id  empleado_id,emp.nombre nombreEmpleado,   malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1)  INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id)  LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id)   where sedes.id = ' + str(sede) + ' AND malla.mes = ' + str(mes) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+                    if (mes == 0):
+                        comando = 'select malla.id  id, sedes.nom_sede nom_sede, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1)   INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id)   where sedes.id = ' + str(sede) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+                else:
+                    if (mes != 0):
+                        comando =  'select malla.id  id, sedes.nom_sede nom_sede, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1)  INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id)  LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id)   where sedes.id = ' + str(sede) + ' AND malla.ano = ' + str(ano) + ' AND malla.mes = ' + str(mes) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
+
+                    if (mes == 0):
+                         comando = 'select malla.id  id, sedes.nom_sede nom_sede, empleado_id  empleado_id,emp.nombre nombreEmpleado,  malla.area_id  area_id, area.nombre nombreArea, ano, mes ,   tur1.abrev dia1,  tur2.abrev dia2 ,   tur3.abrev dia3 , tur4.abrev dia4 ,  tur5.abrev dia5  ,  tur6.abrev dia6  , tur7.abrev dia7  ,  tur8.abrev  dia8,  tur9.abrev dia9 , tur10.abrev dia10 ,  tur11.abrev dia11,  tur12.abrev dia12,  tur13.abrev dia13,tur14.abrev dia14 ,  tur15.abrev dia15,  tur16.abrev dia16,  tur17.abrev dia17 ,  tur18.abrev dia18 ,  tur19.abrev dia19,  tur20.abrev dia20 ,  tur21.abrev dia21 ,  tur22.abrev dia22 ,  tur23.abrev dia23,  tur24.abrev dia24,  tur25.abrev dia25 ,  tur26.abrev dia26 ,  tur27.abrev dia27 ,  tur28.abrev dia28 ,  tur29.abrev dia29 ,   tur30.abrev dia30 , tur31.abrev dia31 FROM tickets_mallaturnos  malla INNER JOIN tickets_empleados emp on (emp.id = malla.empleado_id)  INNER JOIN tickets_sedes sedes on (1=1)  INNER JOIN tickets_areas area on (area.sedes_id = sedes.id AND area.id = malla.area_id) LEFT JOIN tickets_tiposturno tur1   ON (tur1.id = malla.dia1_id) LEFT JOIN tickets_tiposturno tur2   ON (tur2.id = malla.dia2_id) LEFT JOIN tickets_tiposturno tur3   ON (tur3.id = malla.dia3_id) LEFT JOIN tickets_tiposturno tur4   ON (tur4.id = malla.dia4_id) LEFT JOIN tickets_tiposturno tur5   ON (tur5.id = malla.dia5_id) LEFT JOIN tickets_tiposturno tur6   ON (tur6.id = malla.dia6_id) LEFT JOIN tickets_tiposturno tur7   ON (tur7.id = malla.dia7_id) LEFT JOIN tickets_tiposturno tur8   ON (tur8.id = malla.dia8_id) LEFT JOIN tickets_tiposturno tur9   ON (tur9.id = malla.dia9_id) LEFT JOIN tickets_tiposturno tur10   ON (tur10.id = malla.dia10_id) LEFT JOIN tickets_tiposturno tur11   ON (tur11.id = malla.dia11_id) LEFT JOIN tickets_tiposturno tur12   ON (tur12.id = malla.dia12_id) LEFT JOIN tickets_tiposturno tur13   ON (tur13.id = malla.dia13_id) LEFT JOIN tickets_tiposturno tur14   ON (tur14.id = malla.dia14_id) LEFT JOIN tickets_tiposturno tur15   ON (tur15.id = malla.dia15_id) LEFT JOIN tickets_tiposturno tur16   ON (tur16.id = malla.dia16_id) LEFT JOIN tickets_tiposturno tur17   ON (tur17.id = malla.dia17_id) LEFT JOIN tickets_tiposturno tur18   ON (tur18.id = malla.dia18_id) LEFT JOIN tickets_tiposturno tur19   ON (tur19.id = malla.dia19_id) LEFT JOIN tickets_tiposturno tur20   ON (tur20.id = malla.dia20_id) LEFT JOIN tickets_tiposturno tur21   ON (tur21.id = malla.dia21_id) LEFT JOIN tickets_tiposturno tur22   ON (tur22.id = malla.dia22_id) LEFT JOIN tickets_tiposturno tur23   ON (tur23.id = malla.dia23_id) LEFT JOIN tickets_tiposturno tur24   ON (tur24.id = malla.dia24_id) LEFT JOIN tickets_tiposturno tur25   ON (tur25.id = malla.dia25_id) LEFT JOIN tickets_tiposturno tur26   ON (tur26.id = malla.dia26_id) LEFT JOIN tickets_tiposturno tur27   ON (tur27.id = malla.dia27_id) LEFT JOIN tickets_tiposturno tur28   ON (tur28.id = malla.dia28_id) LEFT JOIN tickets_tiposturno tur29   ON (tur29.id = malla.dia29_id) LEFT JOIN tickets_tiposturno tur30   ON (tur30.id = malla.dia30_id) LEFT JOIN tickets_tiposturno tur31   ON (tur31.id = malla.dia31_id) where sedes.id = ' + str(sede) + ' AND  malla.ano = ' + str(ano) + ' AND malla.area_id = ' + str(area) + ' ORDER BY  malla.ano, malla.mes, malla.area_id '
 
 
     print(comando)
@@ -979,23 +1212,26 @@ def load_dataCoordTickets(request, data):
 
     malla = []
 
-    for id, empleado_id, nombreEmpleado, area_id,nombreArea, ano, mes, dia1,dia2,  dia3,dia4, dia5, dia6, dia7, dia8, dia9, dia10,dia11,dia12,dia13,dia14,dia15,dia16,dia17,dia18,dia19,dia20,dia21,dia22,dia23,dia24,dia25,dia26,dia27,dia28,dia29,dia30,dia31 in cur.fetchall():
+    if (perfil != 'COLABORADOR'):
 
-        malla.append(
-            {"model":"tickets.tickets_mallaturnos","pk":id,"fields":
-            {"id": id,
-             "empleado_id": empleado_id,"nombreEmpleado":nombreEmpleado,
-             "area_id":area_id,"nombreArea":nombreArea,
-             "ano": ano, "mes": mes,
-             "dia1": dia1,"dia2": dia2,"dia3":dia3, "dia4":dia4,"dia5":dia5,"dia6":dia6,"dia7":dia7,"dia8":dia8,"dia9":dia9,"dia10":dia10,
-             "dia11": dia11,"dia12": dia12,"dia13":dia13, "dia14":dia14,"dia15":dia15,"dia16":dia16,"dia17":dia17,"dia18":dia18,"dia19":dia19,"dia20":dia20,
-             "dia21": dia21,"dia22": dia22,"dia23":dia23, "dia24":dia24,"dia25":dia25,"dia26":dia26,"dia27":dia27,"dia28":dia28,"dia29":dia29,"dia30":dia30,"dia31":dia31}})
+        for id, nom_sede, empleado_id, nombreEmpleado, area_id,nombreArea, ano, mes, dia1,dia2,  dia3,dia4, dia5, dia6, dia7, dia8, dia9, dia10,dia11,dia12,dia13,dia14,dia15,dia16,dia17,dia18,dia19,dia20,dia21,dia22,dia23,dia24,dia25,dia26,dia27,dia28,dia29,dia30,dia31 in cur.fetchall():
+
+            malla.append(
+                {"model":"tickets.tickets_mallaturnos","pk":id,"fields":
+                {"id": id,"nom_sede":nom_sede,
+                    "empleado_id": empleado_id,"nombreEmpleado":nombreEmpleado,
+                    "area_id":area_id,"nombreArea":nombreArea,
+                    "ano": ano, "mes": mes,
+                    "dia1": dia1,"dia2": dia2,"dia3":dia3, "dia4":dia4,"dia5":dia5,"dia6":dia6,"dia7":dia7,"dia8":dia8,"dia9":dia9,"dia10":dia10,
+                    "dia11": dia11,"dia12": dia12,"dia13":dia13, "dia14":dia14,"dia15":dia15,"dia16":dia16,"dia17":dia17,"dia18":dia18,"dia19":dia19,"dia20":dia20,
+                    "dia21": dia21,"dia22": dia22,"dia23":dia23, "dia24":dia24,"dia25":dia25,"dia26":dia26,"dia27":dia27,"dia28":dia28,"dia29":dia29,"dia30":dia30,"dia31":dia31}})
 
     miConexion.close()
     print("malla")
     print(malla)
 
     # Cierro Conexion
+
 
     context['Malla'] = malla
 
@@ -1073,6 +1309,7 @@ class GestionCoordMallaUpdate(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
 
         messages.success(self.request, "La asignacion fue satisfactoria.")
         return super(GestionCoordMallaUpdate, self).form_valid(form)
@@ -1088,6 +1325,7 @@ class GestionCoordMallaUpdate(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
 
         print("context en el get_context_data AsignacionUpdated = ", context)
         print(context["Username"])
@@ -1096,6 +1334,17 @@ class GestionCoordMallaUpdate(UpdateView):
         print(context["EmpleadoId"])
         print(context["SedeSeleccionada"])
         empleadoId= self.kwargs['empleadoId']
+
+        # Día actual
+        today = date.today()
+
+        now = datetime.now()
+        print(today.year)
+        print(today.month)
+        num_days = monthrange(today.year, today.month)[1]  # num_days = 31
+        print(num_days)  # Imprime 31
+        context['num_days'] = num_days
+
 
 
         ## Creamos los tickets
@@ -1139,8 +1388,9 @@ class GestionCoordMallaUpdate(UpdateView):
         nombreSede = self.kwargs['nombreSede']
         empleadoId = self.kwargs['empleadoId']
         sedeSeleccionada = self.kwargs['sedeSeleccionada']
+        perfil = self.kwargs['perfil']
 
-        return reverse_lazy('gestionCoord', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada})
+        return reverse_lazy('gestionCoord', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil})
 
 
 
@@ -1170,6 +1420,7 @@ class CrearMalla(  CreateView ):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
 
         print ("context en el get_context_data = ", context)
         print(context["Username"])
@@ -1186,7 +1437,7 @@ class CrearMalla(  CreateView ):
 
         instance = form.save()
         context={}
-        envio = self.kwargs['username'] + ',' + self.kwargs['sedeSeleccionada'] + ',' + self.kwargs['nombreUsuario'] + ',' + self.kwargs['nombreSede'] + ',' + self.kwargs['empleadoId']
+        envio = self.kwargs['username'] + ',' + self.kwargs['sedeSeleccionada'] + ',' + self.kwargs['nombreUsuario'] + ',' + self.kwargs['nombreSede'] + ',' + self.kwargs['empleadoId'] + ',' + self.kwargs['perfil']
         redirect_url = reverse('gestionCoord_A')
         print ("redirect_url = ",redirect_url )
 
@@ -1212,7 +1463,7 @@ class CrearMalla(  CreateView ):
 class THumano(ListView):
     print ("Entre List View Gestion Talento Humano")
 
-    queryset = Tickets.objects.filter().order_by('id')
+    queryset = Tickets.objects.filter().order_by('-fecha','empleado_id')
     context_object_name = 'THumano'
     paginate_by = 10
     template_name = 'tickets/tHumano.html'
@@ -1231,14 +1482,14 @@ class THumano(ListView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
-
+        context["Perfil"]           = self.kwargs['perfil']
 
         print(context["Username"])
         print(context["NombreUsuario"])
         print(context["NombreSede"])
         print(context["EmpleadoId"])
         print(context["SedeSeleccionada"])
-
+        print("perfil = " , context["Perfil"])
 
         return context
 
@@ -1246,6 +1497,9 @@ class THumano(ListView):
     def get_queryset(self):
 
         ticketId = self.kwargs['ticketId']
+        empleadoNom = self.kwargs['nombre']
+        perfil = self.kwargs['perfil']
+
         print("kwargs de queryset", self.kwargs)
         print("CONCLUSION ticketId = ", ticketId)
         nombreSede = self.kwargs['nombreSede']
@@ -1253,19 +1507,51 @@ class THumano(ListView):
 
         print ("Entre querySet de THumano  ")
         #print ("empleadoId", empleadoId)
-        try:
-            if (ticketId == '0'):
-                queryset = Tickets.objects.all().select_related('tiposTicket', 'empleado').order_by('id')
-                print ("queryset = ",queryset )
+        print("perfil = ", perfil)
 
-            else:
-                print("Entre ticket No cero = ", ticketId)
-                queryset = Tickets.objects.filter(asignado_id__isnull=True, id=ticketId).select_related('tiposTicket', 'empleado').order_by('id')
+        try:
+
+            if (perfil != 'TALENTO HUMANO'):
+                print ("Entre por Error a No talento Humano")
+                return Tickets.objects.none()
+
+            if (ticketId == '0' and empleadoNom == 'null'):
+                # busqueda general
+                print("Entre todos los ticket= ", ticketId)
+                # queryset = Tickets.objects.filter(asignado_id__isnull=True).order_by('id')
+                queryset = Tickets.objects.filter(asignado_id__isnull=True).select_related('tiposTicket',
+                                                                                           'empleado').order_by(
+                    '-fecha', 'empleado_id')
+
+            if (ticketId != '0' and empleadoNom == 'null'):
+                # busqueda por ticket
+
+                print("Entre por ticket = ", ticketId)
+                queryset = Tickets.objects.filter(asignado_id__isnull=True, id=ticketId).order_by('-fecha',
+                                                                                                  'empleado_id')
+                print("queryset = ", queryset)
+
+            if (ticketId == '0' and empleadoNom != 'null'):
+                ## busqueda por nombre
+                print("Entre  por nombre = ", empleadoNom)
+                # queryset = Tickets.objects.filter(asignado_id__isnull=True, empleado_id__contains=empleadoNom).select_related('empleado').order_by('id')
+                queryset = Tickets.objects.select_related('empleado').filter(asignado_id__isnull=True,
+                                                                             empleado_id__nombre__icontains=empleadoNom).order_by(
+                    '-fecha', 'empleado_id')
+                print("queryset = ", queryset)
+
+            if (ticketId != '0' and empleadoNom != 'null'):
+                ## busqueda por ticket, nombre
+                print("Entre por ticket y por nombre = ", empleadoNom)
+                queryset = Tickets.objects.select_related('empleado').filter(asignado_id__isnull=True, id=ticketId,
+                                                                             empleado_id__nombre__icontains=empleadoNom).order_by(
+                    '-fecha', 'empleado_id')
                 print("queryset = ", queryset)
 
             return queryset.all()
 
         except Tickets.DoesNotExist:
+            print("sali posr exception")
             return Tickets.objects.none()
 
 
@@ -1301,6 +1587,8 @@ class THumanoUpdate(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
+
         #self.get_context_data(   context=context )
 
         messages.success(self.request, "La actualizacion fue satisfactoria.")
@@ -1320,6 +1608,7 @@ class THumanoUpdate(UpdateView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
+        context["Perfil"] = self.kwargs['perfil']
 
         print("context en el get_context_data THumanoUpdate = ", context)
         print(context["Username"])
@@ -1341,8 +1630,10 @@ class THumanoUpdate(UpdateView):
         nombreSede = self.kwargs['nombreSede']
         empleadoId = self.kwargs['empleadoId']
         sedeSeleccionada = self.kwargs['sedeSeleccionada']
+        perfil= self.kwargs['perfil']
 
-        return reverse_lazy('tHumano', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada})
+
+        return reverse_lazy('tHumano', kwargs={'ticketId':0, 'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil})
 
 
 
@@ -1368,7 +1659,7 @@ class TicketsMalla1(ListView):
         context["NombreSede"] = self.kwargs['nombreSede']
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
-
+        context["Perfil"] = self.kwargs['perfil']
 
         print(context["Username"])
         print(context["NombreUsuario"])
@@ -1383,10 +1674,52 @@ class TicketsMalla1(ListView):
         #empleadoId = self.kwargs['empleadoId']
         print ("Entre querySet de TicketsMalla  ")
         #print ("empleadoId", empleadoId)
-        try:
-            queryset = TicketsMalla.objects.all().select_related('mallaTurnos', 'ticket', 'empleado').order_by('id')
 
-            print ("queryset = ",queryset )
+        ticketId = self.kwargs['ticketId']
+        empleadoNom = self.kwargs['nombre']
+        perfil = self.kwargs['perfil']
+
+        try:
+
+            if (perfil != 'COORDINADOR'):
+                print("Entre NO ENTREGO PAGINA A COLABORADOR")
+                return Tickets.objects.none()
+
+            if (ticketId == '0' and empleadoNom == 'null'):
+                # busqueda general
+                print("Entre todos los ticket= ", ticketId)
+                # queryset = Tickets.objects.filter(asignado_id__isnull=True).order_by('id')
+
+                queryset = TicketsMalla.objects.all().select_related('mallaTurnos', 'ticket', 'empleado').order_by('-fecha', 'empleado_id', 'ticket_id')
+
+            if (ticketId != '0' and empleadoNom == 'null'):
+                # busqueda por ticket
+
+                print("Entre por ticket = ", ticketId)
+
+                queryset = TicketsMalla.objects.filter(id=ticketId).select_related('mallaTurnos', 'ticket', 'empleado').order_by('-fecha', 'empleado_id', 'ticket_id')
+
+                print("queryset = ", queryset)
+
+            if (ticketId == '0' and empleadoNom != 'null'):
+                ## busqueda por nombre
+                print("Entre  por nombre = ", empleadoNom)
+                # queryset = Tickets.objects.filter(asignado_id__isnull=True, empleado_id__contains=empleadoNom).select_related('empleado').order_by('id')
+                queryset = TicketsMalla.objects.filter( empleado_id__nombre__icontains=empleadoNom).select_related('mallaTurnos', 'ticket', 'empleado').order_by('-fecha', 'empleado_id', 'ticket_id')
+
+                print("queryset = ", queryset)
+
+            if (ticketId != '0' and empleadoNom != 'null'):
+                ## busqueda por ticket, nombre
+                print("Entre por ticket y por nombre = ", empleadoNom)
+
+                queryset = TicketsMalla.objects.filter( id=ticketId , empleado_id__nombre__icontains=empleadoNom).select_related('mallaTurnos', 'ticket', 'empleado').order_by('-fecha', 'empleado_id', 'ticket_id')
+                print("queryset = ", queryset)
+
             return queryset.all()
+
         except Tickets.DoesNotExist:
-            return TicketsMalla.objects.none()
+            print("sali posr exception")
+            return Tickets.objects.none()
+
+

@@ -4,6 +4,7 @@
 
 {%block content%}
 <script>
+
 function buscar()
 	{
 
@@ -13,8 +14,16 @@ function buscar()
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
         var ticketId = document.getElementById("ticketId").value;
+        var nombre = document.getElementById("nombre").value;
+         var perfil = document.getElementById("perfil").value;
 
-		var apasar = ticketId + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+         	if (perfil == 'TALENTO')
+		{
+			perfil= 'TALENTO HUMANO';
+		}
+
+
+		var apasar = ticketId + ',' + nombre + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
 
 
 
@@ -29,13 +38,22 @@ function buscar()
 	{
 
 
+
         var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
+         var perfil = document.getElementById("perfil").value;
 
- 		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+
+      	if (perfil == 'TALENTO')
+		{
+			perfil= 'TALENTO HUMANO';
+		}
+
+
+ 		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
 
         $(location).attr('href',  'update/' + apasar);
 
@@ -50,12 +68,14 @@ function buscar()
 
 
 	<div class="form-group mx-sm-12 ">
-		<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
-		<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada"
-			   value={{SedeSeleccionada}}>
-		<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
-		<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
-		<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+
+		<input type="hidden"   class="form-control" id="perfil" name="perfil" value="{{Perfil}}">
+		<input type="hidden" class="form-control" id="username" name="username" value="{{Username}}">
+		<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value="{{SedeSeleccionada}}">
+		<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value="{{NombreUsuario}}">
+		<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+		<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value="{{EmpleadoId}}">
+
 
 	</div>
 
@@ -107,20 +127,23 @@ function buscar()
 				<a class="page-link">&raquo;</a>
 			</li>
 			{% endif %}
+
+		</ul>
+		{% endif %}
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			Ticket No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="text" id="ticketId" name="ticketId" size="15px" placeholder="Busqueda" values="0">
+			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								Por ticket:
+			<input type="text" id="ticketId" name="ticketId" size="15px" placeholder="Por Ticket" value="0">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		Por nombre:
+			<input type="text" id="nombre" name="nombre" size="15px" placeholder="Por nombre" value="null" >
 			<span size="150px"></span>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 			<input type="button" id="buttonTicket" name="buttonTicket" value="BUSCAR" onclick="buscar()">
-		</ul>
-		{% endif %}
 
 	</nav>
-
 
                     </div>
                     <div class="card-body">
@@ -182,7 +205,8 @@ function buscar()
                     <div class="row"  >
                            <div class="col-md-12" >
 								<div align="right">
-                        <p style="font-size:15px">{{NombreUsuario}}</p>
+
+                        		<p style="font-size:15px">{{Perfil}}:&nbsp;&nbsp;&nbsp; {{NombreUsuario}}</p>
             			   </div>
 	                    </div>
                         </div>
@@ -192,8 +216,6 @@ function buscar()
              </div>
          </div>
    </div>
-
-
 
 
 </div>

@@ -27,8 +27,18 @@
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
+        var perfil = document.getElementById("perfil").value;
 
-		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+
+      	if (perfil == 'TALENTO')
+      		{
+      			perfil= 'TALENTO HUMANO';
+      		}
+
+
+
+
+		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId  + ',' + perfil;
 
 		 $(location).attr('href',  '/gestionCoord/update/' + apasar);
 
@@ -42,8 +52,25 @@
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
-		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+        var perfil = document.getElementById("perfil").value;
+
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId  + ',' + perfil;
 		window.location = "/crearMalla/" + apasar;
+	}
+
+		function crearMallaAutomatica()
+	{
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+        var perfil = document.getElementById("perfil").value;
+
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId  + ',' + perfil;
+		alert("Malla Automatica");
+
+
 	}
 
 
@@ -93,7 +120,10 @@
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
+        var perfil = document.getElementById("perfil").value;
 
+        var nombreEmp = document.getElementById("nombreEmp").value;
+        var sede = document.getElementById("sede").value;
         var area = document.getElementById("area").value;
         var ano = document.getElementById("ano").value;
         var mes = document.getElementById("mes").value;
@@ -108,6 +138,9 @@
          data['area'] = area;
          data['ano'] = ano;
          data['mes'] = mes;
+         data['perfil'] = perfil;
+         data['sede'] = sede;
+         data['nombreEmp'] = nombreEmp;
 
          data = JSON.stringify(data);
 
@@ -146,7 +179,7 @@
 
             buttons: [
                 "excel",
-                "pdf",
+//                "pdf",
             ]  ,
             processing: true,
             serverSide: false,
@@ -156,10 +189,18 @@
                   "targets": [0],
                    "render": function ( data, type, row ) {
                         var btn = '';
-                        btn = btn + " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
+                    //    btn = btn + " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
                         return btn;
                     },
-                    "targets": 36,
+
+                    "targets": [37],
+                   "render": function ( data, type, row ) {
+                        var btn = '';
+                        btn = btn + " <button class='btn btn-danger deletePost' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+                        return btn;
+                    },
+
+                    "targets": 38,
                 }
             ],
             ajax: {
@@ -174,9 +215,18 @@
                 dataSrc: ""
             },
 
+           columns: [
+            {
+                "data": null,
+                "bSortable": false,
+                "mRender": function(data, type, row,  value) {
+                return " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
 
-            columns: [
+                }
+            },
+
                 { data: "fields.id"},
+                { data: "fields.nom_sede"},
                 { data: "fields.nombreEmpleado"},
                 { data: "fields.nombreArea"},
                 { data: "fields.ano"},
@@ -227,9 +277,10 @@
           var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
           var nombreUsuario = document.getElementById("nombreUsuario").value;
           var nombreSede = document.getElementById("nombreSede").value;
+          var perfil = document.getElementById("perfil").value;
           var post_id = $(this).data('pk');
 
-        var apasar = post_id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+        var apasar = post_id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
 		window.location = "/gestionCoordMalla/update/" + apasar;
 
         });
@@ -246,6 +297,50 @@
                 $(".error-msg").find("ul").append('<li>'+value+'</li>');
             });
         };
+
+         /*------------------------------------------
+        --------------------------------------------
+        Delete Post Code
+        --------------------------------------------
+        --------------------------------------------*/
+        $("body").on("click",".deletePost",function(){
+            var current_object = $(this);
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this imaginary file!",
+                type: "error",
+                showCancelButton: true,
+                dangerMode: true,
+                cancelButtonClass: '#DD6B55',
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Delete!',
+            },function (result) {
+                if (result) {
+                    var action = current_object.attr('data-action');
+                    var username = document.getElementById("username").value;
+                    var empleadoId = document.getElementById("empleadoId").value;
+                    var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+                    var nombreUsuario = document.getElementById("nombreUsuario").value;
+                    var nombreSede = document.getElementById("nombreSede").value;
+                    var perfil = document.getElementById("perfil").value;
+                    alert("action = " + action);
+
+                    //var token = $("input[name=csrfmiddlewaretoken]").val();
+                    var id = current_object.attr('data-pk');
+
+
+                    action = "/gestionCoord/post/" + id + ',' + username + ',' + sedeSeleccionada + ',' + nombreUsuario   + ',' + nombreSede  +',' + empleadoId + ',' + perfil + '/delete/';
+                    alert("action = " + action);
+
+                    $('body').html("<form class='form-inline remove-form' method='post' action='"+action+"'></form>");
+                    $('body').find('.remove-form').append('<input name="_method" type="hidden" value="delete">');
+                    // $('body').find('.remove-form').append('<input name="csrfmiddlewaretoken" type="hidden" value="'+token+'">');
+                    $('body').find('.remove-form').append('<input name="id" type="hidden" value="'+id+'">');
+                    $('body').find('.remove-form').submit();
+                }
+            });
+        });
+
         };
 
      // table.buttons().container().appendTo($('#printbar'));
@@ -309,11 +404,11 @@
 
     <div class="form-group mx-sm-6 ">
         <input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
-        <input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada"
-               value={{SedeSeleccionada}}>
+        <input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
         <input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
         <input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
         <input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+        <input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
 
         {% if GestionCoord %}
 
@@ -340,6 +435,7 @@
                 <table class="table table-bordered tablaAsignacionTickets">
                     <thead>
                     <tr>
+
                         <th>id</th>
                         <th>Tipo</th>
                         <th>Empleado</th>
@@ -347,7 +443,8 @@
                         <th>desde Ini</th>
                         <th>hasta Ini</th>
                         <th>Estado</th>
-                        <th>Editar</th>
+                         <th>Editar</th>
+
                     </tr>
                     </thead>
 
@@ -356,6 +453,7 @@
                     <a href="#" class="{% if gestionCoord.completed%}completed{%endif%}"></a>
                     <div class="task-controls">
                         <tr>
+
                             <td>{{ gestionCoord.id }}</td>
                             <td>{{ gestionCoord.tiposTicket}}</td>
                             <td>{{gestionCoord.empleado}}</td>
@@ -363,9 +461,10 @@
                             <td>{{ gestionCoord.desdeInicial }}</td>
                             <td>{{ gestionCoord.hastaInicial }}</td>
                             <td>{{ gestionCoord.estadoRespuestaCoordinador }}</td>
+                              {% if Perfil == 'COORDINADOR' %}
+                        <td><a id="golpe" name="golpe" onclick="golpe1({{gestionCoord.id}})"><i class="fa fa-pencil"></i></a></td>
+                              {% endif %}
 
-                            <td><a id="golpe" name="golpe" onclick="golpe1({{gestionCoord.id}})"><i
-                                    class="fa fa-pencil"></i></a></td>
                         </tr>
                     </div>
                     {% endfor %}
@@ -384,7 +483,14 @@
             <div class="card-header" style="font-family:'Times New Roman'; font-size:12px ">
 
                          M A L L A &nbsp;&nbsp;&nbsp; D E &nbsp;&nbsp;&nbsp; T U R N O S
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Buscar por :
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Buscar por :
+                                SEDE:
+                                    <select  id="sede" name="area" style=" width:110px; " size="1" >
+                                        {% for sede in Sedes %}
+                                            <option value="{{sede.id}}"> {{sede.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
                                      AREA:
                                     <select  id="area" name="area" style=" width:110px; " size="1" >
                                         {% for areas in Areas %}
@@ -392,19 +498,33 @@
                                         {% endfor %}
                                     </select>
 
-                                      AÑO: <input type="text"  id="ano" name="ano" value="{{Ano}}"/>
-                                      MES: <input type="text"  id="mes" name="mes" value="{{Mes}}"/>
+                                     &nbsp;&nbsp;&nbsp; AÑO: <input type="text"  id="ano" name="ano" size="5px" value="{{Ano}}"/>
+                                      &nbsp;&nbsp;&nbsp;MES: <input type="text"  id="mes" name="mes" size="5px" value="{{Mes}}"/>
+                                         &nbsp;&nbsp;&nbsp;NOMBRE: <input type="text"  id="nombreEmp" name="nombreEmp" size="30px" value="0"/>
+                &nbsp;
+                &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="button"  id="buscarMalla" name = "buscarMalla" class="linea" value="Buscar" />
 
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <input type="button"  id="buscarMalla" name = "buscarMalla" class="linea" value="Consultar" />
+                {% if Perfil == 'COORDINADOR' %}
+
+
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
 
                   <input type="button"  class="linea" value="Crear Malla" onclick="crearMalla()"/>
+
+
+
+
+            <!--      <input type="button"  class="linea" value="Malla Automatica" onclick="crearMallaAutomatica()"/>  -->
+
+                {% endif %}
+
 
                 </div>
                 <div class="card-body" style="font-family:'Times New Roman'; font-size:6px " >
@@ -416,43 +536,46 @@
                                 <table  class="table-bordered table-hover  tablaCoordTickets"  id="tablaCoordTickets" name="tablaCoordTickets" style="font-family:'Times New Roman'; font-size:6px ">
                                     <thead>
                                     <tr>
+                                         <th>Action</th>
                                         <th>id</th>
+                                        <th>Sede</th>
                                         <th>Emp</th>
                                         <th>Area</th>
                                         <th>Año</th>
                                         <th>Mes</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>5</th>
-                                        <th>6</th>
-                                        <th>7</th>
-                                        <th>8</th>
-                                        <th>9</th>
-                                        <th>10</th>
-                                        <th>11</th>
-                                        <th>12</th>
-                                        <th>13</th>
-                                        <th>14</th>
-                                        <th>15</th>
-                                        <th>16</th>
-                                        <th>17</th>
-                                        <th>18</th>
-                                        <th>19</th>
-                                        <th>20</th>
-                                        <th>21</th>
-                                        <th>22</th>
-                                        <th>23</th>
-                                        <th>24</th>
-                                        <th>25</th>
-                                        <th>26</th>
-                                        <th>27</th>
-                                        <th>28</th>
-                                        <th>29</th>
-                                        <th>30</th>
-                                        <th>31</th>
-                                        <th>Action</th>
+                                        <th>{{uno}}&nbsp; 1</th>
+                                        <th>{{dos}}&nbsp;2</th>
+                                        <th>{{tres}}&nbsp;3</th>
+                                        <th>{{cuatro}}&nbsp;4</th>
+                                        <th>{{cinco}}&nbsp;5</th>
+                                        <th>{{seis}}&nbsp;6</th>
+                                        <th>{{siete}}&nbsp;7</th>
+                                        <th>{{ocho}}&nbsp;8</th>
+                                        <th>{{nueve}}&nbsp;9</th>
+                                        <th>{{diez}}&nbsp;10</th>
+                                        <th>{{once}}&nbsp;11</th>
+                                        <th>{{doce}}&nbsp;12</th>
+                                        <th>{{trece}}&nbsp;13</th>
+                                        <th>{{catorce}}&nbsp;14</th>
+                                        <th>{{quince}}&nbsp;15</th>
+                                        <th>{{diezyseis}}&nbsp;16</th>
+                                        <th>{{diezysiete}}&nbsp;17</th>
+                                        <th>{{diezyocho}}&nbsp;18</th>
+                                        <th>{{diezynueve}}&nbsp;19</th>
+                                        <th>{{veinte}}&nbsp;20</th>
+                                        <th>{{veintiuno}}&nbsp;21</th>
+                                        <th>{{veintidos}}&nbsp;22</th>
+                                        <th>{{veintitres}}&nbsp;23</th>
+                                        <th>{{veinticuatro}}&nbsp;24</th>
+                                        <th>{{veinticinco}}&nbsp;25</th>
+                                        <th>{{veintiseis}}&nbsp;26</th>
+                                        <th>{{veintisiete}}&nbsp;27</th>
+                                        <th>{{veintiocho}}&nbsp;28</th>
+                                        <th>{{veintinueve}}&nbsp;29</th>
+                                        <th>{{treinta}}&nbsp;30</th>
+                                        <th>{{treintayuno}}&nbsp;31</th>
+                                         <th>Borrar</th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -463,7 +586,7 @@
                     </div>
                 </div>
                 <div class="card-footer" align="right">
-                        <p style="font-size:15px">{{NombreUsuario}}</p>
+                        <p style="font-size:15px">{{Perfil}}:&nbsp;&nbsp;&nbsp; {{NombreUsuario}}</p>
                </div>
 
             </div>

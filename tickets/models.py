@@ -98,7 +98,7 @@ class Areas(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=True, choices=TIPO_CHOICES, )
 
     def __str__(self ):
-        return self.nombre
+        return str(self.sedes) + ' ' + str(self.nombre)
 
 
 class Ubicaciones(models.Model):
@@ -339,3 +339,22 @@ class TicketsMalla(models.Model):
 
     def __str__(self):
         return self.estadoReg
+
+
+class Calendario(models.Model):
+    ACTIVO = 'A'
+    INACTIVO = 'I'
+    TIPO_CHOICES = (
+        (ACTIVO, 'Activo'),
+        (INACTIVO, 'Inactivo'),
+    )
+    id = models.AutoField(primary_key=True)
+    ano = models.IntegerField()
+    mes    = models.IntegerField()
+    dia    = models.IntegerField()
+    nombre   = models.CharField(max_length=2, default='')
+    estadoReg = models.CharField(max_length=1, default='A', editable=True,choices = TIPO_CHOICES, )
+
+
+    def __str__(self ):
+        return self.nombre

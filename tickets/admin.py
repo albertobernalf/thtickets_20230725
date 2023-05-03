@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 
-from tickets.models import Sedes, TiposEmpresa, TiposTicket, Areas, Ubicaciones, Cargos, TiposTurno, TiposEmpleadosPerfil, Empleados, Tickets, MallaTurnos, TicketsMalla
+from tickets.models import Sedes, TiposEmpresa, TiposTicket, Areas, Ubicaciones, Cargos, TiposTurno, TiposEmpleadosPerfil, Empleados, Tickets, MallaTurnos, TicketsMalla, Calendario
 
 
 @admin.register(Sedes)
@@ -108,3 +108,11 @@ class ticketsMallaAdmin(admin.ModelAdmin):
     search_fields = ("id", "fecha", "empleado_id__nombre")
     # Filtrar
     list_filter =   ("id", "fecha", "empleado_id__nombre","mallaTurnos")
+
+
+@admin.register(Calendario)
+class calendarioAdmin(admin.ModelAdmin):
+    list_display =  ("id", "ano", "mes","dia","nombre")
+    search_fields = ("id", "ano", "mes","dia","nombre")
+    # Filtrar
+    list_filter =   ("id", "ano", "mes","dia","nombre")

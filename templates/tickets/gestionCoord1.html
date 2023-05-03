@@ -16,8 +16,9 @@
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
+        var perfil = document.getElementById("perfil").value;
 
-		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil ;
 
 		 $(location).attr('href',  '/gestionCoord/update/' + apasar);
 
@@ -248,6 +249,7 @@
         <input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
         <input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
         <input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+        <input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
 
         {% if GestionCoord %}
 

@@ -4,72 +4,13 @@ Tareas: thtickets
 
 Proceso.
 
-1, para hacer campos readOnly de select ver: ticketsForm3. actualizar tordas las formas que requeiran estop, son algunas bastanticas diria yop
-D. Reportes de gection tickets, es como meter la rutina de cmreporyteador en el programa de tickets
-2. ojo hay un poco de arreglos la resolucion de thumano tickets y en otras partes el listview ,recuerde el queryset no tra los campos nombre ...
-   el tipo de letra a mostrar span success UNIFICAR..
-3. Hacer prtograma tickets_ticketsmalla, o sea movimientos d ela malla de acuerto a tickets, es la Auditoria ...
-4. perfil para el acceso a los menus
-5. Ponerle tabla  a la parte inferior consulta de CREACION DE TICKETS
 
-
-El lunes comenzar
-
-
-
-
-<!-- COPIO DESDE AQUIP -->
-             </div>  <!-- Deberia terminar el COL11-->
-            <div class="col-lg-1"></div>
-  </div> <!-- Deberia terminar el Row-->
-
-        <div class="row">
-
-
-            <div class="col-lg-7"></div>
-            <div class="col-lg-3">
-            </div>
-            <div class="col-lg-2">
-                 <figure class="figure">
-                     <br>
-                     <br>
-                     <br>
-                     <br>
-                     <br>
-                     <br>
-                    <img src="{% static '/img/MEDICALFINAL.JPG' %}" class="figure-img img-fluid rounded"
-                         style="height:30px;"
-                         alt="...">
-                    <figcaption class="figure-caption text-right">{{NombreUsuario}}
-
-                    </figcaption>
-                </figure>
-                <!--
-                           {{ Perfil }}
-                           {% if Perfil == '1' %}
-                           Coordinador!
-                           {% endif %}
-                           {% if Perfil == '2' %}
-                           Empleado!
-                           {% endif %}
-                           {% if Perfil == '3' %}
-                             Talento Humano!
-                           {% endif %}
-
-                -->
-            </div>
-        </div>
-
-<!-- COPIO HASTA AQUIP -->
-
-
-	
-
-
-
-
-
-
+1. Ponerle una tabla HTML en la parte inferior consulta de CREACION DE TICKETS
+2. Pendiente si se necesita crear una malla Automatica  para año-meses-Area-Empleado seleccionados
+3. ojo no graba ver que pasa swera por el campo sede . NOP ES PORQUE ABRIL trae 30 dias y dejo grabar en 31
+4. Volver a crear el programa pero en pruebas en CMREPORTEADOR.-
+5. Ojo como/cuando se borra una malla --> de pronto dejar esta actividad para usuario admin
+6. Ojo que va a pasar con el Borrar. Ver mañana a ver que pasa .../... 
 
 
 

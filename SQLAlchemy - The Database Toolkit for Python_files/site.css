@@ -1,0 +1,296 @@
+:root {
+  --bs-font-sans-serif: "Source Sans Pro", arial, sans-serif;
+  --bs-body-color: #110000; }
+
+.row {
+  --bs-gutter-x: 0; }
+
+.bg-sa-green {
+  background: #778877; }
+
+.bg-sa-grey {
+  background: #f0f0f0; }
+
+.card {
+  margin-bottom: 20px; }
+
+.topic-box-header-font, main.content h2, div.sidebar h3 {
+  font-family: Verdana, "Lucida Grande", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #778877;
+  letter-spacing: 1px; }
+
+.topic-box-body-font, div.sidebar {
+  font-family: Verdana, "Lucida Grande", sans-serif;
+  color: #777777;
+  font-size: 0.9rem; }
+
+.selling-point-font, main.content dl.features dt {
+  color: #777733;
+  font: 16px/1.1em "Source Sans Pro", arial, sans-serif;
+  font-weight: bold; }
+
+.page-welcome-font-big, main.content h1 {
+  font: 22px/24px Tahoma, Geneva, sans-serif;
+  color: #222222;
+  letter-spacing: normal; }
+
+.box {
+  background-color: #f0f0f0;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 0 0 20px 0;
+  padding: 12px; }
+
+.main-body a {
+  font-weight: normal;
+  text-decoration: none; }
+  .main-body a:link {
+    padding: 0 0 1px 0;
+    color: #B00; }
+  .main-body a:visited {
+    color: #B00; }
+  .main-body a:hover {
+    text-decoration: underline;
+    color: #F00; }
+
+.small-text {
+  font-size: 0.8rem; }
+
+code {
+  color: #703040; }
+
+/* header ---------------------------------------------------------- */
+nav.navbar {
+  font-size: 1.15rem;
+  line-height: 1.2rem; }
+  nav.navbar .dropdown-item {
+    line-height: 1.6rem; }
+  nav.navbar.logo {
+    height: 65px;
+    background: #fff url(../img/symbols-bg5.gif) top right no-repeat; }
+  nav.navbar div#navbarNavigation .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9); }
+  nav.navbar div#navbarNavigation .dropdown-item {
+    color: rgba(255, 255, 255, 0.9); }
+    nav.navbar div#navbarNavigation .dropdown-item:hover {
+      background-color: #333333; }
+  nav.navbar div#navbarNavigation a {
+    text-decoration: none; }
+    nav.navbar div#navbarNavigation a:hover {
+      background-color: #333333; }
+  @media only screen and (max-width: 980px) {
+    nav.navbar {
+      /*
+            hide header background image and dbtoolkit images on narrow
+            screens
+        */ }
+      nav.navbar.logo {
+        background: #fff; }
+      nav.navbar .dbtoolkit {
+        display: none; } }
+  nav.navbar.navigation {
+    background: #778877 url(../img/navbg1.gif) repeat-x top left; }
+  nav.navbar .dropdown-menu {
+    font-size: inherit; }
+
+/* body ---------------------------------------------------------- */
+body {
+  background: #fbfbfb; }
+  body div.wrap {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); }
+
+/* sidebar ---------------------------------------------------------*/
+div.sidebar .sponsor-img {
+  width: 50px;
+  height: 50px; }
+
+div.sidebar ul {
+  list-style: none; }
+
+div.sidebar li {
+  line-height: 1.4em; }
+
+div.sidebar .release .release-box {
+  border-color: #ccc !important; }
+  div.sidebar .release .release-box .pypi-badges {
+    margin: .5em 0; }
+
+div.sidebar h3 {
+  font-size: inherit; }
+
+/* footer ------------------------------------------------------------*/
+div.footer {
+  clear: both;
+  margin: 50px 0 -50px 0;
+  border-top: 1px solid #d9d9d9;
+  padding: 2em 1em;
+  background: #fff url(../img/nav-shadow2.gif) top left repeat-x;
+  position: relative;
+  z-index: 100; }
+  div.footer p {
+    margin: 0;
+    padding: 0; }
+  div.footer .pypowered {
+    float: left;
+    margin: 0 10px 0 0; }
+  div.footer .copyright {
+    float: left;
+    font-size: 0.9em; }
+
+/* docs override styles, which are targeted to correct zzzeeksphinx styles
+   given our bootstrap layout */
+main.docs h1,
+main.docs #docs-body h1 {
+  font-size: 1.7rem;
+  font-weight: bold;
+  padding-top: 0.5rem; }
+
+main.docs h2,
+main.docs #docs-body h2 {
+  font-size: 1.5rem;
+  font-weight: bold; }
+
+main.docs h3,
+main.docs #docs-body h3 {
+  font-size: 1.2rem;
+  font-weight: bold; }
+
+main.docs pre {
+  font-size: 1.0rem; }
+
+main.docs button.copybtn {
+  top: .8rem;
+  right: 1.6rem;
+  width: 2.2rem;
+  height: 2.2rem; }
+
+main.docs #docs-body .orm-dependency,
+main.docs #docs-body .core-header,
+main.docs #docs-body .orm-header {
+  padding-top: 10px; }
+
+main.docs #docs-sidebar {
+  top: 165px; }
+
+main.docs #docs-container pre {
+  font-size: 1.0rem; }
+
+main.docs .left-right-container {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  /* bootstrap uses the same class name "container" as sphinx html
+           w/ docutils container does, so here we try to break them apart
+        */ }
+  main.docs .left-right-container :not(.leftmost).docutils.container {
+    max-width: none; }
+  main.docs .left-right-container .docutils.container {
+    padding-top: 1rem; }
+
+main.docs dl.field-list.simple dd > p {
+  padding-left: 30px; }
+
+main.docs dd > p:first-child {
+  padding-top: 10px; }
+
+main.docs dd > div.inherited-member {
+  margin-top: 10px; }
+
+main.docs dl.function > dt,
+main.docs dl.attribute > dt,
+main.docs dl.classmethod > dt,
+main.docs dl.method > dt,
+main.docs dl.class > dt,
+main.docs dl.exception > dt {
+  margin-top: 10px;
+  font-weight: normal; }
+
+main.docs dl.function > dd,
+main.docs dl.attribute > dd,
+main.docs dl.classmethod > dd,
+main.docs dl.method > dd,
+main.docs dl.class > dd,
+main.docs dl.exception > dd {
+  padding-left: 10px; }
+
+/* content styles ---------------------------------------------------------- */
+main.content {
+  font-size: 1.1rem;
+  /* features styles
+    ---------------------------------------------------------- */ }
+  main.content h1 {
+    margin: 0 2em 15px 0;
+    padding: 0; }
+  main.content h2 {
+    margin: 2em 0 10px 0;
+    padding: 0 0 4px 0;
+    font-size: 90%;
+    border-bottom: 1px solid #d9e7bd; }
+  main.content p {
+    margin: 0 0 1em 0;
+    padding: 0; }
+  main.content dl.features {
+    padding-top: 10px;
+    border-bottom: 1px solid #cccccc; }
+    main.content dl.features dt {
+      padding-top: 20px;
+      float: left;
+      width: 135px; }
+    main.content dl.features dd {
+      border-top: 1px solid #cccccc;
+      padding-left: 140px;
+      padding-right: 20px;
+      padding-top: 15px;
+      padding-bottom: 10px;
+      margin-left: 0px; }
+    @media only screen and (max-width: 980px) {
+      main.content dl.features dt {
+        width: auto; }
+      main.content dl.features dd {
+        padding-left: 0;
+        padding-top: 50px; }
+        main.content dl.features dd > ul {
+          padding-left: 1em; } }
+  main.content .tidelift-support img {
+    float: left;
+    width: 80px;
+    height: 80px;
+    border: 1px solid #888;
+    margin-right: 20px !important; }
+
+.release-status .inline-alert,
+.download .inline-alert {
+  padding: 10px 20px 10px 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+  border-left-color: #1b809e; }
+
+.release-status .release-tip,
+.download .release-tip {
+  font-size: 0.8rem; }
+
+.release-status .inline-alert h4,
+.download .inline-alert h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px 0 10px 0; }
+
+.release-status .inline-alert.deprecation-security,
+.download .inline-alert.deprecation-security {
+  border-left-color: #ce4844; }
+
+.release-status .inline-alert.deprecation-security h4,
+.download .inline-alert.deprecation-security h4 {
+  color: #ce4844; }
+
+.release-status .inline-alert.deprecation-maintenance,
+.download .inline-alert.deprecation-maintenance {
+  border-left-color: #aa6708; }
+
+.release-status .inline-alert.deprecation-maintenance h4,
+.download .inline-alert.deprecation-maintenance h4 {
+  color: #aa6708; }

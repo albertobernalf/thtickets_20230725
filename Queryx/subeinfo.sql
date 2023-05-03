@@ -41,9 +41,11 @@ select * from areas_2023;
 
 select * from mae_articulos_maestro_2023;  -- 159 reg
 
--- Se valida
+-- Se valida,  OJOOO FALTA COLOCAR LA SEDE A LA QUE PERTENECE ...
 
-insert into tickets_areas (nombre,"estadoReg") select nombre, 'A' from areas_2023;
+select * from tickets_areas;
+
+insert into tickets_areas (nombre,"estadoReg", sedes_id) select nombre, 'A', 'nymero_de_sede' from areas_2023;
 
 --3 UBICACIONES
 

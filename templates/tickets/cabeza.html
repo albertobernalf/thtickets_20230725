@@ -79,11 +79,12 @@
 
 <!-- desde AQUI SI SEÑORES                      -->
 
-<input type="text" class="form-control" id="username" name="username" value={{Username}}>
+<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
 <input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
 <input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
 <input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
 <input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+<input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
 
 <div class="row">
     <div class="col-lg-12">
@@ -110,11 +111,20 @@
                                     Proceso
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item"  href="/creacionTickets/{{Username}},{{SedeSeleccionada}},{{NombreUsuario}},{{NombreSede}},{{EmpleadoId}}">Creacion Tickets</a>
+                                    <a class="dropdown-item"  href="/creacionTickets/{{Username}},{{SedeSeleccionada}},{{NombreUsuario}},{{NombreSede}},{{EmpleadoId}},{{Perfil}}">Creacion Tickets</a>
                                    <!--    <a class="dropdown-item"  href="/creacionTickets/">Creacion Tickets</a> -->
-                                    <a class="dropdown-item"  href="/asignacionTickets/0,{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Asignacion de tickets</a>
-                                    <a class="dropdown-item"  href="/gestionCoord/{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Coordinadores</a>
-                                    <a class="dropdown-item"  href="/tHumano/0,{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}">Talento Humano</a>
+
+
+                                    <a class="dropdown-item"  href="/asignacionTickets/0,null, {{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}},{{Perfil}}">Asignacion de tickets</a>
+
+
+
+                                    <a class="dropdown-item"  href="/gestionCoord/{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}},{{Perfil}}">Coordinadores</a>
+
+
+
+                                    <a class="dropdown-item"  href="/tHumano/0,null,{{Username}}, {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}},{{Perfil}}">Talento Humano</a>
+
                                 </div>
                             </div>
                         </li>
@@ -128,13 +138,14 @@
                             </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="/ticketsMalla/{{Username}},{{SedeSeleccionada}},{{NombreUsuario}},{{NombreSede}},{{EmpleadoId}}">Tickets-Malla</a>
+
+                                    <a class="dropdown-item" href="/ticketsMalla/0,null,{{Username}},{{SedeSeleccionada}},{{NombreUsuario}},{{NombreSede}},{{EmpleadoId}},{{Perfil}}">Tickets-Malla</a>
 
                                     </div>
 
                             </div>
                         </li>
-                        <a class="nav-link " href="/contrasena/{{EmpleadoId}},{{Username}} , {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}}"  style="color: #e3f2fd;">Contraseña</a>
+                        <a class="nav-link " href="/contrasena/{{EmpleadoId}},{{Username}} , {{SedeSeleccionada}}, {{NombreUsuario}} , {{NombreSede}},{{EmpleadoId}},{{Perfil}}"  style="color: #e3f2fd;">Contraseña</a>
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                        <a class="nav-link" href="/salir" style="color: #e3f2fd;">Salir</a>
 

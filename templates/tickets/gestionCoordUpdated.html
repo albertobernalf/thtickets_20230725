@@ -11,7 +11,9 @@
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
-		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+        var perfil = document.getElementById("perfil").value;
+
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
 		window.location = "/gestionCoord/" + apasar;
 	}
 </script>
@@ -32,16 +34,13 @@
 						<div class="col-md-12">
 							<form method="post" novalidate class="card" class="form-inline">
 
-								<input type="hidden" class="form-control" id="username" name="username"
-									   value={{Username}}>
-								<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada"
-									   value={{SedeSeleccionada}}>
-								<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario"
-									   value={{NombreUsuario}}>
-								<input type="hidden" class="form-control" id="nombreSede" name="nombreSede"
-									   value={{NombreSede}}>
-								<input type="hidden" class="form-control" id="empleadoId" name="empleadoId"
-									   value={{EmpleadoId}}>
+								<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
+								<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
+								<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
+								<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
+								<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+								<input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
+
 
 								{% if form.errors %}
 								<small class="error">{{ form.errors|striptags }}</small>

@@ -1,5 +1,7 @@
 ﻿select * from tickets_empleados;
 
+select * from tickets_sedes;
+
 select * from tickets_tiposempleadosperfil;
 
 2989207 "ROJAS ARGUELLO JEFFERSON EDUARDO"
@@ -61,5 +63,9 @@ select * from tickets_tickets where asignado_id= 5 order by id;
 update tickets_tickets set "estadoRespuestaCoordinador"='Pendiente' where id=4;
 
 select * from tickets_ticketsmalla;
+select * from tickets_mallaturnos;
 
 select * from tickets_tickets;
+
+select * from tickets_mallaturnos order by id ;
+update tickets_mallaturnos set  area_id=39 where id in (11,12);

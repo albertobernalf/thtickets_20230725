@@ -11,7 +11,16 @@
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
-		var apasar = '0,' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+          var nombre = "null";
+         var perfil = document.getElementById("perfil").value;
+
+        if (perfil == 'TALENTO')
+		{
+			perfil= 'TALENTO HUMANO';
+		}
+
+
+		var apasar = '0,' +  nombre + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
 		window.location = "/asignacionTickets/" + apasar;
 	}
 </script>
@@ -26,7 +35,7 @@
 	<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
 	<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
 	<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
-
+	<input type="text" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
 
  	<h2>{% if AsignacionTickets %} Actualizar {%else %} Crea {%endif%} Asignacion Tickets</h2>
 	{% for field in form %}

@@ -283,10 +283,9 @@ class ticketsForm3(forms.ModelForm):
     hastaInicial = forms.DateTimeField()
     sedeFinal = forms.Select()
     tiposTurnoFinal = forms.Select()
-    desdeFinal = forms.DateTimeField()
-    hastaFinal = forms.DateTimeField()
+
     asignado = forms.Select()
-    adjunto = forms.FileField()
+
     sedeReemplazo = forms.Select()
     reemplazo = forms.Select()
     respuestaEmpleadoThumano = forms.Select()

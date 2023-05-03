@@ -4,6 +4,42 @@
 
 {%block content%}
 <script>
+
+function buscar()
+	{
+
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreUsuario = document.getElementById("nombreUsuario").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+        var empleadoId = document.getElementById("empleadoId").value;
+        var ticketId = document.getElementById("ticketId").value;
+        var nombre = document.getElementById("nombre").value;
+        if (nombre == '')
+         {
+          nombre = 'null';
+         }
+
+         var perfil = document.getElementById("perfil").value;
+
+         	if (perfil == 'TALENTO')
+		{
+			perfil= 'TALENTO HUMANO';
+		}
+
+
+		var apasar = ticketId + ',' + nombre + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
+
+
+
+
+		 $(location).attr('href',  '/ticketsMalla/' + apasar);
+
+
+
+	}
+
+
 	function golpe1(id)
 	{
 
@@ -46,7 +82,7 @@
 
 
 	<nav aria-label="Page navigation example">
-      {% if is_paginated %}
+     <!--  {% if is_paginated %}  -->
       <ul class="pagination">
         {% if page_obj.has_previous %}
         <li class="page-item">
@@ -76,16 +112,25 @@
           <a class="page-link">&raquo;</a>
         </li>
         {% endif %}
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		Ticket No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="text"  id="idTicket" name="idTicket" size="15px" placeholder="Busqueda" values="0">
-		<span size="150px"></span>
-		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button"  id="buttonTicket" name="buttonTicket" value="BUSCAR" onclick="buscar()">
+
       </ul>
-      {% endif %}
+      <!--  {% endif %} -->
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" id="ticketId" name="ticketId" size="15px" placeholder="Por Ticket" value="0">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" id="nombre" name="nombre" size="15px" placeholder="Por nombre" value="null" >
+			<span size="150px"></span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" id="buttonTicket" name="buttonTicket" value="BUSCAR" onclick="buscar()">
+
 
     </nav>
+
+
 
 	<div class="form-group mx-sm-12 ">
 	<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
@@ -93,6 +138,7 @@
 	<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
 	<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
 	<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+	<input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
 
 
 
@@ -140,7 +186,7 @@
 			</tbody>
 		</table>
 			<div align="right">
-                        <p style="font-size:15px">{{NombreUsuario}}</p>
+                        <p style="font-size:15px">{{Perfil}}:&nbsp;&nbsp;&nbsp; {{NombreUsuario}}</p>
                </div>
 		</div>
 

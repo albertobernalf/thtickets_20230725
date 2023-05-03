@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)https://www.sqlalchemy.org/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>
+        
+        SQLAlchemy - The Database Toolkit for Python
+        
+    </title>
+
+
+    
+        <!-- sqlalchemy.org head -->
+        
+<link rel="shortcut icon" href="https://www.sqlalchemy.org/favicon.ico" type="image/x-icon">
+<link href="./SQLAlchemy - The Database Toolkit for Python_files/css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" media="all" href="./SQLAlchemy - The Database Toolkit for Python_files/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" media="all" href="./SQLAlchemy - The Database Toolkit for Python_files/site.css">
+	<link rel="stylesheet" type="text/css" media="all" href="./SQLAlchemy - The Database Toolkit for Python_files/carbonads.css">
+	<link rel="stylesheet" type="text/css" media="print" href="./SQLAlchemy - The Database Toolkit for Python_files/print.css">
+
+<script type="text/javascript" async="" src="./SQLAlchemy - The Database Toolkit for Python_files/ga.js.descarga"></script><script type="text/javascript">
+var site_base='';
+var docs_base='//docs.sqlalchemy.org';
+</script>
+
+
+        <!-- end sqlalchemy.org head -->
+    
+
+<script id="_carbonads_projs" type="text/javascript" src="./SQLAlchemy - The Database Toolkit for Python_files/CKYILK7Y.json"></script><div id="_bsa_srv-CKYD62QL_0"></div><style>.osSwitch{position:relative;display:inline-block;width:34px;height:15.3px}.osSwitch input{opacity:0;width:0;height:0}.osSlider{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:34px;background-color:#93a0b5;transition:0.4s}.osSlider:before{position:absolute;content:'';height:13px;width:13px;left:2px;bottom:1px;border-radius:50%;background-color:white;transition:0.4s}input:checked+.sliderGreen{background-color:#04d289}input:checked+.sliderRed{background-color:#ff3b30}input:not(:checked)+.defaultGreen{background-color:#04d289}input:checked+.osSlider:before{transform:translateX(17px)}
+</style><style>
+    @font-face {
+      font-family: 'SegoeUI_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui.woff);
+    }
+
+    @font-face {
+      font-family: 'SegoeUI_bold_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui-bold.woff);
+    }
+</style></head>
+
+<body>
+
+<div id="wrap" class="container-xxl wrap px-0">
+
+    
+
+
+
+<nav class="navbar navbar-light logo">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="https://www.sqlalchemy.org/">
+            <img src="./SQLAlchemy - The Database Toolkit for Python_files/sqla_logo.png" width="240" alt="SQLAlchemy">
+        </a>
+        <div class="navbar-brand align-self-end dbtoolkit">
+            <img src="./SQLAlchemy - The Database Toolkit for Python_files/dbtoolkit6.gif" width="180" height="12" alt="The Database Toolkit for Python">
+        </div>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-md navbar-dark bg-sa-green py-0 navigation">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavigation" aria-controls="navbarNavigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <span class="navbar-brand d-md-block d-md-none" href="#">The Database Toolkit for Python</span>
+        <div class="collapse navbar-collapse" id="navbarNavigation">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="https://www.sqlalchemy.org/">home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="https://www.sqlalchemy.org/#" id="feature-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        features
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark bg-sa-green" aria-labelledby="feature-dropdown">
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/philosophy.html">Philosophy Statement</a></li>
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/features.html">Feature Overview</a></li>
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/quotes.html">Testimonials</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="https://www.sqlalchemy.org/blog/">news</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="https://www.sqlalchemy.org/#" id="docs-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        documentation
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark bg-sa-green" aria-labelledby="docs-dropdown">
+                        <li><a class="dropdown-item" href="https://docs.sqlalchemy.org/">Current Documentation (version 2.0)</a></li>
+
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/library.html#reference">Documentation by Version</a></li>
+                        
+        <li>
+            <a class="dropdown-item" href="https://docs.sqlalchemy.org/en/20/">
+                <span class="ps-2">Version 2.0</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="https://docs.sqlalchemy.org/en/14/">
+                <span class="ps-2">Version 1.4</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="https://docs.sqlalchemy.org/en/13/">
+                <span class="ps-2">Version 1.3</span>
+            </a>
+        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/library.html#talks">Talks and Tutorials</a></li>
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/library.html">Published content overview</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="https://www.sqlalchemy.org/#" id="community-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        community
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark bg-sa-green" aria-labelledby="community-dropdown">
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/support.html">Get Support</a></li>
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/participate.html">Participate</a></li>
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/develop.html">Develop</a></li>
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/codeofconduct.html">Code of Conduct</a></li>
+                        <li><a class="dropdown-item" href="https://github.com/sqlalchemy/sqlalchemy">Github</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="https://www.sqlalchemy.org/#" id="download-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        download
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark bg-sa-green" aria-labelledby="download-dropdown">
+                        <li><a class="dropdown-item" href="https://www.sqlalchemy.org/download.html">Download</a>
+                        
+
+
+
+
+
+
+    </li><li><a class="dropdown-item" href="https://www.sqlalchemy.org/download.html#current">Current Release Series (2.0)</a></li>
+
+    <li><a class="dropdown-item" href="https://www.sqlalchemy.org/download.html#maintenance">Maintenance Release (1.4)</a></li>
+
+    <li><a class="dropdown-item" href="https://www.sqlalchemy.org/download.html#development">Development Access</a></li>
+    <li><a class="dropdown-item" href="https://www.sqlalchemy.org/download.html#license">License</a></li>
+    <li><a class="dropdown-item" href="https://www.sqlalchemy.org/download.html#versions">Version Numbering</a></li>
+    <li><a class="dropdown-item" href="https://www.sqlalchemy.org/download.html#relstatus">Release Status</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+    <div id="main-body" class="home main-body row m-0">
+
+
+        <main id="content" class="content col-md-8 col-lg-9 p-4">
+            <div id="content-inner">
+                
+
+
+
+<h1>The Python SQL Toolkit and Object Relational Mapper</h1>
+
+<p>SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that
+gives application developers the full power and flexibility of SQL.</p>
+<p>It provides a full suite of well known enterprise-level persistence
+patterns, designed for efficient and high-performing database access, adapted
+into a simple and Pythonic domain language.</p>
+
+<dl id="features" class="features">
+    <dt>Documentation</dt>
+    <dd>
+        <ul>
+            <li><a href="https://docs.sqlalchemy.org/"><strong>Current Documentation (version 2.0)</strong></a> - learn SQLAlchemy here
+                <ul>
+                    <li><a href="https://docs.sqlalchemy.org/">Documentation Overview</a></li>
+                    <li><a href="https://docs.sqlalchemy.org/intro.html#installation">Installation Guide</a></li>
+                    <li><a href="https://docs.sqlalchemy.org/orm/quickstart.html">ORM Quickstart</a></li>
+                    <li><a href="https://docs.sqlalchemy.org/tutorial/index.html">Comprehensive Tutorial</a></li>
+                    <li><strong>Reference Guides</strong>
+                        <ul>
+                            <li><a href="https://docs.sqlalchemy.org/orm/">Object Relational Mapping (ORM)</a></li>
+                            <li><a href="https://docs.sqlalchemy.org/core/">Core (Connections, Schema Management, SQL)</a></li>
+                            <li><a href="https://docs.sqlalchemy.org/dialects/">Dialects (specific backends)</a></li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Documentation by Version</strong>
+                <ul class="version-listing"><li><a href="https://docs.sqlalchemy.org/en/20/">Version 2.0</a></li><li><a href="https://docs.sqlalchemy.org/en/14/">Version 1.4</a></li><li><a href="https://docs.sqlalchemy.org/en/13/">Version 1.3</a></li></ul>
+
+            </li>
+        </ul>
+    </dd>
+
+
+    <dt>Learn More</dt>
+    <dd>
+        <ul>
+            <li><strong>Front Matter</strong>
+
+            <ul>
+                <li><a href="https://www.sqlalchemy.org/philosophy.html">SQLAlchemy's Philosophy</a></li>
+                <li><a href="https://www.sqlalchemy.org/features.html">Overview of Key Features</a></li>
+                <li><a href="https://www.sqlalchemy.org/quotes.html">Testimonials</a></li>
+            </ul>
+
+            </li>
+            <li><a href="https://www.sqlalchemy.org/library.html"><strong>Library</strong></a> - Articles and Talks
+                <ul>
+                <li><a href="https://www.sqlalchemy.org/library.html#talks">Talks and Tutorials</a></li>
+                <li><a href="https://www.sqlalchemy.org/library.html#architecture">Architecture</a></li>
+                </ul>
+            </li>
+        </ul>
+    </dd>
+
+    <dt>Resources</dt>
+    <dd>
+            <ul>
+                <li><a href="https://www.sqlalchemy.org/download.html">Release History / Download Information</a></li>
+                <li><a href="https://www.sqlalchemy.org/blog/">News and Announcements</a></li>
+                <li><strong>Community</strong>
+                    <ul>
+                        <li><a href="https://www.sqlalchemy.org/support.html">Getting Support</a></li>
+                        <li><a href="https://www.sqlalchemy.org/participate.html">Participate in the Project</a></li>
+                        <li><a href="https://www.sqlalchemy.org/develop.html">Get Involved with Development</a></li>
+                        <li><a href="https://www.sqlalchemy.org/codeofconduct.html">Code of Conduct</a></li>
+                    </ul>
+                </li>
+            </ul>
+        
+    </dd>
+</dl>
+
+
+
+
+
+
+
+            </div>
+        </main> <!-- end #content-inner, #content -->
+
+        <div class="col-md-4 col-lg-3 pt-4 px-2">
+            
+                
+<div id="sidebar" class="sidebar">
+
+    <div class="release card text-dark bg-sa-grey mb-2">
+        <div class="card-body">
+            
+
+
+
+<h3 class="card-title">Current Releases</h3>
+
+
+
+    <div class="release-box border-end border-bottom py-2">
+        <a href="https://www.sqlalchemy.org/download.html">
+            <b>2.0.11</b>
+        </a> - 2023-04-27 -
+        <a href="https://www.sqlalchemy.org/blog/2023/04/27/sqlalchemy-2.0.11-released/">announce</a>
+        <br>
+        <a href="https://www.sqlalchemy.org/changelog/CHANGES_2_0_11">changes</a> |
+        <a href="https://www.sqlalchemy.org/docs/20/changelog/migration_20.html">migration notes</a> |
+        <a href="https://www.sqlalchemy.org/docs/20/">docs</a>
+
+<div class="pypi-badges">
+<a href="https://pypi.org/project/sqlalchemy" alt="PyPI"><img src="./SQLAlchemy - The Database Toolkit for Python_files/sqlalchemy"></a>
+<a href="https://pypi.org/project/sqlalchemy" alt="PyPI - Downloads"><img src="./SQLAlchemy - The Database Toolkit for Python_files/sqlalchemy(1)"></a>
+<a href="https://pypi.org/project/sqlalchemy" alt="PyPI - Python Version"><img src="./SQLAlchemy - The Database Toolkit for Python_files/sqlalchemy(2)"></a>
+</div>
+    </div>
+
+
+
+    
+    <div class="release-box border-end border-bottom py-2">
+        <a href="https://www.sqlalchemy.org/download.html">
+            <b>1.4.47</b>
+        </a> - 2023-03-18 -
+        <a href="https://www.sqlalchemy.org/blog/2023/03/18/sqlalchemy-1.4.47-released/">announce</a>
+        <br>
+        <a href="https://www.sqlalchemy.org/changelog/CHANGES_1_4_47">changes</a> |
+        <a href="https://www.sqlalchemy.org/docs/14/changelog/migration_14.html">migration notes</a> |
+        <a href="https://www.sqlalchemy.org/docs/14/">docs</a>
+
+    </div>
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="snd-ad card text-dark bg-sa-grey mb-2">
+        <div class="banner card-body">
+            <style>#carbonads *{margin:initial;padding:initial}#carbonads{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',Helvetica,Arial,sans-serif}#carbonads{display:flex;z-index:100}#carbonads a{color:inherit;text-decoration:none}#carbonads a:hover{color:inherit}#carbonads span{position:relative;display:block;overflow:hidden}#carbonads .carbon-wrap{display:flex;border:0}#carbonads .carbon-img{display:block;margin:0;line-height:1}#carbonads .carbon-img img{display:block}#carbonads .carbon-text{font-size:13px;padding:10px;margin-bottom:16px;line-height:1.5;text-align:left}#carbonads .carbon-poweredby{display:block;padding:6px 8px;text-align:center;text-transform:uppercase;letter-spacing:.5px;font-weight:600;font-size:8px;line-height:1;border-top-left-radius:3px;position:absolute;bottom:0;right:0}</style><script async="" type="text/javascript" src="./SQLAlchemy - The Database Toolkit for Python_files/carbon.js.descarga" id="_carbonads_js"></script><div id="carbonads"><span><span class="carbon-wrap"><a href="https://srv.carbonads.net/ads/click/x/GTND42JYCVSD4KQYCWA4YKQNFT7DEKQNF6ADEZ3JCYAD6K3YCK7IP2QKC67IK5QYCEAIV53UC6BD4KQNCV7IL537HEYIK53LCY7DLKJECTNCYBZ52K?segment=placement:sqlalchemyorg;" class="carbon-img" target="_blank" rel="noopener sponsored"><img src="./SQLAlchemy - The Database Toolkit for Python_files/1670532337-Stock2.jpg" alt="ads via Carbon" border="0" height="100" width="130" style="max-width: 130px;"></a><a href="https://srv.carbonads.net/ads/click/x/GTND42JYCVSD4KQYCWA4YKQNFT7DEKQNF6ADEZ3JCYAD6K3YCK7IP2QKC67IK5QYCEAIV53UC6BD4KQNCV7IL537HEYIK53LCY7DLKJECTNCYBZ52K?segment=placement:sqlalchemyorg;" class="carbon-text" target="_blank" rel="noopener sponsored">Get 10 free Adobe Stock photos. Start downloading amazing royalty-free stock photos today.</a></span><a href="http://carbonads.net/?utm_source=sqlalchemyorg&amp;utm_medium=ad_via_link&amp;utm_campaign=in_unit&amp;utm_term=carbon" class="carbon-poweredby" target="_blank" rel="noopener sponsored">ads via Carbon</a></span></div>
+
+        </div>
+    </div>
+
+    <div class="donate card text-dark bg-sa-grey mb-2">
+        <div class="card-body">
+            <h3 class="card-title"><a name="donate"></a>Sponsor SQLAlchemy!</h3>
+
+<div class="border-bottom pb-1">
+    <div class="row g-0">
+    <div class="col-4 d-flex pe-1">
+        <form class="d-block m-auto" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_s-xclick">
+            <input type="hidden" name="hosted_button_id" value="AGTGR9Y8R7A8J">
+            <input class="img-fluid" type="image" src="./SQLAlchemy - The Database Toolkit for Python_files/btn_donate_LG.gif" name="submit" alt="PayPal - The safer, easier way to pay online!">
+            <img alt="" src="./SQLAlchemy - The Database Toolkit for Python_files/pixel.gif" width="1" height="1">
+        </form>
+    </div>
+    <div class="col-8 ps-1">
+        <p class="m-0">
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=AGTGR9Y8R7A8J&amp;source=url">
+                Donate to SQLAlchemy through <strong>PayPal</strong>
+            </a>
+        </p>
+    </div>
+</div>
+
+</div>
+<div class="pt-1">
+    <a class="row g-0" href="https://tidelift.com/subscription/pkg/pypi-sqlalchemy?utm_source=pypi-sqlalchemy&amp;utm_medium=referral&amp;utm_campaign=website">
+    <div class="col-3 d-flex pe-1">
+        <img class="sponsor-img m-auto" src="./SQLAlchemy - The Database Toolkit for Python_files/tidelift.png">
+    </div> 
+    <div class="col-9 ps-1">
+        <p class="m-0">Sponsor SQLAlchemy through the Tidelift Subscription</p>
+    </div>
+</a>
+</div>
+
+
+        </div>
+    </div>
+
+    <div class="news card text-dark bg-sa-grey mb-2">
+        <div class="card-body">
+            
+<h3 class="card-title">Latest News</h3>
+
+<ul class="m-0 p-0">
+        <li class="py-1">
+            <a href="https://www.sqlalchemy.org/blog/#sqlalchemy-2.0.11-released">SQLAlchemy 2.0.11 Released</a>
+            <br>
+            <span class="fst-italic text-muted">Thu, 27 Apr 2023</span>
+        </li>
+        <li class="py-1">
+            <a href="https://www.sqlalchemy.org/blog/#sqlalchemy-2.0.10-released">SQLAlchemy 2.0.10 Released</a>
+            <br>
+            <span class="fst-italic text-muted">Fri, 21 Apr 2023</span>
+        </li>
+        <li class="py-1">
+            <a href="https://www.sqlalchemy.org/blog/#sqlalchemy-2.0.9-released">SQLAlchemy 2.0.9 Released</a>
+            <br>
+            <span class="fst-italic text-muted">Thu, 06 Apr 2023</span>
+        </li>
+        <li class="py-1">
+            <a href="https://www.sqlalchemy.org/blog/#sqlalchemy-2.0.8-released">SQLAlchemy 2.0.8 Released</a>
+            <br>
+            <span class="fst-italic text-muted">Fri, 31 Mar 2023</span>
+        </li>
+        <li class="py-1">
+            <a href="https://www.sqlalchemy.org/blog/#sqlalchemy-1.4.47-released">SQLAlchemy 1.4.47 Released</a>
+            <br>
+            <span class="fst-italic text-muted">Sat, 18 Mar 2023</span>
+        </li>
+</ul>
+
+
+    <a class="card-link" href="https://www.sqlalchemy.org/blog/">More news...</a>
+
+        </div>
+    </div>
+
+</div> <!-- end #sidebar -->
+
+            
+        </div>
+
+
+    </div> <!-- end #main-body -->
+
+    
+
+<div id="footer" class="footer">
+    <div class="snd-ad">
+    <div class="box banner">
+        <p>
+        </p><div class="bsa-ad">
+      <div class="partner">
+        <p>SQLAlchemy <strong>Sponsors</strong></p>
+      </div>
+      <div class="bsa-cpc"></div>
+    </div>
+    <script src="./SQLAlchemy - The Database Toolkit for Python_files/monetization.js.descarga" type="text/javascript"></script>
+    <script>
+    (function() {
+      if (typeof _bsa !== 'undefined' && _bsa) {
+        _bsa.init('default', 'CKYD62QL', 'placement:sqlalchemyorg', {
+          target: '.bsa-cpc',
+          align: 'horizontal',
+          disable_css: 'true'
+        });
+      }
+    })();
+    window.onload = function() {
+      if (document.getElementsByClassName("_default_").length > 0) {
+        document.getElementsByClassName("bsa-ad")[0].style.display = "flex";
+      }
+    }
+    </script>
+        <p></p>
+    </div>
+    </div>
+    <div class="pypowered">
+        <a href="http://www.python.org/" title="The Python Language Site">
+            <img src="./SQLAlchemy - The Database Toolkit for Python_files/python-logo.gif" width="88" height="30" alt="Python" class="pypowered">
+        </a>
+    </div>
+
+    <div class="copyright">
+        <p>Website content copyright © by SQLAlchemy authors and contributors.
+            SQLAlchemy and its documentation are licensed under the MIT license.</p>
+        <p>SQLAlchemy is a trademark of Michael Bayer.  mike(&amp;)zzzcomputing.com
+        All rights reserved. </p>
+        <p>Website generation by
+        <a href="https://github.com/sqlalchemyorg/zeekofile/">zeekofile</a>, with
+        huge thanks to the <a href="https://github.com/EnigmaCurry/blogofile">Blogofile</a>
+        project.</p>
+
+        <a rel="me" href="https://fosstodon.org/@zzzeek">Mastodon</a>
+
+    </div>
+
+    <br clear="all">
+
+</div>
+
+
+
+</div> <!-- end #wrap -->
+
+<script type="text/javascript" src="./SQLAlchemy - The Database Toolkit for Python_files/bootstrap.bundle.min.js.descarga"></script>
+<script type="text/javascript" src="./SQLAlchemy - The Database Toolkit for Python_files/doc_versions.js.descarga"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28532944-1']);
+  _gaq.push(['_setDomainName', 'sqlalchemy.org']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

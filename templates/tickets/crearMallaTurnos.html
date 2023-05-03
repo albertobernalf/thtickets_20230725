@@ -3,6 +3,17 @@
 
 
 {%block content%}
+<style>
+	.span1{
+	display: block;
+	width: 20px;
+	height: 150px;
+	background: rgb(11, 235, 243);
+	border: 5px solid rgb(47, 0, 255);
+}
+
+</style>
+
 <script>
 	function cancelar()
 	{
@@ -11,10 +22,14 @@
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
-		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+        var perfil = document.getElementById("perfil").value;
+
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
 		window.location = "/gestionCoord/" + apasar;
 	}
 </script>
+
+
 
 
 <div class="center">
@@ -22,12 +37,11 @@
 	<form method="post" novalidate class="card" class="form-inline">
 
 		<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
-		<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada"
-			   value={{SedeSeleccionada}}>
+		<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
 		<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
 		<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
 		<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
-
+		<input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
 
 		{% if form.errors %}
 		<small class="error">{{ form.errors|striptags }}</small>
@@ -54,13 +68,30 @@
 								<div class="alert alert-success success-msg" style="display:none"></div>
 								<br>
 								<div class="form-group mx-sm-12">
+									<center>
+									Empleado: <span class="text-primary">{{form.empleado}}</span>
+										</center>
+								</div>
+								<div class="form-group mx-sm-12">
 
 									Año: <span class="text-primary">{{form.ano}}</span>
-									&nbsp;&nbsp;&nbsp;Mes: <span class="text-primary">{{form.mes}}</span>
-									&nbsp;&nbsp;&nbsp;&nbsp;Empleado: <span class="text-primary">{{form.empleado}}</span>
-									&nbsp;&nbsp;&nbsp;&nbsp;Area: <span class="text-primary">{{form.area}}</span>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									Mes: <span class="text-primary"  style="width:10px;">{{form.mes}}</span>
+
+
+
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+									Area: <span class="text-primary">{{form.area}}</span>
 								</div>
-								<br>
+
+
 								<div class="form-group mx-sm-1 ">
 									&nbsp;&nbsp;1: <span class="text-primary">{{form.dia1}}</span>
 									2: <span class="text-primary">{{form.dia2}}</span>

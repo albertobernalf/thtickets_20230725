@@ -11,7 +11,9 @@
         var nombreUsuario = document.getElementById("nombreUsuario").value;
         var nombreSede = document.getElementById("nombreSede").value;
         var empleadoId = document.getElementById("empleadoId").value;
-		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId;
+        var perfil = document.getElementById("perfil").value;
+
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
 		window.location = "/gestionCoord/" + apasar;
 	}
 </script>
@@ -34,11 +36,11 @@
 	<form method="post" novalidate class="card" class="form-inline">
 
 		<input type="hidden" class="form-control" id="username" name="username" value={{Username}}>
-		<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada"
-			   value={{SedeSeleccionada}}>
+		<input type="hidden" class="form-control" id="sedeSeleccionada" name="sedeSeleccionada" value={{SedeSeleccionada}}>
 		<input type="hidden" class="form-control" id="nombreUsuario" name="nombreUsuario" value={{NombreUsuario}}>
 		<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
 		<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
+		<input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
 
 
 
@@ -47,23 +49,37 @@
 		{% endif %}
 
 		<br>
-		<div class="form-group mx-sm-12">
 
+		<div class="form-group mx-sm-12">
+			<center>
+				Empleado: <span class="text-primary">{{form.empleado}}</span>
+			</center>
+		</div>
+		<div class="form-group mx-sm-12">
 			Ticket: <span class="text-primary">
-				 <select  id="ticket" name="ticket" style=" width:50px; " size="1" >
+				 <select id="ticket" name="ticket" style=" width:100px; " size="1">
                                         {% for ticket in Ticket %}
                                             <option value="{{ticket.id}}"> {{ticket.nombre}}</option>
                                         {% endfor %}
                                     </select>
 
 
-		</span>
-
+			</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			Año: <span class="text-primary">{{form.ano}}</span>
-			Mes: <span class="text-primary">{{form.mes}}</span>
-			Empleado: <span class="text-primary">{{form.empleado}}</span>
-			&nbsp;&nbsp;&nbsp;&nbsp;Area: <span class="text-primary">{{form.area}}</span>
+
+
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			Mes: <span class="text-primary" style="width:10px;">{{form.mes}}</span>
+
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+			Area: <span class="text-primary">{{form.area}}</span>
 		</div>
+
+
 		<br>
 		<div class="form-group mx-sm-1 ">
 			1: <span class="text-primary">{{form.dia1}}</span>
@@ -107,7 +123,11 @@
 		</div>
 		<center>
 		<div class="form-group mx-sm-1 ">
+
+			{% if num_days == 31 %}
 			31: <span class="text-primary">{{form.dia31}}</span>
+			{% endif %}
+
 		</div>
 			</center>
 		<div class="form-buttons">
