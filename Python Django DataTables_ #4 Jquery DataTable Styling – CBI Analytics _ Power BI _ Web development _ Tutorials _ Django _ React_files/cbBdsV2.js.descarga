@@ -1,0 +1,735 @@
+/******/ (function() { // webpackBootstrap
+var __webpack_exports__ = {};
+var _main;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//These are used within functions in cbBds.
+function id(elem) {
+  return document.getElementById(elem);
+}
+
+function getHeader() {
+  return document.getElementsByTagName('head')[0];
+}
+
+function createLink() {
+  return document.createElement('link');
+}
+
+function createScript() {
+  return document.createElement('script');
+}
+
+var cbBds = {
+  loadedResources: '',
+  //storage for resources that are loaded within the banner
+  init: function init() {
+    cbAd.loadFonts();
+    cbAd.browserCheck();
+    var arg = {
+      splash: arguments[0].splash ? arguments[0].splash : false,
+      banner: arguments[0].banner ? arguments[0].banner : "backupBanner",
+      feed: arguments[0].feed ? arguments[0].feed : false,
+      connection: arguments[0].connection ? arguments[0].connection : 'local',
+      debug: arguments[0].debug ? arguments[0].debug : false
+    };
+
+    if (arg.debug) {
+      cbAd.debug = true;
+    } else {
+      cbAd.debug = false;
+    }
+
+    if (cbAd.debug) {
+      console.log("-----------------------------------------------------LOADING BDS MAIN---------------------------------------");
+    }
+
+    if (cbAd.debug) {
+      console.log(arg);
+    } //Set banner information like width and height
+
+
+    var banner = document.getElementById('bannerSize');
+    var bannerClass = document.getElementById('bannerSize').classList;
+    var bannerDimensions = bannerClass[0].substring(1).split('x');
+    var bannerWidth = bannerDimensions[0];
+    var bannerHeight = bannerDimensions[1];
+    var bannerSize = bannerWidth + 'x' + bannerHeight;
+    cbAd.bannerInfo.connection = arg.connection;
+    cbAd.bannerInfo.splash = arg.splash;
+    cbAd.bannerInfo.feed = arg.feed;
+    cbAd.bannerInfo.banner = arg.banner;
+    cbAd.bannerInfo.bannerClass = bannerClass;
+    cbAd.bannerInfo.bannerDimensions = bannerDimensions;
+    cbAd.bannerInfo.bannerWidth = bannerWidth;
+    cbAd.bannerInfo.bannerHeight = bannerHeight;
+    cbAd.bannerInfo.bannerSize = bannerSize;
+    cbAd.bannerInfo.isMobile = this.isMobileCheck();
+    cbAd.main.bds.loadBDSMainResources();
+  },
+  main: (_main = {
+    splash: '',
+    banner: '',
+    feed: '',
+    connection: '',
+    createJavaScript: function createJavaScript(name, localLink, liveLink, type) {
+      cbAd.main[type].amountResources++;
+      var header = id('cbBds');
+      var script = createScript();
+      script.onload = loadComplete;
+      script.onreadystatechange = loadComplete;
+
+      if (cbAd.debug) {
+        console.log("loading:" + name, script);
+      }
+
+      switch (cbAd.bannerInfo.connection) {
+        case 'local':
+          script.src = localLink;
+          break;
+
+        case 'live':
+          script.src = liveLink;
+          break;
+      }
+
+      header.appendChild(script);
+
+      if (cbAd.debug) {
+        console.log("amountResources:", cbAd.main[type].amountResources);
+      } //if loading is complete
+
+
+      function loadComplete() {
+        if (cbAd.debug) {
+          console.log("loaded:" + name, script);
+        }
+
+        cbAd.main[type].loadedResources++;
+
+        if (cbAd.debug) {
+          console.log("loadedResources:", cbAd.main[type].loadedResources);
+        }
+
+        cbAd.main[type].checkLoadStatus();
+      }
+    },
+    //Method used to get CSS files
+    createCSSLink: function createCSSLink(name, localLink, liveLink, type) {
+      cbAd.main[type].amountResources++;
+      var header = id('cbBds');
+      var cssSheet = createLink();
+
+      if (cbAd.debug) {
+        console.log("loading:" + name, cssSheet);
+      } //Connection Switch
+
+
+      switch (cbAd.bannerInfo.connection) {
+        case 'local':
+          cssSheet.href = localLink;
+          break;
+
+        case 'live':
+          cssSheet.href = liveLink;
+          break;
+      }
+
+      cssSheet.rel = 'stylesheet';
+      cssSheet.type = 'text/css';
+      cssSheet.onreadystatechange = loadComplete;
+      cssSheet.onload = loadComplete;
+      header.appendChild(cssSheet);
+
+      if (cbAd.debug) {
+        console.log("amountResources:", cbAd.main[type].amountResources);
+      }
+
+      function loadComplete() {
+        if (cbAd.debug) {
+          console.log("loaded:" + name, cssSheet);
+        }
+
+        cbAd.main[type].loadedResources++;
+        cbAd.main[type].checkLoadStatus();
+
+        if (cbAd.debug) {
+          console.log("loadedResources:", cbAd.main[type].loadedResources);
+        }
+
+        cbAd.main[type].checkLoadStatus();
+      }
+    },
+    bds: {
+      amountResources: 0,
+      loadedResources: 0,
+      loaded: false,
+      //Assign BDS Main resources.
+      loadBDSMainResources: function loadBDSMainResources() {
+        //load CB CSS standard style
+        cbAd.main.createCSSLink("CB Main Style", "/Banner Design System/Main Modules/CSS Styles/cbstyle.css", "https://s0.2mdn.net/creatives/assets/3758114/cbstyle.css", "bds"); //load CB library
+
+        cbAd.main.createJavaScript("CB Library", "/Banner Design System/cbLib.js", "https://s0.2mdn.net/creatives/assets/3781309/cbLib.js", "bds"); //load ResourceList
+
+        cbAd.main.createJavaScript("ResourceList", "/Banner Design System/cbResourceList.js", "https://s0.2mdn.net/creatives/assets/3781309//cbResourceList.js", "bds"); //load moduleList
+
+        cbAd.main.createJavaScript("moduleList", "/Banner Design System/moduleList.js", "https://s0.2mdn.net/creatives/assets/3781309/moduleList.js", "bds"); //Load Modules
+
+        cbAd.main.createJavaScript("assetsList", "/Banner Design System/Assets/AssetsList.js", "https://s0.2mdn.net/creatives/assets/3757766/AssetsList.js", "bds"); //Load Coolblue Elements
+
+        cbAd.main.createJavaScript("cbElements", "/Banner Design System/cbElements/cbElements.js", "https://s0.2mdn.net/creatives/assets/4615943/cbElements.js", "bds");
+        cbAd.main.createCSSLink("cbElements", "/Banner Design System/cbElements/cbElements.css", "https://s0.2mdn.net/creatives/assets/4615943/cbElements.css", "bds");
+      },
+      checkLoadStatus: function checkLoadStatus() {
+        if (cbAd.main.bds.amountResources == cbAd.main.bds.loadedResources) {
+          if (cbAd.main.bds.loaded) {} else {
+            if (cbAd.debug) {
+              console.log("------------------------------------------------------BDS LOADED-------------------------------------------------");
+            }
+
+            cbAd.main.bds.loaded = true;
+            cbAd.modules.loadModules(cbAd.modules.modulesToLoad);
+            cbAd.main.banner.loadBannerResources();
+            cbAd.main.checkLoadStatus();
+          }
+        }
+
+        var test = cbAd.main.bds.loaded;
+        return test;
+      }
+    },
+    GSAP: {
+      //links are [local, live]
+      folder: ["/Banner Design System/Main Modules/GSAP/", "https://s0.2mdn.net/creatives/assets/4295748/"],
+      versions: {
+        "2.1.3.": ["2.1.3_TweenMax.js"],
+        "3.7.1": ["3.7.1_gsap.min.js"]
+      },
+      load: function load(version) {
+        var gsapObject = cbAd.main.GSAP;
+        var header = id('cbBds');
+        var script = document.createElement('script');
+        var connection;
+        script.id = "GSAP";
+
+        if (cbAd.debug) {
+          console.log("loading:" + "GSAP", script);
+        } //Defining local/live because this script loads earlier than cbAd.bannerInfo.connection
+
+
+        if (window.location.hostname == "127.0.0.1") {
+          connection = "local"; //LIVE
+        } else {
+          connection = "live";
+        } //Connection switch
+
+
+        switch (connection) {
+          case 'local':
+            script.src = gsapObject.folder[0] + gsapObject.versions[version];
+            break;
+
+          case 'live':
+            script.src = gsapObject.folder[1] + gsapObject.versions[version];
+            break;
+        }
+
+        header.appendChild(script);
+      }
+    }
+  }, _defineProperty(_main, "banner", {
+    amountResources: 0,
+    loadedResources: 0,
+    loaded: false,
+    loadBannerResources: function loadBannerResources() {
+      //check all input
+      checkArgInput(); //check if inputs are correct
+
+      function checkArgInput() {
+        if (cbAd.debug) {
+          console.log("Checking cbAd arguments.");
+        }
+
+        checkConnectionInput();
+
+        function checkConnectionInput() {
+          if (cbAd.bannerInfo.connection != 'live' && cbAd.bannerInfo.connection != 'local') {
+            console.error('Connection', cbAd.bannerInfo.connection, 'is invalid. Automatically changed to "local".');
+            cbAd.bannerInfo.connection = 'local';
+          }
+
+          checkFeedInput();
+        }
+
+        function checkFeedInput() {
+          if (cbAd.bannerInfo.debug) {
+            console.log("Checking feed input.");
+          }
+
+          if (cbAd.bannerInfo.feed != false) {
+            if (Object.keys(cbAd.resources.feeds).includes(cbAd.bannerInfo.feed.toString()) != true) {
+              console.error('The feed', cbAd.bannerInfo.feed, 'is invalid. Automatically changed to "false".');
+              cbAd.bannerInfo.feed = false;
+            }
+          }
+
+          checkSplashInput();
+        }
+
+        function checkSplashInput() {
+          if (cbAd.bannerInfo.debug) {
+            console.log("Checking splash input.");
+          }
+
+          if (cbAd.bannerInfo.splash != false) {
+            if (Object.keys(cbAd.resources.splashScreens).includes(cbAd.bannerInfo.splash) != true) {
+              console.error('The splash', cbAd.bannerInfo.splash, 'is invalid. Automatically changed to "false".');
+              cbAd.bannerInfo.splash = false;
+            }
+          }
+
+          checkBannerInput();
+        }
+
+        function checkBannerInput() {
+          if (cbAd.bannerInfo.debug) {
+            console.log("Checking banner input.");
+          }
+
+          if (cbAd.bannerInfo.banner != false) {
+            if (Object.keys(cbAd.resources.banners).includes(cbAd.bannerInfo.banner) != true) {
+              console.error('The banner', cbAd.bannerInfo.banner, 'is invalid. Automatically changed to "backupBanner".');
+              cbAd.bannerInfo.banner = "backUpbanner";
+            }
+          }
+
+          cbAd.bannerInfo.splash = cbAd.bannerInfo.splash;
+          cbAd.bannerInfo.banner = cbAd.bannerInfo.banner;
+          cbAd.bannerInfo.feed = cbAd.bannerInfo.feed;
+          cbAd.main.banner.bannerLoad();
+        }
+      }
+    },
+    bannerLoad: function bannerLoad() {
+      if (cbAd.debug) {
+        console.log('feed:', cbAd.bannerInfo.feed);
+      }
+
+      var feed = cbAd.bannerInfo.feed;
+      var splash = cbAd.bannerInfo.splash;
+      var banner = cbAd.bannerInfo.banner; //load Splash CSS
+
+      cbAd.main.createCSSLink(banner + " CSS", cbAd.resources.banners[banner].local + cbAd.resources.banners[banner].CSS, cbAd.resources.banners[banner].live + cbAd.resources.banners[banner].CSS, "banner");
+
+      if (feed != false) {
+        cbAd.main.createJavaScript(feed, cbAd.resources.feeds.local + cbAd.resources.feeds[feed], cbAd.resources.feeds.live + cbAd.resources.feeds[feed], "banner");
+      }
+
+      if (splash != false) {
+        cbAd.main.createCSSLink(splash + " CSS", cbAd.resources.splashScreens[splash].local + cbAd.resources.splashScreens[splash].CSS, cbAd.resources.splashScreens[splash].live + cbAd.resources.splashScreens[splash].CSS, "banner");
+        cbAd.main.createJavaScript(splash + " JS", cbAd.resources.splashScreens[splash].local + cbAd.resources.splashScreens[splash].JS, cbAd.resources.splashScreens[splash].live + cbAd.resources.splashScreens[splash].JS, "banner");
+      }
+    },
+    checkLoadStatus: function checkLoadStatus() {
+      if (cbAd.main.banner.amountResources == cbAd.main.banner.loadedResources && cbAd.main.bds.loaded == true) {
+        if (cbAd.main.banner.loaded) {} else {
+          if (cbAd.debug) {
+            console.log("------------------------------------------------------BANNER LOADED-------------------------------------------------");
+          }
+
+          cbAd.main.banner.loaded = true;
+
+          if (cbAd.debug) {
+            console.log("FEED:", cbAd.feed.mainFeed, "PRODUCTFEED:", cbAd.feed.productFeed, "PROMOTIONALFEED:", cbAd.feed.promotionalFeed);
+          }
+
+          cbAd.main.checkLoadStatus();
+        }
+      }
+
+      return cbAd.main.banner.loaded;
+    }
+  }), _defineProperty(_main, "modules", {
+    amountResources: 0,
+    loadedResources: 0,
+    loaded: false,
+    checkLoadStatus: function checkLoadStatus() {
+      if (cbAd.main.modules.amountResources == cbAd.main.modules.loadedResources) {
+        if (cbAd.main.modules.loaded) {} else {
+          if (cbAd.debug) {
+            console.log("------------------------------------------------------MODULES LOADED-------------------------------------------------");
+          }
+
+          cbAd.main.modules.loaded = true;
+          cbAd.main.checkLoadStatus();
+        }
+      }
+    }
+  }), _defineProperty(_main, "checkLoadStatus", function checkLoadStatus() {
+    if (cbAd.main.bds.loaded === true && cbAd.main.banner.loaded === true && cbAd.main.modules.loaded === true) {
+      if (cbAd.debug) {
+        console.log("------------------------------------------------------BANNER READY-------------------------------------------------");
+      }
+
+      if (cbAd.bannerInfo.splash != false) {
+        if (cbAd.debug) {
+          console.log("SPLASH:", cbAd.bannerInfo.splash);
+        }
+
+        cbAd.splashScreen.play();
+      } else {
+        cbAd.banner.load();
+        setTimeout(function () {
+          cbAd.banner.play();
+        }, 300);
+      }
+
+      setTimeout(function () {
+        cbAd.generateUrlSuffix();
+      }, 1000);
+    }
+
+    var loadArr = [cbAd.main.bds.loaded, cbAd.main.banner.loaded, cbAd.main.modules.loaded];
+    return loadArr;
+  }), _main),
+  //Modular Functions
+  splashScreen: {
+    //Used to insert data from the splash.
+    play: function play() {},
+    //Used to insert data from the splash.
+    finished: function finished() {
+      cbAd.banner.play();
+    }
+  },
+  //Used to store feed data.
+  feed: {
+    mainFeed: "",
+    // for storing feed data
+    productFeed: "",
+    // for storing product specific feed data.
+    promotionalFeed: "" // for storing promotional period data
+
+  },
+  banner: {
+    //Used to insert data from the banner controller.
+    load: function load() {},
+    //Used to insert data from the banner controller.
+    play: function play() {},
+    //Used to insert data from the banner controller.
+    finished: function finished() {},
+    //used for interaction with the banner
+    interaction: {
+      interactionState: false,
+      //has the banner been interacted with?
+      interactionFunctions: {//Storage for functions when the banner has been interacted with.
+      },
+      clearInteractionFunctions: {},
+      repeateableInteractionFunctions: {//these are functions just like the interactionFunctions but can be repeated when the banner is no longer being interacted with.
+      },
+      initialize: function initialize() {
+        var interactionModule = cbAd.banner.interaction;
+
+        if (cbAd.debug) {
+          console.log(Object.keys(interactionModule.interactionFunctions).length);
+        }
+
+        if (Object.keys(interactionModule.interactionFunctions).length > 0) {
+          for (i = 0; i < Object.keys(interactionModule.interactionFunctions).length; i++) {
+            interactionModule.interactionFunctions[Object.keys(interactionModule.interactionFunctions)[i]]();
+            ;
+          }
+        }
+      },
+      interact: function interact() {
+        var interactionModule = cbAd.banner.interaction; //if the banner has been interacted with, how long will it to return to not interacted state.
+        //current is 3 seconds.
+
+        interactionModule.interactionState = true;
+
+        if (Object.keys(interactionModule.clearInteractionFunctions).length > 0) {
+          for (i = 0; i < Object.keys(interactionModule.interactionFunctions).length; i++) {
+            interactionModule.clearInteractionFunctions[Object.keys(interactionModule.clearInteractionFunctions)[i]]();
+
+            if (i == Object.keys(interactionModule.interactionFunctions).length - 1) {
+              interactionModule.interactionState = false;
+
+              if (Object.keys(interactionModule.repeateableInteractionFunctions).length > 0) {
+                for (a = 0; a < Object.keys(interactionModule.repeateableInteractionFunctions).length; a++) {
+                  interactionModule.repeateableInteractionFunctions[Object.keys(interactionModule.repeateableInteractionFunctions)[a]]();
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  //storage for cbResourceList
+  resources: {
+    splashScreens: {},
+    feeds: {},
+    banners: {},
+    loadedModules: {},
+    modules: {}
+  },
+  //storage for banner information
+  bannerInfo: {
+    lang: cbLanguage,
+    readyState: false,
+    browser: "",
+    renderEngine: "",
+    preventExit: false,
+    urlSuffixLink: ""
+  },
+  //This is to force the loading of fonts used in our banners. Because browsers only load fonts when they are used. 
+  //It fakes text with low opacity to force the render and therefor the browser loads the font.
+  loadFonts: function loadFonts() {
+    var hiddenDivs = document.createElement('div');
+    var dobraSlabMediumDiv = document.createElement('span');
+    var dobraSlabBookDiv = document.createElement('span');
+    var avenirBlackDiv = document.createElement('span');
+    var openSansDiv = document.createElement('span');
+    hiddenDivs.style.visibility = "hidden";
+    dobraSlabMediumDiv.style.fontFamily = "DobraSlabMedium";
+    dobraSlabBookDiv.style.fontFamily = "DobraSlabBook";
+    avenirBlackDiv.style.fontFamily = "AvenirBlack";
+    openSansDiv.style.fontFamily = "'Open Sans'";
+    dobraSlabMediumDiv.innerHTML = "DobraSlabMedium.";
+    dobraSlabBookDiv.innerHTML = "DobraSlabBook.";
+    avenirBlackDiv.innerHTML = "AvenirBlack.";
+    openSansDiv.innerHTML = "Open Sans.";
+    hiddenDivs.appendChild(dobraSlabMediumDiv);
+    hiddenDivs.appendChild(dobraSlabBookDiv);
+    hiddenDivs.appendChild(avenirBlackDiv);
+    hiddenDivs.appendChild(openSansDiv);
+    document.getElementsByTagName('body')[0].appendChild(hiddenDivs);
+    setTimeout(function () {
+      document.getElementsByTagName('body')[0].removeChild(hiddenDivs);
+    }, 2000);
+  },
+  isMobileCheck: function isMobileCheck() {
+    var platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    var isMobile = platform.test(navigator.userAgent);
+    return isMobile;
+  },
+  browserCheck: function browserCheck() {
+    //Check what browser is being used and store the value in bannerInfo
+    var browser = "USER AGENT NOT RECOGNIZED";
+    var renderEngine = ""; // Opera 8.0+
+
+    var isOpera = !!window.opr && !!opr.addons || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+    if (isOpera) {
+      browser = "Opera";
+    } // Firefox 1.0+
+
+
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+
+    if (isFirefox) {
+      browser = "Firefox";
+    } // Safari 3.0+ "[object HTMLElementConstructor]" 
+
+
+    var isSafari = /constructor/i.test(window.HTMLElement) || function (p) {
+      return p.toString() === "[object SafariRemoteNotification]";
+    }(!window['safari'] || typeof safari !== 'undefined' && safari.pushNotification);
+
+    if (isSafari) {
+      browser = "Safari";
+    } // Internet Explorer 6-11
+
+
+    var isIE =
+    /*@cc_on!@*/
+     false || !!document.documentMode;
+
+    if (isIE) {
+      browser = "IE";
+    } // Edge 20+
+
+
+    var isEdge = !isIE && !!window.StyleMedia;
+
+    if (isEdge) {
+      browser = "Edge";
+    } // Chrome 1 - 71
+
+
+    var isChrome = !!window.chrome;
+
+    if (isChrome) {
+      browser = "Chrome";
+    } // Blink engine detection
+
+
+    var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+    if (isBlink) {
+      browser = "Blink";
+    }
+
+    cbAd.bannerInfo.browser = browser;
+  },
+  generateUrlSuffix: function generateUrlSuffix() {
+    //Override exits
+    if (cbAd.feed.mainFeed) {
+      cbAd.bannerInfo.urlSuffixLink = addOverrideUrlSuffix([{
+        fieldName: 'ApplicationNumber',
+        fieldData: cbAd.feed.mainFeed[0].application_number
+      }, {
+        fieldName: 'ApplicationNumber',
+        fieldData: cbAd.feed.mainFeed[0].AN
+      }, {
+        fieldName: 'ApplicationNumber',
+        fieldData: cbAd.feed.mainFeed[0].Application_Number
+      }, {
+        fieldName: 'Lineitem_id',
+        fieldData: cbAd.feed.mainFeed[0].line_item_id
+      }, {
+        fieldName: 'Lineitem_id',
+        fieldData: cbAd.feed.mainFeed[0].lineitemid
+      }, {
+        fieldName: 'ad_id',
+        fieldData: cbAd.feed.mainFeed[0]._id
+      }, {
+        fieldName: 'ad_id',
+        fieldData: cbAd.feed.mainFeed[0].id
+      }, {
+        fieldName: 'ad_id',
+        fieldData: cbAd.feed.mainFeed[0].ID
+      }, {
+        fieldName: 'placementId',
+        fieldData: cbAd.feed.mainFeed[0].placementId
+      }, {
+        fieldName: 'Reporting_Label',
+        fieldData: cbAd.feed.mainFeed[0].Reporting_Label
+      }, {
+        fieldName: 'Reporting_Label',
+        fieldData: cbAd.feed.mainFeed[0].reportinglabel
+      }, {
+        fieldName: 'Reporting_Label',
+        fieldData: cbAd.feed.mainFeed[0].ReportingLabel
+      }]);
+    }
+
+    function addOverrideUrlSuffix(parameters) {
+      var urlString = '?';
+
+      for (i = 0; i < parameters.length; i++) {
+        if (parameters[i].fieldData !== undefined) {
+          if (urlString.length != 1) {
+            urlString += "&";
+          }
+
+          urlString += "".concat(parameters[i].fieldName, "=").concat(parameters[i].fieldData);
+        }
+
+        if (i == parameters.length - 1) {
+          return urlString;
+        }
+      }
+    }
+  },
+  //Module Array Loading
+  modules: {
+    loadModules: function loadModules(modules) {
+      var amountModules = modules.length;
+      cbAd.main.modules.amountResources += amountModules;
+      var amountModulesLoaded = 0;
+
+      if (cbAd.debug) {
+        console.log('modules:', modules.length);
+      }
+
+      if (modules.length != 0) {
+        for (i = 0; i < modules.length; i++) {
+          if (cbAd.debug) {
+            console.log('Loading module:', modules[i]);
+          }
+
+          loadModuleJS(modules[i]);
+        }
+      } else {
+        cbAd.main.modules.checkLoadStatus();
+      }
+
+      function loadModuleJS(module) {
+        switch (cbAd.bannerInfo.connection) {
+          case 'local':
+            path = cbAd.resources.modules[module].local;
+            break;
+
+          case 'live':
+            path = cbAd.resources.modules[module].live;
+            break;
+        }
+
+        var link = path + cbAd.resources.modules[module].JS;
+        var header = id('cbBds');
+        var script = createScript();
+        script.src = link;
+        script.onreadystatechange = onloadComplete;
+        script.onload = onloadComplete;
+        header.appendChild(script);
+
+        function onloadComplete() {
+          loadModulesCSS(module);
+        }
+      }
+
+      function loadModulesCSS(module) {
+        //If there is a css file connected to the module CSS
+        if (cbAd.resources.modules[module].CSS != "") {
+          switch (cbAd.bannerInfo.connection) {
+            case 'local':
+              path = cbAd.resources.modules[module].local;
+              break;
+
+            case 'live':
+              path = cbAd.resources.modules[module].live;
+              break;
+          }
+
+          var header = id('cbBds');
+          var link = createLink();
+          link.rel = 'stylesheet';
+          link.type = 'text/css';
+          link.href = path + cbAd.resources.modules[module].CSS;
+          link.onreadystatechange = loadComplete;
+          link.onload = loadComplete;
+          header.appendChild(link);
+
+          function loadComplete() {
+            amountModulesLoaded++;
+            cbAd.main.modules.loadedResources++;
+
+            if (amountModulesLoaded == amountModules) {
+              if (cbAd.debug) {
+                console.log('Module:', module, 'amountModules:', amountModules, 'amountModulesLoaded:', amountModulesLoaded);
+              }
+
+              cbAd.main.modules.checkLoadStatus();
+            }
+          }
+        } else {
+          amountModulesLoaded++;
+          cbAd.main.modules.loadedResources++;
+
+          if (amountModulesLoaded == amountModules) {
+            if (cbAd.debug) {
+              console.log('Module:', module, 'amountModules:', amountModules, 'amountModulesLoaded:', amountModulesLoaded);
+              cbAd.main.modules.checkLoadStatus();
+            }
+
+            cbAd.main.modules.checkLoadStatus();
+          }
+        }
+      }
+    }
+  }
+};
+window.cbAd = cbBds;
+/******/ })()
+;

@@ -1,0 +1,873 @@
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+///<reference path="node_modules/gsap/types/index.d.ts"/>
+
+window.cbLib = {
+  //basic DOM functions
+  id: function id(elem) {
+    return document.getElementById(elem) || null;
+  },
+  class: function _class(className) {
+    return document.getElementsByClassName(className);
+  },
+  insertSpan: function insertSpan(id, cls, text) {
+    var returnString = '<span id="' + id + '" class="' + cls + '">' + text + "</span>";
+    return returnString;
+  },
+
+  /**
+   * Description: Inserts a DOM element based on passed parameters.
+   * @param {object} options
+   * @param {string} options.parent DOM element in which the element is to be inserted..
+   * @param {string} options.id id of the new element.
+   * @param {string} options.class class of the new element.
+   * @param {string} options.type type of element to create. div, p, img etc.
+   * @param {string} options.src source for img or video elements.
+   * @param {boolean} options.autoplay set autoplay for video element. True/False.
+   * @param {boolean} options.muted set muted for video element. True/False. Required for autoplay.
+   * @param {text} options.text inserts text right away in the created element.
+   * @param {number} options.insertBeforeChild inserts the new element before *number* child.
+   */
+  insertElement: function insertElement(options) {
+    var referenceNode;
+
+    if (options.parent != false) {
+      var parent = options.parent;
+
+      if (options.text) {
+        options.innerHTML = options.text;
+      }
+
+      if (options.class) {
+        options.className = options.class;
+      }
+
+      if (options.insertBeforeChild) {
+        referenceNode = parent.children[options.insertBeforeChild - 1];
+      }
+
+      var optionsArr = Object.keys(options);
+      var element = document.createElement(options.type);
+
+      if (options.onLoadFunction) {
+        element.onload = options.onLoadFunction;
+      }
+
+      for (var k = 0; k < optionsArr.length; k++) {
+        element[optionsArr[k]] = options[optionsArr[k]];
+
+        if (k == optionsArr.length - 1) {
+          if (referenceNode != null) {
+            parent.insertBefore(element, referenceNode);
+          } else {
+            parent.appendChild(element);
+          } // fix &shy; characters with htmlTags in feed content
+
+
+          if (options.text) {
+            // this returns '&amp;shy;' in the string
+            element.innerHTML = element.innerHTML.replace(/&shy;/g, "&shy;"); // this replaces the correct shy
+
+            element.innerHTML = element.innerHTML.replace(/&amp;shy;/g, "&shy;");
+          }
+
+          return element;
+        }
+      }
+    }
+  },
+
+  /**
+   * ! DEPRECATED!
+   * ! Use insertElement instead.
+   */
+  createDiv: function createDiv(parent, id, cls) {
+    var body = this.id(parent);
+    var div = document.createElement("div");
+    div.id = id;
+    div.className = cls;
+
+    if (body) {
+      body.appendChild(div);
+    }
+  },
+  addClass: function addClass(target, className) {
+    var element = this.id(target);
+
+    if (element) {
+      element.classList.add(className);
+    }
+  },
+  removeClass: function removeClass(target, className) {
+    var element = this.id(target);
+
+    if (element) {
+      element.classList.remove(className);
+    }
+  },
+  replaceText: function replaceText(elem) {
+    // use [] for bold text
+    // use * for &shy;
+    // use / for &nbsp;
+    var element = cbLib.id(elem);
+    var elementText = element.innerHTML;
+    var replaceText = elementText.replace(/\//g, '&nbsp;').replace(/\*/g, '&shy;').replace(/\[/g, "<b>").replace(/\]/g, "</b>");
+    element.innerHTML = replaceText;
+  },
+
+  /**
+  * Description: Resize a text element within its parent element.
+  * @param {object} options
+  * @param {string} options.element DOM element to be affected.
+  * @param {number} options.min minimum font-size
+  * @param {number} options.max maximum font-size
+  * @param {number} options.heightOffset height offset within it's parent container.
+  * @param {number} options.leftOffset left offset within it's parent container
+  */
+  resizeText: function resizeText(options) {
+    var element = cbLib.id(options.element),
+        minFontSize = options.min,
+        fontStep = 1,
+        currentWidth,
+        currentHeight,
+        widthMax,
+        currentFontSize,
+        newFontSize;
+    if (element) var parent = element.parentElement;
+    if (element) element.style.fontSize = options.max + "px";
+    resizer();
+
+    function resizer() {
+      //get computed styles
+      var currentFontSizePx = getComputedStyle(element).getPropertyValue("font-size");
+      currentFontSize = parseInt(currentFontSizePx.substring(0, currentFontSizePx.length - 2));
+      currentWidth = element.offsetWidth;
+      currentHeight = element.offsetHeight;
+      widthMax = parent.offsetWidth;
+      var maxHeight = parent.offsetHeight - options.heightOffset; //calculate
+
+      if ((currentWidth + options.leftOffset > widthMax || currentHeight > maxHeight) && currentFontSize > minFontSize) {
+        newFontSize = currentFontSize - fontStep;
+        element.style.fontSize = newFontSize + "px";
+
+        if (newFontSize != minFontSize) {
+          resizer();
+        }
+      }
+    }
+  },
+
+  /**
+   * Description: Resize a text element within its parent element.
+   * @param {string} elem name of element to resize.
+   * @param {number} min minimum font-size.
+   * @param {number} max maximum font-size.
+   * @param {number} fontstep decrease in font-size per calculation. i.e. from 16 to 15 after 1 iteration.
+   * @param {boolean} singleLine force single line on text element or not. True/False.
+   */
+  //! DEPRECATED
+  //Still in use in CBB
+  fontResize: function fontResize(elem, min, max, fontstep) {
+    var options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {
+      forceSingleLine: false,
+      center: false,
+      leftOffset: 0,
+      resized: false
+    };
+    var element = cbLib.id(elem),
+        minFontSize = min,
+        fontStep = fontstep,
+        currentWidth,
+        widthMax,
+        currentFontSize,
+        newFontSize,
+        parent = element.parentElement; //get computed styles
+
+    currentFontSize = getComputedStyle(element).getPropertyValue("font-size");
+    currentFontSize = parseInt(currentFontSize.substring(0, currentFontSize.length - 2));
+    currentWidth = element.offsetWidth;
+    widthMax = parent.offsetWidth;
+    var scrollWidthMax = element.scrollWidth + options.leftOffset; //calculate
+
+    if (currentWidth + options.leftOffset > widthMax && currentFontSize > minFontSize || scrollWidthMax > widthMax && currentFontSize > minFontSize && options.resized == true) {
+      newFontSize = currentFontSize - fontStep;
+      element.style.fontSize = newFontSize + "px";
+
+      if (newFontSize != min) {
+        this.fontResize(elem, min, max, fontstep);
+      } else {
+        //TODO: Rework "resized" this is not necessary for regular text. Was hacked in to resize fact/slogan text.
+        if (options.resized == false) {
+          element.style.width = widthMax - options.leftOffset + "px";
+          element.style.fontSize = max + "px";
+          element.style.whiteSpace = "normal";
+          options.resized = true;
+          this.fontResize(elem, min, max, fontstep, options);
+        } else {
+          onComplete();
+        }
+      }
+    } else {
+      onComplete();
+    }
+
+    function onComplete() {
+      if (options.center != false) {
+        cbLib.centerHorizontal(elem);
+      }
+    }
+  },
+
+  /**
+   * Description: Center an element horizontally within its parents element.
+   * @param {string} elem The element's ID you want to center.
+   */
+  centerHorizontal: function centerHorizontal(elem) {
+    //TODO: Combine centerHorizontal and centerVertical.
+    var arg = {
+      leftOffset: arguments[0].leftOffset ? arguments[0].leftOffset : 0
+    };
+    var element = cbLib.id(elem);
+    var parent = element.parentElement;
+    var elemWidth = element.offsetWidth;
+    var left = element.offsetLeft;
+    var parentWidth = parent.offsetWidth;
+    var parentLeft = parent.offsetLeft; //calculate
+
+    var widthDifference = parentWidth - elemWidth;
+    var newLeft = (widthDifference + arg.leftOffset) / 2;
+    element.style.left = newLeft + "px";
+  },
+
+  /**
+   * Description: Center an element horizontally within its parents element.
+   * @param {string} elem The element's ID you want to center.
+   */
+  centerVertical: function centerVertical(elem) {
+    var element = cbLib.id(elem);
+    var parent = element.parentElement;
+    var elemHeight = element.offsetHeight;
+    var top = element.offsetTop;
+    var parentHeight = parent.offsetHeight;
+    var parentTop = parent.offsetTop; //calculate
+
+    var heightDifference = parentHeight - elemHeight;
+    var newTop = heightDifference / 2;
+    element.style.top = newTop + "px";
+  },
+  hyphensWords: function hyphensWords() {
+    var copy = cbLib.id("copy"); // set hyphens of copy none
+
+    if (copy) {
+      copy.style.hyphens = "none";
+    }
+
+    var promotionContainer = cbLib.id("promotionContainer"); // get the height of the promotionContainer, the padding of the promotionContainer
+    // get the height of the ctaContainer
+
+    var promotionContainerHeight = promotionContainer.offsetHeight;
+    var promotionContainerPaddingTop = parseInt(getComputedStyle(promotionContainer).getPropertyValue("padding-top"));
+    var promotionContainerPaddingBottom = parseInt(getComputedStyle(promotionContainer).getPropertyValue("padding-bottom")); // the total height of the promotionContainer (used for the copy):
+
+    switch (cbAd.bannerInfo.bannerSize) {
+      default:
+        // promotionContainerHeight - (promotionContainerPadding x 2)
+        var totalHeight = promotionContainerHeight - (promotionContainerPaddingTop + promotionContainerPaddingBottom);
+        break;
+      // case "468x60":
+
+      case "728x90":
+      case "970x90":
+        // promotionContainerHeight - (promotionContainerPadding x 2) - ctaContainer  
+        var ctaContainerHeight = cbLib.id("ctaContainer").offsetHeight;
+        var totalHeight = promotionContainerHeight - (promotionContainerPaddingTop + promotionContainerPaddingBottom) - ctaContainerHeight;
+        break;
+    } // get the height of the copy
+
+
+    var copyHeight = copy === null || copy === void 0 ? void 0 : copy.offsetHeight; // when the height of the copy is bigger than the height of the promotionContainer (copy is outside promotionContainer)
+    // use hyphens manual
+
+    if (copyHeight && copy) {
+      if (copyHeight > totalHeight) {
+        copy.style.hyphens = "manual";
+      }
+    }
+  },
+
+  /**
+   * A pngSequence uses an IMG element to continiously load images into the element.
+   * @param {string} target The img element ID.
+   * @param {string} folder folder which the images are located.
+   * @param {string} prefix name of the file.
+   * @param {string} fileExt File extension used, .jpg .png etc.
+   * @param {*} fps How much images per second
+   * @param {*} finalImage Final image number
+   */
+  pngSequence: function pngSequence(target, folder, prefix, fileExt, fps, finalImage) {
+    var fps = fps;
+    var count = 0;
+    var finalImage = finalImage;
+    var fileName = prefix;
+    var fileExt = fileExt;
+    var gifImage = cbLib.id(target);
+    gifImage.src = folder + fileName + count + fileExt;
+    var repeat = true;
+
+    function startSequence() {
+      count++;
+      gifImage.src = fileName + count + fileExt;
+      var pulseTimer = setTimeout(startSequence, 1000 / fps);
+
+      if (count == finalImage) {
+        clearInterval(pulseTimer);
+        repeat = false;
+      }
+    }
+
+    startSequence();
+  },
+
+  /**
+   * A fact/slogan resizer.
+   * @param {string} factSloganContainer The fact/slogan container in which to resize in.
+   * @param {object} options settings
+   * @param {number} options.factMin minimum font-size for the fact
+   * @param {number} options.factMax maximum font-size for the fact
+   * @param {boolean} options.factBreakLineAllowed if the fact is allowed to be broken in two lines or is forced single line. Single-line is default.
+   * @param {boolean} options.factMaxLines how much lines the fact be if breakLine is allowed, 2 is standard.
+   */
+  resizeFactSlogan2: function resizeFactSlogan2(factSloganContainer, options) {
+    //Options
+    var factBreakLineAllowed = options.factBreakLineAllowed ? options.factBreakLineAllowed : false;
+    var forceFactFontSize;
+    var finalCheck = 0; //Font sizes
+
+    var factMin = options.factMin ? options.factMin : 11;
+    var factMax = options.factMax ? options.factMax : 18;
+    var sloganMin;
+    var sloganMax; //Variables for calculation
+    //General
+
+    var fontStep = 0.1;
+    var container = cbLib.id(factSloganContainer);
+    var containerWidth = container.offsetWidth;
+    var containerHeight = container.offsetHeight;
+    var containerMaxWidth = getComputedStyle(container).getPropertyValue("max-width");
+    var containerMaxHeight = getComputedStyle(container).getPropertyValue("max-height");
+    var containerMaxWidthInt = parseInt(containerMaxWidth.substring(0, containerMaxWidth.length - 2));
+    var containerMaxHeightInt = parseInt(containerMaxHeight.substring(0, containerMaxHeight.length - 2)); //Fact
+
+    var currentFactFontSize;
+    var factLineElement = container.children[0];
+    var factTextElement = factLineElement.children[0];
+    var factMaxLines = options.factMaxLines ? options.factMaxLines : 2;
+    factMaxLines = factMaxLines * 1.3;
+    var factCurrentHeight;
+    var factMaxHeight = 0;
+    var dotElement = factLineElement.children[1];
+    var factWidth = factLineElement.offsetWidth;
+    var newFactFontSize;
+    factTextElement.style.whiteSpace = "nowrap"; //set fontsize to max on first try always
+
+    factLineElement.style.fontSize = factMax + 'px'; //Slogan
+
+    var sloganTextElement = container.children[1];
+    var sloganWidth = sloganTextElement.offsetWidth;
+    var sloganHeight = sloganTextElement.offsetHeight;
+    var sloganMaxHeight;
+    var currentSloganFontSize = factMax * 0.8;
+    var sloganBreakLine = false;
+    var sloganBreakLineAllowed = options.sloganBreakLineAllowed ? options.sloganBreakLineAllowed : false;
+    var sloganMaxSize;
+    var sloganFactRatio = getSloganFactRatio();
+    var newSloganFontSize;
+    sloganTextElement.style.fontSize = currentSloganFontSize + "px";
+    var currentFactFontSizeInt; //set sloganFactRatio
+
+    function getSloganFactRatio() {
+      var factInnerText = factTextElement.innerHTML;
+      var charCount = factInnerText.length;
+      var ratio;
+
+      if (charCount < 6) {
+        ratio = 1.5;
+      }
+
+      if (charCount >= 6 && charCount < 12) {
+        ratio = 1.3;
+      }
+
+      if (charCount >= 12) {
+        ratio = 1.2;
+      }
+
+      return ratio;
+    } //General
+
+
+    var factSloganHeight = sloganHeight + factMaxHeight;
+    resizeFact(0); // resizeManual();
+    //DEBUG tools
+    //Press F to resize Fact.
+    //press S to resize Slogan.
+    // function resizeManual() {
+    //     document.addEventListener("keyup", interaction)
+    //     function interaction(e) {
+    //         if (e.code === "KeyF") {
+    //             resizeFact(0)
+    //         }
+    //         if (e.code === "KeyS") {
+    //             resizeSlogan();
+    //         }
+    //     }
+    // }
+    //Calculate Fact
+
+    function resizeFact(modifier) {
+      //get all dimensions
+      factWidth = factLineElement.offsetWidth;
+      sloganHeight = sloganTextElement.offsetHeight;
+      factCurrentHeight = factTextElement.offsetHeight; //Get current fact font-size
+
+      var currentFactFontSizeStr = getComputedStyle(factLineElement).getPropertyValue("font-size");
+      currentFactFontSizeInt = parseFloat(currentFactFontSizeStr.substring(0, currentFactFontSizeStr.length - 2)); //FactHeight
+
+      factMaxHeight = currentFactFontSizeInt * factMaxLines;
+      factSloganHeight = sloganHeight + factMaxHeight; //set slogan max size
+
+      sloganMaxSize = factWidth * sloganFactRatio; //debug
+      // console.log({
+      //     factWidth: factWidth,
+      //     factMaxHeight: factMaxHeight,
+      //     factHeight: factCurrentHeight,
+      //     factFontSize: currentFactFontSizeInt,
+      //     sloganWidth: sloganWidth,
+      //     sloganHeight: sloganHeight,
+      //     sloganMaxSize: sloganMaxSize,
+      //     sloganFontSize: currentSloganFontSize,
+      //     sloganMaxHeight: (currentSloganFontSize * 2),
+      //     factSloganHeight: factSloganHeight,
+      //     factSloganMaxHeight: containerMaxHeight,
+      //     container: container,
+      //     factMaxWidth: containerMaxWidth
+      // })
+      //if fact bigger then resize
+
+      if (factWidth > containerMaxWidthInt || factCurrentHeight > factMaxHeight && currentFactFontSizeInt > factMin || currentFactFontSizeInt > factMax) {
+        //calculate new fontsize using fontstep
+        newFactFontSize = currentFactFontSizeInt - fontStep;
+        factLineElement.style.fontSize = newFactFontSize + "px";
+        factLineElement.style.lineHeight = newFactFontSize + "px"; //Resize again
+
+        resizeFact(0);
+      } else {
+        //if fact is bigger and has reached min fact font-size, allow for breaking if it is allowed
+        if (currentFactFontSizeInt <= factMin && factBreakLineAllowed === true) {
+          //Set the font to max again because breaking is now allowed.
+          factLineElement.style.fontSize = factMax + "px";
+          factTextElement.style.whiteSpace = "normal"; //if words break, maxFontsize is too big, so resize
+
+          factMax--; //check if min & max fontsize are not the same if true, resize
+
+          if (factMax !== factMin) {
+            resizeFact(0);
+          }
+        } else {
+          if (factSloganHeight > containerMaxHeightInt) {
+            //calculate new fontsize using fontstep
+            newFactFontSize = currentFactFontSizeInt - modifier;
+            factLineElement.style.fontSize = newFactFontSize + "px";
+            factLineElement.style.lineHeight = newFactFontSize + "px"; //if fact fits resize slogan
+
+            resizeSlogan();
+          } else {
+            resizeSlogan();
+          }
+        }
+      }
+
+      sloganMaxSize = factWidth * sloganFactRatio; // use letterSpacing function
+
+      addLetterSpacing();
+    } //Calculate Slogan
+
+
+    function resizeSlogan() {
+      //get all dimensions
+      sloganWidth = sloganTextElement.offsetWidth;
+      factWidth = factTextElement.offsetWidth; //Calculate FS height
+
+      sloganHeight = sloganTextElement.offsetHeight;
+      factMaxHeight = factTextElement.offsetHeight;
+      factSloganHeight = sloganHeight + factMaxHeight; //Get current slogan font-size
+
+      var currentSloganFontSizeStr = getComputedStyle(sloganTextElement).getPropertyValue("font-size");
+      var currentSloganFontSizeInt = parseFloat(currentSloganFontSizeStr.substring(0, currentSloganFontSizeStr.length - 2));
+      sloganMaxHeight = currentSloganFontSizeInt * 2.3;
+      sloganMin = currentFactFontSizeInt * 0.7;
+      sloganMax = currentFactFontSizeInt * 0.8; //debug
+      // console.log({
+      //     factWidth: factWidth,
+      //     factMaxHeight: factMaxHeight,
+      //     factHeight: factCurrentHeight,
+      //     factFontSize: currentFactFontSizeInt,
+      //     sloganWidth: sloganWidth,
+      //     sloganHeight: sloganHeight,
+      //     sloganMaxSize: sloganMaxSize,
+      //     sloganFontSize: currentSloganFontSize,
+      //     sloganMin: sloganMin,
+      //     sloganMax: sloganMax,
+      //     sloganMaxHeight: currentSloganFontSize * 2,
+      //     factSloganHeight: factSloganHeight,
+      //     factSloganMaxHeight: containerMaxHeight,
+      // });
+      //if slogan is bigger then resize
+
+      if (sloganWidth > containerMaxWidthInt || sloganWidth > sloganMaxSize || factSloganHeight > containerMaxHeightInt || sloganHeight > sloganMaxHeight || currentSloganFontSizeInt > sloganMax || currentSloganFontSizeInt < sloganMin) {
+        if (currentSloganFontSizeInt > sloganMin) {
+          newSloganFontSize = currentSloganFontSizeInt - fontStep; //Changes the slogan fontsize and lineheights according to coolblue rules.
+
+          sloganTextElement.style.fontSize = newSloganFontSize + "px";
+
+          switch (cbAd.bannerInfo.bannerSize) {
+            default:
+              sloganTextElement.style.lineHeight = newSloganFontSize + "px";
+              break;
+
+            case '1920x733':
+              sloganTextElement.style.lineHeight = newSloganFontSize / 2 + "px";
+              break;
+          }
+
+          resizeSlogan();
+        } else {
+          //Remove force single-line
+          if (sloganBreakLine === false && sloganBreakLineAllowed === true) {
+            sloganTextElement.style.whiteSpace = "normal";
+            sloganTextElement.style.fontSize = sloganMax + "px";
+            sloganTextElement.style.lineHeight = sloganMax + "px";
+            sloganBreakLine = true;
+            resizeSlogan();
+          } else {
+            //if slogan is bigger and reached min slogan font-size and doesn't fit on multiple lines.
+            if (factSloganHeight > containerMaxHeightInt) {
+              resizeFact(0.1);
+            }
+          }
+        }
+
+        currentSloganFontSizeInt = newSloganFontSize;
+      } else {
+        //if slogan fits.
+        container.style.lineHeight = currentFactFontSize * 0.85 + "px";
+
+        if (finalCheck == 0) {
+          setTimeout(function () {
+            finalCheck++;
+            resizeFact(0);
+          }, 20);
+        }
+      }
+
+      if (currentSloganFontSizeInt > sloganMax) {
+        resizeSlogan();
+      }
+
+      container.style.lineHeight = currentSloganFontSizeInt * 0.85 + "px";
+    }
+
+    function addLetterSpacing() {
+      // use this to calculate the letter-spacing.
+      // photoShop letterTracking & currentFontSize / 1000
+      var newLetterSpacing = -25 * currentFactFontSize / 1000;
+      factTextElement.style.letterSpacing = newLetterSpacing + "px";
+    }
+  },
+  isMobile: function isMobile() {
+    var check = cbAd.bannerInfo.isMobile;
+    return check;
+  },
+
+  /**
+   * Description: Return the fontsize of an element.
+   * @param {object} options
+   * @param {string} options.elem which element to get fontsize from
+   */
+  getFontSize: function getFontSize(options) {
+    var element = options.elem;
+    var currentfontSize = getComputedStyle(element).getPropertyValue("font-size");
+    var currentfontSizeInt = parseInt(currentfontSize.substring(0, currentfontSize.length - 2));
+    return currentfontSizeInt;
+  },
+
+  /**
+   * Description: Return the lineHeight of an element.
+   * @param {object} options
+   * @param {string} options.elem which element to get lineHeight from
+   */
+  getLineHeight: function getLineHeight(options) {
+    var element = options.elem;
+    var currentLineHeight = getComputedStyle(element).getPropertyValue("line-height");
+    return currentLineHeight;
+  },
+  typeWriterV2: function typeWriterV2(options) {
+    var typedText = options.text; // if there is no text given, return without executing
+
+    if (!typedText) return;
+    var target = options.target;
+    target.innerHTML = typedText;
+    var words = typedText.split(" "); // create a new div element
+
+    var hidden = document.createElement("div");
+    hidden.id = "hidden"; // add the newly created element and its content into the DOM
+
+    var currentDiv = target;
+    var currentDivstyle = getComputedStyle(currentDiv);
+    hidden.style.width = currentDivstyle.width;
+    hidden.style.height = currentDivstyle.height;
+    hidden.style.fontFamily = currentDivstyle.fontFamily;
+    hidden.style.fontSize = currentDivstyle.fontSize;
+    hidden.style.lineHeight = currentDivstyle.lineHeight;
+    var body = cbLib.id("bannerContent");
+    body.appendChild(hidden);
+    var typeWriterTl = new TimelineMax();
+    prepareStyles();
+    var shytWordsIndexes = checkForShytWords();
+    var textToBeTyped = composeNewTypedText(shytWordsIndexes);
+    prepareTypeText(textToBeTyped, currentDiv);
+    typeText(currentDiv);
+
+    function prepareStyles() {
+      var head = document.getElementsByTagName("head")[0]; //Create a styleSheet
+
+      var styleSheet = document.createElement("style");
+      styleSheet.id = "typeWriterStylesheet";
+      styleSheet.innerHTML = "div.spanHolder {" + "vertical-align: bottom;" + "display: inline-block; }" + "span.cursor { " + "display: block;" + "overflow: hidden;" + "height: auto;" + " } " + "#hidden {" + "opacity: 1;" + "}";
+      head.appendChild(styleSheet);
+    }
+
+    function checkForShytWords() {
+      // first, check for shy-t words
+      for (var i = 0, wordsLength = words.length, spans = ""; i < wordsLength; i++) {
+        if (i == wordsLength - 1) {
+          spans += "<span>" + words[i] + "</span>";
+        } else {
+          spans += "<span>" + words[i] + "</span>&#32;";
+        }
+      }
+
+      hidden.innerHTML = spans;
+      var bigSpan = [];
+      var spanHeigths = []; // get each height of span in hidden div
+
+      var hiddenSpans = hidden.getElementsByTagName("span");
+
+      for (var x = 0; x < hiddenSpans.length; x++) {
+        spanHeigths[x] = hiddenSpans[x].offsetHeight;
+      } // get the smallest span, a non-shyt word
+
+
+      var minHeigth = Math.min.apply(Math, spanHeigths); // check for each spanHeight if this is heighter than a non shyt word
+      // this indicates an broken word and needs to be split
+      // the index of the word is saved to BigSpan array
+
+      for (var _i = 0; _i < spanHeigths.length; _i++) {
+        if (spanHeigths[_i] > minHeigth) {
+          bigSpan.push(_i);
+        }
+      }
+
+      return bigSpan;
+    }
+
+    function composeNewTypedText(indexes) {
+      // we need to cut the broken words into 2 seperate span tags and build the text to be typed by typewriter
+      var newTypedText = "";
+
+      for (var i = 0; i < typedText.split(" ").length; i++) {
+        // if the index of the word that needs to be broken, is in the Big Span array, we need to split it
+        if (indexes.indexOf(i) != -1) {
+          newTypedText += typedText.split(" ")[indexes[indexes.indexOf(i)]] + " ";
+        } else {
+          newTypedText += typedText.split(" ")[i].replace("&shy;", "") + " ";
+        }
+      }
+
+      return newTypedText;
+    }
+
+    function prepareTypeText(text, elem) {
+      // create the div and span elements that are going to be animated
+      // and place this in the div where the text needs to be
+      var typeWriterText = text.split(" ");
+      var output = "";
+
+      for (var i = 0, wordsLength = typeWriterText.length; i < wordsLength; i++) {
+        if (i == wordsLength - 1) {
+          output += '<div class="spanHolder"><span id="cursor" class="cursor">' + typeWriterText[i] + "</span></div>";
+        } else {
+          output += '<div class="spanHolder"><span id="cursor" class="cursor">' + typeWriterText[i] + "&nbsp;</span></div>";
+        }
+      }
+
+      elem.innerHTML = output;
+    }
+
+    function typeText(elem) {
+      /* ---- Generate tween with the first sentence --- */
+      // REMEMBER: Set the hidden span CSS to same font-family and font-size to generate correct width
+      var allSpans = elem.getElementsByTagName("span"); // capture all the span widths to animate later
+
+      var spanWidths = [];
+      var spanParentHeights = [];
+
+      for (var x = 0; x < allSpans.length; x++) {
+        spanWidths[x] = allSpans[x].offsetWidth + 1; // console.log(allSpans[x].parentElement, allSpans[x].parentElement.offsetHeight);
+
+        spanParentHeights[x] = allSpans[x].parentElement.offsetHeight;
+      } //console.log(spanParentHeights);
+      // set the widths to the container divs
+
+
+      for (var x = 0; x < allSpans.length; x++) {
+        var spanWidth = spanWidths[x]; // get the div around the span
+
+        var holder = allSpans[x].parentElement; //console.log(spanParentHeights[x]);
+
+        allSpans[x].style.height = Math.ceil(spanParentHeights[x]) + "px"; //console.log(allSpans[x]);
+        // set the width to each div
+
+        TweenMax.set(holder, {
+          width: spanWidth
+        });
+      } // reset hidden span to generate new line
+
+
+      hidden.innerHTML = "";
+
+      for (var x = 0; x < allSpans.length; x++) {
+        spanWidths[x];
+        var spanWidth = spanWidths[x];
+        var time = spanWidth > 75 ? 0.15 : 0.07; //console.log(allSpans[x], time)
+
+        typeWriterTl.fromTo(allSpans[x], time, {
+          width: "0"
+        }, {
+          width: spanWidth,
+
+          /* same as CSS .line-1 width */
+          ease: SteppedEase.config(37)
+        });
+      }
+    }
+  },
+
+  /**
+   * Description: Checks if current date is between 2 specified dates. dd-mm-yyyy notation
+   * @param startDate //dd-mm-yyyy notation
+   * @param endDate //dd-mm-yyyy notation
+   * @returns 
+   */
+  betweenDate: function betweenDate(startDate, endDate) {
+    var startDateStrArr = startDate.split("-");
+    var endDateStrArr = endDate.split("-");
+    var endDateNmbrArr = [parseInt(endDateStrArr[0]), parseInt(endDateStrArr[1]), parseInt(endDateStrArr[2])];
+    var startDateNmbrArr = [parseInt(startDateStrArr[0]), parseInt(startDateStrArr[1]), parseInt(startDateStrArr[2])];
+    endDateNmbrArr.reverse();
+    startDateNmbrArr.reverse(); //Convert to real Date format
+
+    var startDateFormat = new Date(startDateNmbrArr[0], startDateNmbrArr[1] - 1, startDateNmbrArr[2]);
+    var endDateFormat = new Date(endDateNmbrArr[0], endDateNmbrArr[1] - 1, endDateNmbrArr[2]); //Add 59:59:999 to the endDate so it's the whole day on the last day.
+
+    endDateFormat.setHours(23, 59, 59, 999);
+    var today = new Date();
+    return today >= startDateFormat && today <= endDateFormat ? true : false;
+  },
+
+  /**
+  * Description: scrollProductTitle
+  * @param {object} arg 
+  * @param {string} arg.elem target element
+  */
+  scrollProductTitle: {
+    convert: function convert(arg) {
+      //default values for arguments.
+      //check if elem is valid
+      if (arg.elem === null || arg.elem === undefined || arg.elem == "") {
+        console.error("scrollProductTitle: Invalid argument: elem is empty ");
+      }
+
+      var elem = cbLib.id(arg.elem);
+      var text = elem.innerHTML;
+      var productTitleHeight; //remove the text and create a new text element
+
+      elem.innerHTML = "";
+      var newTextElem = cbLib.insertElement({
+        parent: elem,
+        id: 'scrollable' + elem.id,
+        type: 'span',
+        text: text
+      }); //create fade elements
+
+      var fadeLeft = cbLib.insertElement({
+        parent: elem,
+        class: 'productTitleFades leftFade',
+        type: 'img',
+        src: "https://s0.2mdn.net/creatives/assets/3883237/faderImage.png"
+      });
+      var fadeRight = cbLib.insertElement({
+        parent: elem,
+        class: 'productTitleFades rightFade',
+        type: 'img',
+        src: "https://s0.2mdn.net/creatives/assets/3883237/faderImage.png"
+      });
+      newTextElem.style.position = "relative"; //if productTitle is bigger than the container then activate.
+
+      if (newTextElem.offsetWidth > elem.offsetWidth) {
+        //Set height of the faders.
+        fadeLeft = cbLib.class("leftFade")[0];
+        fadeRight = cbLib.class("rightFade")[0];
+        productTitleHeight = newTextElem.offsetHeight;
+        fadeLeft.style.height = productTitleHeight + "px";
+        fadeRight.style.height = productTitleHeight + "px";
+        elem.style.overflow = "hidden"; //scrolling animation
+
+        var width = newTextElem.offsetWidth - elem.offsetWidth;
+        var time = width * 0.03;
+        var tl = gsap.timeline({
+          repeat: -1,
+          delay: 3,
+          repeatDelay: 3
+        });
+        tl.to(newTextElem, time, {
+          right: width,
+          ease: Linear.easeNone
+        });
+        tl.to(fadeLeft, 0.2, {
+          opacity: 1
+        }, "-=" + (-time + 0.2));
+        tl.to(fadeRight, 0.2, {
+          opacity: 1
+        }, "-=" + (-time + 0.2));
+        tl.to(fadeRight, 0.2, {
+          opacity: 0
+        });
+        tl.to(fadeRight, 0.2, {
+          opacity: 1
+        }, "+=3");
+        tl.to(newTextElem, time / 8, {
+          right: 0,
+          ease: Linear.easeIn
+        });
+        tl.to(fadeLeft, 0.2, {
+          opacity: 0
+        });
+      }
+    }
+  }
+};
+var cbLib = window.cbLib;
+/******/ })()
+;

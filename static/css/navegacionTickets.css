@@ -134,4 +134,32 @@ ul.tabs li a .tab-text{
     overflow:scroll;
 }
 
+.tablaCoordTickets{
+    font-family:Arial ;
+    font-size: 10px;
+    font-weight: bold;
+
+}
+
+.tablaCoordTickets th {
+    font-size: 10px;
+    background-color: #2D323E;
+    color: white;
+     font-weight: bold;
+
+  }
+
+.tablaCoordTickets td {
+    font-family:Arial ;
+    font-size: 10px;
+    font-weight: bold;
+    width:1px;
+  }
+
+.tablaCoordTickets  tr  {
+     height:1px ;
+
+ }
+
+
 

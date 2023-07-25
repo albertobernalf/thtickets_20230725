@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<!-- saved from url=(0077)https://cbi-analytics.nl/python-django-datatables-4-jquery-datatable-styling/ -->
+<html lang="nl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>Python Django DataTables: #4 Jquery DataTable Styling – CBI Analytics | Power BI | Web development | Tutorials | Django | React</title>
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://pagead2.googlesyndication.com/">
+<link rel="alternate" type="application/rss+xml" title="CBI Analytics | Power BI | Web development | Tutorials | Django | React » feed" href="https://cbi-analytics.nl/feed/">
+<link rel="alternate" type="application/rss+xml" title="CBI Analytics | Power BI | Web development | Tutorials | Django | React » reactiesfeed" href="https://cbi-analytics.nl/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="CBI Analytics | Power BI | Web development | Tutorials | Django | React » Python Django DataTables: #4 Jquery DataTable Styling reactiesfeed" href="https://cbi-analytics.nl/python-django-datatables-4-jquery-datatable-styling/feed/">
+<link rel="stylesheet" id="blocksy-dynamic-global-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/global.css" media="all">
+<link rel="stylesheet" id="wp-block-library-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/style.min.css" media="all">
+<link rel="stylesheet" id="wp-components-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/style.min(1).css" media="all">
+<link rel="stylesheet" id="wp-block-editor-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/style.min(2).css" media="all">
+<link rel="stylesheet" id="wp-nux-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/style.min(3).css" media="all">
+<link rel="stylesheet" id="wp-reusable-blocks-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/style.min(4).css" media="all">
+<link rel="stylesheet" id="wp-editor-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/style.min(5).css" media="all">
+<link rel="stylesheet" id="simple-iframe-style-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/blocks.style.build.css" media="all">
+<link rel="stylesheet" id="classic-theme-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/classic-themes.min.css" media="all">
+<style id="global-styles-inline-css">
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--palette-color-1: var(--paletteColor1, #10328C);--wp--preset--color--palette-color-2: var(--paletteColor2, #1559ed);--wp--preset--color--palette-color-3: var(--paletteColor3, #3A4F66);--wp--preset--color--palette-color-4: var(--paletteColor4, #192a3d);--wp--preset--color--palette-color-5: var(--paletteColor5, #e1e8ed);--wp--preset--color--palette-color-6: var(--paletteColor6, #f2f5f7);--wp--preset--color--palette-color-7: var(--paletteColor7, #FAFBFC);--wp--preset--color--palette-color-8: var(--paletteColor8, #ffffff);--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--gradient--juicy-peach: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);--wp--preset--gradient--young-passion: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);--wp--preset--gradient--true-sunset: linear-gradient(to right, #fa709a 0%, #fee140 100%);--wp--preset--gradient--morpheus-den: linear-gradient(to top, #30cfd0 0%, #330867 100%);--wp--preset--gradient--plum-plate: linear-gradient(135deg, #667eea 0%, #764ba2 100%);--wp--preset--gradient--aqua-splash: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);--wp--preset--gradient--love-kiss: linear-gradient(to top, #ff0844 0%, #ffb199 100%);--wp--preset--gradient--new-retrowave: linear-gradient(to top, #3b41c5 0%, #a981bb 49%, #ffc8a9 100%);--wp--preset--gradient--plum-bath: linear-gradient(to top, #cc208e 0%, #6713d2 100%);--wp--preset--gradient--high-flight: linear-gradient(to right, #0acffe 0%, #495aff 100%);--wp--preset--gradient--teen-party: linear-gradient(-225deg, #FF057C 0%, #8D0B93 50%, #321575 100%);--wp--preset--gradient--fabled-sunset: linear-gradient(-225deg, #231557 0%, #44107A 29%, #FF1361 67%, #FFF800 100%);--wp--preset--gradient--arielle-smile: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);--wp--preset--gradient--itmeo-branding: linear-gradient(180deg, #2af598 0%, #009efd 100%);--wp--preset--gradient--deep-blue: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);--wp--preset--gradient--strong-bliss: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%);--wp--preset--gradient--sweet-period: linear-gradient(to top, #3f51b1 0%, #5a55ae 13%, #7b5fac 25%, #8f6aae 38%, #a86aa4 50%, #cc6b8e 62%, #f18271 75%, #f3a469 87%, #f7c978 100%);--wp--preset--gradient--purple-division: linear-gradient(to top, #7028e4 0%, #e5b2ca 100%);--wp--preset--gradient--cold-evening: linear-gradient(to top, #0c3483 0%, #a2b6df 100%, #6b8cce 100%, #a2b6df 100%);--wp--preset--gradient--mountain-rock: linear-gradient(to right, #868f96 0%, #596164 100%);--wp--preset--gradient--desert-hump: linear-gradient(to top, #c79081 0%, #dfa579 100%);--wp--preset--gradient--ethernal-constance: linear-gradient(to top, #09203f 0%, #537895 100%);--wp--preset--gradient--happy-memories: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);--wp--preset--gradient--grown-early: linear-gradient(to top, #0ba360 0%, #3cba92 100%);--wp--preset--gradient--morning-salad: linear-gradient(-225deg, #B7F8DB 0%, #50A7C2 100%);--wp--preset--gradient--night-call: linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%);--wp--preset--gradient--mind-crawl: linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%);--wp--preset--gradient--angel-care: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);--wp--preset--gradient--juicy-cake: linear-gradient(to top, #e14fad 0%, #f9d423 100%);--wp--preset--gradient--rich-metal: linear-gradient(to right, #d7d2cc 0%, #304352 100%);--wp--preset--gradient--mole-hall: linear-gradient(-20deg, #616161 0%, #9bc5c3 100%);--wp--preset--gradient--cloudy-knoxville: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);--wp--preset--gradient--soft-grass: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);--wp--preset--gradient--saint-petersburg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);--wp--preset--gradient--everlasting-sky: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);--wp--preset--gradient--kind-steel: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);--wp--preset--gradient--over-sun: linear-gradient(60deg, #abecd6 0%, #fbed96 100%);--wp--preset--gradient--premium-white: linear-gradient(to top, #d5d4d0 0%, #d5d4d0 1%, #eeeeec 31%, #efeeec 75%, #e9e9e7 100%);--wp--preset--gradient--clean-mirror: linear-gradient(45deg, #93a5cf 0%, #e4efe9 100%);--wp--preset--gradient--wild-apple: linear-gradient(to top, #d299c2 0%, #fef9d7 100%);--wp--preset--gradient--snow-again: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);--wp--preset--gradient--confident-cloud: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%);--wp--preset--gradient--glass-water: linear-gradient(to top, #dfe9f3 0%, white 100%);--wp--preset--gradient--perfect-white: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel="stylesheet" id="mkaz-code-syntax-prism-css-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/prism-a11y-dark.css" media="all">
+<link rel="stylesheet" id="contact-form-7-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/styles.css" media="all">
+<link rel="stylesheet" id="recent-posts-widget-with-thumbnails-public-style-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/public.css" media="all">
+<link rel="stylesheet" id="hcb-style-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/hcb--light.css" media="all">
+<style id="hcb-style-inline-css">
+:root{--hcb-font-size: 14px}:root{--hcb-font-size--mobile: 13px}:root{--hcb-font-family:Menlo, Consolas, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;}
+</style>
+<link rel="stylesheet" id="ct-main-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/main.min.css" media="all">
+<link rel="stylesheet" id="blocksy-ext-cookies-consent-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/main.min(1).css" media="all">
+<link rel="stylesheet" id="blocksy-ext-trending-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/main.min(2).css" media="all">
+<link rel="stylesheet" id="blocksy-ext-widgets-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/main.min(3).css" media="all">
+<link rel="stylesheet" id="blocksy-fonts-font-source-google-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/css2(1)" media="all">
+<link rel="stylesheet" id="ct-page-title-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/page-title.min.css" media="all">
+<link rel="stylesheet" id="ct-elementor-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/elementor-frontend.min.css" media="all">
+<link rel="stylesheet" id="ct-sidebar-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/sidebar.min.css" media="all">
+<link rel="stylesheet" id="ct-share-box-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/share-box.min.css" media="all">
+<link rel="stylesheet" id="ct-comments-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/comments.min.css" media="all">
+<link rel="stylesheet" id="ct-posts-nav-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/posts-nav.min.css" media="all">
+<link rel="stylesheet" id="ct-cf-7-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/cf-7.min.css" media="all">
+<link rel="stylesheet" id="ct-wpforms-styles-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/wpforms.min.css" media="all">
+<link rel="stylesheet" id="elementor-frontend-legacy-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/frontend-legacy.min.css" media="all">
+<link rel="stylesheet" id="elementor-frontend-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/frontend.min.css" media="all">
+<link rel="stylesheet" id="eael-general-css" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/general.min.css" media="all">
+
+<!-- Google Analytics snippet toegevoegd door Site Kit -->
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(10).txt"></script><script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(11).txt"></script><script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(12).txt" id="google_shimpl"></script><script type="text/javascript" async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/recaptcha__es.js.descarga" crossorigin="anonymous" integrity="sha384-IZU6MY7YgJd+qq6Dmj3wSxCcd2SW9yhEuTqz+4j8oSMk4ObYbYZgByTDPG5vVOsH"></script><script type="text/javascript" async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/analytics.js.descarga"></script><script type="text/javascript" async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/js"></script><script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/js(1)" id="google_gtagjs-js" async=""></script>
+<script id="google_gtagjs-js-after">
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag('set', 'linker', {"domains":["cbi-analytics.nl"]} );
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "UA-199963128-1", {"anonymize_ip":true});
+</script>
+
+<!-- Einde Google Analytics snippet toegevoegd door Site Kit -->
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/jquery.min.js.descarga" id="jquery-core-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/jquery-migrate.min.js.descarga" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://cbi-analytics.nl/wp-json/"><link rel="alternate" type="application/json" href="https://cbi-analytics.nl/wp-json/wp/v2/posts/3607"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://cbi-analytics.nl/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://cbi-analytics.nl/wp-includes/wlwmanifest.xml">
+<meta name="generator" content="WordPress 6.2">
+<link rel="canonical" href="https://cbi-analytics.nl/python-django-datatables-4-jquery-datatable-styling/">
+<link rel="shortlink" href="https://cbi-analytics.nl/?p=3607">
+<link rel="alternate" type="application/json+oembed" href="https://cbi-analytics.nl/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://cbi-analytics.nl/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;format=xml">
+        <script type="text/javascript">
+            ( function () {
+                window.lae_fs = { can_use_premium_code: false};
+            } )();
+        </script>
+        <meta name="generator" content="Site Kit by Google 1.99.0"><!-- Analytics by WP Statistics v14.0.2 - https://wp-statistics.com/ -->
+<noscript><link rel='stylesheet' href='https://cbi-analytics.nl/wp-content/themes/blocksy/static/bundle/no-scripts.min.css' type='text/css' /></noscript>
+
+<!-- Google AdSense snippet toegevoegd door Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- Einde Google AdSense snippet toegevoegd door Site Kit -->
+<meta name="generator" content="Elementor 3.12.2; features: a11y_improvements, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+
+<!-- Google AdSense snippet toegevoegd door Site Kit -->
+<script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(13).txt" crossorigin="anonymous" data-checked-head="true"></script>
+
+<!-- Einde Google AdSense snippet toegevoegd door Site Kit -->
+<style id="uagb-style-conditional-extension">@media (min-width: 1025px){body .uag-hide-desktop.uagb-google-map__wrap,body .uag-hide-desktop{display:none !important}}@media (min-width: 768px) and (max-width: 1024px){body .uag-hide-tab.uagb-google-map__wrap,body .uag-hide-tab{display:none !important}}@media (max-width: 767px){body .uag-hide-mob.uagb-google-map__wrap,body .uag-hide-mob{display:none !important}}</style><link rel="icon" href="https://cbi-analytics.nl/wp-content/uploads/2020/05/cropped-Asquare-32x32.png" sizes="32x32">
+<link rel="icon" href="https://cbi-analytics.nl/wp-content/uploads/2020/05/cropped-Asquare-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://cbi-analytics.nl/wp-content/uploads/2020/05/cropped-Asquare-180x180.png">
+<meta name="msapplication-TileImage" content="https://cbi-analytics.nl/wp-content/uploads/2020/05/cropped-Asquare-270x270.png">
+	<meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/sticky.js.descarga"></script><script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/lazy-load.js.descarga"></script><script charset="utf-8" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/8.61179c075b7323907f8f.js.descarga"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt"></script><style>.osSwitch{position:relative;display:inline-block;width:34px;height:15.3px}.osSwitch input{opacity:0;width:0;height:0}.osSlider{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:34px;background-color:#93a0b5;transition:0.4s}.osSlider:before{position:absolute;content:'';height:13px;width:13px;left:2px;bottom:1px;border-radius:50%;background-color:white;transition:0.4s}input:checked+.sliderGreen{background-color:#04d289}input:checked+.sliderRed{background-color:#ff3b30}input:not(:checked)+.defaultGreen{background-color:#04d289}input:checked+.osSlider:before{transform:translateX(17px)}
+</style><style>
+    @font-face {
+      font-family: 'SegoeUI_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui.woff);
+    }
+
+    @font-face {
+      font-family: 'SegoeUI_bold_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui-bold.woff);
+    }
+</style><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(14).txt"></script><link rel="preload" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt" as="script"><script type="text/javascript" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(15).txt"></script></head>
+
+<body class="post-template-default single single-post postid-3607 single-format-standard wp-custom-logo wp-embed-responsive elementor-default elementor-kit-2001 ct-elementor-default-template" data-link="type-2" data-prefix="single_blog_post" data-header="type-1:sticky:shrink" data-footer="type-1" itemscope="itemscope" itemtype="https://schema.org/Blog" aria-hidden="false" style="padding: 0px 0px 120px;">
+
+<a class="skip-link show-on-focus" href="https://cbi-analytics.nl/python-django-datatables-4-jquery-datatable-styling/#main">
+	Doorgaan naar artikel</a>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-dark-grayscale"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0 0.49803921568627"></fefuncr><fefuncg type="table" tableValues="0 0.49803921568627"></fefuncg><fefuncb type="table" tableValues="0 0.49803921568627"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-grayscale"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0 1"></fefuncr><fefuncg type="table" tableValues="0 1"></fefuncg><fefuncb type="table" tableValues="0 1"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-purple-yellow"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0.54901960784314 0.98823529411765"></fefuncr><fefuncg type="table" tableValues="0 1"></fefuncg><fefuncb type="table" tableValues="0.71764705882353 0.25490196078431"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-blue-red"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0 1"></fefuncr><fefuncg type="table" tableValues="0 0.27843137254902"></fefuncg><fefuncb type="table" tableValues="0.5921568627451 0.27843137254902"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-midnight"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0 0"></fefuncr><fefuncg type="table" tableValues="0 0.64705882352941"></fefuncg><fefuncb type="table" tableValues="0 1"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-magenta-yellow"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0.78039215686275 1"></fefuncr><fefuncg type="table" tableValues="0 0.94901960784314"></fefuncg><fefuncb type="table" tableValues="0.35294117647059 0.47058823529412"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-purple-green"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0.65098039215686 0.40392156862745"></fefuncr><fefuncg type="table" tableValues="0 1"></fefuncg><fefuncb type="table" tableValues="0.44705882352941 0.4"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-blue-orange"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0.098039215686275 1"></fefuncr><fefuncg type="table" tableValues="0 0.66274509803922"></fefuncg><fefuncb type="table" tableValues="0.84705882352941 0.41960784313725"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><div class="ct-drawer-canvas">
+		<div id="search-modal" class="ct-panel" data-behaviour="modal">
+			<div class="ct-panel-actions">
+				<button class="ct-toggle-close" data-type="type-1" aria-label="Close search modal">
+					<svg class="ct-icon" width="12" height="12" viewBox="0 0 15 15">
+						<path d="M1 15a1 1 0 01-.71-.29 1 1 0 010-1.41l5.8-5.8-5.8-5.8A1 1 0 011.7.29l5.8 5.8 5.8-5.8a1 1 0 011.41 1.41l-5.8 5.8 5.8 5.8a1 1 0 01-1.41 1.41l-5.8-5.8-5.8 5.8A1 1 0 011 15z"></path>
+					</svg>
+				</button>
+			</div>
+
+			<div class="ct-panel-content">
+				
+
+<form role="search" method="get" class="search-form" action="https://cbi-analytics.nl/" data-live-results="thumbs">
+
+	<input type="search" class="modal-field" placeholder="Zoeken" value="" name="s" autocomplete="off" title="Zoek invoer">
+
+	<button type="submit" class="search-submit" aria-label="Zoekknop">
+		<svg class="ct-icon" aria-hidden="true" width="15" height="15" viewBox="0 0 15 15"><path d="M14.8,13.7L12,11c0.9-1.2,1.5-2.6,1.5-4.2c0-3.7-3-6.8-6.8-6.8S0,3,0,6.8s3,6.8,6.8,6.8c1.6,0,3.1-0.6,4.2-1.5l2.8,2.8c0.1,0.1,0.3,0.2,0.5,0.2s0.4-0.1,0.5-0.2C15.1,14.5,15.1,14,14.8,13.7z M1.5,6.8c0-2.9,2.4-5.2,5.2-5.2S12,3.9,12,6.8S9.6,12,6.8,12S1.5,9.6,1.5,6.8z"></path></svg>
+		<span data-loader="circles"><span></span><span></span><span></span></span>
+	</button>
+
+	
+			<input type="hidden" name="ct_post_type" value="post:page:ha_library">
+	
+</form>
+
+
+			</div>
+		</div>
+
+		<div id="offcanvas" class="ct-panel ct-header" data-behaviour="right-side"><div class="ct-panel-inner">
+		<div class="ct-panel-actions">
+			<button class="ct-toggle-close" data-type="type-1" aria-label="Sluit lade">
+				<svg class="ct-icon" width="12" height="12" viewBox="0 0 15 15">
+					<path d="M1 15a1 1 0 01-.71-.29 1 1 0 010-1.41l5.8-5.8-5.8-5.8A1 1 0 011.7.29l5.8 5.8 5.8-5.8a1 1 0 011.41 1.41l-5.8 5.8 5.8 5.8a1 1 0 01-1.41 1.41l-5.8-5.8-5.8 5.8A1 1 0 011 15z"></path>
+				</svg>
+			</button>
+		</div>
+		<div class="ct-panel-content" data-device="desktop"></div><div class="ct-panel-content" data-device="mobile">
+<nav class="mobile-menu has-submenu" data-id="mobile-menu" data-interaction="click" data-toggle-type="type-1" aria-label="Off canvas menu">
+	<ul id="menu-main_menu-1" class=""><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-2585"><span class="ct-sub-menu-parent"><a href="https://cbi-analytics.nl/portfolio/" class="ct-menu-link">PORTFOLIO</a><button class="ct-toggle-dropdown-mobile" aria-label="Dropdown menu uitvouwen" aria-expanded="false"><svg class="ct-icon toggle-icon-3" width="12" height="12" viewBox="0 0 15 15"><path d="M2.6,5.8L2.6,5.8l4.3,5C7,11,7.3,11.1,7.5,11.1S8,11,8.1,10.8l4.2-4.9l0.1-0.1c0.1-0.1,0.1-0.2,0.1-0.3c0-0.3-0.2-0.5-0.5-0.5l0,0H3l0,0c-0.3,0-0.5,0.2-0.5,0.5C2.5,5.7,2.5,5.8,2.6,5.8z"></path></svg></button></span>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2591"><a href="https://cbi-analytics.nl/power-bi-dashboards/" class="ct-menu-link">POWER BI DASHBOARDS</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2590"><a href="https://cbi-analytics.nl/webapplicaties/" class="ct-menu-link">WEB APPLICATIONS</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2958"><a href="https://cbi-analytics.nl/tutorials/" class="ct-menu-link">TUTORIALS</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2396"><a href="https://cbi-analytics.nl/blog/" class="ct-menu-link">BLOG</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-47"><a href="https://cbi-analytics.nl/over-ons/" class="ct-menu-link">ABOUT US</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41"><a href="https://cbi-analytics.nl/contact/" class="ct-menu-link">CONTACT</a></li>
+</ul></nav>
+
+
+<div class="ct-header-socials " data-id="socials">
+
+	
+		<div class="ct-social-box" data-icon-size="custom" data-color="custom" data-icons-type="simple">
+			
+			
+							
+				<a href="https://www.linkedin.com/company/cbi-analytics" data-network="linkedin" aria-label="LinkedIn" target="_blank" rel="noopener">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M18.6,0H1.4C0.6,0,0,0.6,0,1.4v17.1C0,19.4,0.6,20,1.4,20h17.1c0.8,0,1.4-0.6,1.4-1.4V1.4C20,0.6,19.4,0,18.6,0z M6,17.1h-3V7.6h3L6,17.1L6,17.1zM4.6,6.3c-1,0-1.7-0.8-1.7-1.7s0.8-1.7,1.7-1.7c0.9,0,1.7,0.8,1.7,1.7C6.3,5.5,5.5,6.3,4.6,6.3z M17.2,17.1h-3v-4.6c0-1.1,0-2.5-1.5-2.5c-1.5,0-1.8,1.2-1.8,2.5v4.7h-3V7.6h2.8v1.3h0c0.4-0.8,1.4-1.5,2.8-1.5c3,0,3.6,2,3.6,4.5V17.1z"></path>
+				</svg>
+			</span><span class="ct-label">LinkedIn</span>				</a>
+							
+				<a href="https://github.com/NickMol/" data-network="github" aria-label="GitHub" target="_blank" rel="noopener">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M8.9,0.4C4.3,0.9,0.6,4.6,0.1,9.1c-0.5,4.7,2.2,8.9,6.3,10.5C6.7,19.7,7,19.5,7,19.1v-1.6c0,0-0.4,0.1-0.9,0.1c-1.4,0-2-1.2-2.1-1.9c-0.1-0.4-0.3-0.7-0.6-1C3.1,14.6,3,14.6,3,14.5c0-0.2,0.3-0.2,0.4-0.2c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1c0.4,0,0.7-0.1,0.9-0.2c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C5.1,7.1,5,6.6,5,5.9c0-0.4,0-1,0.3-1.6c0,0,1.4,0,2.8,1.3C8.6,5.4,9.3,5.3,10,5.3s1.4,0.1,2,0.3c1.3-1.3,2.8-1.3,2.8-1.3C15,4.9,15,5.5,15,5.9c0,0.8-0.1,1.2-0.2,1.4c0.7,0.8,1.2,1.8,1.2,3c0,2.2-1.7,3.5-4,4c0.6,0.5,1,1.4,1,2.3v2.6c0,0.3,0.3,0.6,0.7,0.5c3.7-1.5,6.3-5.1,6.3-9.3C20,4.4,14.9-0.3,8.9,0.4z"></path>
+				</svg>
+			</span><span class="ct-label">GitHub</span>				</a>
+			
+			
+					</div>
+
+	
+</div>
+</div></div></div>
+
+	<div class="cookie-notification" data-period="forever" data-type="type-1">
+
+		<div class="container">
+							<div class="ct-cookies-content">Wij maken gebruik van cookies, zodat je een goede gebruikerservaring krijgt.</div>
+			
+			<div class="ct-button-group">
+				<button type="submit" class="ct-button ct-cookies-accept-button">Accepteer</button>
+
+				<button type="submit" class="ct-button ct-cookies-decline-button">Afwijzen</button>
+			</div>
+		</div>
+	</div>
+	</div>
+<div id="main-container" style="height: auto !important; min-height: 0px !important;">
+	<header id="header" class="ct-header" data-id="type-1" itemscope="" itemtype="https://schema.org/WPHeader"><div data-device="desktop"><div class="ct-sticky-container" style="height: 70px;"><div data-sticky="yes:shrink"><div data-row="middle" data-column-set="2"><div class="ct-container"><div data-column="start" data-placements="1"><div data-items="primary">
+<div class="site-branding" data-id="logo" data-logo="top" itemscope="itemscope" itemtype="https://schema.org/Organization">
+
+			<a href="https://cbi-analytics.nl/" class="site-logo-container" rel="home"><img width="3831" height="612" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/cropped-LogoCBI-1.png" class="default-logo" alt="Logo CBI Analytics"></a>	
+			<div class="site-title-container">
+							<span class="site-title " itemprop="name">
+					<a href="https://cbi-analytics.nl/" rel="home" itemprop="url">
+											</a>
+				</span>
+			
+					</div>
+	  </div>
+
+</div></div><div data-column="end" data-placements="1"><div data-items="primary">
+<nav id="header-menu-1" class="header-menu-1" data-id="menu" data-interaction="hover" data-menu="type-1" data-dropdown="type-1:solid" data-responsive="yes" itemscope="" itemtype="https://schema.org/SiteNavigationElement" aria-label="Header menu">
+
+	<ul id="menu-main_menu" class="menu"><li id="menu-item-2585" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-2585 animated-submenu" data-submenu="right"><a href="https://cbi-analytics.nl/portfolio/" class="ct-menu-link">PORTFOLIO<span class="ct-toggle-dropdown-desktop"><svg class="ct-icon" width="8" height="8" viewBox="0 0 15 15"><path d="M2.1,3.2l5.4,5.4l5.4-5.4L15,4.3l-7.5,7.5L0,4.3L2.1,3.2z"></path></svg></span></a><button class="ct-toggle-dropdown-desktop-ghost" aria-label="Dropdown menu uitvouwen" aria-expanded="false"></button>
+<ul class="sub-menu">
+	<li id="menu-item-2591" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2591"><a href="https://cbi-analytics.nl/power-bi-dashboards/" class="ct-menu-link">POWER BI DASHBOARDS</a></li>
+	<li id="menu-item-2590" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2590"><a href="https://cbi-analytics.nl/webapplicaties/" class="ct-menu-link">WEB APPLICATIONS</a></li>
+</ul>
+</li>
+<li id="menu-item-2958" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2958"><a href="https://cbi-analytics.nl/tutorials/" class="ct-menu-link">TUTORIALS</a></li>
+<li id="menu-item-2396" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2396"><a href="https://cbi-analytics.nl/blog/" class="ct-menu-link">BLOG</a></li>
+<li id="menu-item-47" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-47"><a href="https://cbi-analytics.nl/over-ons/" class="ct-menu-link">ABOUT US</a></li>
+<li id="menu-item-41" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41"><a href="https://cbi-analytics.nl/contact/" class="ct-menu-link">CONTACT</a></li>
+</ul></nav>
+
+
+<button data-toggle-panel="#search-modal" class="ct-header-search ct-toggle " aria-label="Open zoekformulier" data-label="left" data-id="search">
+
+	<span class="ct-label ct-hidden-sm ct-hidden-md ct-hidden-lg">Zoeken</span>
+
+	<svg class="ct-icon" aria-hidden="true" width="15" height="15" viewBox="0 0 15 15"><path d="M14.8,13.7L12,11c0.9-1.2,1.5-2.6,1.5-4.2c0-3.7-3-6.8-6.8-6.8S0,3,0,6.8s3,6.8,6.8,6.8c1.6,0,3.1-0.6,4.2-1.5l2.8,2.8c0.1,0.1,0.3,0.2,0.5,0.2s0.4-0.1,0.5-0.2C15.1,14.5,15.1,14,14.8,13.7z M1.5,6.8c0-2.9,2.4-5.2,5.2-5.2S12,3.9,12,6.8S9.6,12,6.8,12S1.5,9.6,1.5,6.8z"></path></svg></button>
+
+<div class="ct-header-socials " data-id="socials">
+
+	
+		<div class="ct-social-box" data-icon-size="custom" data-color="custom" data-icons-type="simple">
+			
+			
+							
+				<a href="https://www.linkedin.com/company/cbi-analytics" data-network="linkedin" aria-label="LinkedIn" target="_blank" rel="noopener">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M18.6,0H1.4C0.6,0,0,0.6,0,1.4v17.1C0,19.4,0.6,20,1.4,20h17.1c0.8,0,1.4-0.6,1.4-1.4V1.4C20,0.6,19.4,0,18.6,0z M6,17.1h-3V7.6h3L6,17.1L6,17.1zM4.6,6.3c-1,0-1.7-0.8-1.7-1.7s0.8-1.7,1.7-1.7c0.9,0,1.7,0.8,1.7,1.7C6.3,5.5,5.5,6.3,4.6,6.3z M17.2,17.1h-3v-4.6c0-1.1,0-2.5-1.5-2.5c-1.5,0-1.8,1.2-1.8,2.5v4.7h-3V7.6h2.8v1.3h0c0.4-0.8,1.4-1.5,2.8-1.5c3,0,3.6,2,3.6,4.5V17.1z"></path>
+				</svg>
+			</span><span class="ct-label">LinkedIn</span>				</a>
+							
+				<a href="https://github.com/NickMol/" data-network="github" aria-label="GitHub" target="_blank" rel="noopener">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M8.9,0.4C4.3,0.9,0.6,4.6,0.1,9.1c-0.5,4.7,2.2,8.9,6.3,10.5C6.7,19.7,7,19.5,7,19.1v-1.6c0,0-0.4,0.1-0.9,0.1c-1.4,0-2-1.2-2.1-1.9c-0.1-0.4-0.3-0.7-0.6-1C3.1,14.6,3,14.6,3,14.5c0-0.2,0.3-0.2,0.4-0.2c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1c0.4,0,0.7-0.1,0.9-0.2c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C5.1,7.1,5,6.6,5,5.9c0-0.4,0-1,0.3-1.6c0,0,1.4,0,2.8,1.3C8.6,5.4,9.3,5.3,10,5.3s1.4,0.1,2,0.3c1.3-1.3,2.8-1.3,2.8-1.3C15,4.9,15,5.5,15,5.9c0,0.8-0.1,1.2-0.2,1.4c0.7,0.8,1.2,1.8,1.2,3c0,2.2-1.7,3.5-4,4c0.6,0.5,1,1.4,1,2.3v2.6c0,0.3,0.3,0.6,0.7,0.5c3.7-1.5,6.3-5.1,6.3-9.3C20,4.4,14.9-0.3,8.9,0.4z"></path>
+				</svg>
+			</span><span class="ct-label">GitHub</span>				</a>
+			
+			
+					</div>
+
+	
+</div>
+</div></div></div></div></div></div></div><div data-device="mobile"><div class="ct-sticky-container"><div data-sticky="shrink"><div data-row="middle" data-column-set="2"><div class="ct-container"><div data-column="start" data-placements="1"><div data-items="primary">
+<div class="site-branding" data-id="logo" data-logo="top" itemscope="itemscope" itemtype="https://schema.org/Organization">
+
+			<a href="https://cbi-analytics.nl/" class="site-logo-container" rel="home"><img width="3831" height="612" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/cropped-LogoCBI-1.png" class="default-logo" alt="Logo CBI Analytics"></a>	
+			<div class="site-title-container">
+							<span class="site-title " itemprop="name">
+					<a href="https://cbi-analytics.nl/" rel="home" itemprop="url">
+											</a>
+				</span>
+			
+					</div>
+	  </div>
+
+</div></div><div data-column="end" data-placements="1"><div data-items="primary">
+<button data-toggle-panel="#offcanvas" class="ct-header-trigger ct-toggle " data-design="simple" data-label="right" aria-label="Open off canvas" data-id="trigger">
+
+	<span class="ct-label ct-hidden-sm ct-hidden-md ct-hidden-lg">Menu</span>
+
+	<svg class="ct-icon" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" data-type="type-1">
+
+		<rect y="0.00" width="18" height="1.7" rx="1"></rect>
+		<rect y="6.15" width="18" height="1.7" rx="1"></rect>
+		<rect y="12.3" width="18" height="1.7" rx="1"></rect>
+	</svg>
+</button>
+</div></div></div></div></div></div></div></header>
+	<main id="main" class="site-main hfeed" itemscope="itemscope" itemtype="https://schema.org/CreativeWork" style="height: auto !important;">
+
+		
+<div class="hero-section" data-type="type-2">
+			<figure>
+			<div class="ct-image-container"><img width="1892" height="515" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Knipsel2222.png" class="attachment-full size-full" alt="Data Analyse Breda" decoding="async" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/Knipsel2222.png 1892w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Knipsel2222-300x82.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Knipsel2222-1024x279.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Knipsel2222-768x209.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Knipsel2222-1536x418.png 1536w" sizes="(max-width: 1892px) 100vw, 1892px" data-object-fit="~" itemprop="image"></div>		</figure>
+	
+	<header class="entry-header ct-container-narrow">
+		<h1 class="page-title" title="Python Django DataTables: #4 Jquery DataTable Styling" itemprop="headline">Python Django DataTables: #4 Jquery DataTable Styling</h1><ul class="entry-meta" data-type="icons:slash"><li class="meta-author" itemprop="author" itemscope="" itemtype="https://schema.org/Person"><a href="https://cbi-analytics.nl/author/nickmol96hotmail-com/" tabindex="-1" class="ct-image-container-static ct-lazy-loaded"><img data-ct-lazy="https://secure.gravatar.com/avatar/2cd66d95b138f34f7aebe8f00773ad54?s=50&amp;d=mm&amp;r=g" data-object-fit="~" width="25" height="25" style="height:25px" alt="Nick Mol" data-ll-status="loaded" class="entered loaded" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/2cd66d95b138f34f7aebe8f00773ad54.png"><noscript><img src="https://secure.gravatar.com/avatar/2cd66d95b138f34f7aebe8f00773ad54?s=50&d=mm&r=g" data-object-fit="~" width="25" height="25" style="height:25px" alt="Nick Mol" ></noscript></a> <svg width="13" height="13" viewBox="0 0 15 15"> <path d="M13.6,1.4c-1.9-1.9-4.9-1.9-6.8,0L2.2,6C2.1,6.1,2,6.3,2,6.5V12l-1.8,1.8c-0.3,0.3-0.3,0.7,0,1C0.3,14.9,0.5,15,0.7,15s0.3-0.1,0.5-0.2L3,13h5.5c0.2,0,0.4-0.1,0.5-0.2l2.7-2.7c0,0,0,0,0,0l1.9-1.9C15.5,6.3,15.5,3.3,13.6,1.4z M8.2,11.6H4.4l1.4-1.4h3.9L8.2,11.6z M12.6,7.2L11,8.9H7.1l3.6-3.6c0.3-0.3,0.3-0.7,0-1C10.4,4,10,4,9.7,4.3L5,9.1c0,0,0,0,0,0l-1.6,1.6V6.8l4.4-4.4c1.3-1.3,3.5-1.3,4.8,0C14,3.7,14,5.9,12.6,7.2C12.6,7.2,12.6,7.2,12.6,7.2z"></path> </svg> <a class="ct-meta-element-author" href="https://cbi-analytics.nl/author/nickmol96hotmail-com/" title="Berichten door Nick Mol" rel="author" itemprop="url"><span itemprop="name">Nick Mol</span></a></li><li class="meta-date" itemprop="datePublished"><svg width="13" height="13" viewBox="0 0 15 15"> <path d="M7.5,0C3.4,0,0,3.4,0,7.5S3.4,15,7.5,15S15,11.6,15,7.5S11.6,0,7.5,0z M7.5,13.6c-3.4,0-6.1-2.8-6.1-6.1c0-3.4,2.8-6.1,6.1-6.1c3.4,0,6.1,2.8,6.1,6.1C13.6,10.9,10.9,13.6,7.5,13.6z M10.8,9.2c-0.1,0.2-0.4,0.4-0.6,0.4c-0.1,0-0.2,0-0.3-0.1L7.2,8.1C7,8,6.8,7.8,6.8,7.5V4c0-0.4,0.3-0.7,0.7-0.7S8.2,3.6,8.2,4v3.1l2.4,1.2C10.9,8.4,11,8.8,10.8,9.2z"></path> </svg><time class="ct-meta-element-date" datetime="2022-05-18T21:35:49+01:00">18 mei 2022</time></li><li class="meta-categories" data-type="simple"><svg width="13" height="13" viewBox="0 0 15 15"><path d="M14.4,1.2H0.6C0.3,1.2,0,1.5,0,1.9V5c0,0.3,0.3,0.6,0.6,0.6h0.6v7.5c0,0.3,0.3,0.6,0.6,0.6h11.2c0.3,0,0.6-0.3,0.6-0.6V5.6h0.6C14.7,5.6,15,5.3,15,5V1.9C15,1.5,14.7,1.2,14.4,1.2z M12.5,12.5h-10V5.6h10V12.5z M13.8,4.4H1.2V2.5h12.5V4.4z M5.6,7.5c0-0.3,0.3-0.6,0.6-0.6h2.5c0.3,0,0.6,0.3,0.6,0.6S9.1,8.1,8.8,8.1H6.2C5.9,8.1,5.6,7.8,5.6,7.5z"></path></svg><a href="https://cbi-analytics.nl/category/jquery-datatables/" rel="tag" class="ct-term-32">Jquery DataTables</a></li></ul>	</header>
+</div>
+
+
+
+	<div class="ct-container" data-sidebar="right" data-vertical-spacing="top:bottom" style="height: auto !important;">
+
+		
+		
+	<article id="post-3607" class="post-3607 post type-post status-publish format-standard has-post-thumbnail hentry category-jquery-datatables" style="height: auto !important;">
+
+		<figure class="ct-featured-image "><div class="ct-image-container ct-lazy-loaded"><img width="768" height="432" class="attachment-medium_large size-medium_large wp-post-image entered loaded" alt="Jquery Datatable Styling CBI Analytics" decoding="async" loading="lazy" sizes="(max-width: 768px) 100vw, 768px" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-768x432.png" data-ct-lazy-set="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7.png 1920w" data-object-fit="~" itemprop="image" data-ll-status="loaded" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7.png 1920w" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Copy-of-Copy-of-DAX-vs-M-QUERY-7-768x432.png"><noscript><img width="768" height="432" src="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-768x432.png" class="attachment-medium_large size-medium_large wp-post-image" alt="Jquery Datatable Styling CBI Analytics" decoding="async" loading="lazy" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-DAX-vs-M-QUERY-7.png 1920w" sizes="(max-width: 768px) 100vw, 768px" /></noscript><span class="ct-ratio" style="padding-bottom: 56.3%"></span></div></figure>
+					
+		<div class="ct-share-box" data-location="top" data-type="type-1">
+			
+			<div data-icons-type="simple">
+							
+				<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F" data-network="facebook" aria-label="Facebook" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M20,10.1c0-5.5-4.5-10-10-10S0,4.5,0,10.1c0,5,3.7,9.1,8.4,9.9v-7H5.9v-2.9h2.5V7.9C8.4,5.4,9.9,4,12.2,4c1.1,0,2.2,0.2,2.2,0.2v2.5h-1.3c-1.2,0-1.6,0.8-1.6,1.6v1.9h2.8L13.9,13h-2.3v7C16.3,19.2,20,15.1,20,10.1z"></path>
+				</svg>
+			</span>				</a>
+							
+				<a href="https://twitter.com/share?url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;text=Python%20Django%20DataTables%3A%20%234%20Jquery%20DataTable%20Styling" data-network="twitter" aria-label="Twitter" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M20,3.8c-0.7,0.3-1.5,0.5-2.4,0.6c0.8-0.5,1.5-1.3,1.8-2.3c-0.8,0.5-1.7,0.8-2.6,1c-0.7-0.8-1.8-1.3-3-1.3c-2.3,0-4.1,1.8-4.1,4.1c0,0.3,0,0.6,0.1,0.9C6.4,6.7,3.4,5.1,1.4,2.6C1,3.2,0.8,3.9,0.8,4.7c0,1.4,0.7,2.7,1.8,3.4C2,8.1,1.4,7.9,0.8,7.6c0,0,0,0,0,0.1c0,2,1.4,3.6,3.3,4c-0.3,0.1-0.7,0.1-1.1,0.1c-0.3,0-0.5,0-0.8-0.1c0.5,1.6,2,2.8,3.8,2.8c-1.4,1.1-3.2,1.8-5.1,1.8c-0.3,0-0.7,0-1-0.1c1.8,1.2,4,1.8,6.3,1.8c7.5,0,11.7-6.3,11.7-11.7c0-0.2,0-0.4,0-0.5C18.8,5.3,19.4,4.6,20,3.8z"></path>
+				</svg>
+			</span>				</a>
+											
+				<a href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;title=Python%20Django%20DataTables%3A%20%234%20Jquery%20DataTable%20Styling" data-network="linkedin" aria-label="LinkedIn" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M18.6,0H1.4C0.6,0,0,0.6,0,1.4v17.1C0,19.4,0.6,20,1.4,20h17.1c0.8,0,1.4-0.6,1.4-1.4V1.4C20,0.6,19.4,0,18.6,0z M6,17.1h-3V7.6h3L6,17.1L6,17.1zM4.6,6.3c-1,0-1.7-0.8-1.7-1.7s0.8-1.7,1.7-1.7c0.9,0,1.7,0.8,1.7,1.7C6.3,5.5,5.5,6.3,4.6,6.3z M17.2,17.1h-3v-4.6c0-1.1,0-2.5-1.5-2.5c-1.5,0-1.8,1.2-1.8,2.5v4.7h-3V7.6h2.8v1.3h0c0.4-0.8,1.4-1.5,2.8-1.5c3,0,3.6,2,3.6,4.5V17.1z"></path>
+				</svg>
+			</span>				</a>
+							
+				<a href="https://reddit.com/submit?url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;title=Python%20Django%20DataTables%3A%20%234%20Jquery%20DataTable%20Styling" data-network="reddit" aria-label="Reddit" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M11.7,0.9c-0.9,0-2,0.7-2.1,3.9c0.1,0,0.3,0,0.4,0c0.2,0,0.3,0,0.5,0c0.1-1.9,0.6-3.1,1.3-3.1c0.3,0,0.5,0.2,0.8,0.5c0.4,0.4,0.9,0.9,1.8,1.1c0-0.1,0-0.2,0-0.4c0-0.2,0-0.4,0.1-0.5c-0.6-0.2-0.9-0.5-1.2-0.8C12.8,1.3,12.4,0.9,11.7,0.9z M16.9,1.3c-1,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7s1.7-0.8,1.7-1.7S17.9,1.3,16.9,1.3z M10,5.7c-5.3,0-9.5,2.7-9.5,6.5s4.3,6.9,9.5,6.9s9.5-3.1,9.5-6.9S15.3,5.7,10,5.7z M2.4,6.1c-0.6,0-1.2,0.3-1.7,0.7C0,7.5-0.2,8.6,0.2,9.5C0.9,8.2,2,7.1,3.5,6.3C3.1,6.2,2.8,6.1,2.4,6.1z M17.6,6.1c-0.4,0-0.7,0.1-1.1,0.3c1.5,0.8,2.6,1.9,3.2,3.2c0.4-0.9,0.3-2-0.5-2.7C18.8,6.3,18.2,6.1,17.6,6.1z M6.5,9.6c0.7,0,1.3,0.6,1.3,1.3s-0.6,1.3-1.3,1.3s-1.3-0.6-1.3-1.3S5.8,9.6,6.5,9.6z M13.5,9.6c0.7,0,1.3,0.6,1.3,1.3s-0.6,1.3-1.3,1.3s-1.3-0.6-1.3-1.3S12.8,9.6,13.5,9.6z M6.1,14.3c0.1,0,0.2,0.1,0.3,0.2c0,0.1,1.1,1.4,3.6,1.4c2.6,0,3.6-1.4,3.6-1.4c0.1-0.2,0.4-0.2,0.6-0.1c0.2,0.1,0.2,0.4,0.1,0.6c-0.1,0.1-1.3,1.8-4.3,1.8c-3,0-4.2-1.7-4.3-1.8c-0.1-0.2-0.1-0.5,0.1-0.6C5.9,14.4,6,14.3,6.1,14.3z"></path>
+				</svg>
+			</span>				</a>
+																											
+				<a href="whatsapp://send?text=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F" data-network="whatsapp" aria-label="WhatsApp" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M10,0C4.5,0,0,4.5,0,10c0,1.9,0.5,3.6,1.4,5.1L0.1,20l5-1.3C6.5,19.5,8.2,20,10,20c5.5,0,10-4.5,10-10S15.5,0,10,0zM6.6,5.3c0.2,0,0.3,0,0.5,0c0.2,0,0.4,0,0.6,0.4c0.2,0.5,0.7,1.7,0.8,1.8c0.1,0.1,0.1,0.3,0,0.4C8.3,8.2,8.3,8.3,8.1,8.5C8,8.6,7.9,8.8,7.8,8.9C7.7,9,7.5,9.1,7.7,9.4c0.1,0.2,0.6,1.1,1.4,1.7c0.9,0.8,1.7,1.1,2,1.2c0.2,0.1,0.4,0.1,0.5-0.1c0.1-0.2,0.6-0.7,0.8-1c0.2-0.2,0.3-0.2,0.6-0.1c0.2,0.1,1.4,0.7,1.7,0.8s0.4,0.2,0.5,0.3c0.1,0.1,0.1,0.6-0.1,1.2c-0.2,0.6-1.2,1.1-1.7,1.2c-0.5,0-0.9,0.2-3-0.6c-2.5-1-4.1-3.6-4.2-3.7c-0.1-0.2-1-1.3-1-2.6c0-1.2,0.6-1.8,0.9-2.1C6.1,5.4,6.4,5.3,6.6,5.3z"></path>
+				</svg>
+			</span>				</a>
+											
+			</div>
+					</div>
+
+			
+		
+		<div class="entry-content" style="height: auto !important;">
+			
+<p>In this blogpost series we will zoom in on the use of&nbsp;<strong>DataTables</strong>&nbsp;in a&nbsp;<strong>Django application&nbsp;</strong>with HTML frontend. In this post we will focus on styling our table with CSS commands. The complete code of this tutorial can be found on my <a href="https://github.com/NickMol/tableapp" data-type="URL" data-id="https://github.com/NickMol/tableapp"><strong>Github </strong></a>account. </p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-large"><img decoding="async" width="1024" height="261" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-10-1024x261.png" alt="" class="wp-image-3620" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-10-1024x261.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-10-300x77.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-10-768x196.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-10-1536x392.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-10.png 1897w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Our formatted table</figcaption></figure></div>
+
+
+
+<p>This tutorial follows the examples from our previous posts. You do not need these to follow along. Previous posts: </p><div class="code-block code-block-3" style="margin: 8px 0; clear: both;">
+<script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(16).txt"></script>
+<!-- MiddenvanBlog -->
+<ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-8644796986574368" data-ad-slot="4177436357" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_1_host" style="border: none; height: 280px; width: 714px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:714px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="714" height="280" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/ads.html" data-google-container-id="a!2" data-google-query-id="COKyjdm13P4CFRg9swAdY-UB5g" data-load-complete="true"></iframe></div></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+
+
+
+
+<ul><li><strong><a href="https://cbi-analytics.nl/python-django-datatables-1-creating-a-basic-jquery-datatable-with-styling/" data-type="URL" data-id="https://cbi-analytics.nl/python-django-datatables-1-creating-a-basic-jquery-datatable-with-styling/">Python Django DataTables: #1 Creating a basic jQuery DataTable</a></strong></li><li><a href="https://cbi-analytics.nl/python-django-datatables-2-jquery-datatable-display-data-with-json-response/" data-type="URL" data-id="https://cbi-analytics.nl/python-django-datatables-2-jquery-datatable-display-data-with-json-response/"><strong>Python Django DataTables: #2 Jquery DataTable Display Data with JSON Response</strong></a></li><li><strong><a href="https://cbi-analytics.nl/python-django-datatables-3-jquery-datatable-formatting-dates/" data-type="URL" data-id="https://cbi-analytics.nl/python-django-datatables-3-jquery-datatable-formatting-dates/">Python Django DataTables: #3 Jquery DataTable Formatting Dates</a></strong></li></ul>
+
+
+
+<p></p>
+
+
+
+<h2 class="wp-block-heading">Adding an id and class</h2>
+
+
+
+<p>Since we already created some tables in our previous tutorials, we will change the id and className to make sure that the that the CSS is only applied to this table. We set the id to <strong>ourtable3</strong> and the class to <strong>mytable.</strong> </p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-full"><img decoding="async" loading="lazy" width="433" height="265" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-1.png" alt="" class="wp-image-3609" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-1.png 433w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-1-300x184.png 300w" sizes="(max-width: 433px) 100vw, 433px"><figcaption>Setting the id and class</figcaption></figure></div>
+
+
+
+<p>If you are following along from a previous tutorial, make sure that you also change the id in the script to <strong>ourtable3.</strong></p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-full"><img decoding="async" loading="lazy" width="492" height="223" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-2.png" alt="" class="wp-image-3610" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-2.png 492w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-2-300x136.png 300w" sizes="(max-width: 492px) 100vw, 492px"></figure></div>
+
+
+
+<p></p>
+
+
+
+<h2 class="wp-block-heading">Setting the width</h2>
+
+
+
+<p>The first action for us is increasing the width of the table. If you inspect the table, you will see that it is surrounded by a <strong>wrapper</strong>, which includes the filters, paginations and other functionalities. </p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-large"><img decoding="async" loading="lazy" width="1024" height="332" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-1024x332.png" alt="" class="wp-image-3608" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-1024x332.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-300x97.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-768x249.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-1536x497.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image.png 2004w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>The table has a wrapper around itself</figcaption></figure></div>
+
+
+
+<p>In our <strong>main.css</strong> file we will use the id <strong>ourtable3_wrapper</strong> to set the width. </p>
+
+
+
+<pre class="wp-block-code"><code><strong>main.css </strong>
+
+#ourtable3_wrapper{
+    width:98%;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+</code></pre>
+
+
+
+<p>After this change our table is now almost full width. </p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-large"><img decoding="async" loading="lazy" width="1024" height="296" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-3-1024x296.png" alt="" class="wp-image-3612" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-3-1024x296.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-3-300x87.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-3-768x222.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-3-1536x444.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-3.png 1889w" sizes="(max-width: 1024px) 100vw, 1024px"></figure></div>
+
+
+
+<p></p>
+
+
+
+<h2 class="wp-block-heading">Changing general table features</h2>
+
+
+
+<p>We are now going to change the <strong>margins</strong>, <strong>font</strong>, and some additional features. We add the following code to our <strong>main.css</strong> file:</p>
+
+
+
+<pre class="wp-block-code"><code><strong>main.css
+</strong>
+.myTable{
+    font-size: 12px;
+    min-width: 400px;
+    overflow: hidden;
+    border-radius: 7px 7px 0 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .15);
+}</code></pre>
+
+
+
+<p>We use the class name of the table (<strong>myTable</strong>) to link the code to our table. We added the following attributes: </p>
+
+
+
+<ul><li><strong>font-size</strong>: Sets the size of the text to 12 pixels. </li><li><strong>min-width</strong>: Makes sure that our table is never smaller than 400 pixels. Smaller than 400 pixels is unreadable for the user. </li><li><strong>border-radius</strong>: Ensures that the top left and right corners are rounded with 7 pixels. </li><li><strong>overflow</strong>: Makes sure that our border radius keeps working when we add colour to the table header later on. </li><li><strong>box-shadow</strong>:  Creates a shadow around our table. </li></ul>
+
+
+
+<p>In my application the table now looks like this: </p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-large"><img decoding="async" loading="lazy" width="1024" height="263" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-4-1024x263.png" alt="" class="wp-image-3613" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-4-1024x263.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-4-300x77.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-4-768x197.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-4-1536x394.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-4.png 1891w" sizes="(max-width: 1024px) 100vw, 1024px"></figure></div>
+
+
+
+<p></p>
+
+
+
+<h2 class="wp-block-heading">Formatting the table header </h2>
+
+
+
+<p>We continue with formatting out <strong>table headers</strong>. We do this by specifying the class in combination with <strong>th </strong>(table header).</p>
+
+
+
+<pre class="wp-block-code"><code><strong>main.css</strong>
+.myTable th {
+    background-color: #2D323E;
+    color: white;
+    font-weight: bold;
+
+  }</code></pre>
+
+
+
+<p>We first set the <strong>background color </strong>(dark blue) and the <strong>color </strong>(white) of the text. We also make sure that the text is bold by adding the <strong>font-weight</strong> attribute.</p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-large"><img decoding="async" loading="lazy" width="1024" height="235" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-5-1024x235.png" alt="" class="wp-image-3615" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-5-1024x235.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-5-300x69.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-5-768x176.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-5-1536x352.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-5.png 1900w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Result headers </figcaption></figure></div>
+
+
+
+<p></p>
+
+
+
+<h2 class="wp-block-heading">Changing colors of even rows</h2>
+
+
+
+<p>To create a <strong>distinction </strong>between the rows I will add <strong>border </strong>to the header and rows and a <strong>lightgrey background </strong>to the even rows.</p>
+
+
+
+<pre class="wp-block-code"><code><strong>main.css</strong>
+
+.myTable td, .myTable th {
+    border: 0.01em solid #e3e2e2;
+  }
+  
+.myTable tr:nth-child(even){background-color: #f9f8f8;}</code></pre>
+
+
+
+<p> </p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-large"><img decoding="async" loading="lazy" width="1024" height="267" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-7-1024x267.png" alt="" class="wp-image-3617" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-7-1024x267.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-7-300x78.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-7-768x200.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-7-1536x400.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-7.png 1896w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Result</figcaption></figure></div>
+
+
+
+<p></p>
+
+
+
+<h2 class="wp-block-heading">Formatting the filter, pagination, and other functionalities</h2>
+
+
+
+<p>The table looks fine for now, but the built in functionalities from datatables are not formatted yet. One way to do this is by <strong>inspecting </strong>the <strong>elements </strong>(CTR+SH+C) and listing their ids in our CSS file. We can then format the text of these functions. </p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-large is-resized"><img decoding="async" loading="lazy" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-8-1024x473.png" alt="" class="wp-image-3618" width="862" height="398" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-8-1024x473.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-8-300x139.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-8-768x355.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-8.png 1334w" sizes="(max-width: 862px) 100vw, 862px"><figcaption>Example inspecting the filter</figcaption></figure></div>
+
+
+
+<p></p>
+
+
+
+<pre class="wp-block-code"><code><strong>main.css</strong>
+
+/* Formats the text*/ 
+#ourtable3_filter,
+#ourtable3_length,
+#ourtable3_info,
+#ourtable3_paginate{
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Formats the input fields*/ 
+#ourtable3_filter input,
+#ourtable3_length select{
+    border: 1px solid rgb(3, 154, 204);
+}</code></pre>
+
+
+
+<p>With our css we first format the text of the <strong>filter</strong>, <strong>length attributes</strong>, the <strong>info</strong>, and the <strong>pagination</strong>. In addition, we change the borders from the <strong>select </strong>and <strong>input </strong>field to light blue. After these modifications the built in functionalities look more like the rest of the table!</p>
+
+
+
+<div class="wp-block-image is-style-default"><figure class="aligncenter size-large"><img decoding="async" loading="lazy" width="1024" height="261" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/image-9-1024x261.png" alt="" class="wp-image-3619" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/image-9-1024x261.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-9-300x77.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-9-768x196.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-9-1536x392.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/image-9.png 1897w" sizes="(max-width: 1024px) 100vw, 1024px"></figure></div>
+
+
+
+<p></p>
+
+
+
+<h2 class="wp-block-heading">Next tutorial, filters!</h2>
+
+
+
+<p>This concludes this tutorial. The end result might not be your style, but it does show you how you can format the datatable with CSS. In the next tutorial we will show how you can create <strong>custom filters</strong> that can help users with slicing and dicing the data in the table. The complete code of this tutorial can be found on my <a href="https://github.com/NickMol/tableapp" data-type="URL" data-id="https://github.com/NickMol/tableapp"><strong>Github </strong></a>account. </p>
+<!-- AI CONTENT END 1 -->
+		</div>
+
+		
+							
+					
+		<div class="ct-share-box" data-location="bottom" data-type="type-1">
+			
+			<div data-icons-type="simple">
+							
+				<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F" data-network="facebook" aria-label="Facebook" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M20,10.1c0-5.5-4.5-10-10-10S0,4.5,0,10.1c0,5,3.7,9.1,8.4,9.9v-7H5.9v-2.9h2.5V7.9C8.4,5.4,9.9,4,12.2,4c1.1,0,2.2,0.2,2.2,0.2v2.5h-1.3c-1.2,0-1.6,0.8-1.6,1.6v1.9h2.8L13.9,13h-2.3v7C16.3,19.2,20,15.1,20,10.1z"></path>
+				</svg>
+			</span>				</a>
+							
+				<a href="https://twitter.com/share?url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;text=Python%20Django%20DataTables%3A%20%234%20Jquery%20DataTable%20Styling" data-network="twitter" aria-label="Twitter" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M20,3.8c-0.7,0.3-1.5,0.5-2.4,0.6c0.8-0.5,1.5-1.3,1.8-2.3c-0.8,0.5-1.7,0.8-2.6,1c-0.7-0.8-1.8-1.3-3-1.3c-2.3,0-4.1,1.8-4.1,4.1c0,0.3,0,0.6,0.1,0.9C6.4,6.7,3.4,5.1,1.4,2.6C1,3.2,0.8,3.9,0.8,4.7c0,1.4,0.7,2.7,1.8,3.4C2,8.1,1.4,7.9,0.8,7.6c0,0,0,0,0,0.1c0,2,1.4,3.6,3.3,4c-0.3,0.1-0.7,0.1-1.1,0.1c-0.3,0-0.5,0-0.8-0.1c0.5,1.6,2,2.8,3.8,2.8c-1.4,1.1-3.2,1.8-5.1,1.8c-0.3,0-0.7,0-1-0.1c1.8,1.2,4,1.8,6.3,1.8c7.5,0,11.7-6.3,11.7-11.7c0-0.2,0-0.4,0-0.5C18.8,5.3,19.4,4.6,20,3.8z"></path>
+				</svg>
+			</span>				</a>
+											
+				<a href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;title=Python%20Django%20DataTables%3A%20%234%20Jquery%20DataTable%20Styling" data-network="linkedin" aria-label="LinkedIn" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M18.6,0H1.4C0.6,0,0,0.6,0,1.4v17.1C0,19.4,0.6,20,1.4,20h17.1c0.8,0,1.4-0.6,1.4-1.4V1.4C20,0.6,19.4,0,18.6,0z M6,17.1h-3V7.6h3L6,17.1L6,17.1zM4.6,6.3c-1,0-1.7-0.8-1.7-1.7s0.8-1.7,1.7-1.7c0.9,0,1.7,0.8,1.7,1.7C6.3,5.5,5.5,6.3,4.6,6.3z M17.2,17.1h-3v-4.6c0-1.1,0-2.5-1.5-2.5c-1.5,0-1.8,1.2-1.8,2.5v4.7h-3V7.6h2.8v1.3h0c0.4-0.8,1.4-1.5,2.8-1.5c3,0,3.6,2,3.6,4.5V17.1z"></path>
+				</svg>
+			</span>				</a>
+							
+				<a href="https://reddit.com/submit?url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;title=Python%20Django%20DataTables%3A%20%234%20Jquery%20DataTable%20Styling" data-network="reddit" aria-label="Reddit" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M11.7,0.9c-0.9,0-2,0.7-2.1,3.9c0.1,0,0.3,0,0.4,0c0.2,0,0.3,0,0.5,0c0.1-1.9,0.6-3.1,1.3-3.1c0.3,0,0.5,0.2,0.8,0.5c0.4,0.4,0.9,0.9,1.8,1.1c0-0.1,0-0.2,0-0.4c0-0.2,0-0.4,0.1-0.5c-0.6-0.2-0.9-0.5-1.2-0.8C12.8,1.3,12.4,0.9,11.7,0.9z M16.9,1.3c-1,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7s1.7-0.8,1.7-1.7S17.9,1.3,16.9,1.3z M10,5.7c-5.3,0-9.5,2.7-9.5,6.5s4.3,6.9,9.5,6.9s9.5-3.1,9.5-6.9S15.3,5.7,10,5.7z M2.4,6.1c-0.6,0-1.2,0.3-1.7,0.7C0,7.5-0.2,8.6,0.2,9.5C0.9,8.2,2,7.1,3.5,6.3C3.1,6.2,2.8,6.1,2.4,6.1z M17.6,6.1c-0.4,0-0.7,0.1-1.1,0.3c1.5,0.8,2.6,1.9,3.2,3.2c0.4-0.9,0.3-2-0.5-2.7C18.8,6.3,18.2,6.1,17.6,6.1z M6.5,9.6c0.7,0,1.3,0.6,1.3,1.3s-0.6,1.3-1.3,1.3s-1.3-0.6-1.3-1.3S5.8,9.6,6.5,9.6z M13.5,9.6c0.7,0,1.3,0.6,1.3,1.3s-0.6,1.3-1.3,1.3s-1.3-0.6-1.3-1.3S12.8,9.6,13.5,9.6z M6.1,14.3c0.1,0,0.2,0.1,0.3,0.2c0,0.1,1.1,1.4,3.6,1.4c2.6,0,3.6-1.4,3.6-1.4c0.1-0.2,0.4-0.2,0.6-0.1c0.2,0.1,0.2,0.4,0.1,0.6c-0.1,0.1-1.3,1.8-4.3,1.8c-3,0-4.2-1.7-4.3-1.8c-0.1-0.2-0.1-0.5,0.1-0.6C5.9,14.4,6,14.3,6.1,14.3z"></path>
+				</svg>
+			</span>				</a>
+																											
+				<a href="whatsapp://send?text=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F" data-network="whatsapp" aria-label="WhatsApp" rel="noopener noreferrer nofollow">
+					<span class="ct-icon-container">
+				<svg class="ct-icon" width="20px" height="20px" viewBox="0 0 20 20" aria-hidden="true">
+					<path d="M10,0C4.5,0,0,4.5,0,10c0,1.9,0.5,3.6,1.4,5.1L0.1,20l5-1.3C6.5,19.5,8.2,20,10,20c5.5,0,10-4.5,10-10S15.5,0,10,0zM6.6,5.3c0.2,0,0.3,0,0.5,0c0.2,0,0.4,0,0.6,0.4c0.2,0.5,0.7,1.7,0.8,1.8c0.1,0.1,0.1,0.3,0,0.4C8.3,8.2,8.3,8.3,8.1,8.5C8,8.6,7.9,8.8,7.8,8.9C7.7,9,7.5,9.1,7.7,9.4c0.1,0.2,0.6,1.1,1.4,1.7c0.9,0.8,1.7,1.1,2,1.2c0.2,0.1,0.4,0.1,0.5-0.1c0.1-0.2,0.6-0.7,0.8-1c0.2-0.2,0.3-0.2,0.6-0.1c0.2,0.1,1.4,0.7,1.7,0.8s0.4,0.2,0.5,0.3c0.1,0.1,0.1,0.6-0.1,1.2c-0.2,0.6-1.2,1.1-1.7,1.2c-0.5,0-0.9,0.2-3-0.6c-2.5-1-4.1-3.6-4.2-3.7c-0.1-0.2-1-1.3-1-2.6c0-1.2,0.6-1.8,0.9-2.1C6.1,5.4,6.4,5.3,6.6,5.3z"></path>
+				</svg>
+			</span>				</a>
+											
+			</div>
+					</div>
+
+			
+		
+		<nav class="post-navigation ">
+							<a href="https://cbi-analytics.nl/python-django-datatables-3-jquery-datatable-formatting-dates/" class="nav-item-prev">
+					<figure class="ct-image-container ct-lazy-loaded"><img width="300" height="169" class="attachment-medium size-medium wp-post-image entered loaded" alt="CBI Analytics: Formatting Dates DataTable" decoding="async" loading="lazy" sizes="(max-width: 300px) 100vw, 300px" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png" data-ct-lazy-set="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6.png 1920w" data-object-fit="~" itemprop="image" data-ll-status="loaded" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6.png 1920w" src="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png"><noscript><img width="300" height="169" src="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png" class="attachment-medium size-medium wp-post-image" alt="CBI Analytics: Formatting Dates DataTable" decoding="async" loading="lazy" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6.png 1920w" sizes="(max-width: 300px) 100vw, 300px" /></noscript><svg width="20px" height="15px" viewBox="0 0 20 15"><polygon points="0,7.5 5.5,13 6.4,12.1 2.4,8.1 20,8.1 20,6.9 2.4,6.9 6.4,2.9 5.5,2 "></polygon></svg><span class="ct-ratio" style="padding-bottom: 100%"></span></figure>
+					<div class="item-content">
+						<span class="item-label">
+							Vorige <span>Bericht</span>						</span>
+
+													<span class="item-title ct-hidden-sm">
+								Python Django DataTables: #3 Jquery DataTable Formatting Dates							</span>
+											</div>
+
+				</a>
+			
+							<a href="https://cbi-analytics.nl/power-bi-deployment-pipelines-what-is-it-and-how-do-you-set-it-up/" class="nav-item-next">
+					<div class="item-content">
+						<span class="item-label">
+							Volgende <span>Bericht</span>						</span>
+
+													<span class="item-title ct-hidden-sm">
+								Power BI Deployment Pipelines: What is it and how do you set it up?							</span>
+											</div>
+
+					<figure class="ct-image-container ct-lazy-loaded"><img width="300" height="169" class="attachment-medium size-medium wp-post-image entered loaded" alt="Power BI Deployment Pipelines" decoding="async" loading="lazy" sizes="(max-width: 300px) 100vw, 300px" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-300x169.png" data-ct-lazy-set="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2.png 1920w" data-object-fit="~" itemprop="image" data-ll-status="loaded" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2.png 1920w" src="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-300x169.png"><noscript><img width="300" height="169" src="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-300x169.png" class="attachment-medium size-medium wp-post-image" alt="Power BI Deployment Pipelines" decoding="async" loading="lazy" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/05/Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2.png 1920w" sizes="(max-width: 300px) 100vw, 300px" /></noscript><svg width="20px" height="15px" viewBox="0 0 20 15"><polygon points="14.5,2 13.6,2.9 17.6,6.9 0,6.9 0,8.1 17.6,8.1 13.6,12.1 14.5,13 20,7.5 "></polygon></svg><span class="ct-ratio" style="padding-bottom: 100%"></span></figure>				</a>
+			
+		</nav>
+
+	
+	
+		<div class="ct-related-posts">
+			
+											<h3 class="ct-block-title">
+					Related posts				</h3>
+							
+			<div class="ct-related-posts-items" data-layout="grid">
+							
+				<article itemscope="itemscope" itemtype="https://schema.org/CreativeWork">
+					<a class="ct-image-container ct-lazy-loaded" href="https://cbi-analytics.nl/python-django-datatables-3-jquery-datatable-formatting-dates/" aria-label="Python Django DataTables: #3 Jquery DataTable Formatting Dates" tabindex="-1"><img width="300" height="169" class="attachment-medium size-medium wp-post-image entered loaded" alt="CBI Analytics: Formatting Dates DataTable" decoding="async" loading="lazy" sizes="(max-width: 300px) 100vw, 300px" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png" data-ct-lazy-set="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6.png 1920w" data-object-fit="~" itemprop="image" data-ll-status="loaded" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6.png 1920w" src="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png"><noscript><img width="300" height="169" src="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png" class="attachment-medium size-medium wp-post-image" alt="CBI Analytics: Formatting Dates DataTable" decoding="async" loading="lazy" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-6.png 1920w" sizes="(max-width: 300px) 100vw, 300px" /></noscript><span class="ct-ratio" style="padding-bottom: 56.3%"></span></a>
+											<h4 class="related-entry-title" itemprop="name">
+							<a href="https://cbi-analytics.nl/python-django-datatables-3-jquery-datatable-formatting-dates/" itemprop="url">Python Django DataTables: #3 Jquery DataTable Formatting Dates</a>
+						</h4>
+					
+					<ul class="entry-meta" data-type="simple:slash"><li class="meta-date" itemprop="datePublished"><time class="ct-meta-element-date" datetime="2022-04-27T11:00:18+01:00">27 april 2022</time></li></ul>				</article>
+							
+				<article itemscope="itemscope" itemtype="https://schema.org/CreativeWork">
+					<a class="ct-image-container ct-lazy-loaded" href="https://cbi-analytics.nl/python-django-datatables-2-jquery-datatable-display-data-with-json-response/" aria-label="Python Django DataTables: #2 Jquery DataTable Display Data with JSON Response" tabindex="-1"><img width="300" height="169" class="attachment-medium size-medium wp-post-image entered loaded" alt="Django DataTables" decoding="async" loading="lazy" sizes="(max-width: 300px) 100vw, 300px" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-300x169.png" data-ct-lazy-set="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5.png 1920w" data-object-fit="~" itemprop="image" data-ll-status="loaded" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5.png 1920w" src="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-300x169.png"><noscript><img width="300" height="169" src="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-300x169.png" class="attachment-medium size-medium wp-post-image" alt="Django DataTables" decoding="async" loading="lazy" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-300x169.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-1024x576.png 1024w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-768x432.png 768w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5-1536x864.png 1536w, https://cbi-analytics.nl/wp-content/uploads/2022/04/Copy-of-Copy-of-DAX-vs-M-QUERY-5.png 1920w" sizes="(max-width: 300px) 100vw, 300px" /></noscript><span class="ct-ratio" style="padding-bottom: 56.3%"></span></a>
+											<h4 class="related-entry-title" itemprop="name">
+							<a href="https://cbi-analytics.nl/python-django-datatables-2-jquery-datatable-display-data-with-json-response/" itemprop="url">Python Django DataTables: #2 Jquery DataTable Display Data with JSON Response</a>
+						</h4>
+					
+					<ul class="entry-meta" data-type="simple:slash"><li class="meta-date" itemprop="datePublished"><time class="ct-meta-element-date" datetime="2022-04-20T19:43:49+01:00">20 april 2022</time></li></ul>				</article>
+						</div>
+
+					</div>
+
+	
+	
+
+<div class="ct-comments" id="comments">
+	
+	
+		<div id="respond" class="comment-respond">
+		<h2 id="reply-title" class="comment-reply-title">Geef een reactie<span class="ct-cancel-reply"><a rel="nofollow" id="cancel-comment-reply-link" href="https://cbi-analytics.nl/python-django-datatables-4-jquery-datatable-styling/#respond" style="display:none;">Reactie annuleren</a></span></h2><form action="https://cbi-analytics.nl/wp-comments-post.php" method="post" id="commentform" class="comment-form has-website-field"><p class="comment-form-field-input-author">
+			<label for="author">Naam <b class="required">&nbsp;*</b></label>
+			<input id="author" name="author" type="text" value="" size="30" required="required">
+			</p>
+<p class="comment-form-field-input-email">
+				<label for="email">E-mail  <b class="required">&nbsp;*</b></label>
+				<input id="email" name="email" type="text" value="" size="30" required="required">
+			</p>
+<p class="comment-form-field-input-url">
+				<label for="url">Site</label>
+				<input id="url" name="url" type="text" value="" size="30">
+				</p>
+
+<p class="comment-form-field-textarea">
+			<label for="comment">Reactie toevoegen</label>
+			<textarea id="comment" name="comment" cols="45" rows="8" required="required"></textarea>
+		</p><p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"><label for="wp-comment-cookies-consent">Mijn naam, e-mailadres en site opslaan in deze browser voor de volgende keer wanneer ik een reactie plaats.</label></p>
+	<p class="gdpr-confirm-policy">
+		<input id="gdprconfirm_comment" class="ct-checkbox" name="gdprconfirm" type="checkbox" required=""><label for="gdprconfirm_comment">Ik accepteer het <a href="https://cbi-analytics.nl/privacy-policy">privacybeleid</a></label>
+	</p>
+
+	<p class="form-submit"><button type="submit" name="submit" id="submit" class="submit" value="Reactie plaatsen">Reactie plaatsen</button> <input type="hidden" name="comment_post_ID" value="3607" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p></form>	</div><!-- #respond -->
+	
+	
+</div>
+
+
+	</article>
+
+	
+		
+	<aside class="ct-hidden-sm ct-hidden-md" data-type="type-2" id="sidebar" itemtype="https://schema.org/WPSideBar" itemscope="itemscope" style="height: auto !important;">
+
+		
+		<div class="ct-sidebar" data-widgets="separated" style="height: auto !important;">
+			
+			<div class="ct-widget widget_search" id="search-2"><h2 class="widget-title">Search for articles on our site</h2>
+
+<form role="search" method="get" class="search-form" action="https://cbi-analytics.nl/" data-live-results="thumbs">
+
+	<input type="search" placeholder="Zoeken" value="" name="s" autocomplete="off" title="Zoek invoer">
+
+	<button type="submit" class="search-submit" aria-label="Zoekknop">
+		<svg class="ct-icon" aria-hidden="true" width="15" height="15" viewBox="0 0 15 15"><path d="M14.8,13.7L12,11c0.9-1.2,1.5-2.6,1.5-4.2c0-3.7-3-6.8-6.8-6.8S0,3,0,6.8s3,6.8,6.8,6.8c1.6,0,3.1-0.6,4.2-1.5l2.8,2.8c0.1,0.1,0.3,0.2,0.5,0.2s0.4-0.1,0.5-0.2C15.1,14.5,15.1,14,14.8,13.7z M1.5,6.8c0-2.9,2.4-5.2,5.2-5.2S12,3.9,12,6.8S9.6,12,6.8,12S1.5,9.6,1.5,6.8z"></path></svg>
+		<span data-loader="circles"><span></span><span></span><span></span></span>
+	</button>
+
+	
+	
+</form>
+
+
+</div><div class="ct-widget recent-posts-widget-with-thumbnails" id="recent-posts-widget-with-thumbnails-2">
+<div id="rpwwt-recent-posts-widget-with-thumbnails-2" class="rpwwt-widget">
+<h2 class="widget-title">Most recent posts</h2>
+	<ul>
+		<li><a href="https://cbi-analytics.nl/react-js-create-protected-routes-in-react-router-6/" target="_blank"><img width="75" height="75" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Copy-of-Copy-of-Github-150x150.png" class="attachment-75x75 size-75x75 wp-post-image" alt="Protected Routes React Router Dom" decoding="async" loading="lazy"><span class="rpwwt-post-title">React JS: Create Protected Routes in React Router 6</span></a></li>
+		<li><a href="https://cbi-analytics.nl/django-with-html-or-javascript-what-frontend-to-pick-for-your-app/" target="_blank"><img width="75" height="75" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Copy-of-Github-150x150.png" class="attachment-75x75 size-75x75 wp-post-image" alt="Django JavaScript or HTML" decoding="async" loading="lazy"><span class="rpwwt-post-title">Django with HTML or JavaScript: What frontend to pick for your app</span></a></li>
+		<li><a href="https://cbi-analytics.nl/react-js-what-is-it-and-why-should-you-use-it/" target="_blank"><img width="75" height="75" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Copy-of-Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-4-150x150.png" class="attachment-75x75 size-75x75 wp-post-image" alt="ReactJS What is it and why should you use it" decoding="async" loading="lazy"><span class="rpwwt-post-title">React JS: What is it and why should you use it</span></a></li>
+		<li><a href="https://cbi-analytics.nl/power-bi-improve-your-data-models-with-tabular-2-editor/" target="_blank"><img width="75" height="75" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Copy-of-DAX-vs-M-QUERY-150x150.png" class="attachment-75x75 size-75x75 wp-post-image" alt="Power BI Data Models Tabular Editor" decoding="async" loading="lazy"><span class="rpwwt-post-title">Power BI: Improve Your Data Models with Tabular 2 editor</span></a></li>
+		<li><a href="https://cbi-analytics.nl/deploy-django-app-on-azure-3-deploy-source-code-to-azure/" target="_blank"><img width="75" height="75" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-DAX-vs-M-QUERY-2-150x150.png" class="attachment-75x75 size-75x75 wp-post-image" alt="Django App Azure Deployment" decoding="async" loading="lazy"><span class="rpwwt-post-title">Deploy Django App on Azure #3: Deploy Source Code to Azure</span></a></li>
+	</ul>
+</div><!-- .rpwwt-widget -->
+</div><div class="ct-widget widget_categories" id="categories-2"><h2 class="widget-title">Categories</h2>
+			<ul>
+					<li class="cat-item cat-item-8"><a href="https://cbi-analytics.nl/category/business-intelligence/">Business intelligence</a> (11)
+</li>
+	<li class="cat-item cat-item-7"><a href="https://cbi-analytics.nl/category/data-gedreven-werken/">Data gedreven werken</a> (8)
+</li>
+	<li class="cat-item cat-item-28"><a href="https://cbi-analytics.nl/category/datatables/">Datatables</a> (1)
+</li>
+	<li class="cat-item cat-item-9"><a href="https://cbi-analytics.nl/category/dataverzameling/">Dataverzameling</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="https://cbi-analytics.nl/category/django/">Django</a> (18)
+</li>
+	<li class="cat-item cat-item-41"><a href="https://cbi-analytics.nl/category/google-cloud-platform/">Google Cloud Platform</a> (2)
+</li>
+	<li class="cat-item cat-item-40"><a href="https://cbi-analytics.nl/category/google-maps-api/">Google Maps API</a> (5)
+</li>
+	<li class="cat-item cat-item-44"><a href="https://cbi-analytics.nl/category/html/">HTML</a> (1)
+</li>
+	<li class="cat-item cat-item-32"><a href="https://cbi-analytics.nl/category/jquery-datatables/">Jquery DataTables</a> (3)
+</li>
+	<li class="cat-item cat-item-42"><a href="https://cbi-analytics.nl/category/microsoft-azure/">Microsoft Azure</a> (3)
+</li>
+	<li class="cat-item cat-item-12"><a href="https://cbi-analytics.nl/category/nac-breda/">NAC Breda</a> (6)
+</li>
+	<li class="cat-item cat-item-6"><a href="https://cbi-analytics.nl/category/power-bi-2/">Power BI</a> (25)
+</li>
+	<li class="cat-item cat-item-10"><a href="https://cbi-analytics.nl/category/projecten/">Projecten</a> (1)
+</li>
+	<li class="cat-item cat-item-18"><a href="https://cbi-analytics.nl/category/python/">Python</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="https://cbi-analytics.nl/category/react/">React</a> (11)
+</li>
+	<li class="cat-item cat-item-29"><a href="https://cbi-analytics.nl/category/react-table/">React Table</a> (5)
+</li>
+	<li class="cat-item cat-item-31"><a href="https://cbi-analytics.nl/category/synapse/">Synapse</a> (1)
+</li>
+	<li class="cat-item cat-item-19"><a href="https://cbi-analytics.nl/category/tutorial/">Tutorial</a> (1)
+</li>
+	<li class="cat-item cat-item-22"><a href="https://cbi-analytics.nl/category/web-development/">Web development</a> (1)
+</li>
+	<li class="cat-item cat-item-11"><a href="https://cbi-analytics.nl/category/webapplicatie/">Webapplicatie</a> (1)
+</li>
+			</ul>
+
+			</div><div class="ct-widget widget_text" id="text-2" style="height: auto !important;">			<div class="textwidget entry-content" style="height: auto !important;"><p style="height: auto !important;"><script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(16).txt"></script><br>
+<!-- Sidebar_Add --><br>
+<ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-8644796986574368" data-ad-slot="4657144043" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_2_host" style="border: none; height: 600px; width: 269px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;border:0;width:269px;height:600px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="269" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/ads(1).html" data-google-container-id="a!3" data-google-query-id="CMePk9m13P4CFVgmswAdyOEBzg" data-load-complete="true"></iframe></div></ins><br>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+</div>
+		</div><div class="ct-widget widget_text" id="text-3" style="height: auto !important;">			<div class="textwidget entry-content" style="height: auto !important;"><p style="height: auto !important;"><script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(16).txt"></script><br>
+<!-- Sidebar2 --><br>
+<ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-8644796986574368" data-ad-slot="7685512509" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_3_host" style="border: none; height: 600px; width: 269px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:269px;height:600px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="269" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/ads(2).html" data-google-container-id="a!4" data-google-query-id="CLS38dm13P4CFVWBWwodnwsGjQ" data-load-complete="true"></iframe></div></ins><br>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+</div>
+		</div><div class="ct-widget widget_text" id="text-5" style="height: auto !important;">			<div class="textwidget entry-content" style="height: auto !important;"><p style="height: auto !important;"><script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(16).txt"></script><br>
+<!-- sidebar3 --><br>
+<ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-8644796986574368" data-ad-slot="6680672158" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_4_host" style="border: none; height: 600px; width: 269px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;border:0;width:269px;height:600px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="269" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/ads(3).html" data-google-container-id="a!5" data-google-query-id="CJ-nptq13P4CFSoMswAdDS0M6Q" data-load-complete="true"></iframe></div></ins><br>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+</div>
+		</div>
+					</div>
+
+			</aside>
+
+	
+			</div>
+
+<div class="code-block code-block-2" style="margin: 8px 0; clear: both;">
+<script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(16).txt"></script>
+<!-- OnderaanBlog -->
+<ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-8644796986574368" data-ad-slot="7467080141" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_5_host" style="border: none; height: 280px; width: 1200px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_5" name="aswift_5" style="left:0;position:absolute;top:0;border:0;width:1200px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="1200" height="280" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="https://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-8644796986574368&amp;output=html&amp;h=280&amp;slotname=7467080141&amp;adk=739584702&amp;adf=3873379642&amp;pi=t.ma~as.7467080141&amp;w=1200&amp;fwrn=4&amp;fwrnh=100&amp;lmt=1683229403&amp;rafmt=1&amp;format=1200x280&amp;url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;host=ca-host-pub-2644536267352236&amp;fwr=0&amp;fwrattr=true&amp;rpe=1&amp;resp_fmts=3&amp;wgl=1&amp;uach=WyJXaW5kb3dzIiwiMTAuMC4wIiwieDg2IiwiIiwiMTEyLjAuNTYxNS4xMzgiLFtdLGZhbHNlLG51bGwsIjY0IixbWyJDaHJvbWl1bSIsIjExMi4wLjU2MTUuMTM4Il0sWyJHb29nbGUgQ2hyb21lIiwiMTEyLjAuNTYxNS4xMzgiXSxbIk5vdDpBLUJyYW5kIiwiOTkuMC4wLjAiXV0sZmFsc2Vd&amp;dt=1683229276707&amp;bpp=1&amp;bdt=924&amp;idt=598&amp;shv=r20230502&amp;mjsv=m202305010101&amp;ptt=9&amp;saldr=aa&amp;abxe=1&amp;cookie=ID%3D2773cad729800d38-22e91954f17f009b%3AT%3D1683229277%3ART%3D1683229277%3AS%3DALNI_MYexcP7UrvxZMsx9o6kno2HzLY19g&amp;gpic=UID%3D000009f272445687%3AT%3D1683229277%3ART%3D1683229277%3AS%3DALNI_Mbg4kHNvliYijvK3OPvG9_nh-epJA&amp;prev_fmts=0x0%2C714x280%2C269x600%2C1519x696%2C728x90%2C269x600%2C269x600&amp;nras=3&amp;correlator=3776187123588&amp;frm=20&amp;pv=1&amp;ga_vid=648733505.1683229277&amp;ga_sid=1683229277&amp;ga_hid=2039143739&amp;ga_fc=1&amp;u_tz=-300&amp;u_his=5&amp;u_h=864&amp;u_w=1536&amp;u_ah=824&amp;u_aw=1536&amp;u_cd=24&amp;u_sd=1.25&amp;dmc=8&amp;adx=0&amp;ady=8797&amp;biw=1519&amp;bih=696&amp;scr_x=0&amp;scr_y=6014&amp;eid=31073764%2C44785294%2C44788441%2C44789925%2C44790542%2C31074298&amp;oid=2&amp;psts=ABHeCvgeYSMH6gjxar1W9o-q_ZN9nTHu46-o1hDsnlcWhKFW7Dk50oNzEZBmLo_HlnA08vXx7pA55LDWx5xiEaOHz1B5vw%2CABHeCvjUiFAX24eYwXSP8RjZtNogB_s3DoDiUhMrunPWXH05aoqltTtalw_ERVuLjtVrlerEqmYe0lT0aBFttGVbNXmNhQ%2CABHeCvg9PYMfJw9y23Si8v_FXGLUN5_nADg12Qf3wzUhj17zQla_gI60YR9jXQOxNonBfgdXfjUsIOx-zPoDugFdKeUFdlEqzRkRtjoAgebdx-eio7E%2CABHeCviSNYf6YY-kyMlSlXcOJ-sBEsupGVn0bs_XgC2bEmF5TH9QIWWBmNs1Ikuv2ix9JZeR6aRZsQHT-FogXZDEGlg8Ew%2CABHeCvinDrmRLjA5eT47W9r8rS4NkbWsQLfSTBby9tbiBby4w0wUrRHw9gFM8H0LrcWiLZZGo_lRaZ530NdjAzYAchCbVw&amp;pvsid=1043116255013713&amp;tmod=2052550525&amp;uas=1&amp;nvt=1&amp;ref=https%3A%2F%2Fwww.google.com%2F&amp;fc=1920&amp;brdim=0%2C0%2C0%2C0%2C1536%2C0%2C1536%2C824%2C1536%2C696&amp;vis=1&amp;rsz=o%7C%7CEebr%7C&amp;abl=CS&amp;pfx=0&amp;fu=128&amp;bc=31&amp;ifi=6&amp;uci=a!6&amp;btvi=6&amp;fsb=1&amp;xpc=RrZ5O0PHuL&amp;p=https%3A//cbi-analytics.nl&amp;dtd=M" data-google-container-id="a!6" data-google-query-id="COu01ZW23P4CFb_P4wcdSN8B6Q" data-load-complete="true"></iframe></div></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+<div class="code-block code-block-4" style="margin: 8px 0; clear: both;">
+<script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/f(17).txt" crossorigin="anonymous" data-checked-head="true"></script>
+<!-- OnderaanArtikel -->
+<ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-8644796986574368" data-ad-slot="1384050771" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_6_host" style="border: none; height: 280px; width: 1200px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_6" name="aswift_6" style="left:0;position:absolute;top:0;border:0;width:1200px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="1200" height="280" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="https://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-8644796986574368&amp;output=html&amp;h=280&amp;slotname=1384050771&amp;adk=2748137162&amp;adf=3913302764&amp;pi=t.ma~as.1384050771&amp;w=1200&amp;fwrn=4&amp;fwrnh=100&amp;lmt=1683229404&amp;rafmt=1&amp;format=1200x280&amp;url=https%3A%2F%2Fcbi-analytics.nl%2Fpython-django-datatables-4-jquery-datatable-styling%2F&amp;host=ca-host-pub-2644536267352236&amp;fwr=0&amp;fwrattr=true&amp;rpe=1&amp;resp_fmts=3&amp;wgl=1&amp;uach=WyJXaW5kb3dzIiwiMTAuMC4wIiwieDg2IiwiIiwiMTEyLjAuNTYxNS4xMzgiLFtdLGZhbHNlLG51bGwsIjY0IixbWyJDaHJvbWl1bSIsIjExMi4wLjU2MTUuMTM4Il0sWyJHb29nbGUgQ2hyb21lIiwiMTEyLjAuNTYxNS4xMzgiXSxbIk5vdDpBLUJyYW5kIiwiOTkuMC4wLjAiXV0sZmFsc2Vd&amp;dt=1683229276707&amp;bpp=2&amp;bdt=924&amp;idt=614&amp;shv=r20230502&amp;mjsv=m202305010101&amp;ptt=9&amp;saldr=aa&amp;abxe=1&amp;cookie=ID%3D2773cad729800d38-22e91954f17f009b%3AT%3D1683229277%3ART%3D1683229277%3AS%3DALNI_MYexcP7UrvxZMsx9o6kno2HzLY19g&amp;gpic=UID%3D000009f272445687%3AT%3D1683229277%3ART%3D1683229277%3AS%3DALNI_Mbg4kHNvliYijvK3OPvG9_nh-epJA&amp;prev_fmts=0x0%2C714x280%2C269x600%2C1519x696%2C728x90%2C269x600%2C269x600%2C1200x280&amp;nras=3&amp;correlator=3776187123588&amp;frm=20&amp;pv=1&amp;ga_vid=648733505.1683229277&amp;ga_sid=1683229277&amp;ga_hid=2039143739&amp;ga_fc=1&amp;u_tz=-300&amp;u_his=5&amp;u_h=864&amp;u_w=1536&amp;u_ah=824&amp;u_aw=1536&amp;u_cd=24&amp;u_sd=1.25&amp;dmc=8&amp;adx=0&amp;ady=9085&amp;biw=1519&amp;bih=696&amp;scr_x=0&amp;scr_y=6302&amp;eid=31073764%2C44785294%2C44788441%2C44789925%2C44790542%2C31074298&amp;oid=2&amp;psts=ABHeCvgeYSMH6gjxar1W9o-q_ZN9nTHu46-o1hDsnlcWhKFW7Dk50oNzEZBmLo_HlnA08vXx7pA55LDWx5xiEaOHz1B5vw%2CABHeCvjUiFAX24eYwXSP8RjZtNogB_s3DoDiUhMrunPWXH05aoqltTtalw_ERVuLjtVrlerEqmYe0lT0aBFttGVbNXmNhQ%2CABHeCvg9PYMfJw9y23Si8v_FXGLUN5_nADg12Qf3wzUhj17zQla_gI60YR9jXQOxNonBfgdXfjUsIOx-zPoDugFdKeUFdlEqzRkRtjoAgebdx-eio7E%2CABHeCviSNYf6YY-kyMlSlXcOJ-sBEsupGVn0bs_XgC2bEmF5TH9QIWWBmNs1Ikuv2ix9JZeR6aRZsQHT-FogXZDEGlg8Ew%2CABHeCvinDrmRLjA5eT47W9r8rS4NkbWsQLfSTBby9tbiBby4w0wUrRHw9gFM8H0LrcWiLZZGo_lRaZ530NdjAzYAchCbVw&amp;pvsid=1043116255013713&amp;tmod=2052550525&amp;uas=1&amp;nvt=1&amp;ref=https%3A%2F%2Fwww.google.com%2F&amp;fc=1920&amp;brdim=0%2C0%2C0%2C0%2C1536%2C0%2C1536%2C824%2C1536%2C696&amp;vis=1&amp;rsz=o%7C%7CEebr%7C&amp;abl=CS&amp;pfx=0&amp;fu=128&amp;bc=31&amp;ifi=7&amp;uci=a!7&amp;btvi=7&amp;fsb=1&amp;xpc=NfUqF9u4my&amp;p=https%3A//cbi-analytics.nl&amp;dtd=M" data-google-container-id="a!7" data-google-query-id="CI2K-ZW23P4CFUvu4wcd3WENBQ" data-load-complete="true"></iframe></div></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+
+	<section class="ct-trending-block ct-hidden-sm">
+		<div class="ct-container" data-page="1">
+			<h3 class="ct-block-title">
+				Nu populair
+				<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+
+									<span class="ct-arrow-left">
+					</span>
+
+					<span class="ct-arrow-right">
+					</span>
+							</h3>
+
+			<a href="https://cbi-analytics.nl/python-django-react-tutorial-3-integrating-reactjs-with-django/"><div class="ct-image-container ct-lazy"><img width="150" height="150" class="attachment-thumbnail size-thumbnail" alt="Django React JS CBI Analytics" decoding="async" loading="lazy" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2022/02/DAX-vs-M-QUERY-25-150x150.png" data-object-fit="~" itemprop="image"><noscript><img width="150" height="150" src="https://cbi-analytics.nl/wp-content/uploads/2022/02/DAX-vs-M-QUERY-25-150x150.png" class="attachment-thumbnail size-thumbnail" alt="Django React JS CBI Analytics" decoding="async" loading="lazy" /></noscript><span class="ct-ratio" style="padding-bottom: 100%"></span></div><span class="ct-item-title">Python Django &amp; React tutorial #3: Integrating ReactJS with Django</span></a><a href="https://cbi-analytics.nl/power-bi-dashboards-en-rapporten-delen-en-insluiten-opties-en-kosten/"><div class="ct-image-container ct-lazy"><img width="150" height="150" class="attachment-thumbnail size-thumbnail" alt="Business Intelligence Breda" decoding="async" loading="lazy" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2020/10/Dashboard-scaled-e1653640358686-150x150.jpg" data-object-fit="~" itemprop="image"><noscript><img width="150" height="150" src="https://cbi-analytics.nl/wp-content/uploads/2020/10/Dashboard-scaled-e1653640358686-150x150.jpg" class="attachment-thumbnail size-thumbnail" alt="Business Intelligence Breda" decoding="async" loading="lazy" /></noscript><span class="ct-ratio" style="padding-bottom: 100%"></span></div><span class="ct-item-title">Power BI rapporten insluiten en delen, kosten en opties</span></a><a href="https://cbi-analytics.nl/een-stappenplan-richting-data-gedreven-werken-crisp-dm/"><div class="ct-image-container ct-lazy"><img width="150" height="150" class="attachment-thumbnail size-thumbnail" alt="CBI Analytics" decoding="async" loading="lazy" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2020/10/Analytics-150x150.jpg" data-object-fit="~" itemprop="image"><noscript><img width="150" height="150" src="https://cbi-analytics.nl/wp-content/uploads/2020/10/Analytics-150x150.jpg" class="attachment-thumbnail size-thumbnail" alt="CBI Analytics" decoding="async" loading="lazy" /></noscript><span class="ct-ratio" style="padding-bottom: 100%"></span></div><span class="ct-item-title">CRISP-DM: Stappenplan voor data gedreven werken</span></a><a href="https://cbi-analytics.nl/power-bi-wat-is-het-en-wat-zijn-de-voordelen/"><div class="ct-image-container ct-lazy"><img width="150" height="150" class="attachment-thumbnail size-thumbnail" alt="CBI Data Power BI" decoding="async" loading="lazy" data-ct-lazy="https://cbi-analytics.nl/wp-content/uploads/2020/10/pexels-fauxels-3183153-150x150.jpg" data-object-fit="~" itemprop="image"><noscript><img width="150" height="150" src="https://cbi-analytics.nl/wp-content/uploads/2020/10/pexels-fauxels-3183153-150x150.jpg" class="attachment-thumbnail size-thumbnail" alt="CBI Data Power BI" decoding="async" loading="lazy" /></noscript><span class="ct-ratio" style="padding-bottom: 100%"></span></div><span class="ct-item-title">Power BI : Wat is het en wat zijn de voordelen?</span></a>
+		</div>
+	</section>
+
+		</main>
+
+	<footer class="ct-footer" data-id="type-1" itemscope="" itemtype="https://schema.org/WPFooter"><div data-row="middle"><div class="ct-container"><div data-column="widget-area-1"><div class="ct-widget widget_block widget_media_image" id="block-3">
+<figure class="wp-block-image size-full"><img decoding="async" loading="lazy" width="946" height="151" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Witlogo.png" alt="CBI Analytics Breda" class="wp-image-4343" srcset="https://cbi-analytics.nl/wp-content/uploads/2022/08/Witlogo.png 946w, https://cbi-analytics.nl/wp-content/uploads/2022/08/Witlogo-300x48.png 300w, https://cbi-analytics.nl/wp-content/uploads/2022/08/Witlogo-768x123.png 768w" sizes="(max-width: 946px) 100vw, 946px"></figure>
+</div><div class="ct-widget widget_block widget_text" id="block-5">
+<p>We support you with data strategy, web app development, and data visualization.</p>
+</div></div><div data-column="widget-area-2"><div class="ct-widget widget_nav_menu" id="nav_menu-3"><h2 class="widget-title">Quick links</h2><div class="menu-main_menu-container"><ul id="menu-main_menu-2" class="widget-menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-2585"><a href="https://cbi-analytics.nl/portfolio/">PORTFOLIO</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2591"><a href="https://cbi-analytics.nl/power-bi-dashboards/">POWER BI DASHBOARDS</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2590"><a href="https://cbi-analytics.nl/webapplicaties/">WEB APPLICATIONS</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2958"><a href="https://cbi-analytics.nl/tutorials/">TUTORIALS</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2396"><a href="https://cbi-analytics.nl/blog/">BLOG</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-47"><a href="https://cbi-analytics.nl/over-ons/">ABOUT US</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41"><a href="https://cbi-analytics.nl/contact/">CONTACT</a></li>
+</ul></div></div></div><div data-column="widget-area-3"><div class="ct-widget recent-posts-widget-with-thumbnails" id="recent-posts-widget-with-thumbnails-4">
+<div id="rpwwt-recent-posts-widget-with-thumbnails-4" class="rpwwt-widget">
+<h2 class="widget-title">Most recent post</h2>
+	<ul>
+		<li><a href="https://cbi-analytics.nl/react-js-create-protected-routes-in-react-router-6/" target="_blank"><img width="150" height="150" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/Copy-of-Copy-of-Github-150x150.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Protected Routes React Router Dom" decoding="async" loading="lazy"><span class="rpwwt-post-title">React JS: Create Protected Routes in React Router 6</span></a><div class="rpwwt-post-date">28 maart 2023</div></li>
+	</ul>
+</div><!-- .rpwwt-widget -->
+</div></div></div></div><div data-row="bottom"><div class="ct-container" data-columns-divider="md:sm"><div data-column="copyright">
+<div class="ct-footer-copyright" data-id="copyright">
+
+	<p>Copyright © 2023 - CBI Analytics | Website made by <a href="https://www.linkedin.com/in/nick-mol-4240bbb2/" target="_blank" rel="noopener">Nick Mol&nbsp;</a></p></div>
+</div></div></div></footer></div>
+
+<script id="essential-blocks-blocks-localize-js-extra">
+var EssentialBlocksLocalize = {"eb_plugins_url":"https:\/\/cbi-analytics.nl\/wp-content\/plugins\/essential-blocks\/","eb_wp_version":"6.2","eb_version":"4.0.5","eb_admin_url":"https:\/\/cbi-analytics.nl\/wp-admin\/","rest_rootURL":"https:\/\/cbi-analytics.nl\/wp-json\/","ajax_url":"https:\/\/cbi-analytics.nl\/wp-admin\/admin-ajax.php","nft_nonce":"4699b0edc9"};
+</script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/eb-blocks-localize.js.descarga" id="essential-blocks-blocks-localize-js"></script>
+<script id="mkaz-code-syntax-prism-js-js-extra">
+var prism_settings = {"pluginUrl":"https:\/\/cbi-analytics.nl\/wp-content\/plugins\/code-syntax-block\/"};
+</script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/prism.js.descarga" id="mkaz-code-syntax-prism-js-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/index.js.descarga" id="swv-js"></script>
+<script id="contact-form-7-js-extra">
+var wpcf7 = {"api":{"root":"https:\/\/cbi-analytics.nl\/wp-json\/","namespace":"contact-form-7\/v1"}};
+</script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/index.js(1).descarga" id="contact-form-7-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/api.js.descarga" id="google-recaptcha-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/wp-polyfill-inert.min.js.descarga" id="wp-polyfill-inert-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/regenerator-runtime.min.js.descarga" id="regenerator-runtime-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/wp-polyfill.min.js.descarga" id="wp-polyfill-js"></script>
+<script id="wpcf7-recaptcha-js-extra">
+var wpcf7_recaptcha = {"sitekey":"6Lf-KCMaAAAAAEqvrfGVENTHn9nuqa2ilnl9_Gw1","actions":{"homepage":"homepage","contactform":"contactform"}};
+</script>
+<ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><div id="aswift_0_host" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/ads(4).html" data-google-container-id="a!1" data-load-complete="true"></iframe></div></ins><script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/index.js(2).descarga" id="wpcf7-recaptcha-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/prism.js(1).descarga" id="hcb-prism-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/clipboard.min.js.descarga" id="clipboard-js"></script>
+<script id="hcb-script-js-extra">
+var hcbVars = {"showCopyBtn":"1","copyBtnLabel":"Copy code to clipboard"};
+</script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/hcb_script.js.descarga" id="hcb-script-js"></script>
+<script async="" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/main.js.descarga" id="blocksy-ext-cookies-consent-scripts-js"></script>
+<script id="ct-scripts-js-extra">
+var ct_localizations = {"ajax_url":"https:\/\/cbi-analytics.nl\/wp-admin\/admin-ajax.php","nonce":"5038ae9703","public_url":"https:\/\/cbi-analytics.nl\/wp-content\/themes\/blocksy\/static\/bundle\/","rest_url":"https:\/\/cbi-analytics.nl\/wp-json\/","search_url":"https:\/\/cbi-analytics.nl\/search\/QUERY_STRING\/","show_more_text":"Toon meer","more_text":"Meer","expand_submenu":"Dropdown menu uitvouwen","collapse_submenu":"Dropdown menu invouwen","dynamic_js_chunks":[{"id":"blocksy_ext_trending","selector":".ct-trending-block [class*=\"ct-arrow\"]","url":"https:\/\/cbi-analytics.nl\/wp-content\/plugins\/blocksy-companion\/framework\/extensions\/trending\/static\/bundle\/main.js","trigger":"click"},{"id":"blocksy_dark_mode","selector":"[data-id=\"dark-mode-switcher\"]","url":"https:\/\/cbi-analytics.nl\/wp-content\/plugins\/blocksy-companion\/static\/bundle\/dark-mode.js","trigger":"click"},{"id":"blocksy_sticky_header","selector":"header [data-sticky]","url":"https:\/\/cbi-analytics.nl\/wp-content\/plugins\/blocksy-companion\/static\/bundle\/sticky.js"},{"id":"blocksy_lazy_load","selector":".ct-lazy[class*=\"ct-image\"]","url":"https:\/\/cbi-analytics.nl\/wp-content\/themes\/blocksy\/static\/bundle\/lazy-load.js"}],"dynamic_styles":{"lazy_load":"https:\/\/cbi-analytics.nl\/wp-content\/themes\/blocksy\/static\/bundle\/non-critical-styles.min.css","search_lazy":"https:\/\/cbi-analytics.nl\/wp-content\/themes\/blocksy\/static\/bundle\/non-critical-search-styles.min.css"},"dynamic_styles_selectors":[{"selector":"#account-modal","url":"https:\/\/cbi-analytics.nl\/wp-content\/plugins\/blocksy-companion\/static\/bundle\/account-lazy.min.css"}]};
+</script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/main.js(1).descarga" id="ct-scripts-js"></script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/comment-reply.min.js.descarga" id="comment-reply-js"></script>
+<script id="eael-general-js-extra">
+var localize = {"ajaxurl":"https:\/\/cbi-analytics.nl\/wp-admin\/admin-ajax.php","nonce":"287d56851c","i18n":{"added":"Toegevoegd ","compare":"Vergelijk","loading":"Bezig met laden..."},"eael_translate_text":{"required_text":"is een vereist veld","invalid_text":"Ongeldig","billing_text":"Facturering","shipping_text":"Verzending","fg_mfp_counter_text":"van"},"page_permalink":"https:\/\/cbi-analytics.nl\/python-django-datatables-4-jquery-datatable-styling\/","cart_redirectition":"","cart_page_url":"","el_breakpoints":{"mobile":{"label":"Mobiel Portret","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobiel landschap modus","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet portret modus","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet landschap","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Breedbeeld","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}};
+</script>
+<script src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/general.min.js.descarga" id="eael-general-js"></script>
+
+
+
+<div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe title="reCAPTCHA" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/anchor.html" width="256" height="60" role="presentation" name="a-1jcq23yo5za6" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/saved_resource(6).html"></iframe></div><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: block; width: 100% !important; height: 95px !important; bottom: 0px; clear: none !important; float: none !important; left: 0px; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1; overflow: visible !important; padding: 0px !important; position: fixed; right: auto !important; top: auto !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647; background: rgb(250, 250, 250) !important;" data-anchor-status="displayed" data-ad-status="filled" data-anchor-shown="true"><div class="grippy-host"><template shadowrootmode="closed"><ins class="ee" style="inset: auto !important; clear: none !important; display: block !important; float: none !important; height: 5px !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: relative !important; vertical-align: baseline !important; visibility: visible !important; width: auto !important; z-index: 1 !important; background-color: rgb(250, 250, 250) !important; box-shadow: rgba(0, 0, 0, 0.2) 0px -1px 5px -1px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px !important;"><span style="display: block !important; width: 80px !important; height: 45px !important; bottom: 0px !important; left: 0% !important; pointer-events: none !important;"><svg style="margin: 0px !important; position: absolute !important; bottom: 0px !important; left: 0% !important; display: block !important; width: 80px !important; height: 30px !important; transform: none !important; pointer-events: initial !important;"><defs><filter id="dropShadowTop" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><fecomponenttransfer in="SourceAlpha" result="TransferredAlpha"><fefuncr type="discrete" tableValues="0.5"></fefuncr><fefuncg type="discrete" tableValues="0.5"></fefuncg><fefuncb type="discrete" tableValues="0.5"></fefuncb></fecomponenttransfer><fegaussianblur in="TransferredAlpha" stdDeviation="2"></fegaussianblur><feoffset dx="0" dy="0" result="offsetblur"></feoffset><femerge><femergenode></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs><path d="M0,26 L0,6 A6,6 0 0,1 6,1 L50,1 A6,6 0 0,1 56,6 L56,20 A6,6 0 0,0 62,26 Z" stroke="#FAFAFA" stroke-width="1" fill="#FAFAFA" style="filter: url(&quot;#dropShadowTop&quot;);"></path><rect x="0" y="25" width="80" height="5" style="fill: rgb(250, 250, 250);"></rect><g class="down" stroke="#616161" stroke-width="2px" stroke-linecap="square"><line x1="22" y1="12" x2="28" y2="18"></line><line x1="28" y1="18" x2="34" y2="12"></line></g></svg></span></ins></template></div><div id="aswift_8_host" style="border: none !important; height: 90px !important; width: 100% !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: inline-block !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_8" name="aswift_8" style="width: 728px !important; height: 90px !important; display: block; margin: 0px auto;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="728" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/zrt_lookup.html" data-google-container-id="a!9" data-google-query-id="CPPojNm13P4CFdcHswAdCnsB9A" data-load-complete="true"></iframe></div></ins><link rel="stylesheet" href="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/non-critical-styles.min.css"><iframe src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body><iframe id="google_esf" name="google_esf" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/zrt_lookup(1).html" style="display: none;"></iframe><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background: transparent !important;" aria-hidden="true" data-ad-status="filled" data-vignette-loaded="true"><div id="aswift_7_host" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none !important; height: 100vh !important; width: 100vw !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: inline-block !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><iframe id="aswift_7" name="aswift_7" style="width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; position: absolute !important; clear: none !important; display: inline !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; vertical-align: baseline !important; visibility: visible !important; z-index: auto !important;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="" height="" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python Django DataTables_ #4 Jquery DataTable Styling – CBI Analytics _ Power BI _ Web development _ Tutorials _ Django _ React_files/zrt_lookup(2).html" data-google-container-id="a!8" data-google-query-id="CPLojNm13P4CFdcHswAdCnsB9A" data-load-complete="true"></iframe></div></ins></html>

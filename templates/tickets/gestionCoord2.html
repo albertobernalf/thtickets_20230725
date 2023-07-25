@@ -14,14 +14,38 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
 
+<script>
+    window.onload = function(){
+
+    var sedeMalla = document.getElementById("sedeMalla").value;
+
+    if (sedeMalla == 99 )
+    {
+
+    null;
+    }
+    else
+    {
+    document.getElementById("sede").value = sedeMalla;
+    }
+    var areaMalla = document.getElementById("areaMalla").value;
+    if (areaMalla == 99 )
+    {
+    null;
+    }
+    else
+    {
+    document.getElementById("area").value = areaMalla;
+    }
+    }
+</script>
+
 
 <script>
 
 
 	function golpe1(id)
 	{
-
-
         var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
         var nombreUsuario = document.getElementById("nombreUsuario").value;
@@ -29,16 +53,62 @@
         var empleadoId = document.getElementById("empleadoId").value;
         var perfil = document.getElementById("perfil").value;
 
+        var sedeMalla = document.getElementById("sede").value;
+        var areaMalla = document.getElementById("area").value;
+        var nombreMalla = document.getElementById("nombreEmp").value;
+        var ano = document.getElementById("ano").value;
+        var mes = document.getElementById("mes").value;
+
+        if (sedeMalla == '' )
+            {
+              sedeMalla = 0;
+            }
+            else
+            {
+            null;
+            }
+
+        if (areaMalla == '' )
+            {
+              areaMalla = 0;
+            }
+            else
+            {
+            null;
+            }
+
+            if (ano == '' )
+            {
+              ano = 0;
+            }
+            else
+            {
+            null;
+            }
+            if (mes == '' )
+            {
+              mes = 0;
+            }
+            else
+            {
+            null;
+            }
+
+                  if (nombreMalla == '' )
+            {
+              nombreMalla = '0';
+            }
+            else
+            {
+            null;
+            }
 
       	if (perfil == 'TALENTO')
       		{
       			perfil= 'TALENTO HUMANO';
       		}
 
-
-
-
-		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId  + ',' + perfil;
+		var apasar = id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId  + ',' + perfil + ',' + ano + ',' + mes + ',' + sedeMalla + ',' + areaMalla + ',' + nombreMalla ;
 
 		 $(location).attr('href',  '/gestionCoord/update/' + apasar);
 
@@ -54,7 +124,59 @@
         var empleadoId = document.getElementById("empleadoId").value;
         var perfil = document.getElementById("perfil").value;
 
-		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId  + ',' + perfil;
+        var sedeMalla = document.getElementById("sede").value;
+        var areaMalla = document.getElementById("area").value;
+        var nombreMalla = document.getElementById("nombreEmp").value;
+        var ano = document.getElementById("ano").value;
+        var mes = document.getElementById("mes").value;
+
+        if (sedeMalla == '' )
+            {
+              sedeMalla = 0;
+            }
+            else
+            {
+            null;
+            }
+
+        if (areaMalla == '' )
+            {
+              areaMalla = 0;
+            }
+            else
+            {
+            null;
+            }
+
+            if (ano == '' )
+            {
+              ano = 0;
+            }
+            else
+            {
+            null;
+            }
+            if (mes == '' )
+            {
+              mes = 0;
+            }
+            else
+            {
+            null;
+            }
+
+                  if (nombreMalla == '' )
+            {
+              nombreMalla = '0';
+            }
+            else
+            {
+            null;
+            }
+
+
+        var apasar = username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId  + ',' + perfil + ',' + ano + ',' + mes + ',' + sedeMalla + ',' + areaMalla + ',' + nombreMalla ;
+
 		window.location = "/crearMalla/" + apasar;
 	}
 
@@ -72,8 +194,6 @@
 
 
 	}
-
-
 
 
 </script>
@@ -123,6 +243,11 @@
         var perfil = document.getElementById("perfil").value;
 
         var nombreEmp = document.getElementById("nombreEmp").value;
+
+        var sedeMalla = document.getElementById("sede").value;
+        var areaMalla = document.getElementById("area").value;
+        var nombreMalla = document.getElementById("nombreEmp").value;
+
         var sede = document.getElementById("sede").value;
         var area = document.getElementById("area").value;
         var ano = document.getElementById("ano").value;
@@ -141,6 +266,10 @@
          data['perfil'] = perfil;
          data['sede'] = sede;
          data['nombreEmp'] = nombreEmp;
+         data['sedeMalla'] = sedeMalla;
+         data['areaMalla'] = areaMalla;
+         data['nombreMalla'] = nombreMalla;
+
 
          data = JSON.stringify(data);
 
@@ -175,7 +304,7 @@
          //"dom": '<f<Brtip><"#df"<"pull-left" i><"pull-right"p><"pull-right"l>>>',
          "dom": '<f<Brtip><"#df"<"pull-left"l>>>',
          "lengthChange": true,
-         "lengthMenu": [[3, 5, 10, 20, 30, -1], [3, 5, 10, 20, 30, "All"]],
+         "lengthMenu": [[5, 10, 20, 30, -1], [5, 10, 20, 30, "All"]],
 
             buttons: [
                 "excel",
@@ -186,7 +315,9 @@
             columnDefs: [
 
                   {
+                     width: "1px",
                   "targets": [0],
+
                    "render": function ( data, type, row ) {
                         var btn = '';
                     //    btn = btn + " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
@@ -196,12 +327,14 @@
                     "targets": [37],
                    "render": function ( data, type, row ) {
                         var btn = '';
-                        btn = btn + " <button class='btn btn-danger deletePost' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+                  //      btn = btn + " <button class='btn btn-danger deletePost' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+                        btn = btn + " <button class='btn btn-danger deletePost' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + "</button>";
                         return btn;
                     },
 
                     "targets": 38,
                 }
+
             ],
             ajax: {
 
@@ -220,7 +353,8 @@
                 "data": null,
                 "bSortable": false,
                 "mRender": function(data, type, row,  value) {
-                return " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
+                // return " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
+                return " <button class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + "</button>";
 
                 }
             },
@@ -280,7 +414,32 @@
           var perfil = document.getElementById("perfil").value;
           var post_id = $(this).data('pk');
 
-        var apasar = post_id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
+          var ano = document.getElementById("ano").value;
+          var mes = document.getElementById("mes").value;
+
+          if (mes=='')
+            {
+            mes = 0;
+            }
+          var sedeMalla = document.getElementById("sede").value;
+
+
+
+          var areaMalla = document.getElementById("area").value;
+
+          if (areaMalla =='')
+            {
+            areaMalla = 0;
+            }
+
+          var nombreMalla = document.getElementById("nombreEmp").value;
+
+          if (nombreMalla=='')
+            {
+            nombreMalla = '0';
+            }
+
+        var apasar = post_id + ',' + username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil + ',' + ano + ',' + mes + ',' + sedeMalla + ',' + areaMalla + ',' + nombreMalla;
 		window.location = "/gestionCoordMalla/update/" + apasar;
 
         });
@@ -323,13 +482,42 @@
                     var nombreUsuario = document.getElementById("nombreUsuario").value;
                     var nombreSede = document.getElementById("nombreSede").value;
                     var perfil = document.getElementById("perfil").value;
+
+                    var ano = document.getElementById("ano").value;
+
+                    var sedeMalla = document.getElementById("sedeMalla").value;
+                    var areaMalla = document.getElementById("areaMalla").value;
+                    var nombreMalla = document.getElementById("nombreEmp").value;
+
+
+                    if (ano=='')
+                        {
+                        ano=0;
+                        }
+
+                    var mes = document.getElementById("mes").value;
+
+                    if (mes=='')
+                        {
+                        mes=0;
+                        }
+                    if (nombreMalla=='')
+                        {
+                        nombreMalla='0';
+                        }
+
+
+
                     alert("action = " + action);
 
                     //var token = $("input[name=csrfmiddlewaretoken]").val();
                     var id = current_object.attr('data-pk');
 
 
-                    action = "/gestionCoord/post/" + id + ',' + username + ',' + sedeSeleccionada + ',' + nombreUsuario   + ',' + nombreSede  +',' + empleadoId + ',' + perfil + '/delete/';
+                    // action = "/gestionCoord/post/" + id + ',' + username + ',' + sedeSeleccionada + ',' + nombreUsuario   + ',' + nombreSede  +',' + empleadoId + ',' + perfil + ',' + ano + ',' + mes + ',' + sedeMalla + ',' + areaMalla + ',' + nombreMalla    + '/delete/';
+
+                    action = "/gestionCoord/" + id + ',' + username + ',' + sedeSeleccionada + ',' + nombreUsuario   + ',' + nombreSede  +',' + empleadoId + ',' + perfil + ',' + ano + ',' + mes + ',' + sedeMalla + ',' + areaMalla + ',' + nombreMalla    + '/delete/';
+
                     alert("action = " + action);
 
                     $('body').html("<form class='form-inline remove-form' method='post' action='"+action+"'></form>");
@@ -410,6 +598,12 @@
         <input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
         <input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
 
+        <input type="hidden" class="form-control" id="sedeMalla" name="sedeMalla" value={{SedeMalla}}>
+		<input type="hidden" class="form-control" id="areaMalla" name="areaMalla" value={{AreaMalla}}>
+		<input type="hidden" class="form-control" id="nombreMalla" name="nombreMalla" value={{NombreMalla}}>
+
+
+
         {% if GestionCoord %}
 
          <div class="row">
@@ -485,7 +679,7 @@
                          M A L L A &nbsp;&nbsp;&nbsp; D E &nbsp;&nbsp;&nbsp; T U R N O S
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Buscar por :
                                 SEDE:
-                                    <select  id="sede" name="area" style=" width:110px; " size="1" >
+                                    <select  id="sede" name="sede" style=" width:110px; " size="1" >
                                         {% for sede in Sedes %}
                                             <option value="{{sede.id}}"> {{sede.nombre}}</option>
                                         {% endfor %}
@@ -500,8 +694,8 @@
 
                                      &nbsp;&nbsp;&nbsp; AÑO: <input type="text"  id="ano" name="ano" size="5px" value="{{Ano}}"/>
                                       &nbsp;&nbsp;&nbsp;MES: <input type="text"  id="mes" name="mes" size="5px" value="{{Mes}}"/>
-                                         &nbsp;&nbsp;&nbsp;NOMBRE: <input type="text"  id="nombreEmp" name="nombreEmp" size="30px" value="0"/>
-                &nbsp;
+                                         &nbsp;&nbsp;&nbsp;NOMBRE: <input type="text"  id="nombreEmp" name="nombreEmp" size="30px" value="{{Nombremalla}}"/>
+                &nbsp;                              {{X}}
                 &nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -527,13 +721,13 @@
 
 
                 </div>
-                <div class="card-body" style="font-family:'Times New Roman'; font-size:6px " >
+                <div class="card-body"  >
                     <div class="row mb-1">
                          <!-- <div id="printbar" style="float:right"></div>  -->
-                        <div id="noTomar2" class="scrollable5" align="center" style="font-family:'Times New Roman'; font-size:12px ">
+                        <div id="noTomar2" class="scrollable5" align="center" >
                         <div class="col-mx-12" >
                                <div class="alert alert-success success-msg" style="display:none" ></div>
-                                <table  class="table-bordered table-hover  tablaCoordTickets"  id="tablaCoordTickets" name="tablaCoordTickets" style="font-family:'Times New Roman'; font-size:6px ">
+                                <table  class="table-bordered table-hover  tablaCoordTickets"  id="tablaCoordTickets" name="tablaCoordTickets" >
                                     <thead>
                                     <tr>
                                          <th>Action</th>

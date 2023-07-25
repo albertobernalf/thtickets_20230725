@@ -1,0 +1,2708 @@
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+
+;// CONCATENATED MODULE: ./cbElements/border/border.js
+function addBorder(parameters) {
+  var parent = parameters.hasOwnProperty("parent") ? parameters.parent : "";
+  var onHoverChange = parameters.hasOwnProperty("onHoverChange") ? parameters.onHoverChange : false;
+
+  if (parent !== "") {
+    cbLib.id(parent).classList.add("-cb-border");
+  }
+
+  if (onHoverChange) {
+    cbLib.id(parent).addEventListener("mouseover", function () {
+      cbLib.id(parent).classList.add("hover");
+    }, false);
+    cbLib.id(parent).addEventListener("mouseout", function () {
+      cbLib.id(parent).classList.remove("hover");
+    }, false);
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/cards/productCard/productCard.js
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function productcard(parameters) {
+  //DOM Properties
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : '';
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; // Data objects
+
+  this.productImageObj = parameters.hasOwnProperty("productImageObj") ? parameters.productImageObj : {};
+  this.productTitleObj = parameters.hasOwnProperty("productTitleObj") ? parameters.productTitleObj : {};
+  this.copyObj = parameters.hasOwnProperty("copyObj") ? parameters.copyObj : {};
+  this.priceObj = parameters.hasOwnProperty("priceObj") ? parameters.priceObj : {};
+  this.brandLogoObj = parameters.hasOwnProperty("brandLogoObj") ? parameters.brandLogoObj : {};
+  this.textLabelObj = parameters.hasOwnProperty("textLabelObj") ? parameters.textLabelObj : {};
+  this.coolbluesKeuze = parameters.hasOwnProperty("coolbluesKeuze") ? parameters.coolbluesKeuze : false;
+  this.isTitleOnly = parameters.hasOwnProperty("isTitleOnly") ? parameters.isTitleOnly : false;
+  this.isCopyOnly = parameters.hasOwnProperty("isCopyOnly") ? parameters.isCopyOnly : false; // Set data defaults
+
+  this.setDefaultData = function () {
+    if (!this.productImageObj.imageAlignment) {
+      this.productImageObj.imageAlignment = ['hcenter', 'bottom'];
+    }
+
+    this.productTitleObj.overflow = false;
+    this.productTitleObj.numberOfLines = 1;
+    this.priceObj.stacked = false; // size specific default data
+
+    switch (cbAd.bannerInfo.bannerSize) {
+      case '120x600':
+      case '160x600':
+        this.priceObj.stacked = true;
+        this.productTitleObj.numberOfLines = 2;
+        this.productTitleObj.scrolling = false;
+        break;
+    }
+  };
+
+  this.createElements = function () {
+    this.container = cbLib.insertElement({
+      parent: this.parent,
+      type: 'div',
+      class: '-cb-productcard'
+    }); // Add whiteCard
+
+    this.whiteCard = new cbElements.create.whiteCard({
+      parent: this.container
+    }); // Add productImage
+
+    this.productImage = new cbElements.create.productImage(_objectSpread(_objectSpread({}, this.productImageObj), {}, {
+      parent: this.whiteCard.container
+    })); // Add brandlogo
+
+    if (this.brandLogoObj.brandLogoUrl) {
+      this.brandLogo = new cbElements.create.brandLogo(_objectSpread(_objectSpread({}, this.brandLogoObj), {}, {
+        parent: this.whiteCard.container
+      }));
+    } // Add product title
+
+
+    if (!this.isCopyOnly && this.productTitleObj.text) {
+      this.productTitle = new cbElements.create.productTitle(_objectSpread(_objectSpread({}, this.productTitleObj), {}, {
+        parent: this.whiteCard.container
+      }));
+    } // Add copy
+
+
+    if (!this.isTitleOnly && this.copyObj.text) {
+      this.copy = new cbElements.create.copy(_objectSpread(_objectSpread({}, this.copyObj), {}, {
+        parent: this.whiteCard.container
+      }));
+    } // Add price
+
+
+    this.price = new cbElements.create.price(_objectSpread(_objectSpread({}, this.priceObj), {}, {
+      parent: this.whiteCard.container
+    })); // Add text label
+
+    if (this.textLabelObj.text) {
+      // set different parent for textlabel
+      switch (cbAd.bannerInfo.bannerSize) {
+        default:
+          this.textLabelObj.parent = this.whiteCard.container;
+          break;
+
+        case '728x90':
+        case '970x90':
+          this.textLabelObj.parent = this.productImage.containerElem;
+          break;
+      }
+
+      this.textLabel = new cbElements.create.textLabel(_objectSpread({}, this.textLabelObj));
+    } // Add coolblues keuze label
+
+
+    if (this.coolbluesKeuze) {
+      this.coolbluesKeuzeLabel = new cbElements.create.coolbluesKeuze({
+        parent: this.productImage.containerElem
+      });
+    }
+  };
+
+  this.setCardHeight = function () {
+    var _this = this;
+
+    // TODO this function does not always returns the correct value, productcard uses different ways to position the image so its difficlt to find the right values to calculate the heigth.
+    // ? make this a function that is globaly availble so it can run on every card or module that use cards (storycard, productcard, carousel)
+    var checkHeight = setInterval(function () {
+      if (_this.productImage.containerElem.offsetHeight !== 0) {
+        clearInterval(checkHeight);
+        var whiteCardHeight = _this.whiteCard.container.offsetHeight;
+        var imgHeight = _this.productImage.containerElem.offsetHeight;
+        var imgTransform = getComputedStyle(_this.productImage.imageElem).getPropertyValue('transform').replace(')', '').split(', ');
+        var imgOffset = parseInt(imgTransform[imgTransform.length - 1]);
+
+        if (imgOffset) {
+          _this.container.style.height = "".concat(imgHeight - imgOffset + whiteCardHeight, "px");
+        } // If imgOffset is not a number a margin is used to place the image in the right place so get the margin instead of the transform translate value
+        else {
+            imgOffset = parseInt(getComputedStyle(_this.productImage.containerElem).getPropertyValue('margin-bottom').slice(0, -2));
+            _this.container.style.height = "".concat(imgHeight + imgOffset, "px");
+          }
+      }
+    }, 10);
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.container.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.container.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.setDefaultData();
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+  this.setCardHeight();
+}
+;// CONCATENATED MODULE: ./cbElements/cards/storyCard/storycard.js
+function storycard_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function storycard_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { storycard_ownKeys(Object(source), true).forEach(function (key) { storycard_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { storycard_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function storycard_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function storycard(parameters) {
+  //DOM Properties
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : '';
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Title Settings
+
+  this.isTitleOnly = parameters.hasOwnProperty("isTitleOnly") ? parameters.isTitleOnly : false; //Fact Slogan Settings
+
+  this.standardFactSloganSettings = {};
+  this.isFactSlogan = parameters.hasOwnProperty("isFactSlogan") ? parameters.isFactSlogan : true;
+  this.factObj = parameters.hasOwnProperty("factObj") ? parameters.factObj : {}; //DobraTitle
+
+  this.standardDobraTitleSettings = {};
+  this.dobraTitleObj = parameters.hasOwnProperty("dobraTitleObj") ? parameters.dobraTitleObj : {}; //Copy settings
+
+  this.standardCopySettings = {};
+  this.copyObj = parameters.hasOwnProperty("copyObj") ? parameters.copyObj : {};
+  this.isCopyOnly = parameters.hasOwnProperty("isCopyOnly") ? parameters.isCopyOnly : false; //Label Settings
+
+  this.standardLabelSettings = {};
+  this.labelObj = parameters.hasOwnProperty("labelObj") ? parameters.labelObj : {}; //CTA Settings
+
+  this.standardCtaSettings = {};
+  this.ctaObj = parameters.hasOwnProperty("ctaObj") ? parameters.ctaObj : false;
+
+  this.createElements = function () {
+    this.container = cbLib.insertElement({
+      parent: this.parent,
+      type: 'div',
+      class: '-cb-storycard'
+    });
+    this.whiteCard = new cbElements.create.whiteCard({
+      parent: this.container
+    });
+
+    if (!this.isCopyOnly) {
+      if (this.isFactSlogan) {
+        this.factSlogan = new cbElements.create.factSlogan(storycard_objectSpread(storycard_objectSpread(storycard_objectSpread({}, this.factObj), this.standardFactSloganSettings), {}, {
+          parent: this.whiteCard.container
+        }));
+      } else {
+        this.dobraTitle = new cbElements.create.copy(storycard_objectSpread(storycard_objectSpread(storycard_objectSpread({}, this.dobraTitleObj), this.standardDobraTitleSettings), {}, {
+          copyType: "dobra",
+          maxFontSize: 36,
+          parent: this.whiteCard.container
+        }));
+      }
+    }
+
+    if (!this.isTitleOnly) {
+      this.copy = new cbElements.create.copy(storycard_objectSpread(storycard_objectSpread(storycard_objectSpread({}, this.copyObj), this.standardCopySettings), {}, {
+        parent: this.whiteCard.container,
+        autoResize: true
+      }));
+    }
+
+    if (this.standardCtaSettings.isEnabled) {
+      this.cta = new cbElements.create.cta(storycard_objectSpread(storycard_objectSpread(storycard_objectSpread({}, this.standardCtaSettings), this.ctaObj), {}, {
+        parent: this.whiteCard.container,
+        autoResize: true
+      }));
+    }
+
+    if (this.labelObj.text != "") {
+      this.label = new cbElements.create.textLabel(storycard_objectSpread({
+        parent: this.whiteCard.container
+      }, this.labelObj));
+    } //change text placement based on label in 468x60
+
+
+    switch (cbAd.bannerInfo.bannerSize) {
+      case '468x60':
+        if (this.labelText != "") {
+          this.container.classList.add("-cb-storycard--labeled");
+        }
+
+        break;
+    }
+  };
+
+  this.setStandardSettings = function () {
+    //Text Settings
+    //Title
+    switch (cbAd.bannerInfo.bannerSize) {
+      default:
+        break;
+
+      case '200x200':
+        this.isTitleOnly = true;
+        break;
+    } //Copy
+
+
+    switch (cbAd.bannerInfo.bannerSize) {
+      default:
+        break;
+
+      case '468x60':
+      case '728x90':
+      case '970x90':
+      case '970x250':
+        this.isCopyOnly = true;
+        break;
+    } //Fact Slogan Settings
+
+
+    this.standardFactSloganSettings.factMinFontSize = 13;
+    this.standardFactSloganSettings.colorTheme = "blue";
+
+    switch (cbAd.bannerInfo.bannerSize) {
+      default:
+        this.standardFactSloganSettings.factForceSingleLine = true;
+        this.standardFactSloganSettings.sloganForceSingleLine = true;
+        break;
+
+      case '120x600':
+      case '160x600':
+        this.standardFactSloganSettings.factForceSingleLine = false;
+        this.standardFactSloganSettings.sloganForceSingleLine = false;
+        break;
+    } //CTA settings
+    //Size switch
+
+
+    switch (cbAd.bannerInfo.bannerSize) {
+      default:
+        this.standardCtaSettings.isEnabled = false;
+        break;
+
+      case '468x60':
+      case '728x90':
+      case '970x90':
+        this.standardCtaSettings.isEnabled = true;
+        break;
+    }
+  };
+
+  this.setContainerHeight = function () {
+    if (this.label !== undefined) {
+      var labelHeight = this.label.container.offsetHeight;
+      var containerHeight = this.whiteCard.container.offsetHeight;
+      var totalHeight = containerHeight + labelHeight / 2;
+      this.container.style.height = "".concat(totalHeight, "px");
+    }
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.container.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.container.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.playAnimations = function () {
+    this.tl = new gsap.timeline();
+
+    if (this.labelObj.text != "") {
+      var label = this.label.container;
+      this.tl.to(label, .2, {
+        scale: 1
+      }).to(label, .1, {
+        scale: 1.08
+      }).to(label, .2, {
+        scale: 1
+      });
+    }
+  };
+
+  this.setStandardSettings();
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+  this.setContainerHeight();
+}
+;// CONCATENATED MODULE: ./cbElements/cards/whitecard/whitecard.js
+function whiteCard(parameters) {
+  //DOM Properties
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : '';
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : [];
+
+  this.createElements = function () {
+    this.container = cbLib.insertElement({
+      parent: this.parent,
+      type: 'div',
+      class: '-cb-whitecard'
+    });
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.container.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.container.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/Images/productImage/product-image.js
+function productImage(parameters) {
+  //DOM Settings
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : "";
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Image Information
+
+  this.imageUrl = parameters.hasOwnProperty("imageUrl") ? parameters.imageUrl : ""; //Alignment information
+
+  this.imageAlignment = parameters.hasOwnProperty('imageAlignment') ? parameters.imageAlignment : ["center"];
+
+  this.setImageAlignment = function (alignment) {
+    for (var i = 0; i < this.imageAlignment.length; i++) {
+      this.imageElem.classList.remove("-cb-product-image__image--".concat(this.imageAlignment[i]));
+    }
+
+    this.imageAlignment = alignment;
+
+    for (var _i = 0; _i < alignment.length; _i++) {
+      this.imageElem.classList.add("-cb-product-image__image--".concat(this.imageAlignment[_i]));
+    }
+  };
+
+  this.createElements = function () {
+    var _this = this;
+
+    this.containerElem = cbLib.insertElement({
+      parent: this.parent,
+      class: "-cb-product-image",
+      type: "div"
+    });
+    this.imageElem = cbLib.insertElement({
+      parent: this.containerElem,
+      class: "-cb-product-image__image",
+      type: 'img',
+      src: this.imageUrl
+    });
+
+    this.imageElem.onerror = function () {
+      _this.containerElem.classList.add('-cb-product-image--noImage');
+
+      _this.imageElem.remove();
+    };
+
+    this.setImageAlignment(this.imageAlignment);
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.containerElem.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.containerElem.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.setImageRatio = function () {
+    var _this2 = this;
+
+    this.imageElem.addEventListener("load", function () {
+      var imageRatio;
+      var tallRatioTreshold;
+      var wideRatioTreshold;
+      imageRatio = _this2.imageElem.naturalWidth / _this2.imageElem.naturalHeight; //Size switch
+
+      switch (cbAd.bannerInfo.bannerSize) {
+        case '120x600':
+        case '160x600':
+        case '300x600':
+        case '468x60':
+        case '728x90':
+        case '970x90':
+        case '970x250':
+          tallRatioTreshold = 0.73;
+          wideRatioTreshold = 2;
+          break;
+
+        case '200x200':
+        case '250x250':
+        case '300x250':
+        case '336x280':
+          tallRatioTreshold = 0.49;
+          wideRatioTreshold = 2;
+          break;
+      }
+
+      ;
+
+      if (imageRatio <= tallRatioTreshold) {
+        // add 'tall' to the image classlist
+        _this2.containerElem.classList.add("-cb-product-image--tall");
+
+        _this2.imageElem.classList.add("-cb-product-image__image--tall");
+      } else {
+        if (imageRatio >= wideRatioTreshold) {
+          // add 'wide' to the image classlist
+          _this2.containerElem.classList.add("-cb-product-image--wide");
+
+          _this2.imageElem.classList.add("-cb-product-image__image--wide");
+        } else {
+          // add 'square' to the image classlist
+          _this2.containerElem.classList.add("-cb-product-image--square");
+
+          _this2.imageElem.classList.add("-cb-product-image__image--square");
+        }
+      }
+    });
+  };
+
+  this.createElements();
+  this.setImageRatio();
+  this.setID();
+  this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/labels/textLabel/textLabel.js
+function textLabel(parameters) {
+  //DOM Properties
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : '';
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Default Properties
+
+  this.text = parameters.hasOwnProperty("text") ? parameters.text : '';
+  this.color = parameters.hasOwnProperty("color") ? parameters.color : "orange"; //Resize Properties
+
+  this.autoResize = parameters.hasOwnProperty("autoResize") ? parameters.autoResize : false;
+  this.minFontSize = parameters.hasOwnProperty("minFontSize") ? parameters.minFontSize : 7;
+  this.maxFontSize = parameters.hasOwnProperty("maxFontSize") ? parameters.maxFontSize : 11; //TypeWriter
+
+  this.typeWriter = parameters.typeWriter ? true : false;
+
+  this.createElements = function () {
+    this.container = cbLib.insertElement({
+      parent: this.parent,
+      type: 'div',
+      class: '-cb-text-label'
+    });
+    this.textElement = cbLib.insertElement({
+      parent: this.container,
+      type: 'span',
+      class: "-cb-text-label__text -cb-text-label__text--".concat(this.color),
+      text: this.text
+    });
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.container.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.container.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/text/textResizer.js
+function textResizer(parameters) {
+  var container = parameters.hasOwnProperty("container") ? parameters.container : "";
+  var textElem = parameters.hasOwnProperty("textElem") ? parameters.textElem : "";
+  var containerMaxHeight;
+  var containerMaxWidth;
+  var textElemWidth;
+  var textElemHeight;
+  var minFontSize = parameters.hasOwnProperty('minFontSize') ? parameters.minFontSize : 9;
+  var maxFontSize = parameters.hasOwnProperty("maxFontSize") ? parameters.maxFontSize : 16;
+  var fontStep = parameters.hasOwnProperty("fontStep") ? parameters.fontStep : 0.1;
+  var currentFontSize;
+  setNewFontSize(container, maxFontSize);
+  var newFontSize;
+
+  function resizeText() {
+    if (currentFontSize > minFontSize) {
+      if (textElemWidth > containerMaxWidth || textElemHeight > containerMaxHeight) {
+        setNewFontSize(container, currentFontSize - fontStep);
+        resizeText();
+      }
+
+      if (currentFontSize > maxFontSize) {
+        setNewFontSize(container, currentFontSize - fontStep);
+        resizeText();
+      }
+    }
+  }
+
+  function getTransitionDuration() {
+    var delay = getComputedStyle(container).getPropertyValue("transition-duration");
+    delay = parseFloat(delay.substring(0, delay.length - 1) * 1000);
+    return delay;
+  }
+
+  function setElementInformation() {
+    //Container Information
+    containerMaxWidth = convertCSSToInt(container, "max-width");
+    containerMaxHeight = convertCSSToInt(container, "max-height") - 1; //1 is an error margin to improve automatic vertical placement in flexboxes
+
+    if (isNaN(containerMaxWidth)) {
+      containerMaxWidth = convertCSSToInt(container, "width");
+    }
+
+    if (isNaN(containerMaxHeight)) {
+      containerMaxHeight = convertCSSToInt(container, "height") - 1; //1 is an error margin to improve automatic vertical placement in flexboxes
+    }
+
+    textElemWidth = textElem.offsetWidth;
+    textElemHeight = textElem.offsetHeight;
+    currentFontSize = convertCSSToInt(container, "font-size");
+  }
+
+  function convertCSSToInt(element, cssProperty) {
+    var value = getComputedStyle(element).getPropertyValue(cssProperty);
+    value = parseFloat(value.substring(0, value.length - 2));
+    return value;
+  }
+
+  function setNewFontSize(element, fontSize) {
+    element.style.fontSize = "".concat(fontSize, "px");
+    currentFontSize = fontSize;
+    setElementInformation();
+  }
+
+  setElementInformation();
+  resizeText();
+}
+;// CONCATENATED MODULE: ./cbElements/text/copy/copy.js
+
+function copy(parameters) {
+  //DOM ELements
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : false;
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Text Value 
+
+  this.text = parameters.hasOwnProperty("text") ? parameters.text : "CopyText"; //Font Values
+  //Font style
+
+  this.copyType = parameters.hasOwnProperty("copyType") ? parameters.copyType : "open-sans";
+  this.dobraText = parameters.hasOwnProperty("dobraText") ? parameters.dobraText : false;
+  this.color = parameters.hasOwnProperty("color") ? parameters.color : ""; //Font Size
+
+  this.minFontSize = parameters.hasOwnProperty("minFontSize") ? parameters.minFontSize : 9;
+  this.maxFontSize = parameters.hasOwnProperty("maxFontSize") ? parameters.maxFontSize : 16;
+  this.autoResize = parameters.hasOwnProperty("autoResize") ? parameters.autoResize : false;
+  this.fontStep = parameters.hasOwnProperty('fontStep') ? parameters.fontStep : 0.1; //positioning
+
+  this.centerHorizontal = parameters.hasOwnProperty("centerHorizontal") ? parameters.centerHorizontal : false;
+  this.centerVertical = parameters.hasOwnProperty("centerVertical") ? parameters.centerVertical : false; //TypeWriter?
+
+  this.typeWriter = parameters.hasOwnProperty("typeWriter") ? true : false;
+  this.textResizer = textResizer;
+
+  this.resize = function () {
+    this.textResizer({
+      container: this.copyContainer,
+      textElem: this.copyElement,
+      minFontSize: this.minFontSize,
+      maxFontSize: this.maxFontSize,
+      fontStep: this.fontStep
+    });
+  };
+
+  this.checkCopyTypeOverride = function () {
+    if (parameters.hasOwnProperty("copyType")) {
+      if (parameters.copyType == "open-sans") {
+        this.dobraText = false;
+      }
+
+      if (parameters.copyType == "dobra") {
+        this.dobraText = true;
+      }
+    }
+
+    if (parameters.hasOwnProperty("dobraText")) {
+      if (parameters.dobraText === true) {
+        this.copyType = "dobra";
+      } else {
+        this.copyType = "open-sans";
+      }
+    }
+  };
+
+  this.getFont = function (fontType) {
+    this.cleanFonts;
+    if (this.copyType) return fontType;
+  };
+
+  this.setFont = function (fontType) {
+    this.cleanFonts();
+    this.copy.classList.add(fontType);
+  };
+
+  this.cleanFonts = function () {
+    if (this.copy.classList.contains("open-sans")) {
+      this.copy.classList.remove("open-sans");
+    }
+
+    if (this.copy.classList.containers("dobra")) {
+      this.copy.classList.remove("dobra");
+    }
+  };
+
+  this.setColor = function () {
+    if (this.copyType === 'dobra' && this.color !== '') {
+      this.copyElement.classList.add("-cb-copy__text--".concat(this.color));
+    }
+  };
+
+  this.createElements = function () {
+    this.copyContainer = cbLib.insertElement({
+      parent: this.parent,
+      class: "-cb-copy -cb-copy--".concat(this.getFont(this.copyType)),
+      type: 'div'
+    });
+    this.copyElement = cbLib.insertElement({
+      parent: this.copyContainer,
+      class: "-cb-copy__text -cb-copy__text--".concat(this.getFont(this.copyType)),
+      type: 'p',
+      text: this.text
+    });
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.copyContainer.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.copyContainer.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.centerHorizontalFunction = function (elem) {
+    var parentElem = elem.parentElement;
+    var elemWidth = elem.offsetWidth;
+    var parentWidth = parentElem.offsetWidth;
+    var parentLeft = parentElem.offsetLeft;
+    var widthDifference = parentWidth - elemWidth;
+    var newLeft = widthDifference / 2;
+
+    if (widthDifference > 0) {
+      elem.style.left = newLeft + "px";
+      elem.style.position = "absolute";
+    } else {
+      elem.style.left = "0px";
+      elem.style.position = "absolute";
+    }
+  };
+
+  this.centerVerticalFunction = function (elem) {
+    elem.style.position = "absolute";
+    var parent = elem.parentElement;
+    var elemHeight = elem.offsetHeight;
+    var parentHeight = parent.offsetHeight;
+    var heightDifference = parentHeight - elemHeight;
+    var newTop = heightDifference / 2;
+
+    if (heightDifference > 0) {
+      elem.style.top = newTop + "px";
+      elem.style.position = "absolute";
+    } else {
+      elem.style.top = "0px";
+      elem.style.position = "absolute";
+    }
+  };
+
+  this.checkCopyTypeOverride();
+  this.createElements();
+  this.setColor();
+  this.setID();
+  this.setCustomClasses();
+
+  if (this.autoResize) {
+    this.resize();
+
+    if (this.centerHorizontal) {
+      setTimeout(this.centerHorizontalFunction.bind(null, this.copyElement), 100);
+    }
+
+    if (this.centerVertical) {
+      setTimeout(this.centerVerticalFunction.bind(null, this.copyElement), 100);
+    }
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/text/Fact Slogan/resize-fact-slogan.js
+function resizeFactSlogan(parameters) {
+  //DOM Elements
+  var parent = parameters.parent;
+  var container = parameters.container;
+  var factElement = parameters.factElement;
+  var sloganElement = parameters.sloganElement;
+  var checkForParentSize = parameters.checkForParentSize;
+  var parentPadding = parameters.parentPadding; //Parent Container settings
+
+  var parentContainerMargin = parameters.parentContainerMargin; //Font Settings
+
+  var fontStep = parameters.fontStep; //Container Information
+
+  var containerWidth = container.offsetWidth;
+  var containerHeight = container.offsetHeight;
+  var containerMaxWidth = container.offsetWidth;
+  var containerMaxHeight = container.offsetHeight;
+  var defaultLineHeight = convertCSSToInt(container, "line-height") / convertCSSToInt(factElement, "font-size");
+  var currentLineHeight = defaultLineHeight; //Fact Information
+
+  var factWidth;
+  var factHeight;
+  var factMaxFontSize = parameters.factMaxFontSize;
+  var factMinFontSize = parameters.factMinFontSize;
+  var currentFactFontSize;
+  var newFactFontSize;
+  var factBreakLine = false;
+  var factForceSingleLine = parameters.factForceSingleLine;
+  var enableIdealFactFontSize = parameters.enableIdealFactFontSize;
+  var idealFactFontSize = parameters.idealFactFontSize; //Slogan Information
+
+  var sloganWidth;
+  var sloganHeight;
+  var sloganMaxFontSize;
+  var sloganMinFontSize;
+  var currentSloganFontSize;
+  var newSloganFontSize;
+  var sloganMaxRatio = 0.8;
+  var sloganMinRatio = 0.6;
+  var sloganBreakline = false;
+  var sloganForceSingleLine = parameters.sloganForceSingleLine;
+
+  function resetValues() {
+    factBreakLine = false;
+    forceSingleLine(factElement, true);
+    sloganBreakline = false;
+    forceSingleLine(factElement, true);
+  }
+
+  function startResizing() {
+    //Set the font-size to the max it may be.
+    setElementInformation();
+    forceSingleLine(factElement, true);
+    forceSingleLine(sloganElement, true);
+    setNewFontSize(factElement, factMaxFontSize);
+    setNewFontSize(sloganElement, sloganMaxFontSize);
+    resizeFact();
+  }
+
+  function resizeFact(forceResize) {
+    setElementInformation();
+
+    if (forceResize) {
+      newFactFontSize = currentFactFontSize - fontStep;
+      setNewFontSize(factElement, newFactFontSize);
+      resizeFact(false);
+    } else {
+      if (currentFactFontSize > factMinFontSize) {
+        if (factWidth > containerMaxWidth || factHeight + sloganHeight > containerMaxHeight) {
+          newFactFontSize = currentFactFontSize - fontStep;
+          setNewFontSize(factElement, newFactFontSize);
+          resizeFact(false);
+        } else {
+          if (currentFactFontSize < factMinFontSize && factForceSingleLine === false && factBreakLine === false) {
+            factBreakLine = true;
+            forceSingleLine(factElement, false);
+            setNewFontSize(factElement, factMaxFontSize);
+            resizeFact(false);
+          } else {
+            setNewFontSize(sloganElement, sloganMaxFontSize);
+            resizeSlogan();
+          }
+        }
+      } else {
+        //Allow breaking
+        if (currentFactFontSize < factMinFontSize) {
+          if (factForceSingleLine === false && factBreakLine === false) {
+            factBreakLine = true;
+            forceSingleLine(factElement, false);
+            setNewFontSize(factElement, factMaxFontSize);
+            resizeFact(false);
+          } else {
+            setNewFontSize(sloganElement, sloganMaxFontSize);
+            resizeSlogan();
+          }
+        }
+
+        if (factWidth > containerMaxWidth || factHeight + sloganHeight > containerMaxHeight) {
+          newFactFontSize = currentFactFontSize - fontStep;
+          setNewFontSize(factElement, newFactFontSize);
+          resizeFact(false);
+        }
+      }
+    }
+  }
+
+  function resizeSlogan() {
+    calculateSloganSizes();
+    setElementInformation();
+
+    if (currentSloganFontSize > sloganMinFontSize) {
+      if (sloganWidth > containerMaxWidth || factHeight + sloganHeight > containerMaxHeight) {
+        newSloganFontSize = currentSloganFontSize - fontStep;
+        setNewFontSize(sloganElement, newSloganFontSize);
+        resizeSlogan();
+      }
+
+      if (currentSloganFontSize > sloganMaxFontSize) {
+        newSloganFontSize = currentSloganFontSize - fontStep;
+        setNewFontSize(sloganElement, newSloganFontSize);
+        resizeSlogan();
+      }
+    } else {
+      //Allow breaking
+      if (currentSloganFontSize < sloganMinFontSize) {
+        if (sloganForceSingleLine === false && sloganBreakline === false) {
+          sloganBreakline = true;
+          forceSingleLine(sloganElement, false);
+          setNewFontSize(factElement, factMaxFontSize);
+          resizeFact(false);
+        }
+
+        if (currentFactFontSize > factMinFontSize) {
+          newSloganFontSize = sloganMaxFontSize;
+          setNewFontSize(sloganElement, newSloganFontSize);
+          resizeFact(true);
+        }
+      }
+
+      if (sloganWidth > containerMaxWidth || factHeight + sloganHeight > containerMaxHeight) {
+        newSloganFontSize = currentSloganFontSize - fontStep;
+        setNewFontSize(sloganElement, newSloganFontSize);
+        resizeSlogan();
+      }
+    }
+  }
+
+  function forceSingleLine(element, bool) {
+    if (bool) {
+      element.style.whiteSpace = "nowrap";
+    } else {
+      element.style.whiteSpace = "normal";
+    }
+  }
+
+  function setNewFontSize(element, fontSize) {
+    element.style.fontSize = "".concat(fontSize, "px");
+    setElementInformation();
+  }
+
+  function getTransitionDuration() {
+    var delay = getComputedStyle(container).getPropertyValue("transition-duration");
+    delay = parseFloat(delay.substring(0, delay.length - 1) * 1000);
+    return delay;
+  }
+
+  function convertCSSToInt(element, cssProperty) {
+    var value = getComputedStyle(element).getPropertyValue(cssProperty);
+    value = parseFloat(value.substring(0, value.length - 2));
+    return value;
+  }
+
+  function setElementInformation() {
+    //Container Information
+    containerWidth = container.offsetWidth;
+    containerHeight = container.offsetHeight;
+
+    if (checkForParentSize) {
+      containerMaxWidth = container.parentElement.offsetWidth - parentPadding[0];
+      containerMaxHeight = container.parentElement.offsetHeight - parentPadding[1];
+    } else {
+      containerMaxWidth = convertCSSToInt(container, "max-width");
+      containerMaxHeight = convertCSSToInt(container, "max-height");
+    }
+
+    if (isNaN(containerMaxWidth)) {
+      container.style.maxWidth = "".concat(parent.offsetWidth - parentContainerMargin, "px");
+    }
+
+    if (isNaN(containerMaxHeight)) {
+      container.style.maxHeight = "".concat(parent.offsetHeight - parentContainerMargin, "px");
+    } //Fact Information
+
+
+    factWidth = factElement.offsetWidth;
+    factHeight = factElement.offsetHeight;
+    currentFactFontSize = convertCSSToInt(factElement, "font-size"); //Slogan information
+
+    sloganWidth = sloganElement.offsetWidth;
+    sloganHeight = sloganElement.offsetHeight;
+    currentSloganFontSize = convertCSSToInt(sloganElement, "font-size");
+  }
+
+  function setContainerWidthToTextWidth(factWidth, sloganWidth) {
+    var containerWidth;
+
+    if (factWidth > sloganWidth) {
+      containerWidth = factWidth;
+    } else {
+      containerWidth = sloganWidth;
+    }
+
+    container.style.width = "".concat(containerWidth + 3, "px");
+  }
+
+  function getSloganFactWidthRatio() {
+    var factInnerText = factTextElement.innerHTML;
+    var charCount = factInnerText.length;
+    var ratio;
+
+    if (charCount < 6) {
+      ratio = 1.5;
+    }
+
+    if (charCount >= 6 && charCount < 12) {
+      ratio = 1.3;
+    }
+
+    if (charCount >= 12) {
+      ratio = 1.2;
+    }
+
+    return ratio;
+  }
+
+  function calculateSloganSizes() {
+    sloganMinFontSize = currentFactFontSize * sloganMinRatio;
+    sloganMaxFontSize = currentFactFontSize * sloganMaxRatio;
+  }
+
+  startResizing();
+}
+;// CONCATENATED MODULE: ./cbElements/text/Fact Slogan/fact-slogan.js
+
+function factSlogan(parameters) {
+  //DOM ELements
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : false;
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Fact Information
+
+  this.fact = parameters.hasOwnProperty("fact") ? parameters.fact : 'FACT.';
+  this.factFontSize = parameters.hasOwnProperty("factFontSize") ? parameters.factFontSize : false; //Slogan Information
+
+  this.slogan = parameters.hasOwnProperty("slogan") ? parameters.slogan : 'Slogan.';
+  this.sloganFontSize = parameters.hasOwnProperty("sloganFontSize") ? parameters.sloganFontSize : false; //Color Theme
+
+  this.colorTheme = parameters.hasOwnProperty("colorTheme") ? parameters.colorTheme : "blue"; //Auto Resize Settings
+
+  this.autoResize = parameters.hasOwnProperty("autoResize") ? parameters.autoResize : true;
+  this.factMaxFontSize = parameters.hasOwnProperty("factMaxFontSize") ? parameters.factMaxFontSize : 32;
+  this.factMinFontSize = parameters.hasOwnProperty("factMinFontSize") ? parameters.factMinFontSize : 13;
+  this.factForceSingleLine = parameters.hasOwnProperty("factForceSingleLine") ? parameters.factForceSingleLine : false;
+  this.sloganForceSingleLine = parameters.hasOwnProperty("sloganForceSingleLine") ? parameters.sloganForceSingleLine : false;
+  this.sloganMaxFontSize;
+  this.sloganMinFontSize;
+  this.fontStep = parameters.hasOwnProperty("fontStep") ? parameters.fontStep : 0.1;
+  this.idealFactFontSize = parameters.hasOwnProperty("idealFactFontSize") ? parameters.idealFactFontSize : this.factMaxFontSize / 2;
+  this.enableIdealFactFontSize = parameters.hasOwnProperty("enableIdealFactFontSize") ? parameters.enableIdealFactFontSize : false;
+  this.checkForParentSize = parameters.hasOwnProperty("checkForParentSize") ? parameters.checkForParentSize : false;
+  this.parentPadding = parameters.hasOwnProperty("parentPadding") ? parameters.parentPadding : [0, 0]; // x, y
+
+  this.parentContainerMargin = parameters.hasOwnProperty("parentContainerMargin") ? parameters.parentContainerMargin : 16; //TypeWriter?
+
+  if (parameters.hasOwnProperty("typeWriter")) {
+    this.typeWriter.fact = parameters.typeWriter.hasOwnProperty("fact") ? parameters.typeWriter.fact : false;
+    this.typeWriter.slogan = parameters.typeWriter.hasOwnProperty("slogan") ? parameters.typeWriter.slogan : false;
+  } //Check if fact contains a dot, if so, remove it.
+
+
+  if (this.fact.includes(".")) {
+    this.fact = this.fact.replace(".", "");
+  } //TODO: Import typewriter function
+  //Resize Function
+
+
+  this.resizeFactSlogan = resizeFactSlogan;
+
+  this.resize = function () {
+    this.resizeFactSlogan({
+      //Elements
+      container: this.factSloganContainer,
+      factElement: this.factElement,
+      sloganElement: this.sloganElement,
+      //Font Sizes
+      factMaxFontSize: this.factMaxFontSize,
+      factMinFontSize: this.factMinFontSize,
+      enableIdealFactFontSize: this.enableIdealFactFontSize,
+      idealFactFontSize: this.idealFactFontSize,
+      fontStep: this.fontStep,
+      //Line Formatting
+      factForceSingleLine: this.factForceSingleLine,
+      sloganForceSingleLine: this.sloganForceSingleLine,
+      //ParentContainer settings
+      parent: this.parent,
+      parentContainerMargin: this.parentContainerMargin,
+      checkForParentSize: this.checkForParentSize,
+      parentPadding: this.parentPadding
+    });
+  };
+
+  this.setForceSingleLine = function (element, bool) {
+    if (!bool) {
+      element.style.whiteSpace = "normal";
+    } else {
+      element.style.whiteSpace = "nowrap";
+    }
+  };
+
+  this.createElements = function () {
+    this.factSloganContainer = cbLib.insertElement({
+      parent: this.parent,
+      class: "-cb-fact-slogan -cb-fact-slogan--".concat(this.colorTheme),
+      type: 'div'
+    });
+    this.factElement = cbLib.insertElement({
+      parent: this.factSloganContainer,
+      class: '-cb-fact-slogan__fact',
+      type: 'span',
+      text: "".concat(this.fact, "<nobr><orange-dot>.</orange-dot></nobr>")
+    });
+    cbLib.insertElement({
+      parent: this.factSloganContainer,
+      type: 'br'
+    });
+    this.sloganElement = cbLib.insertElement({
+      parent: this.factSloganContainer,
+      class: '-cb-fact-slogan__slogan',
+      type: 'span',
+      text: this.slogan
+    });
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.factSloganContainer.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.factSloganContainer.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.returnElement = function (element) {
+    if (element == "container") {
+      return this.factSloganContainer;
+    }
+
+    if (element == "fact") {
+      return this.factElement;
+    }
+
+    if (element == "slogan") {
+      return this.sloganElement;
+    }
+  };
+
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+
+  if (this.factForceSingleLine) {
+    this.setForceSingleLine(this.factElement, true);
+  } else {
+    this.setForceSingleLine(this.factElement, false);
+  }
+
+  if (this.sloganForceSingleLine) {
+    this.setForceSingleLine(this.sloganElement, true);
+  } else {
+    this.setForceSingleLine(this.sloganElement, false);
+  }
+
+  if (this.autoResize) {
+    this.resize();
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/text/price/priceElement.js
+function priceElement(parameters) {
+  //DOM Properties
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : '';
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //default price values
+
+  this.price = parameters.hasOwnProperty("price") ? parameters.price : '';
+  this.advicePrice = parameters.hasOwnProperty("advicePrice") ? parameters.advicePrice : '';
+
+  this.getAdvicePriceText = function () {
+    var advicePriceText = ""; //Language Switch
+
+    switch (cbLanguage) {
+      default:
+      case 'nl-NL':
+        advicePriceText = "Adviesprijs";
+        break;
+
+      case 'de-DE':
+        advicePriceText = "UVP";
+        break;
+    }
+
+    return advicePriceText;
+  };
+
+  this.advicePriceText = parameters.hasOwnProperty("advicePriceText") ? parameters.advicePriceText : this.getAdvicePriceText();
+  this.fontSize = parameters.hasOwnProperty("fontSize") ? parameters.fontSize : 11;
+  this.stacked = parameters.hasOwnProperty("stacked") ? parameters.stacked : false; //Price positions
+
+  this.priceOrder = parameters.hasOwnProperty("priceOrder") ? parameters.priceOrder : "advicePriceText | advicePrice | price"; //Resize Properties
+
+  this.autoResize = parameters.hasOwnProperty("autoResize") ? true : false;
+  this.minPriceFontSize = parameters.hasOwnProperty("minPriceFontSize") ? parameters.minPriceFontSize : 9;
+  this.maxPriceFontSize = parameters.hasOwnProperty("maxPriceFontSize") ? parameters.maxPriceFontSize : this.fontSize;
+  this.minAdvicePriceFontSize = parameters.hasOwnProperty("minAdvicePriceFontSize") ? parameters.minAdvicePriceFontSize : 9;
+  this.maxAdvicePriceFontSize = parameters.hasOwnProperty("maxAdvicePriceFontSize") ? parameters.maxAdvicePriceFontSize : this.fontSize;
+  this.minAdvicePriceTextFontSize = parameters.hasOwnProperty("minAdvicePriceTextFontSize") ? parameters.minAdvicePriceTextFontSize : 9;
+  this.maxAdvicePriceTextFontSize = parameters.hasOwnProperty("maxAdvicePriceTextFontSize") ? parameters.maxAdvicePriceTextFontSize : this.fontSize;
+
+  this.formatPrice = function (price) {
+    //format price
+    var priceFormat = price;
+
+    if (price.includes(',')) {
+      priceFormat = price.split(',');
+    } else {
+      if (price.includes('.')) {
+        price = price.replace('.', ',');
+        priceFormat = price.split(',');
+      } else {
+        price = price + ',-';
+      }
+    }
+
+    if (priceFormat[1] == '00') {
+      price = priceFormat[0] + ',-';
+    }
+
+    return price;
+  };
+
+  this.setPriceOrder = function (order) {
+    order = order.split(" | ");
+  };
+
+  this.setPriceFontSize = function (min, max) {};
+
+  this.setAdvicePriceFontSize = function (min, max) {};
+
+  this.setAdvicePriceTextFontSize = function (min, max) {};
+
+  this.setStacked = function (bool) {
+    if (bool) {
+      this.containerElem.classList.add("-cb-price--stacked");
+    }
+  };
+
+  this.createElements = function () {
+    this.containerElem = cbLib.insertElement({
+      parent: this.parent,
+      class: '-cb-price',
+      type: "div"
+    });
+
+    if (this.advicePrice != "") {
+      this.advicePriceContainer = cbLib.insertElement({
+        parent: this.containerElem,
+        class: "-cb-price__advice",
+        type: 'div'
+      });
+      this.advicePriceTextElem = cbLib.insertElement({
+        parent: this.advicePriceContainer,
+        class: "-cb-price__advice-text",
+        type: "span",
+        text: this.advicePriceText
+      });
+      this.advicePriceElem = cbLib.insertElement({
+        parent: this.advicePriceContainer,
+        class: "-cb-price__advice-price",
+        type: "span",
+        text: this.formatPrice(this.advicePrice)
+      });
+    }
+
+    this.priceElem = cbLib.insertElement({
+      parent: this.containerElem,
+      class: "-cb-price__price",
+      type: "span",
+      text: this.formatPrice(this.price)
+    });
+    this.setPriceOrder(this.priceOrder);
+    this.setStacked(this.stacked);
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.containerElem.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.containerElem.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/text/Effects/scrollingText.js
+function scrollingText(parameters) {
+  console.log('scroloingText', parameters); //default values for arguments.
+  //check if elem is valid
+
+  if (parameters.elem === null || parameters.elem === undefined || parameters.elem == "") {
+    console.error("scrollProductTitle: Invalid argument: elem is empty ");
+  }
+
+  var containerElem = parameters.elem;
+  var textElem = parameters.elem.children[0];
+  var text = textElem.innerHTML;
+  var productTitleHeight;
+
+  if (textElem.offsetWidth > containerElem.offsetWidth) {
+    //remove the text and create a new text element
+    // elem.innerHTML = "";
+    //create fade elements
+    var fadeLeft = cbLib.insertElement({
+      parent: containerElem,
+      class: 'product-title-fades left-fade',
+      type: 'img',
+      src: "https://s0.2mdn.net/creatives/assets/3883237/faderImage.png"
+    });
+    var fadeRight = cbLib.insertElement({
+      parent: containerElem,
+      class: 'product-title-fades right-fade',
+      type: 'img',
+      src: "https://s0.2mdn.net/creatives/assets/3883237/faderImage.png"
+    }); //if productTitle is bigger than the container then activate.
+    //Set height of the faders.
+
+    productTitleHeight = textElem.offsetHeight;
+    fadeLeft.style.height = productTitleHeight + "px";
+    fadeRight.style.height = productTitleHeight + "px"; //scrolling animation
+
+    var width = textElem.offsetWidth - containerElem.offsetWidth;
+    var time = width * 0.025;
+    var tl = gsap.timeline({
+      repeat: -1,
+      delay: 3,
+      repeatDelay: 3
+    });
+    tl.to(textElem, time, {
+      right: width,
+      ease: Linear.easeNone
+    });
+    tl.to(fadeLeft, 0.2, {
+      opacity: 1
+    }, "-=" + (-time + 0.2));
+    tl.to(fadeRight, 0.2, {
+      opacity: 1
+    }, "-=" + (-time + 0.2));
+    tl.to(fadeRight, 0.2, {
+      opacity: 0
+    });
+    tl.to(fadeRight, 0.2, {
+      opacity: 1
+    }, "+=3");
+    tl.to(textElem, time / 8, {
+      right: 0,
+      ease: Linear.easeIn
+    });
+    tl.to(fadeLeft, 0.2, {
+      opacity: 0
+    });
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/text/Product Title/productTitle.js
+
+function ProductTitle(parameters) {
+  //DOM Properties
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : '';
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Default Properties
+
+  this.text = parameters.hasOwnProperty("text") ? parameters.text : '';
+  this.color = parameters.hasOwnProperty("color") ? parameters.color : "blue";
+  this.overflow = parameters.hasOwnProperty("overflow") ? parameters.overflow : true;
+  this.numberOfLines = parameters.hasOwnProperty("numberOfLines") ? parameters.numberOfLines : 2; //default value is then force single line.
+  //Scrolling Properties
+
+  this.scrolling = parameters.hasOwnProperty("scrolling") ? parameters.scrolling : false; //Resize Properties
+
+  this.autoResize = parameters.hasOwnProperty("autoResize") ? parameters.autoResize : false;
+  this.minFontSize = parameters.hasOwnProperty("minFontSize") ? parameters.minFontSize : 9;
+  this.maxFontSize = parameters.hasOwnProperty("maxFontSize") ? parameters.maxFontSize : this.fontSize; //TypeWriter
+
+  this.typeWriter = parameters.typeWriter ? true : false;
+
+  this.createElements = function () {
+    this.container = cbLib.insertElement({
+      parent: this.parent,
+      class: '-cb-product-title',
+      type: 'div'
+    });
+    this.textElement = cbLib.insertElement({
+      parent: this.container,
+      class: '-cb-product-title__text',
+      type: 'span',
+      text: this.text
+    });
+
+    if (this.color === "blue") {
+      this.textElement.classList.add("-cb-product-title__text--coolblue");
+    } else {
+      this.textElement.classList.add("-cb-product-title__text--white");
+    }
+
+    if (this.scrolling) {
+      this.enableScrolling(true);
+    }
+
+    if (this.autoResize) {
+      this.resizeFontSize();
+    }
+
+    this.setNumberOfLines(this.numberOfLines);
+    this.setOverflow(this.overflow);
+  };
+
+  this.setFontSize = function (fontSize) {
+    this.textElement.style.fontSize = "".concat(fontSize, "px");
+  };
+
+  this.enableScrolling = function () {
+    this.setOverflow(false);
+    this.setPosition("relative");
+    this.textElement.style.whiteSpace = "nowrap";
+    scrollingText({
+      elem: this.container
+    });
+  };
+
+  this.setPosition = function (position) {
+    this.container.style.position = position;
+    this.textElement.style.position = position;
+  };
+
+  this.setOverflow = function (bool) {
+    if (bool) {
+      this.container.style.overflow = "none";
+    } else {
+      this.container.style.overflow = "hidden";
+    }
+  }; //TODO: Make a number of lines function that sets the maximum number of lines.
+  //*Only supports singleline or all multiple lines, not specific lines like 2-3 yet.
+
+
+  this.setNumberOfLines = function (lines) {
+    if (this.numberOfLines === 1) {
+      this.textElement.style.whiteSpace = "nowrap";
+    } else {
+      this.textElement.style.whiteSpace = "none";
+    }
+  };
+
+  this.resizeFontSize = function () {};
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.container.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.container.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/text/cta/cta.js
+
+function cta(parameters) {
+  //DOM ELements
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : false;
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Cta appearance
+
+  this.colorTheme = parameters.hasOwnProperty("colorTheme") ? parameters.colorTheme : "blue"; //blue|white|green
+
+  this.type = parameters.hasOwnProperty("type") ? parameters.type : "text"; //text|btn|btnSmall
+  //Text Value 
+
+  this.text = parameters.hasOwnProperty("text") ? parameters.text : "CtaText"; //Font Values
+
+  this.minFontSize = parameters.hasOwnProperty("minFontSize") ? parameters.minFontSize : 9;
+  this.maxFontSize = parameters.hasOwnProperty("maxFontSize") ? parameters.maxFontSize : 12;
+  this.autoResize = parameters.hasOwnProperty("autoResize") ? parameters.autoResize : false;
+  this.fontStep = parameters.hasOwnProperty('fontStep') ? parameters.fontStep : 0.1;
+  this.textResizer = textResizer;
+
+  this.resize = function () {
+    this.textResizer({
+      container: this.ctaContainer,
+      textElem: this.ctaElement,
+      minFontSize: this.minFontSize,
+      maxFontSize: this.maxFontSize,
+      fontStep: this.fontStep
+    });
+  };
+
+  this.createElements = function () {
+    this.ctaContainer = cbLib.insertElement({
+      parent: this.parent,
+      class: "-cb-cta -cb-cta--".concat(this.type, " -cb-cta--").concat(this.colorTheme),
+      type: 'div'
+    });
+
+    if (this.type === "text" || this.type === "btnSmall") {
+      this.addIcon();
+    }
+
+    if (this.type !== "btnSmall") {
+      this.addCtaText();
+    } // this.setCustomClasses();
+
+
+    this.addHoverStates();
+  };
+
+  this.addCtaText = function () {
+    this.ctaElement = cbLib.insertElement({
+      parent: this.ctaContainer,
+      class: "-cb-cta__text -cb-cta__text--".concat(this.colorTheme),
+      type: 'p',
+      text: this.text
+    });
+  };
+
+  this.addIcon = function () {
+    // there is no green arrow so set colorTheme to white for the small buttons
+    // const ctaArrowColor = this.type === "btnSmall" ? "white" : this.colorTheme;
+    var ctaArrowColor;
+
+    if (this.type === "btnSmall" || this.colorTheme === "green") {
+      ctaArrowColor = "white";
+    } else {
+      ctaArrowColor = this.colorTheme;
+    }
+
+    this.iconElement = new cbElements.create.icon({
+      parent: this.ctaContainer,
+      name: "arrow-".concat(ctaArrowColor)
+    });
+  };
+
+  this.addHoverStates = function () {
+    var ctaContainer = this.ctaContainer;
+
+    if (this.type.toLowerCase() == "text") {
+      ctaContainer.addEventListener("mouseover", function () {
+        ctaContainer.classList.add("hover");
+      });
+      ctaContainer.addEventListener("mouseout", function () {
+        ctaContainer.classList.remove("hover");
+      });
+    }
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.ctaContainer.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.ctaContainer.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+
+  if (this.autoResize && this.type !== "btnSmall") {
+    this.resize();
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/Images/brandLogo/brandLogo.js
+function brandLogo(parameters) {
+  //DOM Settings
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : "";
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Image Information
+
+  this.brandLogoUrl = parameters.hasOwnProperty("brandLogoUrl") ? parameters.brandLogoUrl : "";
+
+  this.createElements = function () {
+    var _this = this;
+
+    if (this.brandLogoUrl !== '') {
+      this.containerElem = cbLib.insertElement({
+        parent: this.parent,
+        class: "-cb-brandlogo",
+        type: "div"
+      });
+      this.imageElem = cbLib.insertElement({
+        parent: this.containerElem,
+        class: "-cb-brandlogo__image",
+        type: 'img',
+        src: this.brandLogoUrl
+      });
+
+      this.imageElem.onerror = function () {
+        _this.containerElem.classList.add('-cb-brandlogo--noImage');
+
+        _this.imageElem.remove();
+      };
+    }
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.containerElem.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.containerElem.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/Images/icon/icon.js
+function icon(parameters) {
+  //DOM Settings
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : "";
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; // this.containerElem = "";
+  //Icon Information
+
+  this.name = parameters.hasOwnProperty("name") ? parameters.name : "";
+  this.style = parameters.hasOwnProperty("style") ? "_".concat(parameters.style) : ""; // this.onImageError = parameters.hasOwnProperty("onImageError") ? parameters.onImageError : "";
+  //Icon location
+
+  this.iconPath = cbConnection === "local" ? "/Banner Design System/Assets/Coolblue/Icons/" : cbAd.resources.assets.icons.folder;
+  this.iconUrl = parameters.hasOwnProperty("iconUrl") ? "".concat(parameters.iconUrl).concat(this.name).concat(this.style, ".svg") : "".concat(this.iconPath).concat(this.name).concat(this.style, ".svg"); // this.preloadImage = function() {
+  //     let iconImg = new Image();
+  //     // image.onload = this.setImageStatus(true);
+  //     iconImg.onload = this.createImage(this);
+  //     iconImg.onerror = this.setImageStatus(false);
+  //     iconImg.src = this.iconUrl;
+  // }
+
+  this.createElements = function () {
+    var _this = this;
+
+    this.containerElem = cbLib.insertElement({
+      parent: this.parent,
+      class: "-cb-icon",
+      type: "div"
+    });
+    this.imageElem = cbLib.insertElement({
+      parent: this.containerElem,
+      class: "-cb-icon__image",
+      type: 'img',
+      src: this.iconUrl
+    });
+
+    this.imageElem.onerror = function () {
+      _this.containerElem.classList.add('-cb-icon--noImage');
+
+      _this.imageElem.remove();
+    }; // this.preloadImage();
+
+  }; // this.setImageStatus = function(bool) {
+  //     if (bool) {
+  //         this.imageExists = true;
+  //     }
+  // }
+  // this.createImage = function(obj) {
+  //     if (obj.containerElem != "") {
+  //         obj.imageElem = cbLib.insertElement({
+  //             parent: obj.containerElem,
+  //             class: "-cb-icon__image",
+  //             type: 'img',
+  //             src: obj.iconUrl
+  //         })
+  //     }
+  // }
+
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.containerElem.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.containerElem.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.createElements();
+  this.setID();
+  this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/Images/cbLogo/cbLogo.js
+function cbLogo(parameters) {
+  //DOM Settings
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : null;
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : null;
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : [];
+  this.bannerTypeForSize = parameters.hasOwnProperty("bannerTypeForSize") ? parameters.bannerTypeForSize : null;
+  this.cbLogoUrl = cbAd.resources.assets.icons.cbLogo;
+
+  this.createElements = function () {
+    this.containerElem = cbLib.insertElement({
+      parent: this.parent,
+      class: "-cb-cbLogo",
+      type: "div"
+    });
+    this.imageElem = cbLib.insertElement({
+      parent: this.containerElem,
+      class: "-cb-cbLogo__image",
+      type: "img",
+      src: this.cbLogoUrl
+    });
+  };
+
+  this.setSize = function () {
+    if (this.bannerTypeForSize) {
+      this.containerElem.classList.add(this.bannerTypeForSize);
+    }
+  };
+
+  this.setID = function () {
+    if (this.id) {
+      this.containerElem.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.containerElem.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.createElements();
+  this.setSize();
+  this.setID();
+  this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/labels/coolbluesGroeneKeuze/coolbluesGroeneKeuze.js
+function coolbluesGroeneKeuze(parameters) {
+  //DOM Settings
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : "";
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Element Information
+
+  this.cbGroeneKeuze = parameters.hasOwnProperty('cbGroeneKeuze') ? parameters.cbGroeneKeuze : true;
+  this.cbGroeneKeuzeUrl = parameters.hasOwnProperty("cbGroeneKeuzeUrl") ? parameters.cbGroeneKeuzeUrl : ""; //Image language URL choices
+
+  this.setUrl = function () {
+    if (this.cbGroeneKeuzeUrl === '') {
+      var labelLanguage = ""; //Language Switch
+
+      switch (cbLanguage) {
+        case 'nl-NL':
+        case 'be-NL':
+          labelLanguage = 'https://s0.2mdn.net/creatives/assets/4750047/' + 'nl-NL' + '_CBGK_R_Blue.svg';
+          break;
+
+        case 'nl-EN':
+        case 'be-EN':
+          labelLanguage = 'https://s0.2mdn.net/creatives/assets/4750047/' + 'nl-EN' + '_CBGK_R_Blue.svg';
+          break;
+
+        case 'be-FR':
+          labelLanguage = 'https://s0.2mdn.net/creatives/assets/4750047/' + 'be-FR' + '_CBGK_R_Blue.svg';
+          break;
+
+        case 'de-DE':
+          labelLanguage = 'https://s0.2mdn.net/creatives/assets/4750047/' + 'de-DE' + '_CBGK_R_Blue.svg';
+      }
+
+      this.cbGroeneKeuzeUrl = labelLanguage;
+    }
+  };
+
+  this.createElements = function () {
+    var _this = this;
+
+    this.containerElem = cbLib.insertElement({
+      parent: this.parent,
+      class: "-cb-groenekeuze-label",
+      type: "div"
+    });
+    this.imageElem = cbLib.insertElement({
+      parent: this.containerElem,
+      class: "-cb-groenekeuze-label__image",
+      type: 'img',
+      src: this.cbGroeneKeuzeUrl
+    });
+
+    this.imageElem.onerror = function () {
+      _this.containerElem.classList.add('-cb-groenekeuze-label--noImage');
+
+      _this.imageElem.remove();
+    };
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.containerElem.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.containerElem.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  if (this.cbGroeneKeuze) {
+    this.setUrl();
+    this.createElements();
+    this.setID();
+    this.setCustomClasses();
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/labels/coolbluesKeuze/coolbluesKeuze.js
+function coolBluesKeuze(parameters) {
+  //DOM Settings
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : "";
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Element Information
+
+  this.cbKeuze = parameters.hasOwnProperty('cbKeuze') ? parameters.cbKeuze : true;
+  this.cbKeuzeUrl = parameters.hasOwnProperty("cbKeuzeUrl") ? parameters.cbKeuzeUrl : ''; //Image language URL choices
+
+  this.setUrl = function () {
+    if (this.cbKeuzeUrl === '') {
+      var labelLanguage = ""; //Language Switch
+
+      switch (cbLanguage) {
+        case 'nl-NL':
+        case 'be-NL':
+          labelLanguage = 'https://s0.2mdn.net/creatives/assets/4750056/' + 'nl-NL' + '_CBK_R_Blue.svg';
+          break;
+
+        case 'nl-EN':
+        case 'be-EN':
+          labelLanguage = 'https://s0.2mdn.net/creatives/assets/4750056/' + 'nl-EN' + '_CBK_R_Blue.svg';
+          break;
+
+        case 'be-FR':
+          labelLanguage = 'https://s0.2mdn.net/creatives/assets/4750056/' + 'be-FR' + '_CBK_R_Blue.svg';
+          break;
+
+        case 'de-DE':
+          labelLanguage = 'https://s0.2mdn.net/creatives/assets/4750056/' + 'de-DE' + '_CBK_R_Blue.svg';
+      }
+
+      this.cbKeuzeUrl = labelLanguage;
+    }
+  };
+
+  this.createElements = function () {
+    var _this = this;
+
+    this.containerElem = cbLib.insertElement({
+      parent: this.parent,
+      class: "-cb-keuze-label",
+      type: "div"
+    });
+    this.imageElem = cbLib.insertElement({
+      parent: this.containerElem,
+      class: "-cb-keuze-label__image",
+      type: 'img',
+      src: this.cbKeuzeUrl
+    });
+
+    this.imageElem.onerror = function () {
+      _this.containerElem.classList.add('-cb-keuze-label--noImage');
+
+      _this.imageElem.remove();
+    };
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.containerElem.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.containerElem.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  if (this.cbKeuze) {
+    this.setUrl();
+    this.createElements();
+    this.setID();
+    this.setCustomClasses();
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/labels/energyLabel/energyLabel.js
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function energyLabel(parameters) {
+  //DOM Properties
+  this.parent = parameters.hasOwnProperty("parent") ? parameters.parent : "";
+  this.id = parameters.hasOwnProperty("id") ? parameters.id : '';
+  this.classes = parameters.hasOwnProperty("classes") ? parameters.classes : []; //Format Energylabel
+
+  this.getEnergyLabelGrade = function (energyLabel) {
+    if (_typeof(energyLabel) == 'object') {
+      return "";
+    } else {
+      return energyLabel.replace(/[^a-z A-Z]/mg, '');
+    }
+  }; //Default Properties
+
+
+  this.assetsFolder = cbConnection === "local" ? "/Banner Design System/Assets/Coolblue/Labels/energyLabels/" : "https://s0.2mdn.net/creatives/assets/4782935/";
+  this.energyLabelName = "energyLabel";
+  this.energyLabelGrade = parameters.hasOwnProperty("energyLabelGrade") ? this.getEnergyLabelGrade(parameters.energyLabelGrade) : "";
+  this.labelDirection = parameters.hasOwnProperty("labelDirection") ? parameters.labelDirection : "";
+  this.energyLabelUrl = parameters.hasOwnProperty("energyLabelUrl") ? parameters.energyLabelUrl : '';
+  this.energylabelElem = '';
+
+  this.generateUrl = function () {
+    return "".concat(this.assetsFolder).concat(this.energyLabelName, "_").concat(this.energyLabelGrade, "_").concat(this.labelDirection, ".svg");
+  };
+
+  this.adjustHeightToOrangeLabel = function () {
+    if (cbLib.class("label orange")[0]) {}
+  };
+
+  this.createElements = function () {
+    if (this.energyLabelGrade != "") {
+      this.energyLabelElem = cbLib.insertElement({
+        parent: this.parent,
+        type: 'img',
+        class: "-cb-energy-label",
+        src: this.generateUrl()
+      });
+      this.adjustHeightToOrangeLabel();
+    }
+  };
+
+  this.createElements(); // this.setID();
+  // this.setCustomClasses();
+}
+;// CONCATENATED MODULE: ./cbElements/carousel/activeCardSelection.js
+var carousel;
+function setActiveCard(carouselObj, action, update) {
+  carousel = carouselObj;
+  var newActiveCard;
+
+  switch (action) {
+    case 'prev':
+      switch (carousel.cardsData.activeCard) {
+        case 0:
+          newActiveCard = carousel.cardsData.cards.length - 1;
+          break;
+
+        default:
+          newActiveCard = carousel.cardsData.activeCard - 1;
+          break;
+      }
+
+      break;
+
+    case 'next':
+      switch (carousel.cardsData.activeCard) {
+        case carousel.cardsData.cards.length - 1:
+          newActiveCard = 0;
+          break;
+
+        default:
+          newActiveCard = carousel.cardsData.activeCard + 1;
+          break;
+      }
+
+      break;
+
+    default:
+      newActiveCard = update;
+      break;
+  }
+
+  carousel.cardsData.activeCard = parseInt(newActiveCard);
+  setPrevAndNext(); // Change active class for dots and change position
+
+  if (carousel.showDots) {
+    cbLib.class('-cb-carousel__nav-link--active')[0].classList.remove('-cb-carousel__nav-link--active');
+    cbLib.id("-cb-carousel__nav-link--".concat(carousel.cardsData.activeCard)).classList.add('-cb-carousel__nav-link--active');
+    setDotPosition();
+  } // execute any hook function when the active card updates
+
+
+  carousel.bannerEvents.execute('onUpdate');
+}
+;
+
+function setPrevAndNext() {
+  // Change link for the prev and next buttons
+  var prevCard = carousel.cardsData.activeCard - 1;
+  var nextCard = carousel.cardsData.activeCard + 1;
+
+  switch (carousel.cardsData.activeCard) {
+    case 0:
+      prevCard = carousel.cardsData.cards.length - 1;
+      break;
+
+    case carousel.cardsData.cards.length - 1:
+      nextCard = 0;
+      break;
+  }
+
+  var newPrevLink = "".concat(carousel.carouselPrev.href.slice(0, -1)).concat(prevCard);
+  var newNextLink = "".concat(carousel.carouselNext.href.slice(0, -1)).concat(nextCard); // Use timeout so it will not set the link the moment you click it
+
+  setTimeout(function () {
+    carousel.carouselPrev.href = newPrevLink;
+    carousel.carouselNext.href = newNextLink;
+  }, 5);
+}
+
+function setDotPosition() {
+  // move the dots when there are more then 3 cards in the carousel
+  var moveDots = gsap.timeline();
+
+  if (carousel.cardsData.cards.length > 3) {
+    var position = 0;
+
+    switch (carousel.cardsData.activeCard) {
+      case 0:
+      case 1:
+        break;
+
+      default:
+        position = (carousel.cardsData.activeCard - 1) * 10;
+        break;
+
+      case carousel.cardsData.cards.length - 1:
+        position = (carousel.cardsData.activeCard - 2) * 10;
+        break;
+    }
+
+    moveDots.to('.-cb-carousel__nav-link', {
+      x: -position,
+      duration: 0.3
+    });
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/carousel/carouselMotion.js
+
+var carouselMotion_carousel;
+
+function calculateCardDuration() {
+  // Calculate the time the card is visible
+  var maxTime = 15;
+  var totalWithSlideDuration = carouselMotion_carousel.slideDuration * carouselMotion_carousel.cardsData.cards.length; // If both inputs are to long or not present use the max time value
+
+  if (carouselMotion_carousel.totalDuration >= maxTime && totalWithSlideDuration >= maxTime || !carouselMotion_carousel.totalDuration && !carouselMotion_carousel.slideDuration) {
+    carouselMotion_carousel.cardsData.cardDuration = maxTime / carouselMotion_carousel.cardsData.cards.length;
+  } // If totaltime is present
+  else if (carouselMotion_carousel.totalDuration < maxTime) {
+      carouselMotion_carousel.cardsData.cardDuration = carouselMotion_carousel.totalDuration / carouselMotion_carousel.cardsData.cards.length;
+    } // if non above use slideDuration
+    else {
+        carouselMotion_carousel.cardsData.cardDuration = carouselMotion_carousel.slideDuration;
+      }
+
+  if (carouselMotion_carousel.reverse) {
+    // divide cardDuration by 2 because of the reverse playback
+    carouselMotion_carousel.cardsData.cardDuration = carouselMotion_carousel.cardsData.cardDuration / 2;
+  }
+}
+
+function buildScrollAnimation(carouselObj) {
+  carouselMotion_carousel = carouselObj;
+  calculateCardDuration(); // Timeline for the scroll animation
+
+  var scrollTl = gsap.timeline();
+  scrollTl.repeat(carouselMotion_carousel.reverse ? 1 : 0).yoyo(true).repeatDelay(carouselMotion_carousel.cardsData.cardDuration).add('startScroll');
+
+  var _loop = function _loop(i) {
+    switch (i) {
+      case 0:
+        scrollTl.add("cardStart".concat(i), "startScroll");
+        break;
+
+      default:
+        scrollTl.add("cardStart".concat(i), "cardEnd".concat(i - 1, "+=").concat(carouselMotion_carousel.cardsData.cardDuration));
+        break;
+    }
+
+    switch (carouselMotion_carousel.direction) {
+      case 'horizontal':
+        scrollTl.to('.-cb-carousel__main-cards', {
+          scrollLeft: i * carouselMotion_carousel.parent.offsetWidth,
+          duration: 0.1,
+          onComplete: function onComplete() {
+            setActiveCard(carouselMotion_carousel, 'animation', i);
+          },
+          onReverseComplete: function onReverseComplete() {
+            switch (i) {
+              case 0:
+                setActiveCard(carouselMotion_carousel, 'animation', i);
+                break;
+
+              default:
+                setActiveCard(carouselMotion_carousel, 'animation', i - 1);
+                break;
+            }
+          }
+        }, "cardStart".concat(i));
+        break;
+
+      case 'vertical':
+        scrollTl.to('.-cb-carousel__main-cards', {
+          scrollTop: i * carouselMotion_carousel.parent.offsetHeight,
+          duration: 0.1,
+          onComplete: function onComplete() {
+            setActiveCard(carouselMotion_carousel, 'animation', i);
+          },
+          onReverseComplete: function onReverseComplete() {
+            switch (i) {
+              case 0:
+                setActiveCard(carouselMotion_carousel, 'animation', i);
+                break;
+
+              default:
+                setActiveCard(carouselMotion_carousel, 'animation', i - 1);
+                break;
+            }
+          }
+        }, "cardStart".concat(i));
+        break;
+    }
+
+    scrollTl.add("cardEnd".concat(i), '>');
+  };
+
+  for (var i = 0; i < carouselMotion_carousel.cardsData.cards.length; i++) {
+    _loop(i);
+  }
+
+  return scrollTl;
+}
+function teaseAnimation(carouselObj, prevNextDirection) {
+  // console.log(carousel);
+  if (carouselObj) {
+    carouselMotion_carousel = carouselObj;
+  } // Set variable to pick the correct animation, by defeault is will use the active  card number but if teaseDirection is defined set it to either 0 (next tease) or to the length of the cards array(prev tease) 
+
+
+  var teaseDirection;
+
+  switch (prevNextDirection) {
+    default:
+      teaseDirection = carouselMotion_carousel.cardsData.activeCard;
+      break;
+
+    case 'teasePrev':
+      teaseDirection = carouselMotion_carousel.cardsData.cards.length - 1;
+      break;
+
+    case 'teaseNext':
+      teaseDirection = 0;
+  }
+
+  var cardsContainer = cbLib.class('-cb-carousel__main-cards')[0]; // Timeline for the tease animation
+
+  var teaseTl = gsap.timeline({
+    repeat: 2,
+    onStart: function onStart() {
+      switch (carouselMotion_carousel.direction) {
+        case 'horizontal':
+          cardsContainer.style.scrollSnapType = "none";
+          break;
+
+        case 'vertical':
+          cardsContainer.style.scrollSnapType = "none";
+          break;
+      }
+    },
+    onComplete: function onComplete() {
+      switch (carouselMotion_carousel.direction) {
+        case 'horizontal':
+          cardsContainer.style.scrollSnapType = "x mandatory";
+          break;
+
+        case 'vertical':
+          cardsContainer.style.scrollSnapType = "y mandatory";
+          break;
+      }
+    }
+  });
+  teaseTl.add('teaseStart');
+
+  switch (carouselMotion_carousel.direction) {
+    case 'horizontal':
+      switch (teaseDirection) {
+        case 0:
+          teaseTl.to('.-cb-carousel__card', {
+            x: -10,
+            duration: 0.4,
+            ease: Power2.easeIn
+          }).to('.-cb-carousel__card', {
+            x: 0,
+            duration: 0.6,
+            ease: Power2.easeOut
+          });
+          break;
+
+        default:
+          teaseTl.to('.-cb-carousel__card', {
+            x: -10,
+            duration: 0.4,
+            ease: Power2.easeIn
+          }).to('.-cb-carousel__card', {
+            x: 0,
+            duration: 0.6,
+            ease: Power2.easeOut
+          }).to('.-cb-carousel__card', {
+            x: 10,
+            duration: 0.4,
+            ease: Power2.easeIn
+          }).to('.-cb-carousel__card', {
+            x: 0,
+            duration: 0.6,
+            ease: Power2.easeOut
+          });
+          break;
+
+        case carouselMotion_carousel.cardsData.cards.length - 1:
+          teaseTl.to('.-cb-carousel__card', {
+            x: 10,
+            duration: 0.4,
+            ease: Power2.easeIn
+          }).to('.-cb-carousel__card', {
+            x: 0,
+            duration: 0.6,
+            ease: Power2.easeOut
+          });
+          break;
+      }
+
+      break;
+
+    case 'vertical':
+      switch (teaseDirection) {
+        case 0:
+          teaseTl.to('.-cb-carousel__card', {
+            y: -10,
+            duration: 0.4,
+            ease: Power2.easeIn
+          }).to('.-cb-carousel__card', {
+            y: 0,
+            duration: 0.6,
+            ease: Power2.easeOut
+          });
+          break;
+
+        default:
+          teaseTl.repeat(1).to('.-cb-carousel__card', {
+            y: -10,
+            duration: 0.4,
+            ease: Power2.easeIn
+          }).to('.-cb-carousel__card', {
+            y: 0,
+            duration: 0.6,
+            ease: Power2.easeOut
+          }).to('.-cb-carousel__card', {
+            y: 10,
+            duration: 0.4,
+            ease: Power2.easeOut
+          }).to('.-cb-carousel__card', {
+            y: 0,
+            duration: 0.6,
+            ease: Power2.easeOut
+          });
+          break;
+
+        case carouselMotion_carousel.cardsData.cards.length - 1:
+          teaseTl.to('.-cb-carousel__card', {
+            y: 10,
+            duration: 0.4,
+            ease: Power2.easeIn
+          }).to('.-cb-carousel__card', {
+            y: 0,
+            duration: 0.6,
+            ease: Power2.easeOut
+          });
+          break;
+      }
+
+      break;
+  }
+
+  carouselMotion_carousel.teaseAnimationData.timeline = teaseTl;
+  return teaseTl;
+}
+function stopTease(carouselObj) {
+  carouselMotion_carousel = carouselObj;
+  carouselMotion_carousel.teaseAnimationData.timeline.pause();
+
+  switch (carouselMotion_carousel.direction) {
+    case 'horizontal':
+      carouselMotion_carousel.carouselCardsContainer.style.scrollSnapType = "x mandatory";
+      break;
+
+    case 'vertical':
+      carouselMotion_carousel.carouselCardsContainer.style.scrollSnapType = "y mandatory";
+      break;
+  }
+}
+function handleTeaseAfterScroll() {
+  // Tease when the same card is visible for a longer time (8sec)
+  // load the tease timeline in the tease animation object to be avialble in the add events functions
+  carouselMotion_carousel.teaseAnimationData.timeline = teaseAnimation();
+  carouselMotion_carousel.teaseAnimationData.timeline.paused(true); // play the tease every 8 seconds
+
+  carouselMotion_carousel.teaseAnimationData.interval = setInterval(function () {
+    carouselMotion_carousel.teaseAnimationData.timeline.play();
+  }, 8000);
+}
+function scrollToCard(target) {
+  // Scroll back to the last card in the scroll animation if the an other card is clicked
+  var scrollToTl = gsap.timeline();
+
+  switch (carouselMotion_carousel.direction) {
+    case 'horizontal':
+      scrollToTl.set('.-cb-carousel__main-cards', {
+        scrollLeft: target * carouselMotion_carousel.parent.offsetWidth
+      });
+      break;
+
+    case 'vertical':
+      scrollToTl.set('.-cb-carousel__main-cards', {
+        scrollTop: target * carouselMotion_carousel.parent.offsetHeight
+      });
+      break;
+  }
+}
+;// CONCATENATED MODULE: ./cbElements/carousel/carousel.js
+function carousel_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function carousel_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { carousel_ownKeys(Object(source), true).forEach(function (key) { carousel_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { carousel_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function carousel_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+function carousel_carousel(parameters) {
+  var _this = this;
+
+  //DOM Properties
+  this.parent = parameters.parameters.hasOwnProperty("parent") ? parameters.parameters.parent : '';
+  this.id = parameters.parameters.hasOwnProperty("id") ? parameters.parameters.id : '';
+  this.classes = parameters.parameters.hasOwnProperty("classes") ? parameters.parameters.classes : [];
+  this.slideDuration = parameters.parameters.hasOwnProperty("slideDuration") ? parameters.parameters.slideDuration : undefined;
+  this.totalDuration = parameters.parameters.hasOwnProperty("totalDuration") ? parameters.parameters.totalDuration : undefined;
+  this.direction = parameters.parameters.hasOwnProperty('direction') ? parameters.parameters.direction : undefined;
+  this.reverse = parameters.parameters.hasOwnProperty("reverse") ? parameters.parameters.reverse : true;
+  this.showDots = parameters.parameters.hasOwnProperty('showDots') ? parameters.parameters.showDots : true;
+  this.tease = parameters.parameters.hasOwnProperty('tease') ? parameters.parameters.tease : true;
+  this.cardsData = {
+    cards: parameters.cards ? parameters.cards : [],
+    activeCard: 0,
+    cardDuration: 0
+  };
+  var masterTl = gsap.timeline({
+    onComplete: function onComplete() {
+      if (_this.tease) {
+        handleTeaseAfterScroll();
+      }
+    }
+  });
+  this.teaseAnimationData = {
+    timeline: undefined,
+    interval: undefined
+  };
+  this.bannerEvents = {
+    execute: function execute(action) {
+      this[action].forEach(function (customhook) {
+        customhook();
+      });
+    },
+    onUpdate: []
+  };
+
+  this.setDirection = function () {
+    if (!this.direction) {
+      //Size switch
+      switch (cbAd.bannerInfo.bannerSize) {
+        default:
+          this.direction = 'horizontal';
+          break;
+
+        case '468x60':
+        case '728x90':
+        case '970x90':
+          this.direction = 'vertical';
+          break;
+      }
+    }
+  };
+
+  this.createCarouselElements = function () {
+    this.carouselContainer = cbLib.insertElement({
+      parent: this.parent,
+      type: 'div',
+      class: "-cb-carousel ".concat(this.direction)
+    });
+    this.carouselMainContainer = cbLib.insertElement({
+      parent: this.carouselContainer,
+      type: 'div',
+      class: '-cb-carousel__main'
+    });
+    this.carouselCardsContainer = cbLib.insertElement({
+      parent: this.carouselMainContainer,
+      type: 'div',
+      class: '-cb-carousel__main-cards'
+    });
+    this.CarouselNavContainer = cbLib.insertElement({
+      parent: this.carouselContainer,
+      type: 'div',
+      class: '-cb-carousel__nav'
+    });
+    this.carouselPrev = cbLib.insertElement({
+      parent: this.carouselMainContainer,
+      type: 'a',
+      class: '-cb-carousel__main-nav -cb-carousel__main-nav--prev',
+      id: '-cb-carousel__main-nav--prev',
+      href: "#-cb-carousel__card--".concat(this.cardsData.cards.length - 1)
+    });
+    this.carouselNext = cbLib.insertElement({
+      parent: this.carouselMainContainer,
+      type: 'a',
+      class: '-cb-carousel__main-nav -cb-carousel__main-nav--next',
+      id: '-cb-carousel__main-nav--next',
+      href: "#-cb-carousel__card--".concat(this.cardsData.activeCard + 1)
+    });
+    this.carouselPrev.setAttribute('data-type', 'prev');
+    this.carouselNext.setAttribute('data-type', 'next');
+  };
+
+  this.createCardElements = function () {
+    var _this2 = this;
+
+    this.cardsData.cards.forEach(function (card, index) {
+      _this2.carouselCard = cbLib.insertElement({
+        parent: _this2.carouselCardsContainer,
+        type: 'div',
+        class: '-cb-carousel__card',
+        id: "-cb-carousel__card--".concat(index)
+      }); // Add card to carousel
+
+      switch (card.cardType) {
+        case 'productcard':
+          new cbElements.create.productcard(carousel_objectSpread(carousel_objectSpread({}, card), {}, {
+            parent: _this2.carouselCard
+          }));
+          break;
+
+        case 'storycard':
+          new cbElements.create.storycard(carousel_objectSpread(carousel_objectSpread({}, card), {}, {
+            parent: _this2.carouselCard
+          }));
+          break;
+
+        default:
+          new cbElements.create.whiteCard(carousel_objectSpread(carousel_objectSpread({}, card), {}, {
+            parent: _this2.carouselCard
+          }));
+      } // Add dots for card selection if needed
+
+
+      if (_this2.showDots) {
+        var navLink = cbLib.insertElement({
+          parent: _this2.CarouselNavContainer,
+          type: 'a',
+          id: "-cb-carousel__nav-link--".concat(index),
+          class: '-cb-carousel__nav-link',
+          href: "#-cb-carousel__card--".concat(index)
+        }); // set active dot for initial loading
+
+        if (index === 0) {
+          navLink.classList.add('-cb-carousel__nav-link--active');
+        }
+
+        navLink.setAttribute('data-type', 'cardLink');
+        navLink.setAttribute('data-cardNumber', index);
+      }
+    });
+  };
+
+  this.resizeElements = function () {
+    var _this3 = this;
+
+    var allWhiteCards = Array.from(cbLib.class('-cb-whitecard'));
+    var prevAndNext = Array.from(cbLib.class('-cb-carousel__main-nav'));
+    var highest = 0;
+    var widest = 0; // Get the biggets whitecard
+
+    allWhiteCards.forEach(function (card) {
+      widest = card.offsetWidth > widest ? card.offsetWidth : widest;
+      highest = card.offsetHeight > highest ? card.offsetHeight : highest;
+    }); // Set size for all whitecards
+
+    allWhiteCards.forEach(function (card) {
+      card.style.width = "".concat(widest, "px");
+      card.style.height = "".concat(highest, "px");
+    }); // Set height of prev an next elements
+
+    prevAndNext.forEach(function (elem) {
+      if (_this3.direction !== 'vertical') {
+        elem.style.height = "".concat(highest, "px");
+      }
+    });
+  };
+
+  this.setID = function () {
+    if (this.id !== '') {
+      this.carouselContainer.id = this.id;
+    }
+  };
+
+  this.setCustomClasses = function () {
+    if (this.classes.length > 0) {
+      for (var i = 0; i < this.classes.length; i++) {
+        this.carouselContainer.classList.add(this.classes[i]);
+      }
+    }
+  };
+
+  this.addClickEvents = function () {
+    var _this4 = this;
+
+    var allLinks = Array.from(document.querySelectorAll('.-cb-carousel__nav-link, .-cb-carousel__main-nav'));
+    allLinks.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        // Collect the data for the selected card
+        var clickType = event.target.dataset.type;
+        var clickedCardNumber = event.target.dataset.cardnumber;
+        setActiveCard(_this4, clickType, clickedCardNumber); // Stop the scroll aniamtion if active and save the current card to return to when the scroll starts again
+
+        if (masterTl.isActive()) {
+          // If the first tease is still running, pause the tease tl and set the restart card to 0 
+          var animationRestartCard;
+
+          if (_this4.teaseAnimationData.timeline.isActive()) {
+            stopTease(_this4);
+            animationRestartCard = 0;
+          } else {
+            animationRestartCard = masterTl._last.currentLabel().slice(masterTl._last.currentLabel().length - 1);
+          } // Get the new starttime for when the scroll start again, based on starttime for the scroll animation and the label time of the target card 
+
+
+          var startTime = masterTl._last.startTime() + masterTl._last.labels["cardStart".concat(animationRestartCard)] - _this4.cardsData.cardDuration; // Pause the master timeline and if active kill the tease, we don't want it to tease when the scroll starts again
+
+
+          masterTl.pause(); // Restart the scroll animation at the calculated starttime
+
+          setTimeout(function () {
+            setActiveCard(_this4, 'animation', animationRestartCard);
+            scrollToCard(animationRestartCard);
+            masterTl.resume(startTime);
+          }, 5000);
+        } // If the master timeline has already finished and the tease interval is active, clear the interval and stop the tease, after that restart the tease
+        else if (_this4.teaseAnimationData.interval !== undefined) {
+            clearInterval(_this4.teaseAnimationData.interval);
+            stopTease(_this4);
+            handleTeaseAfterScroll();
+          }
+      });
+    });
+  };
+
+  this.addHooverEvents = function () {
+    var _this5 = this;
+
+    // TODO remove events for prev in the first card and next in last card
+    // TODO have some weird behavior, i think it has to do with the tease animation from the interval starting running while your on hoover.
+    this.carouselPrev.addEventListener('mouseenter', function () {
+      return teaseAnimation(_this5, 'teasePrev');
+    });
+    this.carouselPrev.addEventListener('mouseleave', function () {
+      return stopTease(_this5);
+    });
+    this.carouselNext.addEventListener('mouseenter', function () {
+      return teaseAnimation(_this5, 'teaseNext');
+    });
+    this.carouselNext.addEventListener('mouseleave', function () {
+      return stopTease(_this5);
+    });
+  };
+
+  this.startBanner = function () {
+    // Build carousel animation master timeline
+    if (this.tease) {
+      masterTl.add(teaseAnimation(this), this.cardsData.cardDuration).add('scroll', ">-=".concat(this.cardsData.cardDuration));
+    } else {
+      masterTl.add('scroll', ">+=".concat(this.cardsData.cardDuration));
+    }
+
+    console.log('this', this);
+    masterTl.add(buildScrollAnimation(this), "scroll").add('carouselEnd', '>');
+  };
+
+  this.setDirection();
+  this.createCarouselElements();
+  this.createCardElements();
+  this.resizeElements();
+  this.addClickEvents();
+  this.addHooverEvents();
+  this.setID();
+  this.setCustomClasses();
+  this.startBanner();
+}
+;// CONCATENATED MODULE: ./cbElements/cbElements.dev.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+window.cbElements = {
+  create: {
+    //Text Elements
+    factSlogan: factSlogan,
+    copy: copy,
+    textLabel: textLabel,
+    productTitle: ProductTitle,
+    price: priceElement,
+    cta: cta,
+    //Cards
+    whiteCard: whiteCard,
+    storycard: storycard,
+    productcard: productcard,
+    //Images/Video
+    cbLogo: cbLogo,
+    icon: icon,
+    productImage: productImage,
+    brandLogo: brandLogo,
+    //Labels
+    coolbluesKeuze: coolBluesKeuze,
+    coolbluesGroeneKeuze: coolbluesGroeneKeuze,
+    energyLabel: energyLabel,
+    //Effects
+    carousel: carousel_carousel
+  },
+  add: {
+    addBorder: addBorder
+  }
+};
+/******/ })()
+;

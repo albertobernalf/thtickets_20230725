@@ -24,7 +24,14 @@
         var empleadoId = document.getElementById("empleadoId").value;
         var perfil = document.getElementById("perfil").value;
 
-		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil;
+        var ano = document.getElementById("ano").value;
+        var mes = document.getElementById("mes").value;
+        var sedeMalla = document.getElementById("sedeMalla").value;
+        var areaMalla = document.getElementById("areaMalla").value;
+        var nombreMalla = document.getElementById("nombreMalla").value;
+
+		var apasar =  username + ',' + sedeSeleccionada+ ',' + nombreUsuario + ',' + nombreSede+ ',' + empleadoId + ',' + perfil + ',' + ano + ',' + mes + ',' + sedeMalla + ',' + areaMalla + ',' + nombreMalla;
+
 		window.location = "/gestionCoord/" + apasar;
 	}
 </script>
@@ -42,6 +49,13 @@
 		<input type="hidden" class="form-control" id="nombreSede" name="nombreSede" value={{NombreSede}}>
 		<input type="hidden" class="form-control" id="empleadoId" name="empleadoId" value={{EmpleadoId}}>
 		<input type="hidden" class="form-control" id="perfil" name="perfil" value={{Perfil}}>
+
+		<input type="hidden" class="form-control" id="ano" name="ano" value={{Ano}}>
+		<input type="hidden" class="form-control" id="mes" name="mes" value={{Mes}}>
+		<input type="hidden" class="form-control" id="sedeMalla" name="sedeMalla" value={{SedeMalla}}>
+		<input type="hidden" class="form-control" id="areaMalla" name="areaMalla" value={{AreaMalla}}>
+		<input type="hidden" class="form-control" id="nombreMalla" name="nombreMalla" value={{NombreMalla}}>
+
 
 		{% if form.errors %}
 		<small class="error">{{ form.errors|striptags }}</small>

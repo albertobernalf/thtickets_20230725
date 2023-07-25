@@ -1,0 +1,1493 @@
+//Modulelist
+//cbAd.modules. = {};
+
+//SplashList
+//Standard splashscreen
+cbAd.resources.splashScreens.standard = {};
+cbAd.resources.splashScreens.standard.live = "https://s0.2mdn.net/creatives/assets/3782506/";
+cbAd.resources.splashScreens.standard.local = "/Banner Design System/Main Modules/Splashscreens/standard/"
+cbAd.resources.splashScreens.standard.JS = "standardSplash.js";
+cbAd.resources.splashScreens.standard.HTML = "";
+cbAd.resources.splashScreens.standard.CSS = "standardSplash.css";
+
+//Standard splashscreen v2
+cbAd.resources.splashScreens.standardV2 = {};
+cbAd.resources.splashScreens.standardV2.live = "https://s0.2mdn.net/creatives/assets/3782806/";
+cbAd.resources.splashScreens.standardV2.local = "/Banner Design System/Main Modules/Splashscreens/standardV2/"
+cbAd.resources.splashScreens.standardV2.JS = "standardSplashV2.js";
+cbAd.resources.splashScreens.standardV2.HTML = "";
+cbAd.resources.splashScreens.standardV2.CSS = "standardSplashV2.css";
+
+//Fact/Slogan splashscreen
+cbAd.resources.splashScreens.factSlogan = {};
+cbAd.resources.splashScreens.factSlogan.live = "https://s0.2mdn.net/creatives/assets/3782581/";
+cbAd.resources.splashScreens.factSlogan.local = "/Banner Design System/Main Modules/Splashscreens/factSlogan/"
+cbAd.resources.splashScreens.factSlogan.JS = "factSloganSplash.js";
+cbAd.resources.splashScreens.factSlogan.HTML = "";
+cbAd.resources.splashScreens.factSlogan.CSS = "factSloganSplash.css";
+
+//Fact/Slogan splashscreen v2
+cbAd.resources.splashScreens.factSloganV2 = {};
+cbAd.resources.splashScreens.factSloganV2.live = "https://s0.2mdn.net/creatives/assets/3782800/";
+cbAd.resources.splashScreens.factSloganV2.local = "/Banner Design System/Main Modules/Splashscreens/factSloganV2/"
+cbAd.resources.splashScreens.factSloganV2.JS = "factSloganSplashV2.js";
+cbAd.resources.splashScreens.factSloganV2.HTML = "";
+cbAd.resources.splashScreens.factSloganV2.CSS = "factSloganSplashV2.css";
+
+//Fact/Slogan splashscreen v3
+cbAd.resources.splashScreens.factSloganV3 = {};
+cbAd.resources.splashScreens.factSloganV3.live = "https://s0.2mdn.net/creatives/assets/3782803/";
+cbAd.resources.splashScreens.factSloganV3.local = "/Banner Design System/Main Modules/Splashscreens/factSloganV3/"
+cbAd.resources.splashScreens.factSloganV3.JS = "factSloganSplashV3.js";
+cbAd.resources.splashScreens.factSloganV3.HTML = "";
+cbAd.resources.splashScreens.factSloganV3.CSS = "factSloganSplashV3.css";
+
+//factTypewriter Splash
+cbAd.resources.splashScreens.factTypeWriter = {};
+cbAd.resources.splashScreens.factTypeWriter.live = "https://s0.2mdn.net/creatives/assets/3967572/";
+cbAd.resources.splashScreens.factTypeWriter.local = "/Banner Design System/Main Modules/Splashscreens/factTypeWriter/"
+cbAd.resources.splashScreens.factTypeWriter.JS = "factTypeWriter.js";
+cbAd.resources.splashScreens.factTypeWriter.HTML = "";
+cbAd.resources.splashScreens.factTypeWriter.CSS = "factTypeWriter.css";
+
+//Fact/Slogan Christmas
+cbAd.resources.splashScreens.factSloganChristmas = {};
+cbAd.resources.splashScreens.factSloganChristmas.live = "https://s0.2mdn.net/creatives/assets/3983547/";
+cbAd.resources.splashScreens.factSloganChristmas.local = "/Banner Design System/Main Modules/Splashscreens/factSloganChristmas/"
+cbAd.resources.splashScreens.factSloganChristmas.JS = "factSloganChristmas.js";
+cbAd.resources.splashScreens.factSloganChristmas.HTML = "";
+cbAd.resources.splashScreens.factSloganChristmas.CSS = "factSloganChristmas.css";
+
+//Fact/Slogan Christmas SM
+cbAd.resources.splashScreens.factSloganChristmasSM = {};
+cbAd.resources.splashScreens.factSloganChristmasSM.live = "https://s0.2mdn.net/creatives/assets/3969194/";
+cbAd.resources.splashScreens.factSloganChristmasSM.local = "/Banner Design System/Main Modules/Splashscreens/factSloganChristmasSM/"
+cbAd.resources.splashScreens.factSloganChristmasSM.JS = "factSloganChristmasSM.js";
+cbAd.resources.splashScreens.factSloganChristmasSM.HTML = "";
+cbAd.resources.splashScreens.factSloganChristmasSM.CSS = "factSloganChristmasSM.css";
+
+//Ambiance Splash
+cbAd.resources.splashScreens.ambianceSplash = {};
+cbAd.resources.splashScreens.ambianceSplash.live = "https://s0.2mdn.net/creatives/assets/4763450/";
+cbAd.resources.splashScreens.ambianceSplash.local = "/Banner Design System/Main Modules/Splashscreens/ambianceSplash/"
+cbAd.resources.splashScreens.ambianceSplash.JS = "ambianceSplash.js";
+cbAd.resources.splashScreens.ambianceSplash.HTML = "";
+cbAd.resources.splashScreens.ambianceSplash.CSS = "ambianceSplash.css";
+
+//Test Banners
+// animatedLB1A
+cbAd.resources.banners.animatedLB1A = {};
+cbAd.resources.banners.animatedLB1A.live = ""; //TODO
+cbAd.resources.banners.animatedLB1A.local = "/Banner Design System/Creatives/Test Banners/animatedLB1A/design/";
+cbAd.resources.banners.animatedLB1A.CSS = "animatedLB1A_design.css";
+
+//Top 10 Swipe Test
+cbAd.resources.banners.Top10SwipeTest = {};
+cbAd.resources.banners.Top10SwipeTest.live = "https://s0.2mdn.net/creatives/assets/3817897/";
+cbAd.resources.banners.Top10SwipeTest.local = "/Banner Design System/Creatives/Test Banners/Top10SwipeTest/Design/";
+cbAd.resources.banners.Top10SwipeTest.CSS = "Top10Design.css";
+//Banner list
+
+//Templates
+cbAd.resources.banners.cbDisplayTemplate = {};
+cbAd.resources.banners.cbDisplayTemplate.live = "https://s0.2mdn.net/creatives/assets/4000969/";
+cbAd.resources.banners.cbDisplayTemplate.local = "/Banner Design System/Creatives/Templates/CBTemplates/Display/Design/";
+cbAd.resources.banners.cbDisplayTemplate.CSS = "design.css";
+
+//Growpath Template
+cbAd.resources.banners.growPathTemplate = {};
+cbAd.resources.banners.growPathTemplate.live = "https://s0.2mdn.net/creatives/assets/3981872/";
+cbAd.resources.banners.growPathTemplate.local = "/Banner Design System/Creatives/Templates/CBTemplates/growPath/Design/";
+cbAd.resources.banners.growPathTemplate.CSS = "design.css";
+
+//! Onsite
+//Listview
+cbAd.resources.banners.listView = {};
+cbAd.resources.banners.listView.live = "https://s0.2mdn.net/creatives/assets/4278850/";
+cbAd.resources.banners.listView.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V2/Listview/Design/";
+cbAd.resources.banners.listView.CSS = "design.css";
+
+//Leaderboard1 1AB
+cbAd.resources.banners.homeLB1 = {};
+cbAd.resources.banners.homeLB1.live = "https://s0.2mdn.net/creatives/assets/4001128/";
+cbAd.resources.banners.homeLB1.local = "/Banner Design System/Creatives/Templates/CBTemplates/Leaderboard 1/Design/";
+cbAd.resources.banners.homeLB1.CSS = "design.css";
+
+//Leaderboard 1B SM
+cbAd.resources.banners.homeLB1B_SM = {};
+cbAd.resources.banners.homeLB1B_SM.live = "https://s0.2mdn.net/creatives/assets/4000882/";
+cbAd.resources.banners.homeLB1B_SM.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard 1B/Design/";
+cbAd.resources.banners.homeLB1B_SM.CSS = "design.css";
+
+//Leaderboard 1B Blue SM 
+cbAd.resources.banners.homeLB1B_Blue_SM = {};
+cbAd.resources.banners.homeLB1B_Blue_SM.live = "https://s0.2mdn.net/creatives/assets/4817188/";
+cbAd.resources.banners.homeLB1B_Blue_SM.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V3/Leaderboard 1B/Design/";
+cbAd.resources.banners.homeLB1B_Blue_SM.CSS = "design.css";
+
+//Leaderboard 1A SM
+cbAd.resources.banners.homeLB1A_SM = {};
+cbAd.resources.banners.homeLB1A_SM.live = "https://s0.2mdn.net/creatives/assets/4258996/";
+cbAd.resources.banners.homeLB1A_SM.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard 1A/Design/";
+cbAd.resources.banners.homeLB1A_SM.CSS = "design.css";
+
+//Filter pages 1AB/2AB Web&Mobile
+cbAd.resources.banners.filterPages = {};
+cbAd.resources.banners.filterPages.live = "https://s0.2mdn.net/creatives/assets/4000975/";
+cbAd.resources.banners.filterPages.local = "/Banner Design System/Creatives/Templates/CBTemplates/Filter Pages/Design/";
+cbAd.resources.banners.filterPages.CSS = "design.css";
+
+//Leaderboard 1 SM
+cbAd.resources.banners.homeLB1_SM = {};
+cbAd.resources.banners.homeLB1_SM.live = "https://s0.2mdn.net/creatives/assets/4000879/";
+cbAd.resources.banners.homeLB1_SM.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard 1/Design/";
+cbAd.resources.banners.homeLB1_SM.CSS = "design.css";
+
+//Leaderboard 2-4 SM
+cbAd.resources.banners.homeLB2_4_SM = {};
+cbAd.resources.banners.homeLB2_4_SM.live = "https://s0.2mdn.net/creatives/assets/4000882/";
+cbAd.resources.banners.homeLB2_4_SM.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard 2-4/Design/";
+cbAd.resources.banners.homeLB2_4_SM.CSS = "design.css";
+
+//Leaderboard1A Template
+cbAd.resources.banners.homeLB1A = {};
+cbAd.resources.banners.homeLB1A.live = "https://s0.2mdn.net/creatives/assets/4258854/";
+cbAd.resources.banners.homeLB1A.local = "/Banner Design System/Creatives/Templates/CBTemplates/Leaderboard 1A/Design/";
+cbAd.resources.banners.homeLB1A.CSS = "design.css";
+
+//Filterpages SM
+cbAd.resources.banners.onsiteFilterPageSM = {};
+cbAd.resources.banners.onsiteFilterPageSM.live = "https://s0.2mdn.net/creatives/assets/4213236/";
+cbAd.resources.banners.onsiteFilterPageSM.local = "/Banner Design System/Creatives/Onsite SM/Filterpages/Design/";
+cbAd.resources.banners.onsiteFilterPageSM.CSS = "design.css";
+
+//Storefront SM
+cbAd.resources.banners.storeFront_SM = {};
+cbAd.resources.banners.storeFront_SM.live = "https://s0.2mdn.net/creatives/assets/4213236/";
+cbAd.resources.banners.storeFront_SM.local = "/Banner Design System/Creatives/Onsite SM/Storefront/Design/";
+cbAd.resources.banners.storeFront_SM.CSS = "design.css";
+//!End of Onsite
+
+//! Onsite V3
+//Listview
+cbAd.resources.banners.listViewV3 = {};
+cbAd.resources.banners.listViewV3.live = "https://s0.2mdn.net/creatives/assets/4496663/";
+cbAd.resources.banners.listViewV3.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V3/Listview/Design/";
+cbAd.resources.banners.listViewV3.CSS = "design.css";
+
+//Leaderboard1 1AB
+cbAd.resources.banners.homeLB1V3 = {};
+cbAd.resources.banners.homeLB1V3.live = "https://s0.2mdn.net/creatives/assets/4511264/";
+cbAd.resources.banners.homeLB1V3.local = "/Banner Design System/Creatives/Templates/CBTemplates/Leaderboard 1/Design/";
+cbAd.resources.banners.homeLB1V3.CSS = "design.css";
+
+//Leaderboard 1B SM
+cbAd.resources.banners.homeLB1B_SMV3 = {};
+cbAd.resources.banners.homeLB1B_SMV3.live = "https://s0.2mdn.net/creatives/assets/4511264/";
+cbAd.resources.banners.homeLB1B_SMV3.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V3/Leaderboard 1B/Design/";
+cbAd.resources.banners.homeLB1B_SMV3.CSS = "design.css";
+
+//Leaderboard 1A SM
+cbAd.resources.banners.homeLB1A_SMV3 = {};
+cbAd.resources.banners.homeLB1A_SMV3.live = "https://s0.2mdn.net/creatives/assets/4511309/";
+cbAd.resources.banners.homeLB1A_SMV3.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V3/Leaderboard 1A/Design/";
+cbAd.resources.banners.homeLB1A_SMV3.CSS = "design.css";
+
+//Filter pages 1AB/2AB Web&Mobile
+cbAd.resources.banners.filterPagesV3 = {};
+cbAd.resources.banners.filterPagesV3.live = "https://s0.2mdn.net/creatives/assets/4496669/";
+cbAd.resources.banners.filterPagesV3.local = "/Banner Design System/Creatives/Templates/CBTemplates/Filter Pages/Design/";
+cbAd.resources.banners.filterPagesV3.CSS = "design.css";
+
+//Leaderboard 1 SM
+cbAd.resources.banners.homeLB1_SMV3 = {};
+cbAd.resources.banners.homeLB1_SMV3.live = "https://s0.2mdn.net/creatives/assets/4496654/";
+cbAd.resources.banners.homeLB1_SMV3.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V3/Leaderboard 1/Design/";
+cbAd.resources.banners.homeLB1_SMV3.CSS = "design.css";
+
+//Leaderboard 2-4 SM
+cbAd.resources.banners.homeLB2_4_SMV3 = {};
+cbAd.resources.banners.homeLB2_4_SMV3.live = "https://s0.2mdn.net/creatives/assets/4496657/";
+cbAd.resources.banners.homeLB2_4_SMV3.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V3/Leaderboard 2-4/Design/";
+cbAd.resources.banners.homeLB2_4_SMV3.CSS = "design.css";
+
+//Leaderboard1A Template
+cbAd.resources.banners.homeLB1AV3 = {};
+cbAd.resources.banners.homeLB1AV3.live = "https://s0.2mdn.net/creatives/assets/4258854/";
+cbAd.resources.banners.homeLB1AV3.local = "/Banner Design System/Creatives/Templates/CBTemplates/Leaderboard 1A/Design/";
+cbAd.resources.banners.homeLB1AV3.CSS = "design.css";
+
+//Filterpages SM
+cbAd.resources.banners.onsiteFilterPageSMV3 = {};
+cbAd.resources.banners.onsiteFilterPageSMV3.live = "https://s0.2mdn.net/creatives/assets/4496669/";
+cbAd.resources.banners.onsiteFilterPageSMV3.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V3/Filterpages/Design/";
+cbAd.resources.banners.onsiteFilterPageSMV3.CSS = "design.css";
+
+//Storefront SM
+cbAd.resources.banners.storeFront_SMV3 = {};
+cbAd.resources.banners.storeFront_SMV3.live = "https://s0.2mdn.net/creatives/assets/4496666/";
+cbAd.resources.banners.storeFront_SMV3.local = "/Banner Design System/Creatives/Onsite SM/Leaderboard V3/Storefront/Design/";
+cbAd.resources.banners.storeFront_SMV3.CSS = "design.css";
+//!End of Onsite V3
+
+// On-site homeLB2_4_cbElements
+cbAd.resources.banners.homeLB2_4_cbElements = {};
+cbAd.resources.banners.homeLB2_4_cbElements.live = "https://s0.2mdn.net/creatives/assets/4496666/";
+cbAd.resources.banners.homeLB2_4_cbElements.local = "/Banner Design System/Creatives/Test Banners/TestOnsite 2-4/design/";
+cbAd.resources.banners.homeLB2_4_cbElements.CSS = "design.css";
+
+
+
+//! On-site Compliancy
+cbAd.resources.banners.leaderboard_1B_compliancy = {};
+cbAd.resources.banners.leaderboard_1B_compliancy.live = "https://s0.2mdn.net/creatives/assets/4638529/";
+cbAd.resources.banners.leaderboard_1B_compliancy.local = "/Banner Design System/Creatives/Onsite SM/Compliancy/LB1B/Design/";
+cbAd.resources.banners.leaderboard_1B_compliancy.CSS = "LB1B_Compliancy_Blue.css";
+
+//! END OF On-site Compliancy
+//Blank
+cbAd.resources.banners.blank = {};
+cbAd.resources.banners.blank.live = "https://s0.2mdn.net/creatives/assets/3605091/";
+cbAd.resources.banners.blank.local = "/Banner Design System/Creatives/Templates/Blank/Design/";
+cbAd.resources.banners.blank.CSS = "blank.css";
+
+//S&M
+cbAd.resources.banners.S_M = {};
+cbAd.resources.banners.S_M.live = "https://s0.2mdn.net/creatives/assets/3758120/";
+cbAd.resources.banners.S_M.local = "/Banner Design System/Creatives/Media/S M/Design/";
+cbAd.resources.banners.S_M.CSS = "S-M.css";
+
+//S&M PromotionType2
+cbAd.resources.banners.promotionType2 = {};
+cbAd.resources.banners.promotionType2.live = "https://s0.2mdn.net/creatives/assets/4528558/";
+cbAd.resources.banners.promotionType2.local = "/Banner Design System/Creatives/Media/S M PromotionType 2/Design/";
+cbAd.resources.banners.promotionType2.CSS = "design.css";
+
+//S&MCompliancy
+cbAd.resources.banners.SMCompliancy = {};
+cbAd.resources.banners.SMCompliancy.live = "https://s0.2mdn.net/creatives/assets/4416380/";
+cbAd.resources.banners.SMCompliancy.local = "/Banner Design System/Creatives/Media/S M Compliancy/Design/";
+cbAd.resources.banners.SMCompliancy.CSS = "S-M_compliancy.css";
+
+//S1DeluxeCompliancy
+cbAd.resources.banners.S1DeluxeCompliancy = {};
+cbAd.resources.banners.S1DeluxeCompliancy.live = "https://s0.2mdn.net/creatives/assets/4670653/";
+cbAd.resources.banners.S1DeluxeCompliancy.local = "/Banner Design System/Creatives/Media/S1DeluxeCompliancy/Design/";
+cbAd.resources.banners.S1DeluxeCompliancy.CSS = "S1DeluxeCompliancy.css";
+
+//Usp Banner
+cbAd.resources.banners.uspBanner = {};
+cbAd.resources.banners.uspBanner.live = "https://s0.2mdn.net/creatives/assets/4065920/";
+cbAd.resources.banners.uspBanner.local = "/Banner Design System/Creatives/Media/uspBanner/Design/";
+cbAd.resources.banners.uspBanner.CSS = "design.css";
+
+
+//NarrowCasting
+cbAd.resources.banners.Narrowcasting = {};
+cbAd.resources.banners.Narrowcasting.live = "https://s0.2mdn.net/creatives/assets/3858892/";
+cbAd.resources.banners.Narrowcasting.local = "/Banner Design System/Creatives/Media/Narrowcasting/Design/";
+cbAd.resources.banners.Narrowcasting.CSS = "design.css";
+
+//S1Deluxe
+cbAd.resources.banners.S1Deluxe = {};
+cbAd.resources.banners.S1Deluxe.live = "https://s0.2mdn.net/creatives/assets/3758123/";
+cbAd.resources.banners.S1Deluxe.local = "/Banner Design System/Creatives/Media/S1Deluxe/Design/";
+cbAd.resources.banners.S1Deluxe.CSS = "S1Deluxe.css";
+
+//S1DeluxeSfeer
+cbAd.resources.banners.S1DeluxeSfeer = {};
+cbAd.resources.banners.S1DeluxeSfeer.live = "https://s0.2mdn.net/creatives/assets/3858119/";
+cbAd.resources.banners.S1DeluxeSfeer.local = "/Banner Design System/Creatives/Media/S1DeluxeSfeer/Design/";
+cbAd.resources.banners.S1DeluxeSfeer.CSS = "S1DeluxeSfeerDesign.css";
+
+//S&M Store Abri Compliancy
+cbAd.resources.banners.S_M_StoreAbri_Compliancy = {};
+cbAd.resources.banners.S_M_StoreAbri_Compliancy.live = "https://s0.2mdn.net/creatives/assets/4635583/";
+cbAd.resources.banners.S_M_StoreAbri_Compliancy.local = "/Banner Design System/Creatives/Media/S M StoreAbri Compliancy/Design/";
+cbAd.resources.banners.S_M_StoreAbri_Compliancy.CSS = "design.css";
+
+//S&M Store Abri
+cbAd.resources.banners.S_M_StoreAbri = {};
+cbAd.resources.banners.S_M_StoreAbri.live = "https://s0.2mdn.net/creatives/assets/3782578/";
+cbAd.resources.banners.S_M_StoreAbri.local = "/Banner Design System/Creatives/Media/S M StoreAbri/Design/";
+cbAd.resources.banners.S_M_StoreAbri.CSS = "design.css";
+
+//S&M Store Abri Promotiontype2
+cbAd.resources.banners.S_M_StoreAbriPromotiontype2 = {};
+cbAd.resources.banners.S_M_StoreAbriPromotiontype2.live = "https://s0.2mdn.net/creatives/assets/4535139/";
+cbAd.resources.banners.S_M_StoreAbriPromotiontype2.local = "/Banner Design System/Creatives/Media/S M StoreAbri Promotiontype2/Design/";
+cbAd.resources.banners.S_M_StoreAbriPromotiontype2.CSS = "design.css";
+
+//TOP3
+cbAd.resources.banners.Top3 = {};
+cbAd.resources.banners.Top3.live = "https://s0.2mdn.net/creatives/assets/3782509/";
+cbAd.resources.banners.Top3.local = "/Banner Design System/Creatives/Sales/Top3/Design/";
+cbAd.resources.banners.Top3.CSS = "Top3Design.css";
+
+//TOP3 Black Friday
+cbAd.resources.banners.Top3BlackFriday = {};
+cbAd.resources.banners.Top3BlackFriday.live = "https://s0.2mdn.net/creatives/assets/3945260/";
+cbAd.resources.banners.Top3BlackFriday.local = "/Banner Design System/Creatives/Sales/Top3 Black Friday/Design/";
+cbAd.resources.banners.Top3BlackFriday.CSS = "Top3Design.css";
+
+//TOP10_nl-NL
+cbAd.resources.banners.Top10 = {};
+cbAd.resources.banners.Top10.live = "https://s0.2mdn.net/creatives/assets/3782512/";
+cbAd.resources.banners.Top10.local = "/Banner Design System/Creatives/Sales/Top10/Design/";
+cbAd.resources.banners.Top10.CSS = "Top10Design.css";
+
+//TOP CT
+cbAd.resources.banners.TopCT = {};
+cbAd.resources.banners.TopCT.live = "https://s0.2mdn.net/creatives/assets/3997469/";
+cbAd.resources.banners.TopCT.local = "/Banner Design System/Creatives/Sales/Top CT/Design/";
+cbAd.resources.banners.TopCT.CSS = "Top10Design.css";
+
+//B04_nl-NL
+cbAd.resources.banners.B04 = {};
+cbAd.resources.banners.B04.live = "https://s0.2mdn.net/creatives/assets/3782812/";
+cbAd.resources.banners.B04.local = "/Banner Design System/Creatives/Sales/B04/Design/";
+cbAd.resources.banners.B04.CSS = "B04.css";
+
+//B04_nl-NL
+cbAd.resources.banners.B04Experiment = {};
+cbAd.resources.banners.B04Experiment.live = "https://s0.2mdn.net/creatives/assets/3845908/";
+cbAd.resources.banners.B04Experiment.local = "/Banner Design System/Creatives/Sales/Specialist CT/Design/";
+cbAd.resources.banners.B04Experiment.CSS = "B04.css";
+
+//Retargeting
+cbAd.resources.banners.Retargeting = {};
+cbAd.resources.banners.Retargeting.live = "https://s0.2mdn.net/creatives/assets/3782809/";
+cbAd.resources.banners.Retargeting.local = "/Banner Design System/Creatives/Sales/Retargeting/Design/";
+cbAd.resources.banners.Retargeting.CSS = "retargeting.css";
+
+//RetargetingKCT
+cbAd.resources.banners.RetargetingKCT = {};
+cbAd.resources.banners.RetargetingKCT.live = "https://s0.2mdn.net/creatives/assets/3782809/";
+cbAd.resources.banners.RetargetingKCT.local = "/Banner Design System/Creatives/Sales/Retargeting/Design/";
+cbAd.resources.banners.RetargetingKCT.CSS = "retargeting.css";
+
+//RetargetingCookieID
+cbAd.resources.banners.RetargetingCookieID = {};
+cbAd.resources.banners.RetargetingCookieID.live = "https://s0.2mdn.net/creatives/assets/3782809/";
+cbAd.resources.banners.RetargetingCookieID.local = "/Banner Design System/Creatives/Sales/Retargeting/Design/";
+cbAd.resources.banners.RetargetingCookieID.CSS = "retargeting.css";
+
+//RetargetingMargin
+cbAd.resources.banners.RetargetingMargin = {};
+cbAd.resources.banners.RetargetingMargin.live = "";
+cbAd.resources.banners.RetargetingMargin.local = "/Banner Design System/Creatives/Sales/Retargeting/Retargeting Margin/Design/";
+cbAd.resources.banners.RetargetingMargin.CSS = "retargetingMargin.css";
+
+//RetargetingProductRecommenderMargin
+cbAd.resources.banners.RetargetingProductRecommenderMargin = {};
+cbAd.resources.banners.RetargetingProductRecommenderMargin.live = "https://s0.2mdn.net/creatives/assets/4602742/";
+cbAd.resources.banners.RetargetingProductRecommenderMargin.local = "/Banner Design System/Creatives/Sales/Retargeting/Retargeting ProductRecommender Margin/Design/";
+cbAd.resources.banners.RetargetingProductRecommenderMargin.CSS = "retargetingProductRecommender.css";
+
+//RetargetingProductRecommenderMargin
+cbAd.resources.banners.RetargetingProductInterest = {};
+cbAd.resources.banners.RetargetingProductInterest.live = "https://s0.2mdn.net/creatives/assets/4811993/";
+cbAd.resources.banners.RetargetingProductInterest.local = "/Banner Design System/Creatives/Sales/Retargeting/Retargeting Product Interest/Design/";
+cbAd.resources.banners.RetargetingProductInterest.CSS = "retargetingProductInterest.css";
+
+//Vriendenprijs
+cbAd.resources.banners.Vriendenprijs = {};
+cbAd.resources.banners.Vriendenprijs.live = "https://s0.2mdn.net/creatives/assets/3782584/";
+cbAd.resources.banners.Vriendenprijs.local = "/Banner Design System/Creatives/Sales/Vriendenprijs/Design/";
+cbAd.resources.banners.Vriendenprijs.CSS = "design.css";
+
+//VriendenprijsExperiment
+cbAd.resources.banners.VriendenprijsExperiment = {};
+cbAd.resources.banners.VriendenprijsExperiment.live = "https://s0.2mdn.net/creatives/assets/3917007/";
+cbAd.resources.banners.VriendenprijsExperiment.local = "/Banner Design System/Creatives/Sales/VriendenprijsExperiment/Design/";
+cbAd.resources.banners.VriendenprijsExperiment.CSS = "design.css";
+
+//cbbGrowPath
+cbAd.resources.banners.cbbGrowPath = {};
+cbAd.resources.banners.cbbGrowPath.live = "https://s0.2mdn.net/creatives/assets/3758162/";
+cbAd.resources.banners.cbbGrowPath.local = "/Banner Design System/Creatives/Recruitment/DIS-2279_CBB-Recruitment-GrowPath/Design/";
+cbAd.resources.banners.cbbGrowPath.CSS = "design.css";
+
+// recruitmentLeiden
+cbAd.resources.banners.recruitmentLeiden = {};
+cbAd.resources.banners.recruitmentLeiden.live = "https://s0.2mdn.net/creatives/assets/3758165/";
+cbAd.resources.banners.recruitmentLeiden.local = "/Banner Design System/Creatives/Recruitment/DIS-2600_Recruitment_Leiden/Design/";
+cbAd.resources.banners.recruitmentLeiden.CSS = "design.css";
+
+// Recruitment klantenservice tweetalig
+cbAd.resources.banners.recruitmentKlantenserviceTweetalig = {};
+cbAd.resources.banners.recruitmentKlantenserviceTweetalig.live = "https://s0.2mdn.net/creatives/assets/3915640/";
+cbAd.resources.banners.recruitmentKlantenserviceTweetalig.local = "/Banner Design System/Creatives/Recruitment/DIS-3730_Recruiment_KlantenserviceTweetalig/Design/";
+cbAd.resources.banners.recruitmentKlantenserviceTweetalig.CSS = "design.css";
+
+// recruitmentHasselt
+cbAd.resources.banners.recruitmentHasselt = {};
+cbAd.resources.banners.recruitmentHasselt.live = "https://s0.2mdn.net/creatives/assets/3844057/";
+cbAd.resources.banners.recruitmentHasselt.local = "/Banner Design System/Creatives/Recruitment/DIS-3467_Recruitment_Hasselt/Design/";
+cbAd.resources.banners.recruitmentHasselt.CSS = "design.css";
+
+// recruitmentWinkels
+cbAd.resources.banners.recruitmentWinkels = {};
+cbAd.resources.banners.recruitmentWinkels.live = "https://s0.2mdn.net/creatives/assets/3882020/";
+cbAd.resources.banners.recruitmentWinkels.local = "/Banner Design System/Creatives/Recruitment/DIS-3732_Recruitment_Winkels/Design/";
+cbAd.resources.banners.recruitmentWinkels.CSS = "design.css";
+
+// recruitmentKids
+cbAd.resources.banners.recruitmentKids = {};
+cbAd.resources.banners.recruitmentKids.live = "https://s0.2mdn.net/creatives/assets/3758171/";
+cbAd.resources.banners.recruitmentKids.local = "/Banner Design System/Creatives/Recruitment/DIS-2705_Recruitment_Kids/Design/";
+cbAd.resources.banners.recruitmentKids.CSS = "design.css";
+
+// recruitmentExperience
+cbAd.resources.banners.recruitmentExperience = {};
+cbAd.resources.banners.recruitmentExperience.live = "https://s0.2mdn.net/creatives/assets/3758174/";
+cbAd.resources.banners.recruitmentExperience.local = "/Banner Design System/Creatives/Recruitment/DIS-2706_Recruitment_Experience/Design/";
+cbAd.resources.banners.recruitmentExperience.CSS = "design.css";
+
+// recruitmentStarter
+cbAd.resources.banners.recruitmentStarter = {};
+cbAd.resources.banners.recruitmentStarter.live = "https://s0.2mdn.net/creatives/assets/3758168/";
+cbAd.resources.banners.recruitmentStarter.local = "/Banner Design System/Creatives/Recruitment/DIS-2704_Recruitment_Starter/Design/";
+cbAd.resources.banners.recruitmentStarter.CSS = "design.css";
+
+// recruitmentZZP
+cbAd.resources.banners.recruitmentZZP = {};
+cbAd.resources.banners.recruitmentZZP.live = "https://s0.2mdn.net/creatives/assets/3758177/";
+cbAd.resources.banners.recruitmentZZP.local = "/Banner Design System/Creatives/Recruitment/DIS-2707_Recruitment_ZZP/Design/";
+cbAd.resources.banners.recruitmentZZP.CSS = "design.css";
+
+// recruitmentNieuweBranches
+cbAd.resources.banners.recruitmentNieuweBranches = {};
+cbAd.resources.banners.recruitmentNieuweBranches.live = "https://s0.2mdn.net/creatives/assets/3925703/";
+cbAd.resources.banners.recruitmentNieuweBranches.local = "/Banner Design System/Creatives/Recruitment/DIS-3846_Recruitment_NieuweBranches/Design/";
+cbAd.resources.banners.recruitmentNieuweBranches.CSS = "design.css";
+
+// tvAdvies
+cbAd.resources.banners.tvAdvies = {};
+cbAd.resources.banners.tvAdvies.live = "https://s0.2mdn.net/creatives/assets/3782815/";
+cbAd.resources.banners.tvAdvies.local = "/Banner Design System/Creatives/CoolblueStories/DIS-2624_TVAdviesOpAfspraak/design/";
+cbAd.resources.banners.tvAdvies.CSS = "design.css";
+
+// snappyShotsWashingMachines
+cbAd.resources.banners.snappyShotsWashingMachines = {};
+cbAd.resources.banners.snappyShotsWashingMachines.live = "https://s0.2mdn.net/creatives/assets/3758195/";
+cbAd.resources.banners.snappyShotsWashingMachines.local = "/Banner Design System/Creatives/SnappyShots/DIS-2662_SnappyShots_WashingMachines/Design/";
+cbAd.resources.banners.snappyShotsWashingMachines.CSS = "design.css";
+
+// snappyShotsTelevisies
+cbAd.resources.banners.snappyShotsTelevisies = {};
+cbAd.resources.banners.snappyShotsTelevisies.live = "https://s0.2mdn.net/creatives/assets/3758135/";
+cbAd.resources.banners.snappyShotsTelevisies.local = "/Banner Design System/Creatives/SnappyShots/DIS-2984_SnappyShots_Televisies/Design/";
+cbAd.resources.banners.snappyShotsTelevisies.CSS = "design.css";
+
+// snappyShotsLaptops
+cbAd.resources.banners.snappyShotsLaptops = {};
+cbAd.resources.banners.snappyShotsLaptops.live = "https://s0.2mdn.net/creatives/assets/3854074/";
+cbAd.resources.banners.snappyShotsLaptops.local = "/Banner Design System/Creatives/SnappyShots/DIS-3203_SnappyShots_Laptops/Design/";
+cbAd.resources.banners.snappyShotsLaptops.CSS = "design.css";
+
+// snappyShotsLaptops be-FR
+cbAd.resources.banners.beFRsnappyShotsLaptops = {};
+cbAd.resources.banners.beFRsnappyShotsLaptops.live = "https://s0.2mdn.net/creatives/assets/3929396/";
+cbAd.resources.banners.beFRsnappyShotsLaptops.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3886_be-FR_Snappyshots_Laptops/Design/";
+cbAd.resources.banners.beFRsnappyShotsLaptops.CSS = "design.css";
+
+//DIS2842AppleProductsStore
+cbAd.resources.banners.DIS2842AppleProductsStore = {};
+cbAd.resources.banners.DIS2842AppleProductsStore.live = "https://s0.2mdn.net/creatives/assets/3782824/";
+cbAd.resources.banners.DIS2842AppleProductsStore.local = "/Banner Design System/Creatives/CoolblueStories/DIS-2842-BE-AppleProducts-Store/design/";
+cbAd.resources.banners.DIS2842AppleProductsStore.CSS = "design.css";
+
+//DIS-2803_TVInformationSession
+cbAd.resources.banners.DIS2803_TVInformationSession = {};
+cbAd.resources.banners.DIS2803_TVInformationSession.live = "https://s0.2mdn.net/creatives/assets/3782821/";
+cbAd.resources.banners.DIS2803_TVInformationSession.local = "/Banner Design System/Creatives/CoolblueStories/DIS-2803_TVInformationSession/design/";
+cbAd.resources.banners.DIS2803_TVInformationSession.CSS = "design.css";
+
+//DIS-3090_PaaSwasmachines
+cbAd.resources.banners.DIS3090PaaSWasmachines = {};
+cbAd.resources.banners.DIS3090PaaSWasmachines.live = "https://s0.2mdn.net/creatives/assets/3782827/";
+cbAd.resources.banners.DIS3090PaaSWasmachines.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3090_PaaS/Design/";
+cbAd.resources.banners.DIS3090PaaSWasmachines.CSS = "design.css";
+
+//DIS-3140_iPhoneUpgrade
+cbAd.resources.banners.DIS3140iPhoneUpgrade = {};
+cbAd.resources.banners.DIS3140iPhoneUpgrade.live = "https://s0.2mdn.net/creatives/assets/3758129/";
+cbAd.resources.banners.DIS3140iPhoneUpgrade.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3140_iPhoneUpgrade/Design/";
+cbAd.resources.banners.DIS3140iPhoneUpgrade.CSS = "design.css";
+
+//DIS-3170_WinkelopeningLeiden
+cbAd.resources.banners.DIS3170WinkelopeningLeiden = {};
+cbAd.resources.banners.DIS3170WinkelopeningLeiden.live = "https://s0.2mdn.net/creatives/assets/3782590/";
+cbAd.resources.banners.DIS3170WinkelopeningLeiden.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3170_WinkelopeningLeiden/design/";
+cbAd.resources.banners.DIS3170WinkelopeningLeiden.CSS = "design.css";
+
+//DIS-4479_WinkelopeningAlexandrium
+cbAd.resources.banners.DIS4479WinkelopeningAlexandrium = {};
+cbAd.resources.banners.DIS4479WinkelopeningAlexandrium.live = "https://s0.2mdn.net/creatives/assets/4210984/";
+cbAd.resources.banners.DIS4479WinkelopeningAlexandrium.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4479_WinkelopeningAlexandrium/design/";
+cbAd.resources.banners.DIS4479WinkelopeningAlexandrium.CSS = "design.css";
+
+//DIS-4754_WinkelopeningWilrijk
+cbAd.resources.banners.DIS4754WinkelopeningWilrijk = {};
+cbAd.resources.banners.DIS4754WinkelopeningWilrijk.live = "https://s0.2mdn.net/creatives/assets/4301398/";
+cbAd.resources.banners.DIS4754WinkelopeningWilrijk.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4754_WinkelOpeningWilrijk/design/";
+cbAd.resources.banners.DIS4754WinkelopeningWilrijk.CSS = "design.css";
+
+//DIS-4813_WinkelopeningKuurne
+cbAd.resources.banners.DIS4813WinkelopeningKuurne = {};
+cbAd.resources.banners.DIS4813WinkelopeningKuurne.live = "https://s0.2mdn.net/creatives/assets/4310302/";
+cbAd.resources.banners.DIS4813WinkelopeningKuurne.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4813_WinkelOpeningKuurne/design/";
+cbAd.resources.banners.DIS4813WinkelopeningKuurne.CSS = "design.css";
+
+//DIS-3476_SamsungNote20Launch
+cbAd.resources.banners.DIS3476SamsungNote20Launch = {};
+cbAd.resources.banners.DIS3476SamsungNote20Launch.live = "https://s0.2mdn.net/creatives/assets/3832672/";
+cbAd.resources.banners.DIS3476SamsungNote20Launch.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungS20/DIS-3476_SamsungNote20Launch/design/";
+cbAd.resources.banners.DIS3476SamsungNote20Launch.CSS = "design.css";
+
+//SamsungS23
+cbAd.resources.banners.SamsungS23 = {};
+cbAd.resources.banners.SamsungS23.live = "https://s0.2mdn.net/creatives/assets/4756082/";
+cbAd.resources.banners.SamsungS23.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungS23/Display/Design/";
+cbAd.resources.banners.SamsungS23.CSS = "design.css";
+
+//SamsungFlip2022
+cbAd.resources.banners.SamsungFlip2022 = {};
+cbAd.resources.banners.SamsungFlip2022.live = "https://s0.2mdn.net/creatives/assets/4607360/";
+cbAd.resources.banners.SamsungFlip2022.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungFlip2022/Display/Design/";
+cbAd.resources.banners.SamsungFlip2022.CSS = "design.css";
+
+//SamsungGZLaunch display
+cbAd.resources.banners.SamsungGZLaunch = {};
+cbAd.resources.banners.SamsungGZLaunch.live = "https://s0.2mdn.net/creatives/assets/4231550/";
+cbAd.resources.banners.SamsungGZLaunch.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungGZLaunch/Display/Design/";
+cbAd.resources.banners.SamsungGZLaunch.CSS = "design.css";
+
+//SamsungGZLaunch Filterpages
+cbAd.resources.banners.SamsungGZLaunchFil = {};
+cbAd.resources.banners.SamsungGZLaunchFil.live = "https://s0.2mdn.net/creatives/assets/4249897/";
+cbAd.resources.banners.SamsungGZLaunchFil.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungGZLaunch/Filter Pages/design/";
+cbAd.resources.banners.SamsungGZLaunchFil.CSS = "design.css";
+
+//SamsungFlip2022 Leaderboard 1
+cbAd.resources.banners.SamsungFlip2022Leaderboard = {};
+cbAd.resources.banners.SamsungFlip2022Leaderboard.live = "https://s0.2mdn.net/creatives/assets/4632018/";
+cbAd.resources.banners.SamsungFlip2022Leaderboard.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungFlip2022/Leaderboard 1/design/";
+cbAd.resources.banners.SamsungFlip2022Leaderboard.CSS = "design.css";
+
+//SamsungGZLaunch Leaderboard 1
+cbAd.resources.banners.SamsungGZLeaderboard = {};
+cbAd.resources.banners.SamsungGZLeaderboard.live = "https://s0.2mdn.net/creatives/assets/4231565/";
+cbAd.resources.banners.SamsungGZLeaderboard.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungGZLaunch/Leaderboard 1/design/";
+cbAd.resources.banners.SamsungGZLeaderboard.CSS = "design.css";
+
+//DIS-3480_SamsungTabS7Launch
+cbAd.resources.banners.DIS3480SamsungTabS7Launch = {};
+cbAd.resources.banners.DIS3480SamsungTabS7Launch.live = "https://s0.2mdn.net/creatives/assets/3810557/";
+cbAd.resources.banners.DIS3480SamsungTabS7Launch.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungTabS7/DIS-3480_SamsungTabS7Launch/design/";
+cbAd.resources.banners.DIS3480SamsungTabS7Launch.CSS = "design.css";
+
+// DIS-4177_SamsungS21Launch
+cbAd.resources.banners.DIS4177SamsungS21Launch = {};
+cbAd.resources.banners.DIS4177SamsungS21Launch.live = "https://s0.2mdn.net/creatives/assets/4001942/";
+cbAd.resources.banners.DIS4177SamsungS21Launch.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungS21/Display/design/";
+cbAd.resources.banners.DIS4177SamsungS21Launch.CSS = "design.css";
+
+//SamsungS22 Leaderboard 1
+cbAd.resources.banners.SamsungS22Leaderboard = {};
+cbAd.resources.banners.SamsungS22Leaderboard.live = "https://s0.2mdn.net/creatives/assets/4448856/";
+cbAd.resources.banners.SamsungS22Leaderboard.local = "/Banner Design System/Creatives/Epics/Samsung/SamsungS22/Leaderboard 1/design/";
+cbAd.resources.banners.SamsungS22Leaderboard.CSS = "design.css";
+
+//Opening Brussel
+cbAd.resources.banners.OpeningBrussel = {};
+cbAd.resources.banners.OpeningBrussel.live = "https://s0.2mdn.net/creatives/assets/3793306/";
+cbAd.resources.banners.OpeningBrussel.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3301_WinkelOpeningBrussel/Design/";
+cbAd.resources.banners.OpeningBrussel.CSS = "design.css";
+
+//DIS-3477_SoldenDisplay
+cbAd.resources.banners.DIS3437SoldenDisplay = {};
+cbAd.resources.banners.DIS3437SoldenDisplay.live = "https://s0.2mdn.net/creatives/assets/3808454/";
+cbAd.resources.banners.DIS3437SoldenDisplay.local = "/Banner Design System/Creatives/Media/Promotion Periods/DIS-3437_SoldenDisplay/Design/";
+cbAd.resources.banners.DIS3437SoldenDisplay.CSS = "design.css";
+
+//DIS-3895_BlackFridayDisplay
+cbAd.resources.banners.DIS3895_BlackFridayDisplay = {};
+cbAd.resources.banners.DIS3895_BlackFridayDisplay.live = "https://s0.2mdn.net/creatives/assets/3964728/";
+cbAd.resources.banners.DIS3895_BlackFridayDisplay.local = "/Banner Design System/Creatives/Media/Promotion Periods/DIS-3895_BlackFridayDisplay/Design/";
+cbAd.resources.banners.DIS3895_BlackFridayDisplay.CSS = "design.css";
+
+//BlackFriday 2021
+cbAd.resources.banners.BlackFriday2021_Display = {};
+cbAd.resources.banners.BlackFriday2021_Display.live = "https://s0.2mdn.net/creatives/assets/4352223/";
+cbAd.resources.banners.BlackFriday2021_Display.local = "/Banner Design System/Creatives/Epics/BlackFriday/2021/Display/Design/";
+cbAd.resources.banners.BlackFriday2021_Display.CSS = "design.css";
+
+//BlackFriday 2022
+cbAd.resources.banners.BlackFriday2022_Display = {};
+cbAd.resources.banners.BlackFriday2022_Display.live = "https://s0.2mdn.net/creatives/assets/4714186/";
+cbAd.resources.banners.BlackFriday2022_Display.local = "/Banner Design System/Creatives/Epics/BlackFriday/2022/Display/Design/";
+cbAd.resources.banners.BlackFriday2022_Display.CSS = "design.css";
+
+//DIS-3511_Zonnepanelen
+cbAd.resources.banners.DIS3511Zonnepanelen = {};
+cbAd.resources.banners.DIS3511Zonnepanelen.live = "https://s0.2mdn.net/creatives/assets/4663080/";
+cbAd.resources.banners.DIS3511Zonnepanelen.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3511_Zonnepanelen/design/";
+cbAd.resources.banners.DIS3511Zonnepanelen.CSS = "design.css";
+
+//DIS-3418_Recruitment_JuniorDeveloper
+cbAd.resources.banners.DIS3418RecruitmentJuniorDeveloper = {};
+cbAd.resources.banners.DIS3418RecruitmentJuniorDeveloper.live = "https://s0.2mdn.net/creatives/assets/3857890/";
+cbAd.resources.banners.DIS3418RecruitmentJuniorDeveloper.local = "/Banner Design System/Creatives/Recruitment/DIS-3418_Recruitment_JuniorDeveloper/Design/";
+cbAd.resources.banners.DIS3418RecruitmentJuniorDeveloper.CSS = "design.css";
+
+//DIS-3419_Recruitment_Developer
+cbAd.resources.banners.DIS3419RecruitmentDeveloper = {};
+cbAd.resources.banners.DIS3419RecruitmentDeveloper.live = "https://s0.2mdn.net/creatives/assets/3857893/";
+cbAd.resources.banners.DIS3419RecruitmentDeveloper.local = "/Banner Design System/Creatives/Recruitment/DIS-3419_Recruitment_Developer/Design/";
+cbAd.resources.banners.DIS3419RecruitmentDeveloper.CSS = "design.css";
+
+//DIS-3520_TVBanner3B
+cbAd.resources.banners.DIS3520TVBanner3B = {};
+cbAd.resources.banners.DIS3520TVBanner3B.live = "https://s0.2mdn.net/creatives/assets/3862761/";
+cbAd.resources.banners.DIS3520TVBanner3B.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3520_TVBanner3B/Design/";
+cbAd.resources.banners.DIS3520TVBanner3B.CSS = "design.css";
+
+//DIS-3521_WasherBanner3B
+cbAd.resources.banners.DIS3521WasherBanner3B = {};
+cbAd.resources.banners.DIS3521WasherBanner3B.live = "https://s0.2mdn.net/creatives/assets/3847049/";
+cbAd.resources.banners.DIS3521WasherBanner3B.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3521_WasherBanner3B/Design/";
+cbAd.resources.banners.DIS3521WasherBanner3B.CSS = "design.css";
+
+//DIS3521WasherBanner3BVideo
+cbAd.resources.banners.DIS3521WasherBanner3BVideo = {};
+cbAd.resources.banners.DIS3521WasherBanner3BVideo.live = "https://s0.2mdn.net/creatives/assets/4464651/";
+cbAd.resources.banners.DIS3521WasherBanner3BVideo.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3521_WasherBanner3BVideo/Design/";
+cbAd.resources.banners.DIS3521WasherBanner3BVideo.CSS = "design.css";
+
+//DIS-3628_Recruitment_Venlo
+cbAd.resources.banners.DIS3628RecruitmentVenlo = {};
+cbAd.resources.banners.DIS3628RecruitmentVenlo.live = "https://s0.2mdn.net/creatives/assets/3848351/";
+cbAd.resources.banners.DIS3628RecruitmentVenlo.local = "/Banner Design System/Creatives/Recruitment/DIS-3628_Recruitment_Venlo/Design/";
+cbAd.resources.banners.DIS3628RecruitmentVenlo.CSS = "design.css";
+
+//DIS-3819_RecruitmentCBF
+cbAd.resources.banners.DIS3819RecruitmentCBF = {};
+cbAd.resources.banners.DIS3819RecruitmentCBF.live = "https://s0.2mdn.net/creatives/assets/3906812/";
+cbAd.resources.banners.DIS3819RecruitmentCBF.local = "/Banner Design System/Creatives/Recruitment/DIS-3819_Recruitment_CBF/Design/";
+cbAd.resources.banners.DIS3819RecruitmentCBF.CSS = "design.css";
+
+//DIS-3708_TvEvenementen
+cbAd.resources.banners.DIS3708TvEvenementen = {};
+cbAd.resources.banners.DIS3708TvEvenementen.live = "https://s0.2mdn.net/creatives/assets/3859538/";
+cbAd.resources.banners.DIS3708TvEvenementen.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3708_TvEvenementen/Design/";
+cbAd.resources.banners.DIS3708TvEvenementen.CSS = "design.css";
+
+//DIS-3730_Recruitment_KlantenserviceTweetalig
+cbAd.resources.banners.DIS3730RecruitmentKlantenserviceTweetalig = {};
+cbAd.resources.banners.DIS3730RecruitmentKlantenserviceTweetalig.live = "https://s0.2mdn.net/creatives/assets/3915640/";
+cbAd.resources.banners.DIS3730RecruitmentKlantenserviceTweetalig.local = "/Banner Design System/Creatives/Recruitment/DIS-3730_Recruitment_KlantenserviceTweetalig/Design/";
+cbAd.resources.banners.DIS3730RecruitmentKlantenserviceTweetalig.CSS = "design.css";
+
+//DIS-3732_Recruitment_Winkels
+cbAd.resources.banners.DIS3732RecruitmentWinkels = {};
+cbAd.resources.banners.DIS3732RecruitmentWinkels.live = "https://s0.2mdn.net/creatives/assets/3882020/";
+cbAd.resources.banners.DIS3732RecruitmentWinkels.local = "/Banner Design System/Creatives/Recruitment/DIS-3732_Recruitment_Winkels/Design/";
+cbAd.resources.banners.DIS3732RecruitmentWinkels.CSS = "design.css";
+
+//DIS-4439_Recruitment_Dusseldorfstore
+cbAd.resources.banners.DIS4439RecruitmentDusseldorfstore = {};
+cbAd.resources.banners.DIS4439RecruitmentDusseldorfstore.live = "https://s0.2mdn.net/creatives/assets/4215132/";
+cbAd.resources.banners.DIS4439RecruitmentDusseldorfstore.local = "/Banner Design System/Creatives/Recruitment/DIS-4439_Recruitment_Dusseldorfstore/Design/";
+cbAd.resources.banners.DIS4439RecruitmentDusseldorfstore.CSS = "design.css";
+
+//DIS-4600_Recruitment_Delivery
+cbAd.resources.banners.DIS4600RecruitmentDelivery = {};
+cbAd.resources.banners.DIS4600RecruitmentDelivery.live = "https://s0.2mdn.net/creatives/assets/4248415/";
+cbAd.resources.banners.DIS4600RecruitmentDelivery.local = "/Banner Design System/Creatives/Recruitment/DIS-4600_Recruitment_Delivery/Design/";
+cbAd.resources.banners.DIS4600RecruitmentDelivery.CSS = "design.css";
+
+//DIS-4684_Recruitment_Delivery_Bijbaan
+cbAd.resources.banners.DIS4684RecruitmentDeliveryBijbaan = {};
+cbAd.resources.banners.DIS4684RecruitmentDeliveryBijbaan.live = "https://s0.2mdn.net/creatives/assets/4271424/";
+cbAd.resources.banners.DIS4684RecruitmentDeliveryBijbaan.local = "/Banner Design System/Creatives/Recruitment/DIS-4684_Recruitment_Delivery_Bijbaan/Design/";
+cbAd.resources.banners.DIS4684RecruitmentDeliveryBijbaan.CSS = "design.css";
+
+//DIS-4643_Recruitment_WitgoedMonteur
+cbAd.resources.banners.DIS4643RecruitmentWitgoedMonteur = {};
+cbAd.resources.banners.DIS4643RecruitmentWitgoedMonteur.live = "https://s0.2mdn.net/creatives/assets/4252646/";
+cbAd.resources.banners.DIS4643RecruitmentWitgoedMonteur.local = "/Banner Design System/Creatives/Recruitment/DIS-4643_Recruitment_WitgoedMonteur/Design/";
+cbAd.resources.banners.DIS4643RecruitmentWitgoedMonteur.CSS = "design.css";
+
+//DIS4729RecruitmentKlantenservice
+cbAd.resources.banners.DIS4729RecruitmentKlantenservice = {};
+cbAd.resources.banners.DIS4729RecruitmentKlantenservice.live = "https://s0.2mdn.net/creatives/assets/4260842/";
+cbAd.resources.banners.DIS4729RecruitmentKlantenservice.local = "/Banner Design System/Creatives/Recruitment/DIS-4729_Recruitment_Klantenservice/Design/";
+cbAd.resources.banners.DIS4729RecruitmentKlantenservice.CSS = "design.css";
+
+//DIS4798RecruitmentBezorgdBelgium
+cbAd.resources.banners.DIS4798RecruitmentBezorgdBelgium = {};
+cbAd.resources.banners.DIS4798RecruitmentBezorgdBelgium.live = "https://s0.2mdn.net/creatives/assets/4304643/";
+cbAd.resources.banners.DIS4798RecruitmentBezorgdBelgium.local = "/Banner Design System/Creatives/Recruitment/DIS-4798_Recruitment_Bezorgd_Belgium/Design/";
+cbAd.resources.banners.DIS4798RecruitmentBezorgdBelgium.CSS = "design.css";
+
+//Leaderboard1 iPhone Launch WebMobile
+cbAd.resources.banners.iPhone12Launch_WM = {};
+cbAd.resources.banners.iPhone12Launch_WM.live = "https://s0.2mdn.net/creatives/assets/3912897/";
+cbAd.resources.banners.iPhone12Launch_WM.local = "/Banner Design System/Creatives/Epics/iPhone12/WebMobile/Design/";
+cbAd.resources.banners.iPhone12Launch_WM.CSS = "design.css";
+
+//Leaderboard1 iPhone Launch App
+cbAd.resources.banners.iPhone12Launch_App = {};
+cbAd.resources.banners.iPhone12Launch_App.live = "https://s0.2mdn.net/creatives/assets/3919111/";
+cbAd.resources.banners.iPhone12Launch_App.local = "/Banner Design System/Creatives//Epics/iPhone12/App/Design/";
+cbAd.resources.banners.iPhone12Launch_App.CSS = "design.css";
+
+//iPhone Launch Displayset
+cbAd.resources.banners.iPhone12Launch_Display = {};
+cbAd.resources.banners.iPhone12Launch_Display.live = "https://s0.2mdn.net/creatives/assets/3899921/";
+cbAd.resources.banners.iPhone12Launch_Display.local = "/Banner Design System/Creatives//Epics/iPhone12/Display/Design/";
+cbAd.resources.banners.iPhone12Launch_Display.CSS = "design.css";
+
+//iPhone Launch Displayset
+cbAd.resources.banners.iPhone12Launch_Display_Fase3 = {};
+cbAd.resources.banners.iPhone12Launch_Display_Fase3.live = "https://s0.2mdn.net/creatives/assets/3951156/";
+cbAd.resources.banners.iPhone12Launch_Display_Fase3.local = "/Banner Design System/Creatives/Epics/iPhone12/Fase3/Design/";
+cbAd.resources.banners.iPhone12Launch_Display_Fase3.CSS = "design.css";
+
+//BigBlue Ipad Displayset
+cbAd.resources.banners.BigBlueIpad_Display = {};
+cbAd.resources.banners.BigBlueIpad_Display.live = "https://s0.2mdn.net/creatives/assets/4248329/";
+cbAd.resources.banners.BigBlueIpad_Display.local = "/Banner Design System/Creatives/Epics/BigBlue/iPad/Design/";
+cbAd.resources.banners.BigBlueIpad_Display.CSS = "design.css";
+
+//iPhone13Pro Displayset
+cbAd.resources.banners.iPhone13Pro_Display = {};
+cbAd.resources.banners.iPhone13Pro_Display.live = "https://s0.2mdn.net/creatives/assets/4279205/";
+cbAd.resources.banners.iPhone13Pro_Display.local = "/Banner Design System/Creatives/Epics/iPhone13Pro/Display/Design/";
+cbAd.resources.banners.iPhone13Pro_Display.CSS = "design.css";
+
+//iPhone14 Displayset
+cbAd.resources.banners.iPhone14_Display = {};
+cbAd.resources.banners.iPhone14_Display.live = "https://s0.2mdn.net/creatives/assets/4659430/";
+cbAd.resources.banners.iPhone14_Display.local = "/Banner Design System/Creatives/Epics/iPhone14/Display/Design/";
+cbAd.resources.banners.iPhone14_Display.CSS = "design.css";
+
+//iPhoneSE Displayset
+cbAd.resources.banners.iPhoneSE_Display = {};
+cbAd.resources.banners.iPhoneSE_Display.live = "https://s0.2mdn.net/creatives/assets/4468091/";
+cbAd.resources.banners.iPhoneSE_Display.local = "/Banner Design System/Creatives/Epics/iPhoneSE/Display/Design/";
+cbAd.resources.banners.iPhoneSE_Display.CSS = "design.css";
+
+//Apparaadsel
+cbAd.resources.banners.Apparaadsel = {};
+cbAd.resources.banners.Apparaadsel.live = "https://s0.2mdn.net/creatives/assets/3899921/";
+cbAd.resources.banners.Apparaadsel.local = "/Banner Design System/Creatives/Hackathon/Apparaadsel/Design/";
+cbAd.resources.banners.Apparaadsel.CSS = "design.css";
+
+//finalCountDown
+cbAd.resources.banners.finalCountDown = {};
+cbAd.resources.banners.finalCountDown.live = "https://s0.2mdn.net/creatives/assets/3899921/";
+cbAd.resources.banners.finalCountDown.local = "/Banner Design System/Creatives/Hackathon/The Final Countdown/Design/";
+cbAd.resources.banners.finalCountDown.CSS = "design.css";
+
+//DIS-3836_Laadpalen
+cbAd.resources.banners.DIS3836Laadpalen = {};
+cbAd.resources.banners.DIS3836Laadpalen.live = "https://s0.2mdn.net/creatives/assets/3933654/";
+cbAd.resources.banners.DIS3836Laadpalen.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3836_Laadpalen/Design/";
+cbAd.resources.banners.DIS3836Laadpalen.CSS = "design.css";
+
+//DIS-3889_Zonnepanelen
+cbAd.resources.banners.DIS3889Zonnepanelen = {};
+cbAd.resources.banners.DIS3889Zonnepanelen.live = "https://s0.2mdn.net/creatives/assets/3952490/";
+cbAd.resources.banners.DIS3889Zonnepanelen.local = "/Banner Design System/Creatives/Epics/Zonnepanelen/Design/";
+cbAd.resources.banners.DIS3889Zonnepanelen.CSS = "design.css";
+
+//DIS5249Cadeaukaarten
+cbAd.resources.banners.DIS5249Cadeaukaarten = {};
+cbAd.resources.banners.DIS5249Cadeaukaarten.live = "https://s0.2mdn.net/creatives/assets/4385437/";
+cbAd.resources.banners.DIS5249Cadeaukaarten.local = "/Banner Design System/Creatives/CoolblueStories/DIS-5249_Cadeaukaarten/Design/";
+cbAd.resources.banners.DIS5249Cadeaukaarten.CSS = "design.css";
+
+//DIS-2491_KerstCadeaus
+cbAd.resources.banners.DIS2491KerstCadeaus = {};
+cbAd.resources.banners.DIS2491KerstCadeaus.live = "https://s0.2mdn.net/creatives/assets/3589431/";
+cbAd.resources.banners.DIS2491KerstCadeaus.local = "/Banner Design System/Creatives/CoolblueStories/DIS-2491_KerstCadeaus/Design/";
+cbAd.resources.banners.DIS2491KerstCadeaus.CSS = "design.css";
+
+//DIS-3898_KerstCadeaukaarten
+cbAd.resources.banners.DIS3898KerstCadeaukaarten = {};
+cbAd.resources.banners.DIS3898KerstCadeaukaarten.live = "https://s0.2mdn.net/creatives/assets/3973323/";
+cbAd.resources.banners.DIS3898KerstCadeaukaarten.local = "/Banner Design System/Creatives/CoolblueStories/DIS-3898_KerstCadeaukaarten/Design/";
+cbAd.resources.banners.DIS3898KerstCadeaukaarten.CSS = "design.css";
+
+//DIS-4005_KerstCadeaus
+cbAd.resources.banners.DIS4005KerstCadeaus = {};
+cbAd.resources.banners.DIS4005KerstCadeaus.live = "https://s0.2mdn.net/creatives/assets/3994042/";
+cbAd.resources.banners.DIS4005KerstCadeaus.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4005_KerstCadeaus/Design/";
+cbAd.resources.banners.DIS4005KerstCadeaus.CSS = "design.css";
+
+//DIS-2491_KerstCadeaus
+cbAd.resources.banners.DIS5531ChristmasGeneralDisplay = {};
+cbAd.resources.banners.DIS5531ChristmasGeneralDisplay.live = "https://s0.2mdn.net/creatives/assets/4382507/";
+cbAd.resources.banners.DIS5531ChristmasGeneralDisplay.local = "/Banner Design System/Creatives/CoolblueStories/DIS-5531_ChristmasGeneralDisplay2021/Design/";
+cbAd.resources.banners.DIS5531ChristmasGeneralDisplay.CSS = "design.css";
+
+//BANDEV357ChristmasGeneralDisplay 2022
+cbAd.resources.banners.BANDEV357ChristmasGeneralDisplay = {};
+cbAd.resources.banners.BANDEV357ChristmasGeneralDisplay.live = "https://s0.2mdn.net/creatives/assets/4718033/";
+cbAd.resources.banners.BANDEV357ChristmasGeneralDisplay.local = "/Banner Design System/Creatives/CoolblueStories/BANDEV-357_ChristmasGeneralDisplay2022/Design/";
+cbAd.resources.banners.BANDEV357ChristmasGeneralDisplay.CSS = "design.css";
+
+//DIS-4038_WinkelopeningHasselt
+cbAd.resources.banners.DIS4038WinkelopeningHasselt = {};
+cbAd.resources.banners.DIS4038WinkelopeningHasselt.live = "https://s0.2mdn.net/creatives/assets/3984866/";
+cbAd.resources.banners.DIS4038WinkelopeningHasselt.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4038_WinkelopeningHasselt/design/";
+cbAd.resources.banners.DIS4038WinkelopeningHasselt.CSS = "design.css";
+
+//DIS-3726_Recruitment_PraktischOpgeleid
+cbAd.resources.banners.DIS3726RecruitmentPraktischOpgeleid = {};
+cbAd.resources.banners.DIS3726RecruitmentPraktischOpgeleid.live = "https://s0.2mdn.net/creatives/assets/3938661/";
+cbAd.resources.banners.DIS3726RecruitmentPraktischOpgeleid.local = "/Banner Design System/Creatives/Recruitment/DIS-3726_Recruitment_PraktischOpgeleid/Design/";
+cbAd.resources.banners.DIS3726RecruitmentPraktischOpgeleid.CSS = "design.css";
+
+//DIS-3754_Recruitment_LogistiekeCarriere
+cbAd.resources.banners.DIS375RecruitmentLogistiekeCarriere = {};
+cbAd.resources.banners.DIS375RecruitmentLogistiekeCarriere.live = "https://s0.2mdn.net/creatives/assets/3938658/";
+cbAd.resources.banners.DIS375RecruitmentLogistiekeCarriere.local = "/Banner Design System/Creatives/Recruitment/DIS-3754_Recruitment_LogistiekeCarriere/Design/";
+cbAd.resources.banners.DIS375RecruitmentLogistiekeCarriere.CSS = "design.css";
+
+//DIS-4260_Recruitment_TechInternationail
+cbAd.resources.banners.DIS4260RecruitmentTechInternational = {};
+cbAd.resources.banners.DIS4260RecruitmentTechInternational.live = "https://s0.2mdn.net/creatives/assets/4079471/";
+cbAd.resources.banners.DIS4260RecruitmentTechInternational.local = "/Banner Design System/Creatives/Recruitment/DIS-4260_Recruitment_TechInternational/Design/";
+cbAd.resources.banners.DIS4260RecruitmentTechInternational.CSS = "design.css";
+
+//DIS-3941_Bezorging2M1M
+cbAd.resources.banners.DIS3941Bezorging2M1M = {};
+cbAd.resources.banners.DIS3941Bezorging2M1M.live = "https://s0.2mdn.net/creatives/assets/4008243/";
+cbAd.resources.banners.DIS3941Bezorging2M1M.local = "/Banner Design System/Creatives/Recruitment/DIS-3941_Bezorging2M1M/Design/";
+cbAd.resources.banners.DIS3941Bezorging2M1M.CSS = "design.css";
+
+//DIS-4014_SoldenGeneralSet
+cbAd.resources.banners.DIS4014_SoldenGeneralSet = {};
+cbAd.resources.banners.DIS4014_SoldenGeneralSet.live = "https://s0.2mdn.net/creatives/assets/4007418/";
+cbAd.resources.banners.DIS4014_SoldenGeneralSet.local = "/Banner Design System/Creatives/Epics/Solden/Display/Design/";
+cbAd.resources.banners.DIS4014_SoldenGeneralSet.CSS = "design.css";
+
+//DIS-4043_WinkelopeningHasseltXiaomi
+cbAd.resources.banners.DIS4043WinkelopeningHasseltXiaomi = {};
+cbAd.resources.banners.DIS4043WinkelopeningHasseltXiaomi.live = "https://s0.2mdn.net/creatives/assets/4009486/";
+cbAd.resources.banners.DIS4043WinkelopeningHasseltXiaomi.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4043_WinkelopeningHasseltXiaomi/Design/";
+cbAd.resources.banners.DIS4043WinkelopeningHasseltXiaomi.CSS = "design.css";
+
+//DIS-4044_WinkelopeningHasseltSonos
+cbAd.resources.banners.DIS4044WinkelopeningHasseltSonos = {};
+cbAd.resources.banners.DIS4044WinkelopeningHasseltSonos.live = "https://s0.2mdn.net/creatives/assets/4009492/";
+cbAd.resources.banners.DIS4044WinkelopeningHasseltSonos.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4044_WinkelopeningHasseltSonos/Design/";
+cbAd.resources.banners.DIS4044WinkelopeningHasseltSonos.CSS = "design.css";
+
+//DIS-4427_WinkelopeningAlmere
+cbAd.resources.banners.DIS4427WinkelOpeningAlmere = {};
+cbAd.resources.banners.DIS4427WinkelOpeningAlmere.live = "https://s0.2mdn.net/creatives/assets/4208955/";
+cbAd.resources.banners.DIS4427WinkelOpeningAlmere.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4427_WinkelOpeningAlmere/Design/";
+cbAd.resources.banners.DIS4427WinkelOpeningAlmere.CSS = "design.css";
+
+//DIS-4427_Warehouse
+cbAd.resources.banners.DIS4577RecruitmentWarehouse = {};
+cbAd.resources.banners.DIS4577RecruitmentWarehouse.live = "https://s0.2mdn.net/creatives/assets/4236244/";
+cbAd.resources.banners.DIS4577RecruitmentWarehouse.local = "/Banner Design System/Creatives/Recruitment/DIS-4577_Recruitment_Warehouse/Design/";
+cbAd.resources.banners.DIS4577RecruitmentWarehouse.CSS = "design.css";
+
+//Samsung S21 Campaign
+//Filterpages
+cbAd.resources.banners.DIS4119SamsungS21FilterPages = {};
+cbAd.resources.banners.DIS4119SamsungS21FilterPages.live = "https://s0.2mdn.net/creatives/assets/4021750/";
+cbAd.resources.banners.DIS4119SamsungS21FilterPages.local = "/Banner Design System/Creatives/Epics/SamsungS21/Filter Pages/design/";
+cbAd.resources.banners.DIS4119SamsungS21FilterPages.CSS = "design.css";
+
+//DIS-4480_CoolblueEnergie_CoolblueEnergie
+cbAd.resources.banners.nl_NL_202101_Display_CB_Coolblue_Template3B_CoolblueEnergie = {};
+cbAd.resources.banners.nl_NL_202101_Display_CB_Coolblue_Template3B_CoolblueEnergie.live = "https://s0.2mdn.net/creatives/assets/4009730/";
+cbAd.resources.banners.nl_NL_202101_Display_CB_Coolblue_Template3B_CoolblueEnergie.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4480_CoolblueEnergie/Design/";
+cbAd.resources.banners.nl_NL_202101_Display_CB_Coolblue_Template3B_CoolblueEnergie.CSS = "design.css";
+
+//DIS-4480_CoolblueEnergie_CoolblueEnergie_AB_Test
+cbAd.resources.banners.nl_NL_202101_Display_CB_Coolblue_Template3B_CoolblueEnergie_AB_Test = {};
+cbAd.resources.banners.nl_NL_202101_Display_CB_Coolblue_Template3B_CoolblueEnergie_AB_Test.live = "https://s0.2mdn.net/creatives/assets/4038352/";
+cbAd.resources.banners.nl_NL_202101_Display_CB_Coolblue_Template3B_CoolblueEnergie_AB_Test.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4480_CoolblueEnergie_AB_Test/Design/";
+cbAd.resources.banners.nl_NL_202101_Display_CB_Coolblue_Template3B_CoolblueEnergie_AB_Test.CSS = "design.css";
+
+//DIS-4831_Cb_Energie
+cbAd.resources.banners.DIS4831CbEnergie = {};
+cbAd.resources.banners.DIS4831CbEnergie.live = "https://s0.2mdn.net/creatives/assets/4310794/";
+cbAd.resources.banners.DIS4831CbEnergie.local = "/Banner Design System/Creatives/CoolblueStories/DIS-4831_Cb_Energie/Design/";
+cbAd.resources.banners.DIS4831CbEnergie.CSS = "design.css";
+
+//CombiBanner
+cbAd.resources.banners.combibanner = {};
+cbAd.resources.banners.combibanner.live = "https://s0.2mdn.net/creatives/assets/4171301/";
+cbAd.resources.banners.combibanner.local = "/Banner Design System/Creatives/Media/Combi Banner/Design/";
+cbAd.resources.banners.combibanner.CSS = "design.css";
+
+//CombiBanner V2
+cbAd.resources.banners.combibannerV2 = {};
+cbAd.resources.banners.combibannerV2.live = "https://s0.2mdn.net/creatives/assets/4356849/";
+cbAd.resources.banners.combibannerV2.local = "/Banner Design System/Creatives/Media/Combi Banner/V2/Design/";
+cbAd.resources.banners.combibannerV2.CSS = "design.css";
+
+//DIS-4432_Recruitment_SolarPanelsHoofdMonteurs
+cbAd.resources.banners.DIS4432_Recruitment_SolarPanelsHoofdMonteurs = {};
+cbAd.resources.banners.DIS4432_Recruitment_SolarPanelsHoofdMonteurs.local = "/Banner Design System/Creatives/Recruitment/DIS-4432_Recruitment_SolarPanelsHoofdMonteurs/Design/";
+cbAd.resources.banners.DIS4432_Recruitment_SolarPanelsHoofdMonteurs.live = "https://s0.2mdn.net/creatives/assets/4194693/";
+cbAd.resources.banners.DIS4432_Recruitment_SolarPanelsHoofdMonteurs.CSS = "design.css";
+
+//DIS-4422_Recruitment_Vakantiekrachten
+cbAd.resources.banners.DIS4422_Recruitment_Vakantiekrachten = {};
+cbAd.resources.banners.DIS4422_Recruitment_Vakantiekrachten.live = "https://s0.2mdn.net/creatives/assets/4197792/";
+cbAd.resources.banners.DIS4422_Recruitment_Vakantiekrachten.local = "/Banner Design System/Creatives/Recruitment/DIS-4422_Recruitment_Vakantiekrachten/Design/";
+cbAd.resources.banners.DIS4422_Recruitment_Vakantiekrachten.CSS = "design.css";
+
+//Vriendenprijsdagen
+cbAd.resources.banners.Vriendenprijsdagen = {};
+cbAd.resources.banners.Vriendenprijsdagen.live = "https://s0.2mdn.net/creatives/assets/4011230/";
+cbAd.resources.banners.Vriendenprijsdagen.local = "/Banner Design System/Creatives/Epics/Vriendenprijsdagen/design/";
+cbAd.resources.banners.Vriendenprijsdagen.CSS = "design.css";
+
+//DIS-4324_VakantiegeldDisplay
+cbAd.resources.banners.DIS4324VakantiegeldDisplay = {};
+cbAd.resources.banners.DIS4324VakantiegeldDisplay.live = "https://s0.2mdn.net/creatives/assets/4145303/";
+cbAd.resources.banners.DIS4324VakantiegeldDisplay.local = "/Banner Design System/Creatives/Epics/Vakantiegeld/design/";
+cbAd.resources.banners.DIS4324VakantiegeldDisplay.CSS = "design.css";
+
+//BigBlue_Macbook
+cbAd.resources.banners.BigBlueMacbook = {};
+cbAd.resources.banners.BigBlueMacbook.live = "https://s0.2mdn.net/creatives/assets/4248245/";
+cbAd.resources.banners.BigBlueMacbook.local = "/Banner Design System/Creatives/Epics/BigBlue/Macbook/design/";
+cbAd.resources.banners.BigBlueMacbook.CSS = "design.css";
+
+//Codemuseum Bannerset
+cbAd.resources.banners.CodemuseumBannerset = {};
+cbAd.resources.banners.CodemuseumBannerset.live = "https://s0.2mdn.net/creatives/assets/4455630/";
+cbAd.resources.banners.CodemuseumBannerset.local = "/Banner Design System/Creatives/Epics/Codemuseum/Erik/design/";
+cbAd.resources.banners.CodemuseumBannerset.CSS = "design.css";
+
+//Codemuseum Bannerset
+cbAd.resources.banners.CodemuseumBannersetNiels = {};
+cbAd.resources.banners.CodemuseumBannersetNiels.live = "https://s0.2mdn.net/creatives/assets/4455547/";
+cbAd.resources.banners.CodemuseumBannersetNiels.local = "/Banner Design System/Creatives/Epics/Codemuseum/Niels/design/";
+cbAd.resources.banners.CodemuseumBannersetNiels.CSS = "design.css";
+
+//Codemuseum Bannerset
+cbAd.resources.banners.CodemuseumBannersetEssam = {};
+cbAd.resources.banners.CodemuseumBannersetEssam.live = "https://s0.2mdn.net/creatives/assets/4455544/";
+cbAd.resources.banners.CodemuseumBannersetEssam.local = "/Banner Design System/Creatives/Epics/Codemuseum/Essam/design/";
+cbAd.resources.banners.CodemuseumBannersetEssam.CSS = "design.css";
+
+//ThuiswerkWinkel Set1
+cbAd.resources.banners.ThuiswerkWinkelSet1 = {};
+cbAd.resources.banners.ThuiswerkWinkelSet1.live = "https://s0.2mdn.net/creatives/assets/4462403/";
+cbAd.resources.banners.ThuiswerkWinkelSet1.local = "/Banner Design System/Creatives/CoolblueStories/DIS-5877_Thuiswerkwinkel_Set1/design/";
+cbAd.resources.banners.ThuiswerkWinkelSet1.CSS = "design.css";
+
+//ThuiswerkWinkel Set2
+cbAd.resources.banners.ThuiswerkWinkelSet2 = {};
+cbAd.resources.banners.ThuiswerkWinkelSet2.live = "https://s0.2mdn.net/creatives/assets/4515850/";
+cbAd.resources.banners.ThuiswerkWinkelSet2.local = "/Banner Design System/Creatives/CoolblueStories/DIS-5877_Thuiswerkwinkel_Set2/design/";
+cbAd.resources.banners.ThuiswerkWinkelSet2.CSS = "design.css";
+
+//ThuiswerkWinkel Set3
+cbAd.resources.banners.ThuiswerkWinkelSet3 = {};
+cbAd.resources.banners.ThuiswerkWinkelSet3.live = "https://s0.2mdn.net/creatives/assets/4515862/";
+cbAd.resources.banners.ThuiswerkWinkelSet3.local = "/Banner Design System/Creatives/CoolblueStories/DIS-5877_Thuiswerkwinkel_Set3/design/";
+cbAd.resources.banners.ThuiswerkWinkelSet3.CSS = "design.css";
+
+//ThuiswerkWinkel Set4
+cbAd.resources.banners.ThuiswerkWinkelSet4 = {};
+cbAd.resources.banners.ThuiswerkWinkelSet4.live = "https://s0.2mdn.net/creatives/assets/4515865/";
+cbAd.resources.banners.ThuiswerkWinkelSet4.local = "/Banner Design System/Creatives/CoolblueStories/DIS-5877_Thuiswerkwinkel_Set4/design/";
+cbAd.resources.banners.ThuiswerkWinkelSet4.CSS = "design.css";
+
+//DIS-6488_MacUpgrade
+cbAd.resources.banners.DIS6488_MacUpgrade = {};
+cbAd.resources.banners.DIS6488_MacUpgrade.live = "https://s0.2mdn.net/creatives/assets/4561820/";
+cbAd.resources.banners.DIS6488_MacUpgrade.local = "/Banner Design System/Creatives/Epics/DIS-6488_MacUpgrade/design/";
+cbAd.resources.banners.DIS6488_MacUpgrade.CSS = "design.css";
+
+//DIS-6488_MacUpgrade__netPrice
+cbAd.resources.banners.DIS6488_MacUpgrade_netPrice = {};
+cbAd.resources.banners.DIS6488_MacUpgrade_netPrice.live = "https://s0.2mdn.net/creatives/assets/4593249/";
+cbAd.resources.banners.DIS6488_MacUpgrade_netPrice.local = "/Banner Design System/Creatives/Epics/DIS-6488_MacUpgrade_netPrice/design/";
+cbAd.resources.banners.DIS6488_MacUpgrade_netPrice.CSS = "design.css";
+
+//leaderboard_2_4_Compliancy
+cbAd.resources.banners.leaderboard_2_4_Compliancy = {};
+cbAd.resources.banners.leaderboard_2_4_Compliancy.live = "https://s0.2mdn.net/creatives/assets/4608593/";
+cbAd.resources.banners.leaderboard_2_4_Compliancy.local = "/Banner Design System/Creatives/OnSite SM/Compliancy/leaderboard_2_4/design/";
+cbAd.resources.banners.leaderboard_2_4_Compliancy.CSS = "design.css";
+
+//filterpages_Compliancy
+cbAd.resources.banners.filterpages_Compliancy = {};
+cbAd.resources.banners.filterpages_Compliancy.live = "https://s0.2mdn.net/creatives/assets/4606655/";
+cbAd.resources.banners.filterpages_Compliancy.local = "/Banner Design System/Creatives/OnSite SM/Compliancy/Filterpages/design/";
+cbAd.resources.banners.filterpages_Compliancy.CSS = "design.css";
+
+//buildingBlocks_Compliancy
+cbAd.resources.banners.buildingBlocks_Compliancy = {};
+cbAd.resources.banners.buildingBlocks_Compliancy.live = "https://s0.2mdn.net/creatives/assets/4646229/";
+cbAd.resources.banners.buildingBlocks_Compliancy.local = "/Banner Design System/Creatives/OnSite SM/Compliancy/BuildingBlocks/design/";
+cbAd.resources.banners.buildingBlocks_Compliancy.CSS = "design.css";
+
+//BANDEV-38_soldenDisplayset
+cbAd.resources.banners.BANDEV38_soldenDisplayset = {};
+cbAd.resources.banners.BANDEV38_soldenDisplayset.live = "https://s0.2mdn.net/creatives/assets/4598227/";
+cbAd.resources.banners.BANDEV38_soldenDisplayset.local = "/Banner Design System/Creatives/Epics/BANDEV-38_soldenDisplayset/design/";
+cbAd.resources.banners.BANDEV38_soldenDisplayset.CSS = "design.css";
+
+//BANDEV414_BeterWetenWeek
+cbAd.resources.banners.BANDEV414_BeterWetenWeek = {};
+cbAd.resources.banners.BANDEV414_BeterWetenWeek.live = "https://s0.2mdn.net/creatives/assets/4778718/";
+cbAd.resources.banners.BANDEV414_BeterWetenWeek.local = "/Banner Design System/Creatives/Epics/BANDEV-414_BeterWetenWeek/design/";
+cbAd.resources.banners.BANDEV414_BeterWetenWeek.CSS = "design.css";
+
+// BANDEV123_aircoDisplaySet
+cbAd.resources.banners.BANDEV123_aircoDisplaySet = {};
+cbAd.resources.banners.BANDEV123_aircoDisplaySet.live = "https://s0.2mdn.net/creatives/assets/4619301/";
+cbAd.resources.banners.BANDEV123_aircoDisplaySet.local = "/Banner Design System/Creatives/Epics/BANDEV-123_aircoDisplaySet/design/";
+cbAd.resources.banners.BANDEV123_aircoDisplaySet.CSS = "design.css";
+
+// BANDEV168_AppleFinancialServices_Macbook
+cbAd.resources.banners.BANDEV168_AppleFinancialServices_MacBook = {};
+cbAd.resources.banners.BANDEV168_AppleFinancialServices_MacBook.live = "https://s0.2mdn.net/creatives/assets/4621571/";
+cbAd.resources.banners.BANDEV168_AppleFinancialServices_MacBook.local = "/Banner Design System/Creatives/Epics/BANDEV-168_AppleFinancialServices/design/";
+cbAd.resources.banners.BANDEV168_AppleFinancialServices_MacBook.CSS = "design.css";
+
+// BANDEV-574_AppleBusinessMacbook
+cbAd.resources.banners.BANDEV574_AppleBusinessMacBook = {};
+cbAd.resources.banners.BANDEV574_AppleBusinessMacBook.live = "https://s0.2mdn.net/creatives/assets/4855423/";
+cbAd.resources.banners.BANDEV574_AppleBusinessMacBook.local = "/Banner Design System/Creatives/Epics/AppleBusiness/BANDEV-574_AppleBusinessMacbook/design/";
+cbAd.resources.banners.BANDEV574_AppleBusinessMacBook.CSS = "design.css";
+
+// BBANDEV-575_AppleBusinessIpad
+cbAd.resources.banners.BANDEV575_AppleBusinessIpad = {};
+cbAd.resources.banners.BANDEV575_AppleBusinessIpad.live = "https://s0.2mdn.net/creatives/assets/4862181/";
+cbAd.resources.banners.BANDEV575_AppleBusinessIpad.local = "/Banner Design System/Creatives/Epics/AppleBusiness/BANDEV-575_AppleBusinessIpad/design/";
+cbAd.resources.banners.BANDEV575_AppleBusinessIpad.CSS = "design.css";
+
+// BANDEV168_AppleFinancialServices_Ipad
+cbAd.resources.banners.BANDEV168_AppleFinancialServices_Ipad = {};
+cbAd.resources.banners.BANDEV168_AppleFinancialServices_Ipad.live = "https://s0.2mdn.net/creatives/assets/4621571/";
+cbAd.resources.banners.BANDEV168_AppleFinancialServices_Ipad.local = "/Banner Design System/Creatives/Epics/BANDEV-168_AppleFinancialServices/design/";
+cbAd.resources.banners.BANDEV168_AppleFinancialServices_Ipad.CSS = "design.css";
+
+// BANDEV235_Fifa23_PreOrder
+cbAd.resources.banners.BANDEV235_Fifa23_PreOrder = {};
+cbAd.resources.banners.BANDEV235_Fifa23_PreOrder.live = "https://s0.2mdn.net/creatives/assets/4639115/";
+cbAd.resources.banners.BANDEV235_Fifa23_PreOrder.local = "/Banner Design System/Creatives/Epics/BANDEV-235_Fifa23PreOrder/design/";
+cbAd.resources.banners.BANDEV235_Fifa23_PreOrder.CSS = "design.css";
+
+// BANDEV218_EnergieContracten
+cbAd.resources.banners.BANDEV218_EnergieContracten = {};
+cbAd.resources.banners.BANDEV218_EnergieContracten.live = "https://s0.2mdn.net/creatives/assets/4640051/";
+cbAd.resources.banners.BANDEV218_EnergieContracten.local = "/Banner Design System/Creatives/CoolblueStories/BANDEV-218_EnergieContracten/design/";
+cbAd.resources.banners.BANDEV218_EnergieContracten.CSS = "design.css";
+
+// BANDEV221_EnergieLaadpassen
+cbAd.resources.banners.BANDEV221_EnergieLaadpassen = {};
+cbAd.resources.banners.BANDEV221_EnergieLaadpassen.live = "https://s0.2mdn.net/creatives/assets/4642892/";
+cbAd.resources.banners.BANDEV221_EnergieLaadpassen.local = "/Banner Design System/Creatives/CoolblueStories/BANDEV-221_EnergieLaadpassen/design/";
+cbAd.resources.banners.BANDEV221_EnergieLaadpassen.CSS = "design.css";
+
+//Mobile Prospecting Banners
+cbAd.resources.banners.mobileProspecting = {};
+cbAd.resources.banners.mobileProspecting.live = "https://s0.2mdn.net/creatives/assets/4656046/";
+cbAd.resources.banners.mobileProspecting.local = "/Banner Design System/Creatives/Sales/Mobile Prospecting/design/";
+cbAd.resources.banners.mobileProspecting.CSS = "MobileProspecting.css";
+
+//Mobile Prospecting Banners
+cbAd.resources.banners.cbElementsTest = {};
+cbAd.resources.banners.cbElementsTest.live = "https://s0.2mdn.net/creatives/assets/4656046/";
+cbAd.resources.banners.cbElementsTest.local = "/Banner Design System/Creatives/Test Banners/cbelementsBanner/design/";
+cbAd.resources.banners.cbElementsTest.CSS = "design.css";
+
+//WKGoudenWissel_algemeen
+cbAd.resources.banners.WKGoudenWissel_algemeen = {};
+cbAd.resources.banners.WKGoudenWissel_algemeen.live = "https://s0.2mdn.net/creatives/assets/4699567/";
+cbAd.resources.banners.WKGoudenWissel_algemeen.local = "/Banner Design System/Creatives/Epics/WKGoudenWissel/design/";
+cbAd.resources.banners.WKGoudenWissel_algemeen.CSS = "design.css";
+
+//WKGoudenWissel_Samsung
+cbAd.resources.banners.WKGoudenWissel_Samsung = {};
+cbAd.resources.banners.WKGoudenWissel_Samsung.live = "https://s0.2mdn.net/creatives/assets/4699567/";
+cbAd.resources.banners.WKGoudenWissel_Samsung.local = "/Banner Design System/Creatives/Epics/WKGoudenWissel/design/";
+cbAd.resources.banners.WKGoudenWissel_Samsung.CSS = "design.css";
+
+//WKGoudenWissel_LG
+cbAd.resources.banners.WKGoudenWissel_LG = {};
+cbAd.resources.banners.WKGoudenWissel_LG.live = "https://s0.2mdn.net/creatives/assets/4699567/";
+cbAd.resources.banners.WKGoudenWissel_LG.local = "/Banner Design System/Creatives/Epics/WKGoudenWissel/design/";
+cbAd.resources.banners.WKGoudenWissel_LG.CSS = "design.css";
+
+//BANDEV322_AppleIpadLaunch
+cbAd.resources.banners.BANDEV322_AppleIpadLaunch = {};
+cbAd.resources.banners.BANDEV322_AppleIpadLaunch.live = "https://s0.2mdn.net/creatives/assets/4713960/";
+cbAd.resources.banners.BANDEV322_AppleIpadLaunch.local = "/Banner Design System/Creatives/Epics/BANDEV-322_AppleIpadLaunch/design/";
+cbAd.resources.banners.BANDEV322_AppleIpadLaunch.CSS = "design.css";
+
+//CBELEMENTS TEMPLATE DISPLAY BANNERS
+cbAd.resources.banners.AutomatedDispayTemplates = {};
+cbAd.resources.banners.AutomatedDispayTemplates.live = "https://s0.2mdn.net/creatives/assets/4713960/";
+cbAd.resources.banners.AutomatedDispayTemplates.local = "/Banner Design System/Creatives/Templates/CoolblueTemplates/Display/";
+cbAd.resources.banners.AutomatedDispayTemplates.CSS = "displayTemplateDesign.css";
+// BANDEV352_CadeausjesSinterklaas
+cbAd.resources.banners.BANDEV352_CadeausjesSinterklaas = {};
+cbAd.resources.banners.BANDEV352_CadeausjesSinterklaas.live = "https://s0.2mdn.net/creatives/assets/4727395/";
+cbAd.resources.banners.BANDEV352_CadeausjesSinterklaas.local = "/Banner Design System/Creatives/Epics/BANDEV-352_CadeausjesSinterklaas/design/";
+cbAd.resources.banners.BANDEV352_CadeausjesSinterklaas.CSS = "design.css";
+
+// BANDEV347_cadeausjesKerst
+cbAd.resources.banners.BANDEV347_cadeausjesKerst = {};
+cbAd.resources.banners.BANDEV347_cadeausjesKerst.live = "https://s0.2mdn.net/creatives/assets/4718972/";
+cbAd.resources.banners.BANDEV347_cadeausjesKerst.local = "/Banner Design System/Creatives/Epics/BANDEV-347_cadeausjesKerst/design/";
+cbAd.resources.banners.BANDEV347_cadeausjesKerst.CSS = "design.css";
+// BANDEV374_MacUpgrade
+cbAd.resources.banners.BANDEV374_MacUpgrade = {};
+cbAd.resources.banners.BANDEV374_MacUpgrade.live = "https://s0.2mdn.net/creatives/assets/4753893/";
+cbAd.resources.banners.BANDEV374_MacUpgrade.local = "/Banner Design System/Creatives/Epics/BANDEV-374_MacUpgrade/design/";
+cbAd.resources.banners.BANDEV374_MacUpgrade.CSS = "design.css";
+
+// BANDEV377_soldenWinter2023
+cbAd.resources.banners.BANDEV377_soldenWinter2023 = {};
+cbAd.resources.banners.BANDEV377_soldenWinter2023.live = "https://s0.2mdn.net/creatives/assets/4742615/";
+cbAd.resources.banners.BANDEV377_soldenWinter2023.local = "/Banner Design System/Creatives/Epics/BANDEV-377_soldenWinter2023/design/";
+cbAd.resources.banners.BANDEV377_soldenWinter2023.CSS = "design.css";
+
+// BANDEV475_macBookLaunch
+cbAd.resources.banners.BANDEV475_macBookLaunch = {};
+cbAd.resources.banners.BANDEV475_macBookLaunch.live = "https://s0.2mdn.net/creatives/assets/4783506/";
+cbAd.resources.banners.BANDEV475_macBookLaunch.local = "/Banner Design System/Creatives/Epics/BANDEV-475_macBookLaunch/design/";
+cbAd.resources.banners.BANDEV475_macBookLaunch.CSS = "BANDEV-475_macBookLaunch_design.css";
+
+// BANDEV415_onweerstaanbieding
+cbAd.resources.banners.BANDEV415_onweerstaanbieding = {};
+cbAd.resources.banners.BANDEV415_onweerstaanbieding.live = "https://s0.2mdn.net/creatives/assets/4797213/";
+cbAd.resources.banners.BANDEV415_onweerstaanbieding.local = "/Banner Design System/Creatives/Epics/BANDEV-415_onweerstaanbieding/design/";
+cbAd.resources.banners.BANDEV415_onweerstaanbieding.CSS = "BANDEV-415_onweerstaanbieding_design.css";
+
+// BANDEV498_OnsiteOnweerstaanbieding
+cbAd.resources.banners.BANDEV498_OnsiteOnweerstaanbieding = {};
+cbAd.resources.banners.BANDEV498_OnsiteOnweerstaanbieding.live = "https://s0.2mdn.net/creatives/assets/4780205/";
+cbAd.resources.banners.BANDEV498_OnsiteOnweerstaanbieding.local = "/Banner Design System/Creatives/Epics/BANDEV-498_OnsiteOnweerstaanbieding/design/";
+cbAd.resources.banners.BANDEV498_OnsiteOnweerstaanbieding.CSS = "BANDEV-498_OnsiteOnweerstaanbieding_design.css";
+
+// BANDEV-528_easterDisplayset
+cbAd.resources.banners.BANDEV528_easterDisplayset = {};
+cbAd.resources.banners.BANDEV528_easterDisplayset.live = "https://s0.2mdn.net/creatives/assets/4805957/";
+cbAd.resources.banners.BANDEV528_easterDisplayset.local = "/Banner Design System/Creatives/Epics/BANDEV-528_easterDisplayset/design/";
+cbAd.resources.banners.BANDEV528_easterDisplayset.CSS = "BANDEV-528_easterDisplayset__design.css";
+
+// BANDEV-550_BlueBuilt_laptopSleeves_filterpages
+cbAd.resources.banners.BANDEV550_BlueBuilt_laptopSleeves_filterpages = {};
+cbAd.resources.banners.BANDEV550_BlueBuilt_laptopSleeves_filterpages.live = "https://s0.2mdn.net/creatives/assets/4822187/";
+cbAd.resources.banners.BANDEV550_BlueBuilt_laptopSleeves_filterpages.local = "/Banner Design System/Creatives/Onsite SM/BlueBuilt/filterpages/BANDEV-550_BlueBuilt_laptopSleeves_filterpages/design/";
+cbAd.resources.banners.BANDEV550_BlueBuilt_laptopSleeves_filterpages.CSS = "BANDEV-550_BlueBuilt_laptopSleeves_filterpages_design.css";
+
+// BANDEV-566_PaaS_marketingplan
+cbAd.resources.banners.BANDEV566_PaaS_marketingplan = {};
+cbAd.resources.banners.BANDEV566_PaaS_marketingplan.live = "https://s0.2mdn.net/creatives/assets/4847700/";
+cbAd.resources.banners.BANDEV566_PaaS_marketingplan.local = "/Banner Design System/Creatives/Epics/BANDEV-566_PaaS_marketingplan/design/";
+cbAd.resources.banners.BANDEV566_PaaS_marketingplan.CSS = "BANDEV-566_PaaS_marketingplan_design.css";
+
+// BANDEV-578_witgoedweken_LB1B
+cbAd.resources.banners.BANDEV578_witgoedweken_LB1B = {};
+cbAd.resources.banners.BANDEV578_witgoedweken_LB1B.live = "https://s0.2mdn.net/creatives/assets/4867317/";
+cbAd.resources.banners.BANDEV578_witgoedweken_LB1B.local = "/Banner Design System/Creatives/Epics/BANDEV-578_witgoedweken_LB1B/design/";
+cbAd.resources.banners.BANDEV578_witgoedweken_LB1B.CSS = "BANDEV-578_witgoedweken_LB1B_design.css";
+
+// BANDEV-561_witgoedweken_displayset
+cbAd.resources.banners.BANDEV561_witgoedweken_displayset = {};
+cbAd.resources.banners.BANDEV561_witgoedweken_displayset.live = "https://s0.2mdn.net/creatives/assets/4836338/";
+cbAd.resources.banners.BANDEV561_witgoedweken_displayset.local = "/Banner Design System/Creatives/Epics/BANDEV-561_witgoedweken_displayset/design/";
+cbAd.resources.banners.BANDEV561_witgoedweken_displayset.CSS = "BANDEV-561_witgoedweken_displayset_design.css";
+
+// westVlaanderen_laptops
+cbAd.resources.banners.westVlaanderen_laptops = {};
+cbAd.resources.banners.westVlaanderen_laptops.live = "https://s0.2mdn.net/creatives/assets/4847585/";
+cbAd.resources.banners.westVlaanderen_laptops.local = "/Banner Design System/Creatives/CoolblueStories/westVlaanderen_laptops/design/";
+cbAd.resources.banners.westVlaanderen_laptops.CSS = "westVlaanderen_laptops_design.css";
+
+
+//automate feed selection based on profile
+cbAd.resources.feeds = {
+    live: "https://s0.2mdn.net/creatives/assets/3782500/",
+    local: "/Banner Design System/Main Modules/feeds/",
+
+    //S&M PromotionType 2.0
+    //nl-NL
+    10735636: "NL_NL_DISPLAY_MC_S_M.js",
+    10738564: "NL_NL_DISPLAY_MC_PROS_S_M_2.js",
+    10744028: "NL_NL_DISPLAY_PCW_MC_S_M_2.js",
+    10738552: "NL_NL_DISPLAY_MC_RET_S_M_2.js",
+    //be-NL
+    10738540: "BE_NL_DISPLAY_MC_PROS_S_M_2.js",
+    10744040: "BE_NL_DISPLAY_PCW_MC_S_M_2.js",
+    10738923: "BE_NL_DISPLAY_MC_RET_S_M_2.js",
+    //be-FR
+    10738926: "BE_FR_DISPLAY_MC_PROS_S_M_2.js",
+    10744031: "BE_FR_DISPLAY_PCW_MC_S_M_2.js",
+    10738929: "BE_FR_DISPLAY_MC_RET_S_M_2.js",
+
+    //de-De'
+    10738932: "DE_DE_DISPLAY_MC_PROS_S_M_2.js",
+    10744046: "DE_DE_DISPLAY_PCW_MC_S_M_2.js",
+    10738543: "DE_DE_DISPLAY_MC_RET_S_M_2.js",
+
+    /*RETARGETING*/
+    10020547: "CoolblueRetargetingNL-1productslotCaaS.js",
+    10017647: "CoolblueRetargetingBE-1productslot.js",
+    10467913: "CoolblueRetargetingBEFR-1productslot.js",
+    10456473: "RetargetingBanner-ProspectingNL.js",
+    10456996: "RetargetingBanner-ProspectingBE.js",
+    10574198: "CookieIDTest.js",
+    10544663: "DE_DE_DISPLAY_RET.js",
+    10549991: "NL_NL_Coolblue_KCT.js",
+    10687356: "BE_FR_Coolblue_KCT.js",
+    10690442: "BE_NL_Coolblue_KCT.js",
+    10687509: "DE_DE_Coolblue_KCT.js",
+    10553127: "NL_NL_DISPLAY_RET_DIRECT.js",
+    10553238: "BE_NL_DISPLAY_RET_DIRECT.js",
+    10553824: "DE_DE_DIS_RET_V2.js",
+    10548432: "NL_NL_DISPLAY_RET.js",
+    10587262: "NL_NL_DISPLAY_RET_PRODUCT_RELEVANCY_DRAFT.js",
+    10591057: "BE_NL_DISPLAY_RET.js",
+    10591107: "BE_FR_DISPLAY_RET.js",
+    10647558: "BE_NL_DISPLAY_RET_Product_Recommendation.js",
+    10643226: "NL_NL_DISPLAY_RET_Product_Recommendation.js",
+    10680556: "NL_NL_DISPLAY_RET_Product_Recommendation_v2.js",
+
+    /*RETARGETING MARGIN*/
+    /*NL*/
+    10730482: "NL_NL_Retargeting_Margin_Banner.js",
+
+
+    /*RETARGETING PRODUCT RECOMMENDER*/
+    /*NL*/
+    10758292: "Retargeting_ProductRecommender_Margin_Banner_NL_final.js",
+    /*BE*/
+    10759507: "Retargeting_ProductRecommender_Margin_Banner_BE_NL_final.js",
+    /*BE-FR*/
+    10759570: "Retargeting_ProductRecommender_Margin_Banner_BEFR.js",
+    /*DE*/
+    10818034: "Retargeting_ProductInterest_DE.js",
+    10758388: "Retargeting_ProductRecommender_Margin_Banner_DE.js",
+
+    /*RETARGETING PRODUCT INTEREST*/
+    /*BE-NL*/
+    10822955: "Retargeting_ProductInterest_BENL.js",
+    /*DE*/
+    10818034: "Retargeting_ProductInterest_DE.js",
+
+    /*RETARGETING V2*/
+    10742572: "CAS_NL_NL_DISPLAY_MC_RET_S_M_2.js",
+
+    /*VRIENDENPRIJS*/
+    10534650: "NL_NL_DIRECT_PROS_DIRECT_SA_VRIENDENPRIJS_LOOP.js",
+    10534785: "BE_NL_DISPLAY_DIRECT_SA_VRIENDENPRIJS_LOOP.js",
+    //BrusselOpening
+    10542721: "BrusselOpening.js",
+
+    /*TOP3*/
+    10549999: "top3_be-FR.js",
+    10555100: "top3_be-NL.js",
+    10549996: "top3_nl-NL.js",
+    10579318: "NL_NL_DISPLAY_PROS_SA_TOP3_SEASONALITYDEAL.js",
+    10586171: "BE_NL_DISPLAY_PROS_SA_SEASONALITYDEAL.js",
+
+    /* Mobile Prospecting Banner */
+    10782296: "NL_NL_DISPLAY_PROS_SA_MOBILE.js",
+
+    /*PROSPECTING*/
+    /*B04 NL*/
+    10499573: "NL_NL_DISPLAY_PROS_SA_B04.js",
+    10502959: "B04_be-NL.js",
+    10531959: "BE_NL_DISPLAY_DIRECT_SA_B04.js",
+    10520942: "NL_NL_DISPLAY_DIRECT_SA_B04.js",
+    10540196: "BE_FR_DISPLAY_DIRECT_SA_B04.js",
+    10534921: "BE_FR_DISPLAY_PROS_SA_B04.js",
+    10536613: "DE_DE_DISPLAY_PROS_SA_B04.js",
+    10536616: "DE_DE_DISPLAY_DIRECT_SA_B04.js",
+    10553545: "NL_NL_DISPLAY_PROS_SA_B04_MAB_EXPERIMENT.js",
+    10584986: "NL_NL_DISPLAY_PROS_SA_SPECIALIST_CT.js",
+    10579249: "BE_NL_DISPLAY_PROS_SA_SPECIALIST_CT.js",
+    10579291: "BE_FR_DISPLAY_PROS_SA_SPECIALIST_CT.js",
+    10580196: "DE_DE_DISPLAY_PROS_SA_SPECIALIST_CT.js",
+    10603886: "NL_NL_AFFILIATE_SPECIALIST.js",
+    10603263: "BE_NL_AFFILIATE_SPECIALIST.js",
+    10614889: "DE_DE_AFFILIATE_SPECIALIST.js",
+
+    /*NL_NL_DISPLAY_PROS_MC_S_2020*/
+    10506018: "NL_NL_DISPLAY_PROS_MC_S-M_2020.js",
+    10515152: "NL_NL_DISPLAY_PCW_MC_S_M.js",
+    10515128: "NL_NL_DISPLAY_RT_MC_S_M.js",
+
+    /*BE_NL_DISPLAY_S_M_2020*/
+    10511617: "BE_NL_DISPLAY_PROS_MC_S_M.js",
+    10510992: "BE_NL_DISPLAY_PCW_MC_S_M.js",
+    10515359: "BE_NL_DISPLAY_RET_MC_S_M.js",
+
+    /*BE_FR_DISPLAY_S_M_2020*/
+    10546284: "BE_FR_DISPLAY_PROS_MC_S_M.js",
+    10546435: "BE_FR_DISPLAY_PCW_MC_S_M.js",
+    10551491: "BE_FR_DISPLAY_RT_MC_S_M.js",
+
+    /*DE_DE_DISPLAY_S_M_2020*/
+    10567146: "DE_DE_DISPLAY_PROS_MC_S_M.js",
+    10573103: "DE_DE_DISPLAY_RET_MC_S_M.js",
+    10685784: "DE_DE_DISPLAY_PCW_MC_S_M.js",
+
+    /*De_DE_DYNAMICFEED_DISPLAY_MEDIA_S_M_Abri*/
+    10765198: "DE-DE_Feed_Abris_PartnerMarketing.js",
+
+    /*BE_FR_DYNAMICFEED_DISPLAY_MEDIA_S_M_Abri*/
+    10764778: "BE-FR_Feed_Abris_PartnerMarketing.js",
+    10531781: "BE_FR_DISPLAY_PROS_MC_ABRI.js",
+
+    /*BE_NL_DYNAMICFEED_DISPLAY_MEDIA_S_M_Abri*/
+    10743781: "BE-NL_Feed_Abris_PartnerMarketing.js",
+    10525718: "BE_NL_DISPLAY_PROS_MC_ABRI.js",
+
+    /*NL_NL_DYNAMICFEED_DISPLAY_MEDIA_S_M_Abri*/
+    10743784: "NL-NL_Feed_Abris_PartnerMarketing.js",
+    10525355: "NL_NL_DISPLAY_PROS_MC_ABRI.js",
+
+    /*NL_NL_DISPLAY_PROS_SA_GEO */
+    10262305: "NL_NL_DISPLAY_PROS_SA_GEO.js",
+
+    /* DE TOP10*/
+    10536643: "DE_DE_DISPLAY_DIRECT_SA_TOP.js",
+
+    /*NL-NL TOP10*/
+    10517500: "NL_NL_DYNAMICFEED_DISPLAY_PROS_SA_TOP10.js",
+    10521791: "NL_NL_DYNAMICFEED_DISPLAY_PROS_DIRECT_TOP10.js",
+    10517860: "BE_NL_DYNAMICFEED_DISPLAY_PROS_SA_TOP10.js",
+    10517857: "BE_NL_DYNAMICFEED_DISPLAY_PROS_DIRECT_TOP10.js",
+    10540541: "BE_FR_DYNAMICFEED_DISPLAY_PROS_SA_TOP10.js",
+    10536627: "DE_DE_DYNAMICFEED_DISPLAY_PROS_SA_TOP10.js",
+    10579243: "NL_NL_DISPLAY_PROS_SA_TOP_CT.js",
+    10579516: "BE_NL_DISPLAY_PROS_SA_TOP_CT.js",
+    10585061: "DE_DE_DISPLAY_PROS_SA_TOP_CT.js",
+    10585256: "BE_FR_DISPLAY_PROS_SA_TOP_CT.js",
+
+    /*S1 Deluxe*/
+    /*NL*/
+    10526247: "NL_NL_DISPLAY_PROS_MC_S1DELUXE.js",
+    10526484: "NL_NL_DISPLAY_PRICECOMPARISON_MC_S1DELUXE.js",
+    10526692: "NL_NL_DISPLAY_RET_MC_S1DELUXE.js",
+    /*BE-NL*/
+    10526727: "BE_NL_DISPLAY_PROS_MC_S1DELUXE.js",
+    10526956: "BE_NL_DISPLAY_PRICECOMPARISON_MC_S1DELUXE.js",
+    10526962: "BE_NL_DISPLAY_RET_MC_S1DELUXE.js",
+
+    /*BE-FR*/
+    10526968: "BE_FR_DISPLAY_PROS_MC_S1DELUXE.js",
+    10531748: "BE_FR_DISPLAY_PRICECOMPARISON_MC_S1DELUXE.js",
+    10526775: "BE_FR_DISPLAY_RET_MC_S1DELUXE.js",
+
+    /*NL*/
+    10747139: "NL_NL_DISPLAY_MC_RET_S1_Deluxe_Ambiance.js",
+    10721352: "NL_NL_DISPLAY_MC_PROS_S1_Deluxe_Ambiance.js",
+    10740710: "NL_NL_DISPLAY_MC_PCW_S1_Deluxe_Ambiance.js",
+
+    /*BE*/
+    10724414: "BE_NL_DISPLAY_MC_PROS_S1_Deluxe_Ambiance.js",
+    10752407: "BE_NL_DISPLAY_MC_RET_S1_Deluxe_Ambiance.js",
+    10740713: "BE_NL_DISPLAY_MC_PCW_S1_Deluxe_Ambiance.js",
+
+    /*FR*/
+    10719811: "BE_FR_DISPLAY_MC_PROS_S1_Deluxe_Ambiance.js",
+    10747998: "BE_FR_DISPLAY_MC_RET_S1_Deluxe_Ambiance.js",
+
+    /*DE-DE*/
+    10719144: "DE_DE_DISPLAY_MC_PROS_S1_Deluxe_Ambiance.js",
+    10769864: "DE_DE_DISPLAY_MC_PCW_S1_Deluxe_Ambiance.js",
+    10764814: "DE_DE_DISPLAY_MC_RET_S1_Deluxe_Ambiance.js",
+
+    /*SnappyShots*/
+    10549862: "SnappyShotsWasmachines.js",
+    10545039: "SnappyShotsTelevisies.js",
+    10557582: "SnappyShots_Laptops.js",
+    10583159: "be-FR_SnappyShots_Laptops.js",
+
+    /* Solar Panels */
+    10555069: "NL_NL_ZONNEPANLEN_DYNAMICFEED_MPTEMPLATES.js",
+    10589954: 'Solarpanels_Tegels.js',
+
+    /*BANDEV-123 Airco's*/
+    /*nl-NL*/
+    10768880: "NL_NL_DISPLAY_PROS_SA_OPTBRA_Airco_Overruling.js",
+
+    /*BANDEV-352 CadeausjesSinterklaas*/
+    /*nl-NL*/
+    10799874: "NL_NL_Display_Video_banners.js",
+    /*be-NL*/
+    10807529: "BE_NL_Display_Video_banners.js",
+    /*be-FR*/
+    002: "be_FR_Display_Video_banners_test.js",
+    /*de-DE*/
+    003: "de-DE_Display_Video_banners_test.js",
+
+    /* Onsite */
+    /*nl-NL*/
+    10741313: "NL_NL_ONSITE_INAPP_FEED.js",
+    /*nl-EN*/
+    10779410: "NL_EN_ONSITE_INAPP_FEED.js",
+    /*be-NL*/
+    10741343: "BE_NL_ONSITE_INAPP_FEED.js",
+    /*be-EN*/
+    10795813: "BE_EN_ONSITE_INAPP_FEED.js",
+    /*be-FR*/
+    10775013: "BE_FR_ONSITE_INAPP_FEED.js",
+    /*de-DE*/
+    10736979: "DE_DE_ONSITE_INAPP_FEED.js",
+
+    10645760: "NL_NL_ONSITE_INAPP_MC.js",
+    10656544: "BE_NL_ONSITE_INAPP_MC.js",
+    10683842: "DE_DE_ONSITE_INAPP_MC.js",
+    10688187: "BE_FR_ONSITE_INAPP_MC.js",
+
+    /* COMBI BANNER */
+    /* NL */
+    10627958: "NL_NL_DISPLAY_PROS_SA_COMBIBANNER.js",
+    10691762: "NL_NL_DISPLAY_PROS_SA_COMBIBANNER_V2.js",
+    10734209: "NL_NL_DISPLAY_DIRECT_SA_COMBIBANNER.js",
+
+    /* BE */
+    10670577: "BE_NL_DISPLAY_PROS_SA_COMBIBANNER.js",
+    10729917: "BE_NL_DISPLAY_DIRECT_SA_COMBIBANNER.js",
+
+    /* FR */
+    10734335: "BE_FR_DISPLAY_PROS_SA_COMBIBANNER.js",
+    10734212: "BE_FR_DISPLAY_DIRECT_SA_COMBIBANNER.js",
+
+    /* DE */
+    10729914: "DE_DE_DISPLAY_PROS_SA_COMBIBANNER.js",
+    10729920: "DE_DE_DISPLAY_DIRECT_SA_COMBIBANNER.js",
+
+
+    /* TEMPLATES */
+    10564227: 'NL_NL_PROSPECTING_DYNAMICFEED_COOLBLUETEMPLATES.js',
+    10568023: 'NL_NL_AD_MANAGER_DYNAMICFEED_COOLBLUETEMPLATES.js',
+    10653120: 'NL_NL_DISPLAY_COOLBLUETEMPLATES.js',
+    10677853: 'BE_NL_DYNAMICFEED_COOLBLUETEMPLATES.js',
+    10678173: "DE_DISPLAY_COOLBLUETEMPLATES.js",
+    10719544: "NL_NL_DISPLAY_COOLBLUETEMPLATES_RECRUITMENT.js",
+
+    /* VIDEOS */
+    10725473: "DE_DE_DISPLAY_VIDEOS.js",
+
+    /*Test Feeds*/
+    0123456: 'combiBannerFeedTest.js',
+    10608064: 'testFeed_uspBanner.js',
+    9874562113: 'COOLBLUE_TEMPLATES_TESTFEED.js'
+};

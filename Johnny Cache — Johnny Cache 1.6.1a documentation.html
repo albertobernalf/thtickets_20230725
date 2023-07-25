@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)https://johnny-cache.readthedocs.io/en/latest/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    <title>Johnny Cache — Johnny Cache 1.6.1a documentation</title>
+    
+    <link rel="stylesheet" href="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/nature.css" type="text/css">
+    <link rel="stylesheet" href="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/pygments.css" type="text/css">
+    <link rel="stylesheet" href="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/badge_only.css" type="text/css">
+    
+    <script type="text/javascript" async="" src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/ga.js.descarga"></script><script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.6.1a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/jquery-2.0.3.min.js.descarga"></script>
+    <script type="text/javascript" src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/jquery-migrate-1.2.1.min.js.descarga"></script>
+    <script type="text/javascript" src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/underscore.js.descarga"></script>
+    <script type="text/javascript" src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/doctools.js.descarga"></script>
+    <script type="text/javascript" src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/readthedocs-doc-embed.js.descarga"></script>
+    <link rel="index" title="Index" href="https://johnny-cache.readthedocs.io/en/latest/genindex.html">
+    <link rel="search" title="Search" href="https://johnny-cache.readthedocs.io/en/latest/search.html">
+    <link rel="next" title="The QuerySet Cache" href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html"> 
+  
+<!-- RTD Extra Head -->
+
+<!-- 
+Always link to the latest version, as canonical.
+http://docs.readthedocs.org/en/latest/canonical.html
+-->
+<link rel="canonical" href="http://johnny-cache.readthedocs.io/en/latest/">
+
+<link rel="stylesheet" href="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/readthedocs-doc-embed.css" type="text/css">
+
+<script type="text/javascript" src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/readthedocs-data.js.descarga"></script>
+
+<!-- Add page-specific data, which must exist in the page js, not global -->
+<script type="text/javascript">
+READTHEDOCS_DATA['page'] = 'index' 		
+READTHEDOCS_DATA['source_suffix'] = '.rst'
+</script>
+
+<script type="text/javascript" src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/readthedocs-dynamic-include.js.descarga"></script>
+
+<!-- end RTD <extrahead> --><script src="./Johnny Cache — Johnny Cache 1.6.1a documentation_files/ethicalads.min.js.descarga" type="text/javascript" async="" id="ethicaladsjs"></script><style>.osSwitch{position:relative;display:inline-block;width:34px;height:15.3px}.osSwitch input{opacity:0;width:0;height:0}.osSlider{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:34px;background-color:#93a0b5;transition:0.4s}.osSlider:before{position:absolute;content:'';height:13px;width:13px;left:2px;bottom:1px;border-radius:50%;background-color:white;transition:0.4s}input:checked+.sliderGreen{background-color:#04d289}input:checked+.sliderRed{background-color:#ff3b30}input:not(:checked)+.defaultGreen{background-color:#04d289}input:checked+.osSlider:before{transform:translateX(17px)}
+</style><style>
+    @font-face {
+      font-family: 'SegoeUI_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui.woff);
+    }
+
+    @font-face {
+      font-family: 'SegoeUI_bold_online_security'; 
+      src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/segoe-ui-bold.woff);
+    }
+</style><style>[data-ea-publisher].loaded,[data-ea-type].loaded{font-size:14px;font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;font-weight:normal;font-style:normal;leter-spacing:0px;vertical-align:baseline;line-height:1.3em}[data-ea-publisher].loaded a,[data-ea-type].loaded a{text-decoration:none}[data-ea-publisher].loaded .ea-pixel,[data-ea-type].loaded .ea-pixel{display:none}[data-ea-publisher].loaded .ea-content,[data-ea-type].loaded .ea-content{margin:1em 1em 0.5em 1em;padding:1em;background:rgba(0,0,0,0.03);color:#505050}[data-ea-publisher].loaded .ea-content a:link,[data-ea-type].loaded .ea-content a:link{color:#505050}[data-ea-publisher].loaded .ea-content a:visited,[data-ea-type].loaded .ea-content a:visited{color:#505050}[data-ea-publisher].loaded .ea-content a:hover,[data-ea-type].loaded .ea-content a:hover{color:#373737}[data-ea-publisher].loaded .ea-content a:active,[data-ea-type].loaded .ea-content a:active{color:#373737}[data-ea-publisher].loaded .ea-content a strong,[data-ea-publisher].loaded .ea-content a b,[data-ea-type].loaded .ea-content a strong,[data-ea-type].loaded .ea-content a b{color:#088cdb}[data-ea-publisher].loaded .ea-callout a:link,[data-ea-type].loaded .ea-callout a:link{color:#6a6a6a}[data-ea-publisher].loaded .ea-callout a:visited,[data-ea-type].loaded .ea-callout a:visited{color:#6a6a6a}[data-ea-publisher].loaded .ea-callout a:hover,[data-ea-type].loaded .ea-callout a:hover{color:#505050}[data-ea-publisher].loaded .ea-callout a:active,[data-ea-type].loaded .ea-callout a:active{color:#505050}[data-ea-publisher].loaded .ea-callout a strong,[data-ea-publisher].loaded .ea-callout a b,[data-ea-type].loaded .ea-callout a strong,[data-ea-type].loaded .ea-callout a b{color:#088cdb}[data-ea-publisher].loaded .ea-callout a,[data-ea-type].loaded .ea-callout a{font-size:0.8em}[data-ea-publisher].loaded.dark .ea-content,[data-ea-type].loaded.dark .ea-content{background:rgba(255,255,255,0.05);color:#dcdcdc}[data-ea-publisher].loaded.dark .ea-content a:link,[data-ea-type].loaded.dark .ea-content a:link{color:#dcdcdc}[data-ea-publisher].loaded.dark .ea-content a:visited,[data-ea-type].loaded.dark .ea-content a:visited{color:#dcdcdc}[data-ea-publisher].loaded.dark .ea-content a:hover,[data-ea-type].loaded.dark .ea-content a:hover{color:#f6f6f6}[data-ea-publisher].loaded.dark .ea-content a:active,[data-ea-type].loaded.dark .ea-content a:active{color:#f6f6f6}[data-ea-publisher].loaded.dark .ea-content a strong,[data-ea-publisher].loaded.dark .ea-content a b,[data-ea-type].loaded.dark .ea-content a strong,[data-ea-type].loaded.dark .ea-content a b{color:#50baf9}[data-ea-publisher].loaded.dark .ea-callout a:link,[data-ea-type].loaded.dark .ea-callout a:link{color:#c3c3c3}[data-ea-publisher].loaded.dark .ea-callout a:visited,[data-ea-type].loaded.dark .ea-callout a:visited{color:#c3c3c3}[data-ea-publisher].loaded.dark .ea-callout a:hover,[data-ea-type].loaded.dark .ea-callout a:hover{color:#dcdcdc}[data-ea-publisher].loaded.dark .ea-callout a:active,[data-ea-type].loaded.dark .ea-callout a:active{color:#dcdcdc}[data-ea-publisher].loaded.dark .ea-callout a strong,[data-ea-publisher].loaded.dark .ea-callout a b,[data-ea-type].loaded.dark .ea-callout a strong,[data-ea-type].loaded.dark .ea-callout a b{color:#50baf9}@media (prefers-color-scheme: dark){[data-ea-publisher].loaded.adaptive .ea-content,[data-ea-type].loaded.adaptive .ea-content{background:rgba(255,255,255,0.05);color:#dcdcdc}[data-ea-publisher].loaded.adaptive .ea-content a:link,[data-ea-type].loaded.adaptive .ea-content a:link{color:#dcdcdc}[data-ea-publisher].loaded.adaptive .ea-content a:visited,[data-ea-type].loaded.adaptive .ea-content a:visited{color:#dcdcdc}[data-ea-publisher].loaded.adaptive .ea-content a:hover,[data-ea-type].loaded.adaptive .ea-content a:hover{color:#f6f6f6}[data-ea-publisher].loaded.adaptive .ea-content a:active,[data-ea-type].loaded.adaptive .ea-content a:active{color:#f6f6f6}[data-ea-publisher].loaded.adaptive .ea-content a strong,[data-ea-publisher].loaded.adaptive .ea-content a b,[data-ea-type].loaded.adaptive .ea-content a strong,[data-ea-type].loaded.adaptive .ea-content a b{color:#50baf9}[data-ea-publisher].loaded.adaptive .ea-callout a:link,[data-ea-type].loaded.adaptive .ea-callout a:link{color:#c3c3c3}[data-ea-publisher].loaded.adaptive .ea-callout a:visited,[data-ea-type].loaded.adaptive .ea-callout a:visited{color:#c3c3c3}[data-ea-publisher].loaded.adaptive .ea-callout a:hover,[data-ea-type].loaded.adaptive .ea-callout a:hover{color:#dcdcdc}[data-ea-publisher].loaded.adaptive .ea-callout a:active,[data-ea-type].loaded.adaptive .ea-callout a:active{color:#dcdcdc}[data-ea-publisher].loaded.adaptive .ea-callout a strong,[data-ea-publisher].loaded.adaptive .ea-callout a b,[data-ea-type].loaded.adaptive .ea-callout a strong,[data-ea-type].loaded.adaptive .ea-callout a b{color:#50baf9}}[data-ea-publisher].loaded .ea-content,[data-ea-type].loaded .ea-content{border:0px;border-radius:3px;box-shadow:0px 2px 3px rgba(0,0,0,0.15)}[data-ea-publisher].loaded.raised .ea-content,[data-ea-type].loaded.raised .ea-content{border:0px;border-radius:3px;box-shadow:0px 2px 3px rgba(0,0,0,0.15)}[data-ea-publisher].loaded.bordered .ea-content,[data-ea-type].loaded.bordered .ea-content{border:1px solid rgba(0,0,0,0.04);border-radius:3px;box-shadow:none}[data-ea-publisher].loaded.bordered.dark .ea-content,[data-ea-type].loaded.bordered.dark .ea-content{border:1px solid rgba(255,255,255,0.07)}@media (prefers-color-scheme: dark){[data-ea-publisher].loaded.bordered.adaptive .ea-content,[data-ea-type].loaded.bordered.adaptive .ea-content{border:1px solid rgba(255,255,255,0.07)}}[data-ea-publisher].loaded.flat .ea-content,[data-ea-type].loaded.flat .ea-content{border:0px;border-radius:3px;box-shadow:none}[data-ea-type="image"].loaded,[data-ea-publisher]:not([data-ea-type]).loaded,.ea-type-image{display:inline-block}[data-ea-type="image"].loaded .ea-content,[data-ea-publisher]:not([data-ea-type]).loaded .ea-content,.ea-type-image .ea-content{max-width:180px;overflow:auto;text-align:center}[data-ea-type="image"].loaded .ea-content>a>img,[data-ea-publisher]:not([data-ea-type]).loaded .ea-content>a>img,.ea-type-image .ea-content>a>img{width:120px;height:90px;display:inline-block}[data-ea-type="image"].loaded .ea-content>.ea-text,[data-ea-publisher]:not([data-ea-type]).loaded .ea-content>.ea-text,.ea-type-image .ea-content>.ea-text{margin-top:1em;font-size:1em;text-align:center}[data-ea-type="image"].loaded .ea-callout,[data-ea-publisher]:not([data-ea-type]).loaded .ea-callout,.ea-type-image .ea-callout{max-width:180px;margin:0em 1em 1em 1em;padding-left:1em;padding-right:1em;font-style:italic;text-align:right}[data-ea-type="image"].loaded.horizontal .ea-content,[data-ea-publisher]:not([data-ea-type]).loaded.horizontal .ea-content,.ea-type-image.horizontal .ea-content{max-width:320px}[data-ea-type="image"].loaded.horizontal .ea-content>a>img,[data-ea-publisher]:not([data-ea-type]).loaded.horizontal .ea-content>a>img,.ea-type-image.horizontal .ea-content>a>img{float:left;margin-right:1em}[data-ea-type="image"].loaded.horizontal .ea-content .ea-text,[data-ea-publisher]:not([data-ea-type]).loaded.horizontal .ea-content .ea-text,.ea-type-image.horizontal .ea-content .ea-text{margin-top:0em;text-align:left;overflow:auto}[data-ea-type="image"].loaded.horizontal .ea-callout,[data-ea-publisher]:not([data-ea-type]).loaded.horizontal .ea-callout,.ea-type-image.horizontal .ea-callout{max-width:320px;text-align:right}[data-ea-type="text"].loaded,.ea-type-text{font-size:14px}[data-ea-type="text"].loaded .ea-content,.ea-type-text .ea-content{text-align:left}[data-ea-type="text"].loaded .ea-callout,.ea-type-text .ea-callout{margin:0.5em 1em 1em 1em;padding-left:1em;padding-right:1em;text-align:right;font-style:italic}[data-ea-style="stickybox"].loaded{position:fixed;bottom:20px;right:20px;z-index:10}[data-ea-style="stickybox"].loaded .ea-type-image .ea-stickybox-hide{cursor:pointer;position:absolute;top:0.75em;right:0.75em;background-color:#fefefe;border:1px solid #088cdb;border-radius:50%;color:#088cdb;font-size:1em;text-align:center;height:1.5em;width:1.5em;line-height:1.5em}@media (max-width: 1300px){[data-ea-style="stickybox"].loaded{position:static;bottom:0;right:0;margin:auto;text-align:center}[data-ea-style="stickybox"].loaded .ea-stickybox-hide{display:none}}@media (min-width: 1301px){[data-ea-style="stickybox"].loaded .ea-type-image .ea-content{background:#dcdcdc}[data-ea-style="stickybox"].loaded.dark .ea-type-image .ea-content{background:#505050}}@media (min-width: 1301px) and (prefers-color-scheme: dark){[data-ea-style="stickybox"].loaded.adaptive .ea-type-image .ea-content{background:#505050}}[data-ea-style="fixedfooter"].loaded{position:fixed;bottom:0;left:0;z-index:10;width:100%;max-width:100%}[data-ea-style="fixedfooter"].loaded .ea-type-text{width:100%;max-width:100%;display:flex;z-index:10;background:#dcdcdc}[data-ea-style="fixedfooter"].loaded .ea-type-text .ea-content{border:0px;border-radius:3px;box-shadow:none}[data-ea-style="fixedfooter"].loaded .ea-type-text .ea-content{background-color:inherit;max-width:100%;margin:0;padding:1em;flex:auto}[data-ea-style="fixedfooter"].loaded .ea-type-text .ea-callout{max-width:100%;margin:0;padding:1em;flex:initial}@media (max-width: 576px){[data-ea-style="fixedfooter"].loaded .ea-type-text .ea-callout{display:none}}[data-ea-style="fixedfooter"].loaded .ea-type-text .ea-fixedfooter-hide{cursor:pointer;color:#505050;padding:1em;flex:initial;margin:auto 0}[data-ea-style="fixedfooter"].loaded .ea-type-text .ea-fixedfooter-hide span{padding:0.25em;font-size:0.8em;font-weight:bold;border:0.15em solid #505050;border-radius:0.5em;white-space:nowrap}[data-ea-style="fixedfooter"].loaded.dark .ea-type-text{background:#505050}[data-ea-style="fixedfooter"].loaded.dark .ea-type-text .ea-fixedfooter-hide span{color:#dcdcdc;border-color:#dcdcdc}@media (prefers-color-scheme: dark){[data-ea-style="fixedfooter"].loaded.adaptive .ea-type-text{background:#505050}[data-ea-style="fixedfooter"].loaded.adaptive .ea-type-text .ea-fixedfooter-hide span{color:#dcdcdc;border-color:#dcdcdc}}
+</style></head>
+  <body role="document" style="">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="https://johnny-cache.readthedocs.io/en/latest/genindex.html" title="General Index" accesskey="I">index</a></li>
+        <li class="right">
+          <a href="https://johnny-cache.readthedocs.io/en/latest/py-modindex.html" title="Python Module Index">modules</a> |</li>
+        <li class="right">
+          <a href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html" title="The QuerySet Cache" accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="https://johnny-cache.readthedocs.io/en/latest/#">Johnny Cache 1.6.1a documentation</a> »</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="johnny-cache">
+<h1>Johnny Cache<a class="headerlink" href="https://johnny-cache.readthedocs.io/en/latest/#johnny-cache" title="Permalink to this headline">¶</a></h1>
+<p>Johnny Cache is a caching framework for <a class="reference external" href="http://djangoproject.com/">django</a> applications.  It works with
+the django caching abstraction, but was developed specifically with the use of
+<a class="reference external" href="http://memcached.org/">memcached</a> in mind.  Its main feature is a patch on Django’s ORM that
+automatically caches all reads in a consistent manner.  It works with Django
+1.1 thru 1.4 and python 2.4 thru 2.7.</p>
+<p>You can install johnny with pip:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install johnny-cache
+</pre></div>
+</div>
+<p>You can fork johnny-cache <a class="reference external" href="https://github.com/jmoiron/johnny-cache">from its git repository</a>:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>git clone https://github.com/jmoiron/johnny-cache.git
+</pre></div>
+</div>
+<p>or, if you prefer, from its <a class="reference external" href="http://bitbucket.org/jmoiron/johnny-cache">hg mirror</a>:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>hg clone http://bitbucket.org/jmoiron/johnny-cache
+</pre></div>
+</div>
+<p>Please use <a class="reference external" href="https://github.com/jmoiron/johnny-cache/issues">github’s issue tracker</a> to report bugs.  Contact the authors at
+<a class="reference external" href="http://twitter.com/jmoiron">@jmoiron</a> and <a class="reference external" href="http://twitter.com/finder83">@finder83</a>.</p>
+</div>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="https://johnny-cache.readthedocs.io/en/latest/#usage" title="Permalink to this headline">¶</a></h1>
+<p>A typical <code class="docutils literal"><span class="pre">settings.py</span></code> file for Django 1.3 or 1.4 configured for
+<code class="docutils literal"><span class="pre">johnny-cache</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># add johnny's middleware</span>
+<span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">'johnny.middleware.LocalStoreClearMiddleware'</span><span class="p">,</span>
+    <span class="s1">'johnny.middleware.QueryCacheMiddleware'</span><span class="p">,</span>
+    <span class="c1"># ...</span>
+<span class="p">)</span>
+<span class="c1"># some johnny settings</span>
+<span class="n">CACHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'default'</span> <span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">BACKEND</span> <span class="o">=</span> <span class="s1">'johnny.backends.memcached.MemcachedCache'</span><span class="p">,</span>
+        <span class="n">LOCATION</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'127.0.0.1:11211'</span><span class="p">],</span>
+        <span class="n">JOHNNY_CACHE</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+<span class="n">JOHNNY_MIDDLEWARE_KEY_PREFIX</span><span class="o">=</span><span class="s1">'jc_myproj'</span>
+</pre></div>
+</div>
+<p>For a full inspection of options for earlier versions of Django please see
+the <a class="reference external" href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html">queryset cache</a> docs.</p>
+<p>The <code class="docutils literal"><span class="pre">MIDDLEWARE_CLASSES</span></code> setting enables two middlewares:  the outer one
+clears a thread-local dict-like cache located at <code class="docutils literal"><span class="pre">johnny.cache.local</span></code> at
+the end of every request, and should really be the outer most middleware in
+your stack.  The second one enables the main feature of Johnny:  the
+<a class="reference external" href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html">queryset cache</a>.</p>
+<p>The <code class="docutils literal"><span class="pre">CACHES</span></code> configuration includes a <a class="reference external" href="https://johnny-cache.readthedocs.io/en/latest/backends.html">custom backend</a>,
+which allows cache times of “0” to be interpreted as “forever”, and marks
+the <code class="docutils literal"><span class="pre">default</span></code> cache backend as the one Johnny will use.</p>
+<p>Finally, the project’s name is worked into the Johnny key prefix so that if
+other projects are run using the same cache pool, Johnny won’t confuse the
+cache for one project with the cache for another.</p>
+<p>With these settings, all of your ORM queries are now cached.  You should
+read the <a class="reference external" href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html">queryset cache documentation</a> closely to
+see if you are doing anything that might require manual invalidation.</p>
+<p>Johnny does not define any views, urls, or models, so we can skip adding it
+to <code class="docutils literal"><span class="pre">INSTALLED_APPS</span></code>.</p>
+<p><em>Note</em>: Since Johnny is enabled by the inclusion of middleware, it will not
+be enabled by default in scripts, management commands, asynchronous workers,
+or the django shell.  See <a class="reference external" href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html#using-with-scripts-management-commands-asynchronous-workers-and-the-shell">the queryset cache documentation</a>
+for instructions on how to enable it in these cases.</p>
+<div class="section" id="new-in-this-version">
+<h2>New in this version<a class="headerlink" href="https://johnny-cache.readthedocs.io/en/latest/#new-in-this-version" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Django 1.4 support</li>
+<li>Redis backend (requires <code class="docutils literal"><span class="pre">django-redis-cache</span></code>)</li>
+<li>Master/Slave support</li>
+<li>Cache whitelist</li>
+<li>New celery task utilities</li>
+</ul>
+</div>
+<div class="section" id="version-numbering">
+<h2>Version Numbering<a class="headerlink" href="https://johnny-cache.readthedocs.io/en/latest/#version-numbering" title="Permalink to this headline">¶</a></h2>
+<p>Because Johnny tracks Django’s release schedule with its own releases, and is
+itself a mature project, the version number has been bumped from 0.3 to 1.4 to
+coincide with the highest version of Django with support.  In the future,
+Johnny’s version will track the major and minor version numbers of Django, but
+will have independent dot releases for bugfixes, maintenance, and backwards
+compatible feature enhancements.</p>
+</div>
+<div class="section" id="deprecation-policy">
+<h2>Deprecation Policy<a class="headerlink" href="https://johnny-cache.readthedocs.io/en/latest/#deprecation-policy" title="Permalink to this headline">¶</a></h2>
+<p>As of the release of Django 1.4, Django 1.1 and 1.2 are now officially
+unsupported projects.  In addition, in an effort to clean up code in preparation
+for eventual Python 3.3 support, Django 1.4 drops support for Python 2.4 and
+Django 1.5 will drop support for Python 2.5.</p>
+<p>Johnny 1.4 will maintain support for Django 1.1+ and Python 2.4 thru 2.7, as
+previous releases have had no official deprecation policies.  Future versions
+will:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Adopt Django’s Python version support &amp; deprecation policy (including py3k
+adoption)</li>
+<li>Support the 3 most recent versions of Django</li>
+</ul>
+</div></blockquote>
+<p>If Django development goals are met, this means that Johnny 1.5 will support
+Django 1.3-1.5 and Python 2.6+, with experimental Python 3.3 support.  This
+also means that, while future versions of Johnny will be compatible with older
+versions of Django, they might not be compatible with all of the supported
+versions of <em>python</em> for these old versions.</p>
+</div>
+<div class="section" id="in-depth-documentation">
+<h2>In Depth Documentation<a class="headerlink" href="https://johnny-cache.readthedocs.io/en/latest/#in-depth-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html">The QuerySet Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/localstore_cache.html">The LocalStore Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/backends.html">Backends</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="https://johnny-cache.readthedocs.io/en/latest/#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/#">Johnny Cache</a></li>
+<li><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/#usage">Usage</a><ul>
+<li><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/#new-in-this-version">New in this version</a></li>
+<li><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/#version-numbering">Version Numbering</a></li>
+<li><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/#deprecation-policy">Deprecation Policy</a></li>
+<li><a class="reference internal" href="https://johnny-cache.readthedocs.io/en/latest/#in-depth-documentation">In Depth Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html" title="next chapter">The QuerySet Cache</a></p>
+<div id="searchbox" style="" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="https://johnny-cache.readthedocs.io/en/latest/search.html" method="get">
+      <div><input type="text" name="q"></div>
+      <div><input type="submit" value="Go"></div>
+      <input type="hidden" name="check_keywords" value="yes">
+      <input type="hidden" name="area" value="default">
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="https://johnny-cache.readthedocs.io/en/latest/genindex.html" title="General Index">index</a></li>
+        <li class="right">
+          <a href="https://johnny-cache.readthedocs.io/en/latest/py-modindex.html" title="Python Module Index">modules</a> |</li>
+        <li class="right">
+          <a href="https://johnny-cache.readthedocs.io/en/latest/queryset_cache.html" title="The QuerySet Cache">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="https://johnny-cache.readthedocs.io/en/latest/#">Johnny Cache 1.6.1a documentation</a> »</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        © Copyright 2010, Jason Moiron, Jeremy Self.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  
+<!-- Inserted RTD Footer -->
+
+<div class="injected">
+
+  
+  <div class="rst-versions rst-badge" data-toggle="rst-versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book">&nbsp;</span>
+      v: latest
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+
+      
+      
+      
+      <dl>
+        <dt>Versiones</dt>
+        
+        <dd class="rtd-current-item">
+          <a href="https://johnny-cache.readthedocs.io/en/latest/">latest</a>
+        </dd>
+        
+      </dl>
+      
+      
+
+      
+      
+      <dl>
+        <dt>Descargas</dt>
+        
+        <dd><a href="https://johnny-cache.readthedocs.io/_/downloads/en/latest/pdf/">PDF</a></dd>
+        
+        <dd><a href="https://johnny-cache.readthedocs.io/_/downloads/en/latest/htmlzip/">HTML</a></dd>
+        
+        <dd><a href="https://johnny-cache.readthedocs.io/_/downloads/en/latest/epub/">Epub</a></dd>
+        
+      </dl>
+      
+      
+
+      
+      <dl>
+        
+        <!-- These are kept as relative links for internal installs that are http -->
+        <dt>En Read the Docs</dt>
+        <dd>
+          <a href="https://readthedocs.org/projects/johnny-cache/">Inicio de Proyecto</a>
+        </dd>
+        <dd>
+          <a href="https://readthedocs.org/projects/johnny-cache/builds/">Compilaciones</a>
+        </dd>
+        <dd>
+          <a href="https://readthedocs.org/projects/johnny-cache/downloads/">Descargas</a>
+        </dd>
+      </dl>
+      
+
+      
+
+      
+      <dl>
+        <dt>En GitHub</dt>
+        <dd>
+          <a href="https://github.com/jmoiron/johnny-cache/blob/master/docs/index.rst">Ver</a>
+        </dd>
+        
+      </dl>
+      
+      
+
+      
+      <dl>
+        <dt>Buscar</dt>
+        <dd>
+          <div style="padding: 6px;">
+            
+            <form id="flyout-search-form" class="wy-form" target="_blank" action="https://readthedocs.org/projects/johnny-cache/search/" method="get">
+              <input type="text" name="q" aria-label="Buscar documentos" placeholder="Buscar documentos">
+              </form>
+          </div>
+        </dd>
+      </dl>
+      
+
+      <hr>
+
+      
+        <small>
+          <span>Alojado por <a href="https://readthedocs.org/">Read the Docs</a></span>
+          <span> · </span>
+          <a href="https://docs.readthedocs.io/page/privacy-policy.html">Política de privacidad</a>
+        </small>
+      
+
+      
+    </div>
+  </div>
+  
+
+</div>
+</body></html>

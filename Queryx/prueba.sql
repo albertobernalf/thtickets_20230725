@@ -7,6 +7,9 @@ select * from tickets_tiposempleadosperfil;
 2989207 "ROJAS ARGUELLO JEFFERSON EDUARDO"
 1234
 
+
+
+select * from tickets_sedes;
 select * from tickets_tickets  where "visibleTicketEmpleado" = 'S';
 select * from tickets_tickets  order by id ;  --where "visibleTicketEmpleado" = 'S';
 
@@ -14,8 +17,8 @@ update tickets_tickets set "estadoRespuestaCoordinador"='Pendiente' where id=11;
 
 select empleado_id, count(*)
 from tickets_tickets
-group by empleado_id;
-
+group by empleado_id
+order by empleado_id
 
 39678113  MENDEZ MORA LADY MILENA  tp=2  empleados
 123
@@ -26,7 +29,7 @@ group by empleado_id;
 123
 
 update tickets_empleados set "tiposEmpleadoPerfil_id"=3 where cedula= '23030123';
-
+ 
 select * from tickets_areas;
 
 select * from tickets_mallaturnos where ano=2023 and mes=4;
@@ -47,10 +50,8 @@ LEFT JOIN tickets_sedes sedesf on (sedesf.id = ticket."sedeFinal_id")
 LEFT JOIN tickets_tiposturno tiposturnof on (tiposturnof.id = ticket."tiposTurnoFinal_id" ) 
 LEFT JOIN tickets_sedes sedesr on (sedesr.id = ticket."sedeReemplazo_id") 
 LEFT JOIN tickets_empleados empr on (empR.id = ticket.reemplazo_id ) 
-
 LEFT JOIN tickets_empleados coord on (coord.id = ticket."respuestaEmpleadoCoordinador_id" ) 
 LEFT JOIN tickets_empleados thumano on (thumano.id = ticket."respuestaEmpleadoThumano_id" ) 
-
 WHERE  ticket.id = 11 
 
 select * from tickets_tickets where id=11;
@@ -59,7 +60,9 @@ select * from tickets_tickets where id=11;
 
 
 select * from tickets_tickets order by id;
+
 select * from tickets_tickets where asignado_id= 5 order by id;
+
 update tickets_tickets set "estadoRespuestaCoordinador"='Pendiente' where id=4;
 
 select * from tickets_ticketsmalla;
@@ -68,4 +71,5 @@ select * from tickets_mallaturnos;
 select * from tickets_tickets;
 
 select * from tickets_mallaturnos order by id ;
+
 update tickets_mallaturnos set  area_id=39 where id in (11,12);

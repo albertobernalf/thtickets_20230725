@@ -1,0 +1,19 @@
+//Standard assets object
+cbAd.resources.assets = {};
+cbAd.resources.assets.icons = {};
+cbAd.resources.assets.labels = {};
+cbAd.resources.assets.brandlogo = {};
+cbAd.resources.assets.compliancy = {};
+cbAd.resources.assets.labels.folder = "https://s0.2mdn.net/creatives/assets/3782692/"
+cbAd.resources.assets.icons.folder = "https://s0.2mdn.net/creatives/assets/3782689/";
+cbAd.resources.assets.brandlogo.folder = "https://s0.2mdn.net/creatives/assets/3863081/";
+cbAd.resources.assets.icons.cbLogo = cbAd.resources.assets.icons.folder + "CB-logo.svg";
+cbAd.resources.assets.icons.cbEnergieLogo = cbAd.resources.assets.icons.folder + "CBEnergie-logo.svg";
+cbAd.resources.assets.icons.cbBusinessLogo = cbAd.resources.assets.icons.folder + "coolblue-business-logo.png";
+cbAd.resources.assets.icons.whiteArrow = cbAd.resources.assets.icons.folder + "arrow-white.svg";
+cbAd.resources.assets.icons.blueArrow = cbAd.resources.assets.icons.folder + "arrow-blue.svg";
+cbAd.resources.assets.icons.plusCircle = cbAd.resources.assets.icons.folder + "plusCircle.svg";
+cbAd.resources.assets.icons.checkmarkWhite = cbAd.resources.assets.icons.folder + "checkmark-white.svg"
+cbAd.resources.assets.icons.checkmarkBlue = cbAd.resources.assets.icons.folder + "checkmark-blue.svg"
+cbAd.resources.assets.icons.checkmarkGreen = cbAd.resources.assets.icons.folder + "checkmark-green.svg"
+cbAd.resources.assets.icons.orangePercentageDot = cbAd.resources.assets.icons.folder + "CB-orange_percentageDot.svg"

@@ -1,0 +1,974 @@
+cbAd.modules.splashScreen = {};
+cbAd.modules.splashScreen.factSloganSplash = {
+    settings: {
+        animation: 'factSlogan',
+        colorTheme: 'BW',
+        factText: '',
+        sloganText: '',
+        promotionalPeriod: '',
+        endAnimation: 'curtainUp',
+    },
+
+    init: function() {
+        //insert the splash into the splashContainer.
+        cbLib.insertElement({
+            parent: cbLib.id('splashContainer'),
+            id: 'splashV3',
+            class: 'splashV3',
+            type: 'div'
+        })
+
+        //create a background div.
+        cbLib.insertElement({
+            parent: cbLib.id('splashV3'),
+            id: 'blueSplash',
+            class: 'blueSplash',
+            type: 'div'
+        })
+        //add colortheme classess to the splash.
+        switch (this.settings.colorTheme) {
+            case 'BW':
+                break;
+            case 'WB':
+                break;
+        }
+        //Play the banner
+        switch (this.settings.animation) {
+            case 'factSlogan':
+                if (this.settings.factText === undefined || this.settings.sloganText === undefined || this.settings.factText === "" || this.settings.sloganText === "") {
+                    this.regularSplash();
+                } else {
+                    this.factSloganSplash();
+                }
+                break;
+            case 'regular':
+                this.regularSplash();
+                break;
+        }
+
+    },
+    factSloganSplash: function() {
+        if (cbAd.debug) {
+            console.log("-------------------------------------------------------SPLASH PLAY-------------------------------------------------")
+        }
+        cbLib.insertElement({
+            parent: cbLib.id('splashV3'),
+            id: 'factSloganSplash',
+            class: 'factSloganSplash',
+            insertBeforeChild: 0,
+            type: 'div'
+        })
+        //Use to override fact and slogan for testing
+        // this.settings.factText = "LEKKER LANGE FEIT "
+        // this.settings.sloganText = "HEERLIJK LANGE SLOGAN ECHT HEEL TOF. "
+        //create a module for factSlogan.
+        //START OF FS
+        //fs container
+        var fsSplashContainer = cbLib.insertElement({
+            parent: cbLib.id('factSloganSplash'),
+            id: "fsSplashContainer",
+            class: "fsSplashContainer",
+            type: 'p'
+        })
+        var splashFact = cbLib.insertElement({
+            parent: fsSplashContainer,
+            id: "splashFact",
+            class: "splashFact",
+            type: 'span'
+        })
+        cbLib.insertElement({
+            parent: splashFact,
+            id: "splashFactText",
+            class: "splashFactText",
+            type: 'span',
+            text: this.settings.factText
+        })
+        cbLib.insertElement({
+            parent: splashFact,
+            id: "splashFactDot",
+            class: "splashFactDot",
+            type: 'span',
+            text: ".<br>"
+        })
+        cbLib.insertElement({
+            parent: fsSplashContainer,
+            id: "splashSloganText",
+            class: "splashSloganText",
+            type: 'span',
+            text: this.settings.sloganText
+        })
+
+
+        //END OF FS
+        //Dynamic Speed
+        //Dynamic animation speed.
+        var speed;
+        var factChars;
+        var sloganChars
+        factChars = this.settings.factText.length;
+        sloganChars = this.settings.sloganText.length;
+        var chars = factChars + sloganChars;
+        speed = ((0.035 * chars));
+
+        function centerFactSlogan() {
+            var container = cbLib.id('fsSplashContainer')
+            var factLine = container.children[0];
+            var slogan = container.children[1];
+            //set the maxwidth for container
+            if (factLine.offsetWidth > slogan.offsetWidth) {
+                container.style.width = factLine.offsetWidth + 'px'
+            } else {
+                container.style.width = slogan.offsetWidth + 'px'
+            }
+            var horizontalMargin = ((cbAd.bannerInfo.bannerWidth - container.offsetWidth) / 2);
+            var verticalMargin = ((cbAd.bannerInfo.bannerHeight - container.offsetHeight) / 2);
+
+            container.style.marginLeft = horizontalMargin + 'px';
+            container.style.marginRight = horizontalMargin + 'px';
+            container.style.marginTop = verticalMargin + 'px';
+            container.style.marginBottom = verticalMargin + 'px';
+            //Add Logo compensation
+            let compensation = (cbLib.id("cbLogo").offsetHeight);
+            let modifier;
+            //Size switch
+            switch (cbAd.bannerInfo.bannerSize) {
+                case '120x600':
+                    break;
+                case '160x600':
+                    break;
+                case '200x200':
+                    break;
+                case '250x250':
+                    break;
+                case '300x100':
+                    modifier = 0;
+                    break;
+                case '300x250':
+                    modifier = 12;
+                    break;
+                case '336x280':
+                    modifier = 10;
+                    break;
+                case '320x240':
+                    modifier = 6;
+                    break;
+                case '300x600':
+                    modifier = 10;
+                    break;
+                case '468x60':
+                    break;
+                case '728x90':
+                    break;
+                case '970x90':
+                    break;
+                case '970x250':
+                    break;
+            }
+            compensation = (compensation / modifier) + 'px';
+            container.style.top = compensation;
+        }
+        setMaxWidthHeight();
+
+        function setMaxWidthHeight() {
+            var container = cbLib.id('fsSplashContainer')
+            //Size switch
+            switch (cbAd.bannerInfo.bannerSize) {
+                case '120x600':
+                    container.style.maxWidth = "90px";
+                    container.style.maxHeight = "150px";
+                    break;
+                case '160x600':
+                    container.style.maxWidth = "120px";
+                    container.style.maxHeight = "150px";
+                    break;
+                case '200x200':
+                    container.style.maxWidth = "160px";
+                    container.style.maxHeight = "150px";
+                    break;
+                case '250x250':
+                    container.style.maxWidth = "200px";
+                    container.style.maxHeight = "150px";
+                    break;
+                case '300x100':
+                case '320x100':
+                    container.style.maxWidth = "180px";
+                    container.style.maxHeight = "72px";
+                    break;
+                case '300x250':
+                    container.style.maxWidth = "240px";
+                    container.style.maxHeight = "200px";
+                    break;
+                case '336x280':
+                case '320x240':
+                    container.style.maxWidth = "260px";
+                    container.style.maxHeight = "200px";
+                    break;
+                case '300x600':
+                    container.style.maxWidth = "240px";
+                    container.style.maxHeight = "200px";
+                    break;
+                case '468x60':
+                    container.style.maxWidth = "300px";
+                    container.style.maxHeight = "45px";
+                    break;
+                case '728x90':
+                    container.style.maxWidth = "500px";
+                    container.style.maxHeight = "64px";
+                    break;
+                case '970x90':
+                    container.style.maxWidth = "600px";
+                    container.style.maxHeight = "64px";
+                    break;
+                case '970x250':
+                    container.style.maxWidth = "600px";
+                    container.style.maxHeight = "150px";
+                    break;
+            }
+        }
+
+        //min max sizing per bannersize for FactSlogan
+        //Size switch
+        function getMaxSize(factChars) {
+            let factMaxSize;
+
+            function getCharThreshold(factChars) {
+                let threshold;
+                if (factChars <= 8) {
+                    threshold = 1;
+                }
+                if (factChars > 8 && factChars < 12) {
+                    threshold = 2;
+                }
+                if (factChars >= 12) {
+                    threshold = 3;
+                }
+                return threshold;
+            }
+            switch (cbAd.bannerInfo.bannerSize) {
+                case '120x600':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 18;
+                            break;
+                        case 2:
+                            factMaxSize = 18;
+                            break;
+                        case 3:
+                            factMaxSize = 16;
+                            break;
+                    }
+                    break;
+                case '160x600':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 18;
+                            break;
+                        case 2:
+                            factMaxSize = 20;
+                            break;
+                        case 3:
+                            factMaxSize = 16;
+                            break;
+                    }
+                    break;
+                case '200x200':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 18;
+                            break;
+                        case 2:
+                            factMaxSize = 20;
+                            break;
+                        case 3:
+                            factMaxSize = 16;
+                            break;
+                    }
+                    break;
+                case '250x250':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 26;
+                            break;
+                        case 2:
+                            factMaxSize = 24;
+                            break;
+                        case 3:
+                            factMaxSize = 22;
+                            break;
+                    }
+                    break;
+                case '300x100':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 26;
+                            break;
+                        case 2:
+                            factMaxSize = 22;
+                            break;
+                        case 3:
+                            factMaxSize = 20;
+                            break;
+                    }
+                    break;
+                case '320x100':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 27;
+                            break;
+                        case 2:
+                            factMaxSize = 24;
+                            break;
+                        case 3:
+                            factMaxSize = 21;
+                            break;
+                    }
+                    break;
+                case '300x250':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 28;
+                            break;
+                        case 2:
+                            factMaxSize = 26;
+                            break;
+                        case 3:
+                            factMaxSize = 24;
+                            break;
+                    }
+                    break;
+                case '320x240':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 34;
+                            break;
+                        case 2:
+                            factMaxSize = 30;
+                            break;
+                        case 3:
+                            factMaxSize = 26;
+                            break;
+                    }
+                    break;
+                case '336x280':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 32;
+                            break;
+                        case 2:
+                            factMaxSize = 28;
+                            break;
+                        case 3:
+                            factMaxSize = 26;
+                            break;
+                    }
+                    break;
+                case '300x600':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 38;
+                            break;
+                        case 2:
+                            factMaxSize = 34;
+                            break;
+                        case 3:
+                            factMaxSize = 32;
+                            break;
+                    }
+                    break;
+                case '468x60':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 18;
+                            break;
+                        case 2:
+                            factMaxSize = 18;
+                            break;
+                        case 3:
+                            factMaxSize = 18;
+                            break;
+                    }
+                    break;
+                case '728x90':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 26;
+                            break;
+                        case 2:
+                            factMaxSize = 24;
+                            break;
+                        case 3:
+                            factMaxSize = 24;
+                            break;
+                    }
+                    break;
+                case '970x90':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 24;
+                            break;
+                        case 2:
+                            factMaxSize = 32;
+                            break;
+                        case 3:
+                            factMaxSize = 24;
+                            break;
+                    }
+                    break;
+                case '970x250':
+                    switch (getCharThreshold(factChars)) {
+                        case 1:
+                            factMaxSize = 44;
+                            break;
+                        case 2:
+                            factMaxSize = 36;
+                            break;
+                        case 3:
+                            factMaxSize = 34;
+                            break;
+                    }
+                    break;
+            }
+            return factMaxSize;
+        }
+        switch (cbAd.bannerInfo.bannerSize) {
+            case '120x600':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 11,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '160x600':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 11,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '200x200':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 11,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '250x250':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 17,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '300x100':
+            case '320x100':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 13,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '300x250':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 18,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '320x240':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 16,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '336x280':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 13,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '300x600':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 22,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '468x60':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 11,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: false,
+                })
+                break;
+            case '728x90':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 11,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '970x90':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 11,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+            case '970x250':
+                cbLib.resizeFactSlogan2('fsSplashContainer', {
+                    factMin: 18,
+                    factMax: getMaxSize(factChars),
+                    factBreakLineAllowed: true,
+                    factMaxLines: 2
+                })
+                break;
+        }
+        setTimeout(function() {
+            centerFactSlogan();
+            if (cbAd.modules.splashScreen.factSloganSplash.settings.promotionalPeriod != '' && cbAd.modules.splashScreen.factSloganSplash.settings.promotionalPeriod !== 'Kerst') {
+                cbAd.modules.splashScreen.factSloganSplash.promotionalSplash();
+            }
+
+            if (cbAd.modules.splashScreen.factSloganSplash.settings.promotionalPeriod == 'Kerst') {
+                cbAd.modules.splashScreen.factSloganSplash.christmasSplash();
+            }
+        }, 100)
+        var factElem = cbLib.id('splashFact'),
+            sloganElem = cbLib.id('splashSloganText'),
+            fsContainer = cbLib.id('fsSplashContainer'),
+            blue = cbLib.id('blueSplash'),
+            dot = cbLib.id('splashFactDot')
+
+        var splashTl = new TimelineMax();
+        splashTl
+            .addLabel('Splash', '+=0.3')
+            .set(cbLib.id("splashContainer"), {
+                autoAlpha: 1
+            })
+            .set(cbLib.id('cbLogo'), {
+                autoAlpha: 1
+            })
+            .from(factElem, 0.2, {
+                autoAlpha: 0,
+                top: '15px'
+            }, 'Splash')
+            .add(function() {
+                cbAd.banner.load();
+            })
+            .from(sloganElem, 0.2, {
+                autoAlpha: 0,
+                top: '-=15px'
+            }, 'Splash')
+            .addLabel('SplashGone', "+=" + speed)
+            .add(function() {
+                let readyCheck = setInterval(function() {
+                    if (cbAd.debug) {
+                        console.log("READY STATUS:", cbAd.bannerInfo.readyState)
+                    }
+                    if (cbAd.bannerInfo.readyState == true) {
+                        splashTl
+                            .to(fsContainer, 0.4, {
+                                autoAlpha: 0,
+                                y: +10
+                            }, 'SplashGone')
+
+                            .to(blue, 0.5, {
+                                top: '100%',
+                                onComplete: function() {
+                                    if (cbAd.debug) {
+                                        console.log("-----------------------------------------------------SPLASH FINISHED---------------------------------------")
+                                    }
+                                }
+                            })
+                            .add(cbAd.banner.play);
+                        clearInterval(readyCheck);
+                    }
+                }, 100)
+            })
+
+
+    },
+
+    regularSplash: function() {
+        switch (cbAd.bannerInfo.bannerSize) {
+            case "120x600":
+            case "160x600":
+            case "250x250":
+            case "300x250":
+            case '320x240':
+                logoStartWidth = 90;
+                break;
+            case '300x100':
+            case '320x100':
+
+                logoStartWidth = 75;
+                break;
+            case "200x200":
+                logoStartWidth = 75;
+                break;
+            case "336x280":
+                logoStartWidth = 110;
+                break;
+            case "300x600":
+                logoStartWidth = 120;
+                break;
+            case "468x60":
+                logoStartWidth = 50;
+                break;
+            case "728x90":
+            case "970x90":
+                logoStartWidth = 70;
+                break;
+            case "970x250":
+                logoStartWidth = 140;
+                break;
+        }
+        /* ---- spandard splash screen --- */
+        var splashContainer = cbLib.id('splashContainer')
+        // splashContainer.innerHTML += '<div id="blue"><img id="splashLogo" class="cbl' + cbAd.bannerInfo.bannerSize + '"src=https://s0.2mdn.net/creatives/assets/3512518/CBlogo.svg></div>';
+        splashContainer.style.opacity = 1;
+        setTimeout(function() {
+            cbAd.banner.load();
+        }, 300);
+        var logo = cbLib.id('cbLogo'),
+            logoWidth = logo.offsetWidth,
+            blue = cbLib.id("blueSplash"),
+            transTime = 0.3,
+            delayTime = transTime * 3,
+            logoPos = logo.getBoundingClientRect(),
+            logoPosX = logoPos.left,
+            logoPosY = logoPos.top,
+            pageOffsetWidth = cbLib.id('bannerContent').offsetWidth,
+            pageOffsetHeight = cbLib.id('bannerContent').offsetHeight,
+            logoStartPosX = pageOffsetWidth / 2 - logoPosX,
+            logoStartPosY = pageOffsetHeight / 2 - logoPosY,
+            blueBarHeight = blue.offsetHeight;
+
+        TweenMax.set(logo, {
+            x: logoStartPosX,
+            y: logoStartPosY,
+            height: 0,
+            width: 0,
+            autoAlpha: 1
+        });
+
+        TweenMax.set(blue, {
+            y: 0,
+            height: pageOffsetHeight
+        });
+
+        TweenMax.to(logo, 0.8, {
+            x: logoStartPosX - logoStartWidth / 2,
+            y: logoStartPosY - logoStartWidth / 2,
+            height: logoStartWidth,
+            width: logoStartWidth,
+            delay: 0.25,
+            ease: Elastic.easeOut.config(0.75, 0.3)
+        });
+        let readyCheck = setInterval(function() {
+            if (cbAd.bannerInfo.readyState == true) {
+                TweenMax.to(logo, transTime, {
+                    x: 0,
+                    y: 0,
+                    height: logoWidth,
+                    width: logoWidth,
+                    delay: delayTime,
+                    ease: Power1.easeInOut,
+                    onComplete: cbAd.banner.play
+                });
+                TweenMax.to(splashContainer, 10, {
+                    bottom: 0,
+                    height: 0,
+                    delay: delayTime,
+                })
+                clearInterval(readyCheck);
+            }
+        }, 100)
+
+
+        switch (bannerSize) {
+            case "728x90":
+            case "970x90":
+            case "970x250":
+                var options = {
+                    y: 0,
+                    autoAlpha: 0,
+                    delay: delayTime,
+                    ease: Power1.easeInOut
+                };
+                break;
+            default:
+                var options = {
+                    y: 0,
+                    height: blueBarHeight,
+                    delay: delayTime,
+                    ease: Power1.easeInOut
+                };
+        }
+
+        //Size switch for transtime 
+        switch (cbAd.bannerInfo.bannerSize) {
+            case '200x200':
+            case '250x250':
+            case '300x250':
+                transTime = .4;
+                break;
+            case '336x280':
+            case '300x600':
+                transTime = .5;
+                break;
+            case '468x60':
+            case '728x90':
+                transTime = .5;
+                break;
+            case '970x90':
+            case '970x250':
+                transTime = 0.5;
+                break;
+        }
+        TweenMax.to(blue, transTime, options);
+    },
+    promotionalSplash: function() {
+        //Add promotional flavour
+        let amountDots = 3;
+        //Array with position information for dots
+        //[left, top, width]
+        let dotPositions;
+        let delay;
+        let fsSplashContainer = cbLib.id('fsSplashContainer')
+        let fsWidth = fsSplashContainer.offsetWidth;
+        let fsHeight = fsSplashContainer.offsetHeight;
+        let fsLeft = fsSplashContainer.offsetLeft;
+        let fsTop = fsSplashContainer.offsetTop;
+        let posX = fsWidth + fsLeft;
+        let posY = fsHeight + fsTop;
+
+        //Size switch
+        switch (cbAd.bannerInfo.bannerSize) {
+            case '250x250':
+                dotPositions = [
+                    [posX - 50, fsTop - 35 - 13, 27],
+                    [fsLeft + 20, posY + 10 + 18, 18],
+                    [posX - 30, posY + 10, 32]
+                ]
+                break;
+            case '300x250':
+                dotPositions = [
+                    [posX - 50, fsTop - 35 - 13, 27],
+                    [fsLeft + 20, posY + 19 + 9, 18],
+                    [posX - 30, posY + 16, 32]
+                ]
+                break;
+            case '336x280':
+                dotPositions = [
+                    [posX - 50, fsTop - 50 - 14, 29],
+                    [fsLeft + 30, posY + 20 + 20, 20],
+                    [posX - 30, posY + 16, 32]
+                ]
+                break;
+            case '300x600':
+                dotPositions = [
+                    [posX - 50, fsTop - 40 - 29, 29],
+                    [fsLeft + 20, posY + 30 + 9, 18],
+                    [posX - 30, posY + 16, 35]
+                ]
+                break;
+            case '728x90':
+                dotPositions = [
+                    [posX + 30, fsTop - 10, 24],
+                    [fsLeft - 100, fsTop + 10 + 21, 21],
+                    [posX + 100, fsTop + 10, 30]
+                ]
+                break;
+            case '970x90':
+                dotPositions = [
+                    [posX + 30, fsTop - 10, 29],
+                    [fsLeft - 100, fsTop + 10 + 21, 21],
+                    [posX + 150, fsTop + 10, 35]
+                ]
+                break;
+            case '970x250':
+                dotPositions = [
+                    [posX + 30, fsTop - 20 - 34, 34],
+                    [fsLeft - 100, fsTop + 30 + 27, 27],
+                    [posX + 150, fsTop + 19 + 40, 40]
+                ]
+                break;
+        }
+        //Size switch
+        //Switch for excluding some banner sizes.
+        switch (cbAd.bannerInfo.bannerSize) {
+            case '120x600':
+            case '160x600':
+            case '200x200':
+            case '468x60':
+            case '300x100':
+            case '320x100':
+            case '320x240':
+                break;
+            default:
+                for (i = 0; i < amountDots; i++) {
+                    let dot = cbLib.insertElement({
+                        parent: cbLib.id("blueSplash"),
+                        id: "splashDot" + i,
+                        class: "splashDot",
+                        type: 'img',
+                        src: "https://s0.2mdn.net/creatives/assets/3782689/" + 'CB-orange_percentageDot.svg',
+                    })
+                    dot.style.left = dotPositions[i][0] + 'px';
+                    dot.style.top = dotPositions[i][1] + 'px';
+                    dot.style.width = dotPositions[i][2] + 'px';
+                }
+                let dotTl = new TimelineMax({
+                    delay: 0.4
+                });
+                let dots = cbLib.class('splashDot');
+                dotTl
+                    .staggerFrom(dots, 0.4, {
+                        scale: 0,
+                        ease: Elastic.easeOut.config(1, 0.5),
+                    }, 0.15)
+                    .staggerTo(dots, 0.4, {
+                        scale: 0,
+                        ease: Elastic.easeOut.config(1, 0.5),
+                    }, 0.15, "+=0.5")
+                break;
+        }
+
+    },
+    christmasSplash: function() {
+        //create a background for the banner.
+        cbLib.insertElement({
+            parent: cbLib.id('blueSplash'),
+            id: 'bannerBG',
+            class: 'bannerBG',
+            type: 'img',
+            src: 'https://s0.2mdn.net/creatives/assets/3967898/' + cbAd.bannerInfo.bannerSize + '_bg.png'
+        })
+
+        //create a background for the splash.
+        cbLib.insertElement({
+            parent: cbLib.id('blueSplash'),
+            id: 'splashBG',
+            class: 'splashBG',
+            type: 'img',
+            src: 'https://s0.2mdn.net/creatives/assets/3967898/' + cbAd.bannerInfo.bannerSize + '_bgSplash.png'
+        })
+
+        cbLib.insertElement({
+            parent: cbLib.id('splashV3'),
+            id: 'ribbon',
+            class: 'ribbon',
+            type: 'img',
+            src: "https://s0.2mdn.net/creatives/assets/3967898/ribbon.png"
+        })
+
+        // create the bow image
+        cbLib.insertElement({
+            parent: cbLib.id('splashV3'),
+            id: 'bow',
+            class: 'bow',
+            type: 'img',
+            src: "https://s0.2mdn.net/creatives/assets/3967898/bow.png"
+        })
+
+        var blue = cbLib.id('blueSplash');
+        var bow = cbLib.id('bow');
+        var ribbon = cbLib.id('ribbon');
+        var splashBG = cbLib.id('splashBG');
+        var move = '100px';
+        var chars = 10;
+        var speed = ((0.035 * chars));
+
+        switch (cbAd.bannerInfo.bannerSize) {
+            case '120x600':
+            case '160x600':
+                move = '300px';
+                break;
+            case '300x600':
+                move = '350px';
+                break;
+            case '200x200':
+            case '250x250':
+                move = '280px';
+                break;
+            case '300x250':
+                move = '340px';
+                break;
+            case '336x280':
+                move = '380px';
+                break;
+            case '970x90':
+            case '728x90':
+            case '468x60':
+                move = '550px';
+                break;
+            case '970x250':
+                move = '700px';
+                break;
+        }
+
+        var splashTl = new TimelineMax();
+        splashTl
+            .addLabel('SplashGone', "+=" + speed)
+            .add(function() {
+                let readyCheck = setInterval(function() {
+                    if (cbAd.bannerInfo.readyState == true) {
+                        splashTl
+                        switch (cbAd.bannerInfo.bannerSize) {
+                            default:
+                                splashTl.to(ribbon, 0.6, {
+                                        right: move,
+                                    }, 'SplashGone')
+                                    .to(bow, 0.7, {
+                                        autoAlpha: 0,
+                                        scale: 0,
+                                        ease: Elastic.easeIn.config(0.7, 0.5),
+                                    }, 'SplashGone-=.7')
+                                break;
+                            case '970x250':
+                            case '970x90':
+                            case '728x90':
+                            case '468x60':
+                                splashTl.to(ribbon, 0.6, {
+                                        top: move,
+                                    }, 'SplashGone')
+                                    .to(bow, 0.7, {
+                                        autoAlpha: 0,
+                                        scale: 0,
+                                        ease: Elastic.easeIn.config(0.7, 0.5),
+                                    }, 'SplashGone-=.7')
+                                    .to(splashBG, 0.5, {
+                                        opacity: 0
+                                    }, 'SplashGone+=.2')
+                                break;
+                        }
+                        splashTl
+                            .to(blue, 0.5, {
+                                top: '100%',
+                                onComplete: function() {
+                                    if (cbAd.debug) {
+                                        console.log("-----------------------------------------------------SPLASH FINISHED---------------------------------------")
+                                    }
+                                }
+                            })
+                        clearInterval(readyCheck);
+                    }
+                }, 100)
+            })
+
+    }
+}

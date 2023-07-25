@@ -6,11 +6,23 @@ Proceso.
 
 
 1. Ponerle una tabla HTML en la parte inferior consulta de CREACION DE TICKETS
-2. Pendiente si se necesita crear una malla Automatica  para año-meses-Area-Empleado seleccionados
-3. ojo no graba ver que pasa swera por el campo sede . NOP ES PORQUE ABRIL trae 30 dias y dejo grabar en 31
+2. Pendiente si se necesita crear una malla Automatica para año-meses-Area-Empleado seleccionados. CONSULTAR SI NECESARIO
+3. ojo no graba ver que pasa swera por el campo sede. NOP ES PORQUE ABRIL trae 30 dias y dejo grabar en 31
 4. Volver a crear el programa pero en pruebas en CMREPORTEADOR.-
 5. Ojo como/cuando se borra una malla --> de pronto dejar esta actividad para usuario admin
 6. Ojo que va a pasar con el Borrar. Ver mañana a ver que pasa .../... 
 
 
+3. ARREGLAR DELETE  mALLA, pailas no pude CONTROLAR EL REGRESO, PARECE QUE BORRA PERO NO REGRESA ...
+
+
+.tablaCoordTickets{
+    font-size: 4px;
+    min-width: 400px;
+    overflow: hidden;
+    border-radius: 7px 7px 0 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .15);
+}
+
+   return reverse_lazy('asignacion_ticketsA', kwargs={'ticketId':0,'nombre':'null', 'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil})
 

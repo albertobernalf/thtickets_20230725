@@ -769,6 +769,11 @@ class GestionCoord(ListView):
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
         context["Perfil"] = self.kwargs['perfil']
 
+        sedeMalla = self.kwargs['sedeMalla']
+        areaMalla = self.kwargs['areaMalla']
+        nombreMalla = self.kwargs['nombreMalla']
+
+
         sedeSeleccionada = self.kwargs['sedeSeleccionada']
         empleadoId = self.kwargs['empleadoId']
         sedeSeleccionada=sedeSeleccionada.replace(' ','')
@@ -828,6 +833,13 @@ class GestionCoord(ListView):
 
         context['Areas'] = areas
 
+        if (areaMalla == "99"):
+            context['AreaMalla'] = areas[0]['id']
+        else:
+            context['AreaMalla'] = areaMalla
+        print("sede malla de arranque = ", context['AreaMalla'])
+
+
         # Consigo Sedes
 
         miConexion = psycopg2.connect(host="192.168.0.237", database="thtickets", port="5432", user="postgres",
@@ -852,6 +864,15 @@ class GestionCoord(ListView):
         context['Sedes'] = sedes
 
         # Fin consigo sede
+        if (sedeMalla == "99"):
+            context['SedeMalla'] = sedes[0]['id']
+        else:
+            context['SedeMalla'] = sedeMalla
+        print ("sede malla de arranque = " ,context['SedeMalla'] )
+
+
+
+
 
         # Día actual
         today = date.today()
@@ -861,9 +882,38 @@ class GestionCoord(ListView):
 
         print(today.year)
         print(today.month)
+        AnoActual = today.year
+        MesActual = today.month
 
-        context['Ano'] = today.year
-        context['Mes'] = today.month
+        #context['Ano'] = today.year
+        #context['Mes'] = today.month
+
+        print ("estos son los kwargs")
+
+        print ("ano =", self.kwargs['ano'])
+        print ("mes =", self.kwargs['mes'])
+
+        print("FIN estos son los kwargs")
+
+
+        if (self.kwargs['ano'] == "99"):
+            context['Ano'] = today.year
+        else:
+            context['Ano'] = self.kwargs['ano']
+
+        if (self.kwargs['mes'] == "99"):
+            context['Mes'] = today.month
+        else:
+            if (self.kwargs['mes'] == "0"):
+                context['Mes'] = ''
+            else:
+                context['Mes'] = self.kwargs['mes']
+
+
+
+
+        context['Nombremalla'] = nombreMalla
+
 
         ## Aqui conformo el calendario
 
@@ -873,7 +923,7 @@ class GestionCoord(ListView):
         cur = miConexion.cursor()
         cur.execute("set client_encoding='LATIN1';")
 
-        comando = "SELECT dia dia, nombre nombre FROM public.tickets_calendario WHERE ano =" + str(context['Ano']) + ' AND mes = ' + str(context['Mes']) + ' ORDER BY dia  '
+        comando = "SELECT dia dia, nombre nombre FROM public.tickets_calendario WHERE ano =" + str(AnoActual) + ' AND mes = ' + str(MesActual) + ' ORDER BY dia  '
 
         cur.execute(comando)
         print(comando)
@@ -990,27 +1040,29 @@ class GestionCoord(ListView):
         except Tickets.DoesNotExist:
             return Empleados.objects.none()
 
-
-
-def GestionCoordDelete(request, pk,username,sedeSeleccionada,nombreUsuario, nombreSede,empleadoId,perfil):
+def GestionCoordDelete(request, pk,username,sedeSeleccionada,nombreUsuario, nombreSede, empleadoId,perfil,ano,mes,sedeMalla,areaMalla,nombreMalla):
     print ("Entre a BORRAR la malla")
     mallaturnos = MallaTurnos.objects.get(id=pk)
     try:
         mallaturnos.delete()
 
-    except :
-        print("sali posr exception")
-        return HttpResponse('Im Soory no se puede borrar')
+    except Exception as X:
+        print("ESTA ES LA EXCEPCION", X)
+
+        #envio = username + ',' + sedeSeleccionada + ',' + nombreUsuario + ',' + nombreSede + ',' + empleadoId + ',' + perfil + ',' + ano + ',' + mes + ',' + sedeMalla + ',' + areaMalla + ',' + nombreMalla
+        #redirect_url = reverse('gestionCoord' + '/' + envio + '/')
+
+        #return reverse_lazy('gestionCoord', kwargs={'username': username, 'nombreUsuario': nombreUsuario, 'nombreSede': nombreSede,                                    'empleadoId': empleadoId, 'sedeSeleccionada': sedeSeleccionada, 'perfil': perfil,                                    'ano': ano, 'mes': mes, 'sedeMalla': sedeMalla, 'areaMalla': areaMalla,                                    'nombreMalla': nombreMalla})
+
+        #return redirect(f'{redirect_url}{envio}')
+
+        #return render (request,   )
+
+        #return HttpResponse(X)
+        return HttpResponseRedirect(reverse('gestionCoord', kwargs={'username': username, 'nombreUsuario': nombreUsuario, 'nombreSede': nombreSede, 'empleadoId': empleadoId, 'sedeSeleccionada': sedeSeleccionada, 'perfil': perfil, 'ano': ano, 'mes': mes, 'sedeMalla': sedeMalla,  'areaMalla': areaMalla, 'nombreMalla': nombreMalla}), X)
 
     # Ademas de que aquip hay que ingresar la auditoria de ticketsmalla diciendo quien borro la malla
-
-    ## Fin auditoria quien creo malla
-    envio = username + ',' + sedeSeleccionada + ',' + nombreUsuario + ',' + nombreSede + ',' + empleadoId + ',' + perfil
-    redirect_url = reverse('gestionCoord' + '/' + envio + '/')
-    #redirect_url = reverse('gestionCoord')
-    print ("redirect_url = ",redirect_url )
-    return redirect(f'{redirect_url}{envio}')
-    #return HttpResponseRedirect(reverse('gestionCoord'))
+    return HttpResponseRedirect(reverse('gestionCoord', kwargs={'username': username, 'nombreUsuario': nombreUsuario, 'nombreSede': nombreSede,'empleadoId': empleadoId, 'sedeSeleccionada': sedeSeleccionada, 'perfil': perfil, 'ano': ano, 'mes': mes, 'sedeMalla': sedeMalla, 'areaMalla': areaMalla,'nombreMalla': nombreMalla}))
 
 
 class GestionCoordUpdate(UpdateView):
@@ -1050,6 +1102,15 @@ class GestionCoordUpdate(UpdateView):
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
         context["Perfil"] = self.kwargs['perfil']
 
+        context["Ano"] = self.kwargs['ano']
+        context["Mes"] = self.kwargs['mes']
+        context["SedeMalla"] = self.kwargs['sedeMalla']
+        context["AreaMalla"] = self.kwargs['areaMalla']
+        context["NombreMalla"] = self.kwargs['nombreMalla']
+
+
+
+
         #self.get_context_data(   context=context )
 
         messages.success(self.request, "La asignacion fue satisfactoria.")
@@ -1070,6 +1131,12 @@ class GestionCoordUpdate(UpdateView):
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
         context["Perfil"] = self.kwargs['perfil']
+
+        context["SedeMalla"] = self.kwargs['sedeMalla']
+        context["AreaMalla"] = self.kwargs['areaMalla']
+        context["NombreMalla"] = self.kwargs['nombreMalla']
+        context["Ano"] = self.kwargs['ano']
+        context["Mes"] = self.kwargs['mes']
 
         print("context en el get_context_data AsignacionUpdated = ", context)
         print(context["Username"])
@@ -1101,7 +1168,14 @@ class GestionCoordUpdate(UpdateView):
         sedeSeleccionada = self.kwargs['sedeSeleccionada']
         perfil = self.kwargs['perfil']
 
-        return reverse_lazy('gestionCoord', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil})
+        sedeMalla = self.kwargs['sedeMalla']
+        areaMalla = self.kwargs['areaMalla']
+        nombreMalla = self.kwargs['nombreMalla']
+        ano = self.kwargs['ano']
+        mes = self.kwargs['mes']
+
+
+        return reverse_lazy('gestionCoord', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil, 'ano':ano, 'mes':mes, 'sedeMalla':sedeMalla, 'areaMalla': areaMalla, 'nombreMalla':nombreMalla})
 
 
 # Create your views here.
@@ -1123,12 +1197,18 @@ def load_dataCoordTickets(request, data):
     empleadoId = d['empleadoId']
     nombreEmp  = d['nombreEmp']
 
+    areaMalla = d['areaMalla']
+    sedeMalla = d['sedeMalla']
+    nombreMalla = d['nombreMalla']
+
     sede = d['sede']
+
     area = d['area']
     ano = d['ano']
     mes = d['mes']
     perfil = d['perfil']
-
+    print("sede        =", sede)
+    print("sedeMalla   =", sedeMalla)
     print("llega nombreEmp ORIGINA =", nombreEmp)
 
     nombreEmp1=''
@@ -1255,7 +1335,9 @@ class GestionCoordMallaUpdate(UpdateView):
 
     context_object_name = 'gestionCoordMallaUpdate'
     template_name = 'tickets/GestionCoordMallaUpdate.html'
+
     sucess_url = reverse_lazy ('gestionCoord')
+    #sucess_url = reverse_lazy('gestionCoord', kwargs={'username': username, 'nombreUsuario': nombreUsuario, 'nombreSede': nombreSede,                                         'empleadoId': empleadoId, 'sedeSeleccionada': sedeSeleccionada,                                         'perfil': perfil, 'ano': ano, 'mes': mes, 'sedeMalla': sedeMalla,                                         'areaMalla': areaMalla, 'nombreMalla': nombreMalla})
 
     def form_valid (self, form):
 
@@ -1311,6 +1393,13 @@ class GestionCoordMallaUpdate(UpdateView):
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
         context["Perfil"] = self.kwargs['perfil']
 
+        context["Ano"] = self.kwargs['ano']
+        context["Mes"] = self.kwargs['mes']
+        context["AreaMalla"] = self.kwargs['areaMalla']
+        context["SedeMalla"] = self.kwargs['sedeMalla']
+        context["NombreMalla"] = self.kwargs['nombreMalla']
+
+
         messages.success(self.request, "La asignacion fue satisfactoria.")
         return super(GestionCoordMallaUpdate, self).form_valid(form)
 
@@ -1326,6 +1415,13 @@ class GestionCoordMallaUpdate(UpdateView):
         context["EmpleadoId"] = self.kwargs['empleadoId']
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
         context["Perfil"] = self.kwargs['perfil']
+
+        context["Ano"] = self.kwargs['ano']
+        context["Mes"] = self.kwargs['mes']
+        context["AreaMalla"] = self.kwargs['areaMalla']
+        context["SedeMalla"] = self.kwargs['sedeMalla']
+        context["NombreMalla"] = self.kwargs['nombreMalla']
+
 
         print("context en el get_context_data AsignacionUpdated = ", context)
         print(context["Username"])
@@ -1390,7 +1486,15 @@ class GestionCoordMallaUpdate(UpdateView):
         sedeSeleccionada = self.kwargs['sedeSeleccionada']
         perfil = self.kwargs['perfil']
 
-        return reverse_lazy('gestionCoord', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil})
+        ano         = self.kwargs['ano']
+        mes         = self.kwargs['mes']
+        areaMalla   = self.kwargs['areaMalla']
+        sedeMalla   = self.kwargs['sedeMalla']
+        nombreMalla = self.kwargs['nombreMalla']
+
+        print ("Aqui voy en get_success_url")
+
+        return reverse_lazy('gestionCoord', kwargs={'username':username,'nombreUsuario':nombreUsuario,'nombreSede': nombreSede,'empleadoId':empleadoId ,'sedeSeleccionada':sedeSeleccionada, 'perfil':perfil, 'ano':ano, 'mes':mes, 'sedeMalla':sedeMalla, 'areaMalla':areaMalla, 'nombreMalla':nombreMalla })
 
 
 
@@ -1422,6 +1526,13 @@ class CrearMalla(  CreateView ):
         context["SedeSeleccionada"] = self.kwargs['sedeSeleccionada']
         context["Perfil"] = self.kwargs['perfil']
 
+        context["Ano"] = self.kwargs['ano']
+        context["Mes"] = self.kwargs['mes']
+        context["AreaMalla"] = self.kwargs['areaMalla']
+        context["SedeMalla"] = self.kwargs['sedeMalla']
+        context["NombreMalla"] = self.kwargs['nombreMalla']
+
+
         print ("context en el get_context_data = ", context)
         print(context["Username"])
         print(context["NombreUsuario"])
@@ -1437,7 +1548,7 @@ class CrearMalla(  CreateView ):
 
         instance = form.save()
         context={}
-        envio = self.kwargs['username'] + ',' + self.kwargs['sedeSeleccionada'] + ',' + self.kwargs['nombreUsuario'] + ',' + self.kwargs['nombreSede'] + ',' + self.kwargs['empleadoId'] + ',' + self.kwargs['perfil']
+        envio = self.kwargs['username'] + ',' + self.kwargs['sedeSeleccionada'] + ',' + self.kwargs['nombreUsuario'] + ',' + self.kwargs['nombreSede'] + ',' + self.kwargs['empleadoId'] + ',' + self.kwargs['perfil'] + ',' + self.kwargs['ano']  + ',' + self.kwargs['mes'] + ',' + self.kwargs['sedeMalla'] + ',' + self.kwargs['areaMalla']  + ',' + self.kwargs['nombreMalla']
         redirect_url = reverse('gestionCoord_A')
         print ("redirect_url = ",redirect_url )
 
@@ -1638,7 +1749,7 @@ class THumanoUpdate(UpdateView):
 
 
 class TicketsMalla1(ListView):
-    print ("Entre List View TicketsMalla")
+    print ("Entre List View TicketsMalla1")
 
     queryset = TicketsMalla.objects.filter().order_by('id')
     context_object_name = 'TicketsMalla1'

@@ -1,0 +1,290 @@
+// * LIVE ASSETS LINK => https://s0.2mdn.net/creatives/assets/4825774/
+
+function initBanner() {
+    window.onload = function () {
+        if (Enabler.isInitialized()) {
+            enablerInitHandler();
+        } else {
+            Enabler.addEventListener(studio.events.StudioEvent.INIT, enablerInitHandler);
+        }
+
+        function enablerInitHandler() {
+            // Start polite loading, or start animation,
+            // load in your image assets, call Enabler methods,
+            // and/or include other Studio modules
+            /*    */
+            //insert HTML containers
+            //Use createDiv from library. Rewrite in chronological order.
+            function createDiv(id) {
+                let body = document.getElementById('bannerContent');
+                let div = document.createElement('div');
+                div.id = id;
+                body.appendChild(div);
+            }
+
+            createDiv('bannerContainer');
+            createDiv('splashContainer');
+            createDiv('mainExit');
+            //load modules
+
+            //load the Banner Design System main controller. 
+            let link = cbConnection === "local" ? "/Banner Design System/cbBdsV2.js" : "https://s0.2mdn.net/creatives/assets/3781309/cbBdsV2.js";
+            let header = document.getElementsByTagName('head')[0];
+            let script = document.createElement('script');
+            script.src = link;
+            script.onreadystatechange = onComplete;
+            script.onload = onComplete;
+            header.appendChild(script);
+
+            function onComplete() {
+                // Load all the modules used by this template
+                cbAd.modules.modulesToLoad = [];
+
+                // Data object
+                const data = {};
+                data.fact = `GROTE APPARATEN`;
+                data.slogan = `Kleine prijsjes.`;
+                data.copyShort = `<b>Keiharde korting</b> op grote apparaten.`;
+                data.copyLong = `Nu: <b>korting</b> op wasmachines, drogers, koelkasten, vaatwassers en meer.`;
+                data.ctaShort = `Bestel nu`;
+                data.ctaLong = `Bestel de beste voor jou`;
+                data.label = `OP=OP`;
+
+                // Load the banner with the splashscreen, bannername, feed and connection
+                cbAd.init({
+                    splash: "factSloganV3",
+                    banner: "BANDEV561_witgoedweken_displayset",
+                    feed: cbProfileId,
+                    connection: cbConnection,
+                    debug: false
+                });
+
+                // Banner specific programming
+                cbAd.splashScreen.play = function () {
+                    // initial Coolblue logo object
+                    let cbLogoObj = {
+                        bannerTypeForSize: cbAd.bannerInfo.banner,
+                        id: `cbLogo`, //need this Id for the splashScreen
+                    };
+
+                    new cbElements.create.cbLogo({
+                        ...cbLogoObj,
+                        parent: cbLib.id('bannerContent'),
+                    });
+
+                    var fsSplash = cbAd.modules.splashScreen.factSloganSplash;
+
+                    fsSplash.settings.factText = data.fact;
+                    fsSplash.settings.sloganText = data.slogan;
+                    fsSplash.settings.promotionalPeriod = "solden";
+
+                    switch (cbAd.bannerInfo.bannerSize) {
+                        default:
+                            fsSplash.settings.animation = "factSlogan";
+                            break;
+                        case '120x600':
+                        case '160x600':
+                        case '200x200':
+                            fsSplash.settings.animation = "regular";
+                            break;
+                    }
+                    fsSplash.init();
+                }
+
+                cbAd.banner.load = function () {
+                    const parentContainer = cbLib.id('bannerContainer');
+                    const productAssetsPrefix = cbConnection === 'local' ? '/Banner Design System/Creatives/Epics/BANDEV-561_witgoedweken_displayset/assets/' : 'https://s0.2mdn.net/creatives/assets/4861179/';
+                    let numberOfDots = 6;
+
+                    // * set all data object for elements
+                    parentContainer.classList.add(`s${cbAd.bannerInfo.bannerSize}`);
+
+                    // initial fact slogan object
+                    let fsObj = {
+                        fact: `${data.fact}`,
+                        slogan: `${data.slogan}`,
+                        colorTheme: `white`, // `blue`, `white`
+                        autoResize: false
+                    };
+
+                    // initial product image object
+                    let productImageObj = {
+                        imageUrl: `${productAssetsPrefix}${cbAd.bannerInfo.banner}_wide.png`,
+                    };
+
+                    // initial copy object
+                    let copyObj = {
+                        text: `${data.copyLong}`,
+                        color: 'white',
+                    };
+
+                    // initial cta object
+                    let ctaObj = {
+                        text: `${data.ctaLong}`,
+                        colorTheme: `blue`, //`blue`,`white`,`green`
+                        type: `btn`, //`text`,`btn`,`btnSmall`
+                    };
+
+                    // initial text label object
+                    let textLabelObj = {
+                        text: `${data.label}`,
+                        color: `orange`, //`orange`, `green`, `blue`
+                    };
+
+                    // * change data per bannersize
+                    //Size switch
+                    switch (cbAd.bannerInfo.bannerSize) {
+                        case '120x600':
+                        case '160x600':
+                            productImageObj.imageUrl = `${productAssetsPrefix}${cbAd.bannerInfo.banner}_square.png`;
+                            numberOfDots = 4;
+                            ctaObj.text = `${data.ctaShort}`;
+                            break;
+                        case '200x200':
+                        case '250x250':
+                        case '300x250':
+                        case '336x280':
+                            ctaObj.type = `text`;
+                            ctaObj.colorTheme = `white`;
+                            break;
+                        case '728x90':
+                            productImageObj.imageUrl = `${productAssetsPrefix}${cbAd.bannerInfo.banner}_ultraWide.png`;
+                            copyObj.text = `${data.copyShort}`
+                            ctaObj.type = `btnSmall`;
+                            break;
+                        case '970x90':
+                            productImageObj.imageUrl = `${productAssetsPrefix}${cbAd.bannerInfo.banner}_ultraWide.png`;
+                            copyObj.text = `${data.copyShort}`
+                            break;
+                    }
+
+                    // * Create all alements
+                    cbElements.add.addBorder({
+                        parent: `bannerContent`,
+                        onHoverChange: false
+                    });
+
+                    const textLabel = new cbElements.create.textLabel({
+                        ...textLabelObj,
+                        parent: parentContainer,
+                    });
+
+                    const factSlogan = new cbElements.create.factSlogan({
+                        ...fsObj,
+                        parent: parentContainer,
+                    });
+
+                    const productImage = new cbElements.create.productImage({
+                        ...productImageObj,
+                        parent: parentContainer,
+                    });
+
+                    const copy = new cbElements.create.copy({
+                        ...copyObj,
+                        parent: parentContainer,
+                    });
+
+                    const cta = new cbElements.create.cta({
+                        ...ctaObj,
+                        parent: parentContainer,
+                    });
+
+                    const percentdots = cbLib.insertElement({
+                        parent: productImage.containerElem,
+                        class: `-cb-percent-dots`,
+                        type: "div",
+                    });
+
+                    for (let i = 1; i <= numberOfDots; i++) {
+                        const dot = cbLib.insertElement({
+                            parent: percentdots,
+                            class: `-cb-percent-dots__dot -cb-percent-dots__dot--${i}`,
+                            type: "div",
+                        });
+
+                        cbLib.insertElement({
+                            parent: dot,
+                            class: `-cb-percent-dots__text`,
+                            type: "span",
+                            text: '%'
+                        });
+                    }
+
+                    cbAd.bannerInfo.readyState = true;
+                }
+
+                cbAd.banner.play = function () {
+                    const tl = gsap.timeline();
+                    tl.set("#bannerContainer", {
+                            opacity: 1,
+                            delay: 0.1
+                        })
+                        .add("bannerStart")
+
+                    //  Add an other animation for the image in different size banners
+                    // Size switch
+                    switch (cbAd.bannerInfo.bannerSize) {
+                        case '120x600':
+                        case '160x600':
+                        case '200x200':
+                        case '250x250':
+                        case '300x250':
+                        case '336x280':
+                        case '300x600':
+                            tl.from(".-cb-fact-slogan, .-cb-text-label", 0.3, {
+                                    opacity: 0,
+                                    y: -10
+                                }, "bannerStart")
+                                .from(".-cb-product-image", 0.5, {
+                                    opacity: 0,
+                                }, "fadein")
+                                .from(".-cb-copy", {
+                                    opacity: 0,
+                                    y: -10
+                                }, "-=0.2")
+                                .from(".-cb-cta", 0.3, {
+                                    opacity: 0,
+                                    y: 10
+                                }, "=-0.2")
+                            break;
+                        case '728x90':
+                        case '970x90':
+                        case '970x250':
+                            tl.from(".-cb-fact-slogan, .-cb-text-label", 0.3, {
+                                    opacity: 0,
+                                    x: 10
+                                }, "bannerStart")
+                                .from(".-cb-product-image", 0.5, {
+                                    opacity: 0,
+                                    x: 10,
+                                }, ">-=0.5")
+                                .from(".-cb-copy", {
+                                    opacity: 0,
+                                    x: 10
+                                }, "-=0.2")
+                                .from(".-cb-cta", 0.3, {
+                                    opacity: 0,
+                                    x: 10
+                                }, "=-0.2")
+                            break;
+                    }
+
+                    // Dot animation
+                    tl.add("dotStart")
+                        .from(".-cb-percent-dots__dot", {
+                            ease: "power3.in",
+                            scale: 0,
+                            stagger: 0.2,
+                        }, "dotStart-=0.4")
+
+
+
+                    //Add exit
+                    cbLib.id("mainExit").addEventListener("click", mainExitFunction);
+                    cbLib.class("-cb-cta")[0].addEventListener("click", mainExitFunction);
+                }
+            }
+        }
+    }
+}
+initBanner();

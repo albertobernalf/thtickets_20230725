@@ -1,0 +1,139 @@
+// Usp/cta module
+cbAd.resources.modules.uspCta = {};
+cbAd.resources.modules.uspCta.live = "https://s0.2mdn.net/creatives/assets/3758099/"; // assets link
+cbAd.resources.modules.uspCta.local = "/Banner Design System/Sub Modules/uspCta/";
+cbAd.resources.modules.uspCta.JS = "uspCta.js";
+cbAd.resources.modules.uspCta.CSS = "uspCta.css";
+
+// Usp/cta module V2
+cbAd.resources.modules.uspCtaV2 = {};
+cbAd.resources.modules.uspCtaV2.live = "https://s0.2mdn.net/creatives/assets/3782491/"; // assets link
+cbAd.resources.modules.uspCtaV2.local = "/Banner Design System/Sub Modules/uspCtaV2/";
+cbAd.resources.modules.uspCtaV2.JS = "uspCtaV2.js";
+cbAd.resources.modules.uspCtaV2.CSS = "uspCtaV2.css";
+
+// Product Card
+cbAd.resources.modules.productCard = {};
+cbAd.resources.modules.productCard.live = "https://s0.2mdn.net/creatives/assets/3782707/"; // assets link
+cbAd.resources.modules.productCard.local = "/Banner Design System/Sub Modules/productCard/";
+cbAd.resources.modules.productCard.JS = "productCard.js";
+cbAd.resources.modules.productCard.CSS = "productCard.css";
+
+// Product Card Compliancy
+cbAd.resources.modules.productCardCompliancy = {};
+cbAd.resources.modules.productCardCompliancy.live = "https://s0.2mdn.net/creatives/assets/4416386/"; // assets link
+cbAd.resources.modules.productCardCompliancy.local = "/Banner Design System/Sub Modules/productCardCompliancy/";
+cbAd.resources.modules.productCardCompliancy.JS = "productCardCompliancy.js";
+cbAd.resources.modules.productCardCompliancy.CSS = "productCardCompliancy.css";
+
+// Product Card V2
+cbAd.resources.modules.productCardV2 = {};
+cbAd.resources.modules.productCardV2.live = "https://s0.2mdn.net/creatives/assets/4189440/"; // assets link
+cbAd.resources.modules.productCardV2.local = "/Banner Design System/Sub Modules/productCardV2/";
+cbAd.resources.modules.productCardV2.JS = "productCardV2.js";
+cbAd.resources.modules.productCardV2.CSS = "productCardV2.css";
+
+// Product Card V3
+cbAd.resources.modules.productCardV3 = {};
+cbAd.resources.modules.productCardV3.live = "https://s0.2mdn.net/creatives/assets/4496613/"; // assets link
+cbAd.resources.modules.productCardV3.local = "/Banner Design System/Sub Modules/productCardV3/";
+cbAd.resources.modules.productCardV3.JS = "productCardV3.js";
+cbAd.resources.modules.productCardV3.CSS = "productCardV3.css";
+
+// Story Card
+cbAd.resources.modules.storyCard = {};
+cbAd.resources.modules.storyCard.live = "https://s0.2mdn.net/creatives/assets/4190428/"; // assets link
+cbAd.resources.modules.storyCard.local = "/Banner Design System/Sub Modules/storyCard/";
+cbAd.resources.modules.storyCard.JS = "storyCard.js";
+cbAd.resources.modules.storyCard.CSS = "storyCard.css";
+
+// Usp Product Card
+cbAd.resources.modules.uspProductCard = {};
+cbAd.resources.modules.uspProductCard.live = "https://s0.2mdn.net/creatives/assets/4062138/"; // assets link
+cbAd.resources.modules.uspProductCard.local = "/Banner Design System/Sub Modules/uspProductCard/";
+cbAd.resources.modules.uspProductCard.JS = "uspProductCard.js";
+cbAd.resources.modules.uspProductCard.CSS = "uspProductCard.css";
+
+// Usp Product Card V2
+cbAd.resources.modules.uspProductCardV2 = {};
+cbAd.resources.modules.uspProductCardV2.live = "https://s0.2mdn.net/creatives/assets/4496619/"; // assets link
+cbAd.resources.modules.uspProductCardV2.local = "/Banner Design System/Sub Modules/uspProductCardV2/";
+cbAd.resources.modules.uspProductCardV2.JS = "uspProductCardV2.js";
+cbAd.resources.modules.uspProductCardV2.CSS = "uspProductCard.css";
+
+// Carousel
+cbAd.resources.modules.carousel = {};
+cbAd.resources.modules.carousel.live = "https://s0.2mdn.net/creatives/assets/3782701/"; // assets link
+cbAd.resources.modules.carousel.local = "/Banner Design System/Sub Modules/carousel/";
+cbAd.resources.modules.carousel.JS = "carousel.js";
+cbAd.resources.modules.carousel.CSS = "carousel.css";
+
+// CarouselCompliancy
+cbAd.resources.modules.carouselCompliancy = {};
+cbAd.resources.modules.carouselCompliancy.live = "https://s0.2mdn.net/creatives/assets/4416383/"; // assets link
+cbAd.resources.modules.carouselCompliancy.local = "/Banner Design System/Sub Modules/carouselCompliancy/";
+cbAd.resources.modules.carouselCompliancy.JS = "carouselCompliancy.js";
+cbAd.resources.modules.carouselCompliancy.CSS = "carouselCompliancy.css";
+
+// Carousel V2
+cbAd.resources.modules.carouselV2 = {};
+cbAd.resources.modules.carouselV2.live = "https://s0.2mdn.net/creatives/assets/4189254/"; // assets link
+cbAd.resources.modules.carouselV2.local = "/Banner Design System/Sub Modules/carouselV2/";
+cbAd.resources.modules.carouselV2.JS = "carouselV2.js";
+cbAd.resources.modules.carouselV2.CSS = "carouselV2.css";
+
+// Carousel V3
+cbAd.resources.modules.carouselV3 = {};
+cbAd.resources.modules.carouselV3.live = "https://s0.2mdn.net/creatives/assets/4496616/"; // assets link
+cbAd.resources.modules.carouselV3.local = "/Banner Design System/Sub Modules/carouselV3/";
+cbAd.resources.modules.carouselV3.JS = "carouselV3.js";
+cbAd.resources.modules.carouselV3.CSS = "carouselV3.css";
+
+// WhiteBox
+cbAd.resources.modules.whiteBox = {};
+cbAd.resources.modules.whiteBox.live = "https://s0.2mdn.net/creatives/assets/3758108/"; // assets link
+cbAd.resources.modules.whiteBox.local = "/Banner Design System/Sub Modules/whiteBox/";
+cbAd.resources.modules.whiteBox.JS = "whiteBox.js";
+cbAd.resources.modules.whiteBox.CSS = "whiteBox.css";
+
+// WhiteBoxV2
+cbAd.resources.modules.whiteBoxV2 = {};
+cbAd.resources.modules.whiteBoxV2.live = "https://s0.2mdn.net/creatives/assets/3896839/"; // assets link
+cbAd.resources.modules.whiteBoxV2.local = "/Banner Design System/Sub Modules/whiteBoxV2/";
+cbAd.resources.modules.whiteBoxV2.JS = "whiteBoxV2.js";
+cbAd.resources.modules.whiteBoxV2.CSS = "whiteBoxV2.css";
+
+// mainImage
+cbAd.resources.modules.mainImage = {};
+cbAd.resources.modules.mainImage.live = "https://s0.2mdn.net/creatives/assets/3773403/"; // assets link
+cbAd.resources.modules.mainImage.local = "/Banner Design System/Sub Modules/mainImage/";
+cbAd.resources.modules.mainImage.JS = "mainImage.js";
+cbAd.resources.modules.mainImage.CSS = "mainImage.css";
+
+// blueBox
+cbAd.resources.modules.blueBox = {};
+cbAd.resources.modules.blueBox.live = "https://s0.2mdn.net/creatives/assets/3782698/"; // assets link
+cbAd.resources.modules.blueBox.local = "/Banner Design System/Sub Modules/blueBox/";
+cbAd.resources.modules.blueBox.JS = "blueBox.js";
+cbAd.resources.modules.blueBox.CSS = "blueBox.css";
+
+// blueBoxV2
+cbAd.resources.modules.blueBoxV2 = {};
+cbAd.resources.modules.blueBoxV2.live = "https://s0.2mdn.net/creatives/assets/3896836/"; // assets link
+cbAd.resources.modules.blueBoxV2.local = "/Banner Design System/Sub Modules/blueBoxV2/";
+cbAd.resources.modules.blueBoxV2.JS = "blueBoxV2.js";
+cbAd.resources.modules.blueBoxV2.CSS = "blueBoxV2.css";
+
+// onsiteProductCard
+cbAd.resources.modules.onsiteProductCard = {};
+cbAd.resources.modules.onsiteProductCard.live = "https://s0.2mdn.net/creatives/assets/3883237/"; // assets link
+cbAd.resources.modules.onsiteProductCard.local = "/Banner Design System/Sub Modules/onsiteProductCard/";
+cbAd.resources.modules.onsiteProductCard.JS = "onsiteProductCard.js";
+cbAd.resources.modules.onsiteProductCard.CSS = "onsiteProductCard.css";
+
+// Promotion Manaager
+cbAd.resources.modules.promotionManager = {};
+cbAd.resources.modules.promotionManager.live = "https://s0.2mdn.net/creatives/assets/4012510/"; // assets link
+cbAd.resources.modules.promotionManager.local = "/Banner Design System/Sub Modules/promotions/";
+cbAd.resources.modules.promotionManager.JS = "promotionManager.js";
+cbAd.resources.modules.promotionManager.CSS = "";

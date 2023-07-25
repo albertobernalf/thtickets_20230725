@@ -1,0 +1,14 @@
+  var READTHEDOCS_DATA = {
+    project: "johnny-cache",
+    version: "latest",
+    language: "en",
+    subprojects: {},
+    canonical_url: "http://johnny-cache.readthedocs.io/en/latest/",
+    theme: "nature",
+    builder: "sphinx",
+    docroot: "/docs/",
+    source_suffix: ".rst",
+    api_host: "https://readthedocs.org",
+    commit: "d96ea94c"
+  };
+  
