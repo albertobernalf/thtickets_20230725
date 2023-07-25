@@ -53,16 +53,17 @@ urlpatterns = [
     path('contrasena/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', Contrasena.as_view(),name='contrasena'),
 
     path('gestionCoord/',GestionCoord.as_view(), name='gestionCoord_A'),
-    path('gestionCoord/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>', GestionCoord.as_view(),name='gestionCoord'),
-    path('gestionCoord/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/', GestionCoordUpdate.as_view(),name='gestionCoord-update'),
-    path('gestionCoord/post/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/delete/', GestionCoordDelete,name='gestionCoord-delete'),
+    path('gestionCoord/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>,<str:ano>,<str:mes>,<str:sedeMalla>,<str:areaMalla>,<str:nombreMalla>', GestionCoord.as_view(),name='gestionCoord'),
+    path('gestionCoord/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>,<str:ano>,<str:mes>,<str:sedeMalla>,<str:areaMalla>,<str:nombreMalla>/', GestionCoordUpdate.as_view(),name='gestionCoord-update'),
+    path('gestionCoord/post/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>,<str:ano>,<str:mes>,<str:sedeMalla>,<str:areaMalla>,<str:nombreMalla>/delete/', GestionCoordDelete,name='gestionCoord-delete'),
+    path('gestionCoord/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>,<str:ano>,<str:mes>,<str:sedeMalla>,<str:areaMalla>,<str:nombreMalla>/delete/', GestionCoordDelete,name='gestionCoord-delete1'),
 
 
     path('load_dataCoordTickets/<str:data>', views.load_dataCoordTickets, name='loaddataCoordTickets'),
     #path('load_dataCoordTickets/', views.load_dataCoordTickets, name='loaddataCoordTickets'),
-    path('gestionCoordMalla/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/', GestionCoordMallaUpdate.as_view(),name='gestionCoordMalla-update'),
+    path('gestionCoordMalla/update/<int:pk>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>,<str:ano>,<str:mes>,<str:sedeMalla>,<str:areaMalla>,<str:nombreMalla>/', GestionCoordMallaUpdate.as_view(),name='gestionCoordMalla-update'),
 
-    path('crearMalla/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>/', CrearMalla.as_view(),name='crearMalla'),
+    path('crearMalla/<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>,<str:ano>,<str:mes>,<str:sedeMalla>,<str:areaMalla>,<str:nombreMalla>/', CrearMalla.as_view(),name='crearMalla'),
 
     path('tHumano/', THumano.as_view(), name='tHumano'),
     path('tHumano/<str:ticketId>,<str:nombre>,<str:username>,<str:sedeSeleccionada>,<str:nombreUsuario>,<str:nombreSede>,<str:empleadoId>,<str:perfil>',THumano.as_view(), name='tHumano'),
